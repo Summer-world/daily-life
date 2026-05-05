@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summer 的搭配灵感库</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#F7F5F0;--surface:#FFFFFF;--border:#E8E4DC;--border-dark:#C8C2B4;--text-primary:#1A1814;--text-secondary:#6B6560;--text-hint:#A09A92;--accent:#2D5A3D;--accent-light:#EAF2EC;--shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 12px rgba(0,0,0,0.04);}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text-primary);min-height:100vh;}
+  header{background:var(--surface);border-bottom:1px solid var(--border);padding:1.25rem 2rem;display:flex;align-items:baseline;gap:1rem;}
+  header h1{font-family:'Noto Serif SC',serif;font-size:1.25rem;font-weight:600;}
+  header .date{font-size:.78rem;color:var(--text-hint);}
+  .main{max-width:860px;margin:0 auto;padding:1.75rem 1.5rem 3rem;}
+  .sh{font-family:'Noto Serif SC',serif;font-size:.85rem;font-weight:600;color:var(--text-secondary);letter-spacing:.05em;margin-bottom:.75rem;display:flex;align-items:center;gap:8px;}
+  .sh::after{content:'';flex:1;height:1px;background:var(--border);}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem;box-shadow:var(--shadow);}
+  .fl{font-size:.68rem;font-weight:500;color:var(--text-hint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.7rem;}
+  .tr{display:flex;flex-wrap:wrap;gap:8px;}
+  .tag{padding:6px 15px;border-radius:99px;font-size:.8rem;cursor:pointer;border:1px solid var(--border-dark);background:var(--surface);color:var(--text-secondary);transition:all .15s;user-select:none;font-family:inherit;}
+  .tag:hover{background:var(--bg);}
+  .tag.weather.active{background:#1A3A5C;color:#fff;border-color:#1A3A5C;}
+  .tag.scene.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .divider{height:1px;background:var(--border);margin:1.5rem 0;}
+  .rh{display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem;}
+  .rl{font-size:.68rem;font-weight:500;color:var(--text-hint);letter-spacing:.1em;text-transform:uppercase;}
+  .rb{font-size:.72rem;color:var(--text-hint);background:none;border:none;cursor:pointer;font-family:inherit;text-decoration:underline;}
+  .empty{text-align:center;padding:2.5rem 0;color:var(--text-hint);font-size:.85rem;line-height:2;}
+  .oc{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.4rem;margin-bottom:1rem;box-shadow:var(--shadow);}
+  .oh{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .ot{font-family:'Noto Serif SC',serif;font-size:.95rem;font-weight:600;color:var(--text-primary);}
+  .sb{font-size:.66rem;padding:3px 10px;border-radius:99px;border:1px solid;white-space:nowrap;}
+  .s-fairy{background:#FDF0F5;color:#9C2753;border-color:#F0AECB;}
+  .s-retro{background:#F5F0E8;color:#7A5C2E;border-color:#C8A87A;}
+  .s-fresh{background:#EDF7ED;color:#1E6B2E;border-color:#8DC98D;}
+  .s-casual{background:#F0F0F7;color:#3D3D7A;border-color:#9A9AC8;}
+  .s-college{background:#F0F5FF;color:#1A3A7A;border-color:#7A9ADF;}
+  .s-sporty{background:#F0F7F5;color:#1A5A4A;border-color:#7AC8B8;}
+  .oi{display:flex;flex-wrap:wrap;gap:12px;}
+  .item{display:flex;flex-direction:column;align-items:center;gap:5px;width:95px;}
+  .iw{width:85px;height:85px;border-radius:10px;border:1px solid var(--border);background:#fafafa;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+  .iw img{width:100%;height:100%;object-fit:cover;}
+  .ph{font-size:.6rem;color:var(--text-hint);text-align:center;padding:4px;line-height:1.4;}
+  .ir{font-size:.6rem;color:var(--text-hint);}
+  .in{font-size:.68rem;color:var(--text-secondary);text-align:center;line-height:1.4;}
+  .tip{font-size:.75rem;color:var(--text-secondary);margin-top:10px;padding-top:8px;border-top:1px solid var(--border);line-height:1.6;}
+  .ms{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-top:2rem;box-shadow:var(--shadow);}
+  .mt{font-size:.85rem;color:var(--text-secondary);cursor:pointer;background:none;border:none;font-family:inherit;display:flex;align-items:center;gap:6px;width:100%;}
+  .mb{display:none;margin-top:1.25rem;}
+  .mb.open{display:block;}
+  .mc{font-size:.7rem;font-weight:600;color:var(--text-hint);letter-spacing:.06em;text-transform:uppercase;margin-top:1rem;margin-bottom:.5rem;padding-bottom:4px;border-bottom:1px solid var(--border);}
+  .mc:first-child{margin-top:0;}
+  .mi{display:flex;align-items:center;padding:7px 0;gap:10px;border-bottom:1px solid var(--border);}
+  .mi:last-child{border-bottom:none;}
+  .mig{width:38px;height:38px;border-radius:6px;border:1px solid var(--border);background:#fafafa;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+  .mig img{width:100%;height:100%;object-fit:cover;}
+  .mn{flex:1;font-size:.82rem;color:var(--text-primary);}
+  .mn.del{text-decoration:line-through;color:var(--text-hint);}
+  .db,.rb2{background:none;border:none;cursor:pointer;font-family:inherit;font-size:.72rem;padding:3px 10px;border-radius:6px;flex-shrink:0;}
+  .db{color:var(--text-hint);}
+  .db:hover{background:#FEE;color:#c0392b;}
+  .rb2{color:var(--accent);}
+  .rb2:hover{background:var(--accent-light);}
+  footer{text-align:center;padding:2rem;font-size:.7rem;color:var(--text-hint);}
+  .tag.mood.active{background:#7A4A8C;color:#fff;border-color:#7A4A8C;}
+  .gen-btn{margin-top:.9rem;width:100%;padding:.7rem;border:1px dashed var(--border-dark);background:var(--bg);border-radius:10px;font-family:inherit;font-size:.85rem;color:var(--text-secondary);cursor:pointer;transition:all .15s;letter-spacing:.05em;}
+  .gen-btn:hover{background:#fff;color:var(--text-primary);border-color:var(--accent);}
+  .gen-btn.spin{opacity:.6;}
+  .oc.gen{border-style:dashed;background:linear-gradient(180deg,#FFFEFB 0%,var(--surface) 100%);}
+  .oc.gen .ot::before{content:"🎲 ";}
+  .oc.fav .ot::before{content:"❤ ";color:#C04050;}
+  .ob{display:flex;gap:8px;margin-top:10px;padding-top:8px;border-top:1px solid var(--border);}
+  .ob button{flex:1;padding:6px 10px;border-radius:8px;border:1px solid var(--border-dark);background:var(--surface);font-family:inherit;font-size:.72rem;color:var(--text-secondary);cursor:pointer;transition:all .15s;}
+  .ob button:hover{background:var(--bg);color:var(--text-primary);}
+  .ob .heart{color:#C04050;border-color:#E8B0B8;}
+  .ob .heart:hover{background:#FDF0F2;}
+  .ob .heart.saved{background:#FDF0F2;color:#9A2030;}
+  .anchor-select{width:100%;padding:.6rem .8rem;border:1px solid var(--border-dark);border-radius:8px;background:var(--surface);font-family:inherit;font-size:.85rem;color:var(--text-primary);margin-bottom:.5rem;cursor:pointer;}
+  .anchor-info{font-size:.75rem;color:var(--accent);margin-bottom:.3rem;display:none;padding:.4rem .6rem;background:var(--accent-light);border-radius:6px;}
+  .anchor-info.show{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .anchor-info button{background:none;border:none;color:var(--text-hint);cursor:pointer;font-size:.8rem;padding:0 4px;font-family:inherit;}
+  .anchor-info button:hover{color:#c0392b;}
+  .item.anchor .iw{border:2px solid var(--accent);box-shadow:0 0 0 2px var(--accent-light);}
+  .item.anchor::after{content:"必穿";font-size:.55rem;color:var(--accent);font-weight:600;}
+</style>
+</head>
+<body>
+<header>
+  <h1>Summer 的搭配灵感库</h1>
+  <span class="date" id="dl"></span>
+</header>
+<div class="main">
+  <div class="sh">今天穿什么</div>
+  <div class="card">
+    <div class="fl">今天的天气</div>
+    <div class="tr">
+      <span class="tag weather" data-val="hot">热（30°C+）</span>
+      <span class="tag weather" data-val="warm">暖（25–30°C）</span>
+      <span class="tag weather" data-val="mild">温差大</span>
+      <span class="tag weather" data-val="cool">凉（20°C以下）</span>
+    </div>
+  </div>
+  <div class="card">
+    <div class="fl">今天的场合</div>
+    <div class="tr">
+      <span class="tag scene" data-val="home">在家</span>
+      <span class="tag scene" data-val="out">见人</span>
+      <span class="tag scene" data-val="outdoor">户外</span>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="rh">
+    <div class="rl">今日搭配</div>
+    <button class="rb" onclick="resetAll()">清除筛选</button>
+  </div>
+  <div id="res"><div class="empty">选择天气和场合<br>看看今天穿什么</div></div>
+  <div class="card">
+    <div class="fl">心情偏好（不选 = 随机风格）</div>
+    <div class="tr" id="moodChips"></div>
+    <div class="fl" style="margin-top:1rem">必穿单品（可选）</div>
+    <select id="anchorSelect" class="anchor-select" onchange="setAnchor(this.value)"></select>
+    <div id="anchorInfo" class="anchor-info"></div>
+    <button class="gen-btn" id="genBtn" onclick="generateAndShow()">🎲 抽一套搭配</button>
+    <div id="genResult"></div>
+  </div>
+  <div class="ms" id="favPanel" style="display:none">
+    <button class="mt" onclick="toggleFavPanel()"><span id="fa">▸</span> <span id="favTitle">全部收藏</span></button>
+    <div class="mb" id="fb"></div>
+  </div>
+  <div class="ms">
+    <button class="mt" onclick="toggleMgmt()"><span id="ma">▸</span> 管理衣橱</button>
+    <div class="mb" id="mb"></div>
+  </div>
+</div>
+<footer>Summer 的搭配灵感库 · 2026</footer>
+<script>
+const W=[
+  {id:"grey_shorts",cat:"夏装·下装",name:"灰色运动短裤",img:"photos/01_grey_shorts.jpg",styles:["casual","sporty"],weather:["hot","warm","mild"]},
+  {id:"black_shorts",cat:"夏装·下装",name:"黑色运动短裤",img:"photos/02_black_shorts.jpg",styles:["casual","sporty","cool"],weather:["hot","warm","mild"]},
+  {id:"floral_pants",cat:"夏装·下装",name:"深蓝碎花阔腿裤",img:"photos/03_floral_pants.jpg",styles:["retro","fresh"],weather:["hot","warm"]},
+  {id:"green_pants",cat:"夏装·下装",name:"浅绿阔腿裤",img:"photos/04_green_pants.jpg",styles:["fresh","retro","fairy"],weather:["hot","warm"]},
+  {id:"white_dress",cat:"夏装·连衣裙",name:"白色细肩带连衣裙",img:"photos/05_white_dress.jpg",styles:["fairy"],weather:["hot","warm"]},
+  {id:"floral_dress",cat:"夏装·连衣裙",name:"紫灰碎花连衣裙",img:"photos/06_floral_dress.jpg",styles:["fairy","retro"],weather:["hot","warm"]},
+  {id:"blue_uv",cat:"夏装·外套",name:"浅蓝防晒衣",img:"photos/07_blue_uv.jpg",styles:["casual","fresh","sporty"],weather:["hot","warm"]},
+  {id:"grey_uv",cat:"夏装·外套",name:"浅灰防晒衣",img:"photos/08_grey_uv.jpg",styles:["casual","sporty"],weather:["hot","warm"]},
+  {id:"white_vest",cat:"夏装·背心",name:"白色细肩带背心",img:"photos/09_white_vest.jpg",styles:["fairy","casual"],weather:["hot","warm"]},
+  {id:"blue_vest",cat:"夏装·背心",name:"浅蓝细肩带背心",img:"photos/10_blue_vest.jpg",styles:["fresh","fairy"],weather:["hot","warm"]},
+  {id:"coffee_crop",cat:"夏装·背心",name:"咖色crop背心",img:"photos/11_coffee_crop.jpg",styles:["sporty","retro"],weather:["hot","warm"]},
+  {id:"superdry",cat:"夏装·上衣",name:"浅绿Superdry T恤",img:"photos/12_superdry.jpg",styles:["casual","fresh","sporty"],weather:["hot","warm","mild"]},
+  {id:"black_tee",cat:"夏装·上衣",name:"黑色T恤",img:"photos/13_black_tee.jpg",styles:["casual","cool"],weather:["hot","warm","mild"]},
+  {id:"pink_blouse",cat:"夏装·上衣",name:"裸粉灯笼袖上衣",img:"photos/14_pink_blouse.jpg",styles:["fairy","retro"],weather:["hot","warm"]},
+  {id:"blue_shirt",cat:"夏装·上衣",name:"浅蓝缎面衬衫",img:"photos/16_blue_shirt.jpg",styles:["retro","fairy","college"],weather:["hot","warm","mild"]},
+  {id:"red_plaid",cat:"夏装·上衣",name:"红黑格纹衬衫",img:"photos/17_red_plaid.jpg",styles:["college","retro","casual"],weather:["warm","mild"]},
+  {id:"brown_shirt",cat:"夏装·上衣",name:"棕色长袖衬衫",img:"photos/18_brown_shirt.jpg",styles:["retro","college"],weather:["warm","mild"]},
+  {id:"lace_short",cat:"夏装·开衫",name:"白色蕾丝短款开衫",img:"photos/20_lace_short.jpg",styles:["fairy"],weather:["hot","warm"]},
+  {id:"knit_long",cat:"夏装·开衫",name:"卡其针织长开衫",img:"photos/22_knit_long.jpg",styles:["casual","fairy","retro"],weather:["warm","mild"]},
+  {id:"green_hoodie",cat:"秋冬·卫衣",name:"墨绿卫衣",img:"photos/23_green_hoodie.jpg",styles:["casual","sporty"],weather:["mild","cool"]},
+  {id:"purple_hoodie",cat:"秋冬·卫衣",name:"浅紫CK卫衣",img:"photos/24_purple_hoodie.jpg",styles:["casual","fairy"],weather:["mild","cool"]},
+  {id:"red_cardigan",cat:"秋冬·开衫",name:"红色皇冠开衫",img:"photos/25_red_cardigan.jpg",styles:["retro","college","fairy"],weather:["mild","cool"]},
+  {id:"black_leather",cat:"秋冬·夹克",name:"黑色皮夹克",img:"photos/26_black_leather.jpg",styles:["cool","retro"],weather:["mild","cool"]},
+  {id:"varsity",cat:"秋冬·夹克",name:"酒红棒球夹克",img:"photos/27_varsity_jacket.jpg",styles:["college","casual","retro"],weather:["mild","cool"]},
+  {id:"white_blazer",cat:"秋冬·夹克",name:"奶白西装外套",img:"photos/28_white_blazer.jpg",styles:["college","fairy"],weather:["mild","cool"]},
+  {id:"brick_dress",cat:"秋冬·连衣裙",name:"砖红短袖长款连衣裙",img:"photos/29_brick_dress.jpg",styles:["fairy","retro"],weather:["warm","mild"]},
+  {id:"rose_pants",cat:"秋冬·下装",name:"玫红宽腿运动裤",img:"photos/30_rose_sweatpants.jpg",styles:["casual","sporty","fairy"],weather:["mild","cool"]},
+  {id:"white_cargo",cat:"秋冬·下装",name:"米白cargo裤",img:"photos/31_white_cargo.jpg",styles:["casual","fresh","college"],weather:["warm","mild"]},
+  {id:"ripped_jeans",cat:"秋冬·下装",name:"黑灰破洞牛仔裤",img:"photos/32_ripped_jeans.jpg",styles:["cool","casual","retro"],weather:["mild","cool"]},
+  {id:"pearl_jeans",cat:"秋冬·下装",name:"黑色珍珠铆钉牛仔裤",img:"photos/34_black_pearl_jeans.jpg",styles:["cool","retro","fairy"],weather:["mild","cool"]},
+  {id:"navy_straight",cat:"秋冬·下装",name:"深蓝直筒牛仔裤(厚)",img:"photos/35_navy_straight_jeans.jpg",styles:["college","casual","retro"],weather:["mild","cool"]},
+  {id:"white_wide",cat:"秋冬·下装",name:"白色宽腿牛仔裤",img:"photos/36_white_wide_jeans.jpg",styles:["fairy","casual","fresh"],weather:["mild","cool"]},
+  {id:"black_sweatpants",cat:"秋冬·下装",name:"黑色宽腿运动裤",img:"photos/37_black_sweatpants.jpg",styles:["casual","sporty","cool"],weather:["mild","cool"]},
+  {id:"grey_wide",cat:"秋冬·下装",name:"浅灰蓝宽腿牛仔裤",img:"photos/38_grey_wide_jeans.jpg",styles:["casual","fresh","college"],weather:["mild","cool"]},
+  {id:"white_turtle",cat:"秋冬·打底",name:"米白高领打底衫",img:"photos/39_white_turtleneck.jpg",styles:["fairy","casual"],weather:["cool"]},
+  {id:"camel_turtle",cat:"秋冬·打底",name:"驼色高领打底衫",img:"photos/40_camel_turtleneck.jpg",styles:["retro","college"],weather:["cool"]},
+  {id:"yellow_mock",cat:"秋冬·打底",name:"浅黄半高领上衣",img:"photos/41_yellow_mockneck.jpg",styles:["fresh","fairy","retro"],weather:["mild","cool"]},
+  {id:"white_uniqlo",cat:"秋冬·打底",name:"白色Uniqlo打底",img:"photos/42_white_uniqlo_top.jpg",styles:["casual","college","fairy"],weather:["mild","cool"]},
+  {id:"black_long",cat:"秋冬·打底",name:"黑色圆领长袖打底",img:"photos/43_black_longsleeve.jpg",styles:["casual","cool"],weather:["mild","cool"]},
+  {id:"grey_sweater",cat:"秋冬·毛衣",name:"灰色刺绣针织毛衣",img:"photos/44_grey_sweater.jpg",styles:["retro","casual","college"],weather:["cool"]},
+  {id:"brick_turtle",cat:"秋冬·毛衣",name:"砖橘高领毛衣",img:"photos/45_brick_turtleneck.jpg",styles:["retro","fairy"],weather:["cool"]},
+  {id:"oat_sweater",cat:"秋冬·毛衣",name:"燕麦流苏毛衣",img:"photos/46_oat_fringe_sweater.jpg",styles:["retro","casual","fairy"],weather:["cool"]},
+  {id:"polo_sweater",cat:"秋冬·毛衣",name:"米白Polo麻花毛衣",img:"photos/47_cream_polo_sweater.jpg",styles:["college","fresh","fairy"],weather:["mild","cool"]},
+  {id:"purple_sweater",cat:"秋冬·毛衣",name:"浅紫毛绒条纹毛衣",img:"photos/48_purple_fuzzy_sweater.jpg",styles:["fairy"],weather:["cool"]},
+  {id:"stripe_cardigan",cat:"秋冬·开衫",name:"彩色条纹V领开衫",img:"photos/49_colorful_cardigan.jpg",styles:["fresh","retro"],weather:["mild","cool"]},
+  {id:"knit_vest",cat:"秋冬·马甲",name:"米白针织马甲",img:"photos/50_cream_knit_vest.jpg",styles:["college","casual"],weather:["mild","cool"]},
+  {id:"teddy_jacket",cat:"秋冬·外套",name:"玫粉泰迪绒外套",img:"photos/51_pink_teddy_jacket.jpg",styles:["fairy"],weather:["cool"]},
+  {id:"black_coat",cat:"秋冬·外套",name:"黑色Mango风衣开衫",img:"photos/52_black_longcoat.jpg",styles:["cool","retro"],weather:["mild","cool"]},
+  {id:"fur_coat",cat:"秋冬·外套",name:"卡其毛领大衣",img:"photos/53_khaki_fur_coat.jpg",styles:["fairy","retro"],weather:["cool"]},
+  {id:"shearling_vest",cat:"秋冬·外套",name:"卡其翻毛马甲",img:"photos/54_khaki_shearling_vest.jpg",styles:["retro","casual","college"],weather:["mild","cool"]},
+  {id:"pink_fur",cat:"秋冬·外套",name:"粉色仿皮草外套",img:"photos/55_pink_faux_fur.jpg",styles:["fairy"],weather:["cool"]},
+  {id:"puffer",cat:"秋冬·外套",name:"黑色羽绒服",img:"photos/56_black_puffer.jpg",styles:["casual","sporty","cool"],weather:["cool"]},
+  {id:"plaid_scarf",cat:"配件·围巾",name:"卡其格纹围巾",img:"photos/57_khaki_plaid_scarf.jpg",styles:["retro","college"],weather:["mild","cool"]},
+  {id:"red_scarf",cat:"配件·围巾",name:"红棕双面围巾",img:"photos/58_red_brown_scarf.jpg",styles:["retro"],weather:["cool"]},
+  {id:"fleece_top",cat:"秋冬·上衣",name:"米白抓绒立领上衣",img:"photos/59_white_fleece_top.jpg",styles:["casual","fairy","sporty"],weather:["mild","cool"]},
+  {id:"flare_pants",cat:"其他·下装",name:"深蓝灰喇叭瑜伽裤",img:"photos/60_navy_flare_pants.jpg",styles:["sporty","casual"],weather:["mild","cool"]},
+  {id:"pink_nike",cat:"鞋子",name:"裸粉Nike Air Max 97",img:"photos/61_pink_nike_air97.jpg",styles:["casual","sporty","fairy","fresh"],weather:["hot","warm","mild","cool"]},
+  {id:"white_adidas",cat:"鞋子",name:"米白Adidas老爹鞋",img:"photos/62_white_adidas.jpg",styles:["casual","fresh","college"],weather:["hot","warm","mild","cool"]},
+  {id:"chelsea_boots",cat:"鞋子",name:"黑色切尔西短靴",img:"photos/63_black_chelsea_boots.jpg",styles:["cool","retro","college"],weather:["mild","cool"]},
+  {id:"loafers",cat:"鞋子",name:"黑色Wittner乐福鞋",img:"photos/64_black_loafers.jpg",styles:["college","retro"],weather:["warm","mild","cool"]},
+];
+
+const SC={
+  "仙气温柔":"s-fairy","复古质感":"s-retro","清新活力":"s-fresh",
+  "休闲随性":"s-casual","学院复古":"s-college","保暖实用":"s-sporty",
+  "清凉基础":"s-casual","活力运动":"s-sporty","舒适随性":"s-casual",
+  "慵懒居家":"s-casual","温暖慵懒":"s-casual","舒适居家":"s-casual",
+};
+
+const O={
+  "hot-home":[
+    {title:"清凉基础",style:"清凉基础",items:["white_vest","grey_shorts"],tip:"最清凉，不用想太多"},
+    {title:"活力运动",style:"活力运动",items:["coffee_crop","black_shorts"],tip:"运动感，简洁利落"},
+    {title:"清凉基础",style:"清凉基础",items:["blue_vest","black_shorts"],tip:"浅蓝小背心+黑短裤，居家也清爽"},
+  ],
+  "hot-out":[
+    {title:"清新活力",style:"清新活力",items:["superdry","floral_pants","white_adidas"],tip:"浅绿配碎花，颜色清爽好拍照"},
+    {title:"复古质感",style:"复古质感",items:["pink_blouse","green_pants","white_adidas"],tip:"裸粉+浅绿柔和温柔"},
+    {title:"仙气温柔",style:"仙气温柔",items:["white_dress","lace_short","white_adidas"],tip:"白裙叠白蕾丝开衫，全白柔光感"},
+    {title:"复古质感",style:"复古质感",items:["floral_dress","white_adidas"],tip:"紫灰碎花裙一件搞定，老爹鞋中和甜度"},
+    {title:"学院复古",style:"学院复古",items:["red_plaid","black_shorts","white_adidas"],tip:"格纹衬衫+黑短裤，校园风轻盈"},
+    {title:"清新活力",style:"清新活力",items:["blue_vest","floral_pants","white_adidas"],tip:"浅蓝背心+碎花裤，色调统一好上镜"},
+  ],
+  "hot-outdoor":[
+    {title:"保暖实用",style:"保暖实用",items:["blue_uv","coffee_crop","black_shorts","white_adidas"],tip:"防晒衣必备，珀斯阳光猛"},
+    {title:"清新活力",style:"清新活力",items:["grey_uv","blue_vest","floral_pants","white_adidas"],tip:"防晒衣+浅蓝背心+碎花裤，户外既防晒又上镜"},
+  ],
+  "warm-home":[
+    {title:"舒适随性",style:"舒适随性",items:["superdry","grey_shorts"],tip:"T恤+短裤，舒服自在"},
+    {title:"慵懒居家",style:"慵懒居家",items:["black_tee","black_shorts"],tip:"全黑简洁，最省心"},
+    {title:"清凉基础",style:"清凉基础",items:["blue_vest","grey_shorts"],tip:"浅蓝细肩带+灰短裤，温柔慵懒"},
+  ],
+  "warm-out":[
+    {title:"仙气温柔",style:"仙气温柔",items:["brick_dress","chelsea_boots"],tip:"砖红长裙一件搞定，配短靴有气场"},
+    {title:"复古质感",style:"复古质感",items:["blue_shirt","green_pants","loafers"],tip:"缎面衬衫质感好，配阔腿裤+乐福鞋显高"},
+    {title:"清新活力",style:"清新活力",items:["superdry","floral_pants","blue_uv","white_adidas"],tip:"防晒衣防晒也好看"},
+    {title:"仙气温柔",style:"仙气温柔",items:["white_dress","lace_short","white_adidas"],tip:"白裙配白蕾丝开衫，温柔到底"},
+    {title:"仙气温柔",style:"仙气温柔",items:["floral_dress","lace_short","white_adidas"],tip:"紫灰碎花裙叠白蕾丝开衫，文艺感"},
+    {title:"学院复古",style:"学院复古",items:["brown_shirt","green_pants","loafers"],tip:"棕衬衫+浅绿阔腿裤+乐福鞋，复古学院"},
+    {title:"学院复古",style:"学院复古",items:["red_plaid","white_vest","floral_pants","white_adidas"],tip:"格纹衬衫敞开当外搭，碎花裤呼应红色"},
+  ],
+  "warm-outdoor":[
+    {title:"保暖实用",style:"保暖实用",items:["grey_uv","black_tee","black_shorts","white_adidas"],tip:"有拉链防晒衣，随时穿脱"},
+  ],
+  "mild-home":[
+    {title:"慵懒居家",style:"慵懒居家",items:["purple_hoodie","black_sweatpants"],tip:"CK卫衣超软，温差大在家最舒服"},
+    {title:"舒适随性",style:"舒适随性",items:["green_hoodie","grey_shorts"],tip:"卫衣+短裤，早晚拉上帽子"},
+    {title:"温暖慵懒",style:"温暖慵懒",items:["purple_sweater","rose_pants"],tip:"浅紫毛绒+玫红运动裤，家里暖暖的"},
+    {title:"舒适随性",style:"舒适随性",items:["polo_sweater","grey_shorts"],tip:"麻花毛衣配短裤，温差大早晚刚好"},
+    {title:"温暖慵懒",style:"温暖慵懒",items:["fleece_top","rose_pants"],tip:"抓绒上衣+玫红运动裤，软糯放松"},
+  ],
+  "mild-out":[
+    {title:"清新活力",style:"清新活力",items:["polo_sweater","white_cargo","white_adidas"],tip:"Polo麻花毛衣配白cargo裤干净利落"},
+    {title:"休闲随性",style:"休闲随性",items:["varsity","white_vest","grey_wide","pink_nike"],tip:"棒球夹克最百搭，浅灰蓝牛仔裤+裸粉Nike很活力"},
+    {title:"学院复古",style:"学院复古",items:["white_blazer","white_uniqlo","navy_straight","loafers"],tip:"奶白西装+白打底+深蓝牛仔，干净的学院感"},
+    {title:"休闲随性",style:"休闲随性",items:["knit_long","white_vest","grey_wide","white_adidas"],tip:"卡其长开衫+浅灰蓝牛仔，老钱风轻松版"},
+    {title:"复古质感",style:"复古质感",items:["red_cardigan","white_uniqlo","white_wide","pink_nike"],tip:"红色皇冠开衫亮眼，全白下装+裸粉鞋平衡"},
+    {title:"学院复古",style:"学院复古",items:["knit_vest","white_uniqlo","white_cargo","loafers"],tip:"针织马甲叠白打底，cargo裤减龄"},
+    {title:"复古质感",style:"复古质感",items:["brown_shirt","white_cargo","loafers"],tip:"棕衬衫+米白cargo+乐福鞋，奶咖配色"},
+    {title:"复古质感",style:"复古质感",items:["black_coat","black_tee","ripped_jeans","chelsea_boots"],tip:"黑长开衫+破洞牛仔，全黑酷感"},
+  ],
+  "mild-outdoor":[
+    {title:"保暖实用",style:"保暖实用",items:["puffer","black_tee","flare_pants","white_adidas"],tip:"羽绒服配喇叭瑜伽裤，保暖又活动方便"},
+    {title:"复古质感",style:"复古质感",items:["shearling_vest","camel_turtle","navy_straight","chelsea_boots"],tip:"翻毛马甲复古感强，驼色打底超配"},
+    {title:"学院复古",style:"学院复古",items:["knit_vest","brown_shirt","white_cargo","white_adidas"],tip:"马甲+棕衬衫+米白cargo，户外很有层次"},
+    {title:"仙气温柔",style:"仙气温柔",items:["knit_long","white_turtle","white_wide","white_adidas"],tip:"卡其长开衫+全白内搭，柔光感"},
+  ],
+  "cool-home":[
+    {title:"温暖慵懒",style:"温暖慵懒",items:["oat_sweater","rose_pants"],tip:"燕麦流苏毛衣配玫红运动裤，在家很治愈"},
+    {title:"舒适居家",style:"舒适居家",items:["fleece_top","black_sweatpants"],tip:"抓绒上衣保暖，黑色运动裤百搭"},
+    {title:"温暖慵懒",style:"温暖慵懒",items:["purple_sweater","black_sweatpants"],tip:"浅紫毛绒+黑色运动裤，软软的"},
+    {title:"舒适居家",style:"舒适居家",items:["polo_sweater","rose_pants"],tip:"麻花毛衣+玫红运动裤，颜色明亮提气"},
+  ],
+  "cool-out":[
+    {title:"仙气温柔",style:"仙气温柔",items:["pink_fur","white_turtle","white_wide","white_adidas"],tip:"粉色仿皮草一穿就仙气，白色系干净"},
+    {title:"复古质感",style:"复古质感",items:["black_leather","black_long","pearl_jeans","chelsea_boots"],tip:"全黑复古有气场，珍珠铆钉牛仔裤是亮点"},
+    {title:"清新活力",style:"清新活力",items:["stripe_cardigan","yellow_mock","grey_wide","pink_nike"],tip:"彩色开衫+浅黄上衣，颜色跳脱好拍照"},
+    {title:"复古质感",style:"复古质感",items:["brick_turtle","white_wide","white_adidas"],tip:"砖橘高领+白宽腿，秋天最浓郁的颜色"},
+    {title:"仙气温柔",style:"仙气温柔",items:["teddy_jacket","polo_sweater","pearl_jeans","chelsea_boots"],tip:"玫粉泰迪绒+米白毛衣，软糯温柔"},
+    {title:"学院复古",style:"学院复古",items:["white_blazer","brick_turtle","navy_straight","loafers"],tip:"奶白西装+砖橘高领，老钱学院风"},
+    {title:"复古质感",style:"复古质感",items:["black_coat","purple_sweater","white_wide","white_adidas"],tip:"黑长开衫+浅紫毛衣，柔软中带利落"},
+    {title:"复古质感",style:"复古质感",items:["red_cardigan","white_turtle","ripped_jeans","chelsea_boots"],tip:"红色皇冠开衫+破洞牛仔，复古中带反叛"},
+  ],
+  "cool-outdoor":[
+    {title:"保暖实用",style:"保暖实用",items:["puffer","grey_sweater","navy_straight","chelsea_boots"],tip:"羽绒服+刺绣毛衣，层次丰富又保暖"},
+    {title:"复古质感",style:"复古质感",items:["fur_coat","camel_turtle","ripped_jeans","chelsea_boots"],tip:"毛领大衣最有冬天感，破洞牛仔裤有反差"},
+    {title:"复古质感",style:"复古质感",items:["puffer","brick_turtle","pearl_jeans","red_scarf","chelsea_boots"],tip:"砖橘+红棕围巾暖色调，冬天里的暖光"},
+    {title:"仙气温柔",style:"仙气温柔",items:["fur_coat","white_uniqlo","grey_wide","plaid_scarf","chelsea_boots"],tip:"毛领大衣+格纹围巾，柔软的冬日感"},
+    {title:"仙气温柔",style:"仙气温柔",items:["teddy_jacket","white_turtle","white_wide","white_adidas"],tip:"全白系+玫粉泰迪绒，干净又少女"},
+    {title:"保暖实用",style:"保暖实用",items:["puffer","purple_sweater","black_sweatpants","plaid_scarf"],tip:"羽绒服+毛绒毛衣+格纹围巾，最实用的保暖组"},
+  ],
+};
+
+const MOODS=[
+  {key:"any",label:"随机"},
+  {key:"fairy",label:"温柔",cn:"仙气温柔"},
+  {key:"retro",label:"复古",cn:"复古质感"},
+  {key:"fresh",label:"清新",cn:"清新活力"},
+  {key:"casual",label:"休闲",cn:"休闲随性"},
+  {key:"college",label:"学院",cn:"学院复古"},
+  {key:"cool",label:"酷感",cn:"复古质感"},
+  {key:"sporty",label:"运动",cn:"活力运动"},
+];
+const STYLE_CN={fairy:"仙气温柔",retro:"复古质感",fresh:"清新活力",casual:"休闲随性",college:"学院复古",cool:"复古质感",sporty:"活力运动"};
+
+const state={weather:null,scene:null,mood:"any",anchor:null,deletedIds:new Set(),favorites:[],lastGen:null};
+function loadState(){try{const s=localStorage.getItem("sw_v4");if(s){const d=JSON.parse(s);if(d.deletedIds)state.deletedIds=new Set(d.deletedIds);if(Array.isArray(d.favorites))state.favorites=d.favorites;}else{const old=localStorage.getItem("sw_v3");if(old){const d=JSON.parse(old);if(d.deletedIds)state.deletedIds=new Set(d.deletedIds);}}}catch(e){}}
+function saveState(){try{localStorage.setItem("sw_v4",JSON.stringify({deletedIds:[...state.deletedIds],favorites:state.favorites}));}catch(e){}}
+function gi(id){return W.find(w=>w.id===id);}
+function isDel(id){return state.deletedIds.has(id);}
+function role(cat){
+  if(cat.includes("背心")||cat.includes("打底")||cat.includes("上衣")||cat.includes("T恤")||cat.includes("衬衫")||cat.includes("毛衣")||cat.includes("卫衣"))return"上身";
+  if(cat.includes("下装"))return"下身";
+  if(cat.includes("连衣裙"))return"裙";
+  if(cat.includes("外套")||cat.includes("夹克")||cat.includes("开衫")||cat.includes("马甲"))return"外搭";
+  if(cat.includes("鞋"))return"鞋";
+  if(cat.includes("围巾"))return"配件";
+  return"";
+}
+function imgEl(item){
+  if(item&&item.img)return`<div class="iw"><img src="${item.img}" alt="${item.name}"/></div>`;
+  return`<div class="iw"><div class="ph">暂无图片</div></div>`;
+}
+const d=new Date();
+const days=["日","一","二","三","四","五","六"];
+document.getElementById("dl").textContent=`${d.getMonth()+1}月${d.getDate()}日 · 周${days[d.getDay()]}`;
+
+document.querySelectorAll(".tag.weather").forEach(el=>{
+  el.addEventListener("click",()=>{
+    document.querySelectorAll(".tag.weather").forEach(t=>t.classList.remove("active"));
+    state.weather=state.weather===el.dataset.val?null:el.dataset.val;
+    if(state.weather)el.classList.add("active");
+    render();
+  });
+});
+document.querySelectorAll(".tag.scene").forEach(el=>{
+  el.addEventListener("click",()=>{
+    document.querySelectorAll(".tag.scene").forEach(t=>t.classList.remove("active"));
+    state.scene=state.scene===el.dataset.val?null:el.dataset.val;
+    if(state.scene)el.classList.add("active");
+    render();
+  });
+});
+function resetAll(){
+  state.weather=null;state.scene=null;
+  document.querySelectorAll(".tag").forEach(t=>t.classList.remove("active"));
+  render();
+}
+const WEATHER_CN={hot:"热",warm:"暖",mild:"温差大",cool:"凉"};
+const SCENE_CN={home:"在家",out:"见人",outdoor:"户外"};
+
+function favMatchesCurrent(f){
+  if(!f.items.every(id=>!isDel(id)&&gi(id)))return false;
+  if(f.weather&&f.scene)return f.weather===state.weather&&f.scene===state.scene;
+  const items=f.items.map(gi);
+  return items.every(it=>it.weather.includes(state.weather));
+}
+
+function render(){
+  const area=document.getElementById("res");
+  if(!state.weather||!state.scene){area.innerHTML='<div class="empty">选择天气和场合<br>看看今天穿什么</div>';return;}
+  const key=state.weather+"-"+state.scene;
+  const outfits=O[key]||[];
+  const valid=outfits.filter(o=>o.items.every(id=>!isDel(id)));
+  const matchingFavs=state.favorites.map((f,idx)=>({...f,idx})).filter(favMatchesCurrent);
+  if(!valid.length&&!matchingFavs.length){
+    area.innerHTML='<div class="empty">这个组合暂时没有方案<br>试试 🎲 抽一套搭配</div>';
+    return;
+  }
+  const favsHtml=matchingFavs.map(f=>{
+    const items=f.items.map(gi);
+    return outfitCard(items,{cls:"fav",style:f.style,title:f.style,isFav:true,favIdx:f.idx,showButtons:true});
+  }).join("");
+  const outfitsHtml=valid.map(o=>`
+    <div class="oc">
+      <div class="oh">
+        <div class="ot">${o.title}</div>
+        <span class="sb ${SC[o.style]||''}">${o.style}</span>
+      </div>
+      <div class="oi">
+        ${o.items.map(id=>{const item=gi(id);return`<div class="item">${imgEl(item)}<span class="ir">${item?role(item.cat):""}</span><span class="in">${item?item.name:id}</span></div>`;}).join("")}
+      </div>
+      ${o.tip?`<div class="tip">${o.tip}</div>`:""}
+    </div>
+  `).join("");
+  area.innerHTML=favsHtml+outfitsHtml;
+}
+function toggleMgmt(){
+  const b=document.getElementById("mb");
+  const open=b.classList.toggle("open");
+  document.getElementById("ma").textContent=open?"▾":"▸";
+  if(open)renderMgmt();
+}
+function renderMgmt(){
+  const b=document.getElementById("mb");
+  const cats=[...new Set(W.map(w=>w.cat))];
+  b.innerHTML=cats.map(cat=>{
+    const items=W.filter(w=>w.cat===cat);
+    return`<div class="mc">${cat}</div>`+items.map(w=>{
+      const del=isDel(w.id);
+      return`<div class="mi">
+        <div class="mig">${w.img?`<img src="${w.img}" alt="${w.name}"/>`:'<div style="font-size:.5rem;color:#aaa;text-align:center">无图</div>'}</div>
+        <span class="mn ${del?'del':''}">${w.name}</span>
+        ${del?`<button class="rb2" onclick="restoreItem('${w.id}')">恢复</button>`:`<button class="db" onclick="deleteItem('${w.id}')">移除</button>`}
+      </div>`;
+    }).join("");
+  }).join("");
+}
+function deleteItem(id){state.deletedIds.add(id);if(state.anchor===id)state.anchor=null;saveState();renderMgmt();render();renderFavs();renderAnchor();}
+function restoreItem(id){state.deletedIds.delete(id);saveState();renderMgmt();render();renderFavs();renderAnchor();}
+
+function renderMoods(){
+  const c=document.getElementById("moodChips");
+  c.innerHTML=MOODS.map(m=>`<span class="tag mood${state.mood===m.key?' active':''}" data-val="${m.key}">${m.label}</span>`).join("");
+  c.querySelectorAll(".tag.mood").forEach(el=>{
+    el.addEventListener("click",()=>{
+      state.mood=el.dataset.val;
+      renderMoods();
+    });
+  });
+}
+
+function pickCompat(pool,picked){
+  if(!pool.length)return null;
+  if(!picked.length)return pool[Math.floor(Math.random()*pool.length)];
+  const scored=pool.map(item=>{
+    let s=0;
+    picked.forEach(p=>p.styles.forEach(st=>{if(item.styles.includes(st))s+=2;}));
+    return{item,s:s+Math.random()};
+  });
+  scored.sort((a,b)=>b.s-a.s);
+  const top=scored.slice(0,Math.max(1,Math.ceil(scored.length*0.4)));
+  return top[Math.floor(Math.random()*top.length)].item;
+}
+
+const ROLE_ORDER={"裙":0,"上身":1,"下身":2,"外搭":3,"鞋":4,"配件":5};
+
+function generateOutfit(){
+  const w=state.weather,sc=state.scene,m=state.mood;
+  if(!w||!sc)return null;
+  const anchor=state.anchor?gi(state.anchor):null;
+  const aRole=anchor?role(anchor.cat):null;
+  const aIsDress=anchor&&anchor.cat.includes("连衣裙");
+  const fits=it=>!isDel(it.id)&&it.id!==(anchor&&anchor.id)&&it.weather.includes(w)&&(m==="any"||it.styles.includes(m));
+  const picked=[];
+  if(anchor)picked.push(anchor);
+  let needTopBottom=true;
+  if(aIsDress)needTopBottom=false;
+  if(aRole==="上身"){
+    const bottoms=W.filter(it=>fits(it)&&role(it.cat)==="下身");
+    if(!bottoms.length)return null;
+    picked.push(pickCompat(bottoms,picked));
+    needTopBottom=false;
+  }else if(aRole==="下身"){
+    const tops=W.filter(it=>fits(it)&&role(it.cat)==="上身");
+    if(!tops.length)return null;
+    picked.push(pickCompat(tops,picked));
+    needTopBottom=false;
+  }
+  if(needTopBottom){
+    const dresses=W.filter(it=>fits(it)&&it.cat.includes("连衣裙"));
+    const tops=W.filter(it=>fits(it)&&role(it.cat)==="上身");
+    const bottoms=W.filter(it=>fits(it)&&role(it.cat)==="下身");
+    const useDress=dresses.length>0&&(tops.length===0||bottoms.length===0||Math.random()<0.35);
+    if(useDress){
+      picked.push(pickCompat(dresses,picked));
+    }else{
+      if(!tops.length||!bottoms.length)return null;
+      picked.push(pickCompat(tops,picked));
+      picked.push(pickCompat(bottoms,picked));
+    }
+  }
+  const wantOuter=w==="cool"||(w==="mild"&&Math.random()<0.65)||(w==="hot"&&sc==="outdoor");
+  if(aRole!=="外搭"&&wantOuter){
+    const outers=W.filter(it=>fits(it)&&role(it.cat)==="外搭");
+    if(outers.length)picked.push(pickCompat(outers,picked));
+  }
+  if(aRole!=="鞋"){
+    let shoes=W.filter(it=>!isDel(it.id)&&role(it.cat)==="鞋"&&it.weather.includes(w));
+    const moodShoes=m!=="any"?shoes.filter(it=>it.styles.includes(m)):shoes;
+    if(moodShoes.length)shoes=moodShoes;
+    if(shoes.length)picked.push(pickCompat(shoes,picked));
+  }
+  if(aRole!=="配件"&&w==="cool"&&sc==="outdoor"&&Math.random()<0.6){
+    const scarves=W.filter(it=>!isDel(it.id)&&role(it.cat)==="配件");
+    if(scarves.length)picked.push(pickCompat(scarves,picked));
+  }
+  const clean=picked.filter(Boolean);
+  clean.sort((a,b)=>(ROLE_ORDER[role(a.cat)]??99)-(ROLE_ORDER[role(b.cat)]??99));
+  return clean;
+}
+
+function dominantStyle(items){
+  const cnt={};
+  items.forEach(it=>it.styles.forEach(s=>cnt[s]=(cnt[s]||0)+1));
+  const arr=Object.entries(cnt).sort((a,b)=>b[1]-a[1]);
+  return arr[0]?arr[0][0]:null;
+}
+
+function outfitCard(items,opts){
+  opts=opts||{};
+  const ds=dominantStyle(items);
+  const styleCn=opts.style||(ds?STYLE_CN[ds]:"随性搭配");
+  const titleCn=opts.title||styleCn;
+  const cls=opts.cls||"";
+  const isFav=opts.isFav||false;
+  const anchorId=opts.anchorId||null;
+  const ids=items.map(i=>i.id);
+  const favIdx=state.favorites.findIndex(f=>f.items.length===ids.length&&f.items.every((x,i)=>x===ids[i]));
+  const isSaved=favIdx>=0;
+  const heartLabel=isSaved?"已收藏":"❤ 收藏";
+  const heartCls=isSaved?"heart saved":"heart";
+  const buttons=opts.showButtons?`<div class="ob">
+    ${isFav?`<button onclick="removeFav(${opts.favIdx})">移除</button>`:`<button class="${heartCls}" onclick="toggleFav(this,'${ids.join(",")}','${styleCn}')">${heartLabel}</button>`}
+    ${!isFav?`<button onclick="generateAndShow()">🎲 再来一套</button>`:""}
+  </div>`:"";
+  return`<div class="oc ${cls}">
+    <div class="oh">
+      <div class="ot">${titleCn}</div>
+      <span class="sb ${SC[styleCn]||'s-casual'}">${styleCn}</span>
+    </div>
+    <div class="oi">
+      ${items.map(item=>`<div class="item${anchorId&&item.id===anchorId?' anchor':''}">${imgEl(item)}<span class="ir">${role(item.cat)}</span><span class="in">${item.name}</span></div>`).join("")}
+    </div>
+    ${buttons}
+  </div>`;
+}
+
+function renderAnchor(){
+  const sel=document.getElementById("anchorSelect");
+  const cats=[...new Set(W.map(w=>w.cat))];
+  const groups=cats.map(cat=>{
+    const items=W.filter(w=>w.cat===cat&&!isDel(w.id));
+    if(!items.length)return"";
+    return`<optgroup label="${cat}">`+items.map(w=>`<option value="${w.id}">${w.name}</option>`).join("")+`</optgroup>`;
+  }).filter(Boolean).join("");
+  sel.innerHTML=`<option value="">不指定</option>`+groups;
+  sel.value=state.anchor||"";
+  const info=document.getElementById("anchorInfo");
+  if(state.anchor){
+    const item=gi(state.anchor);
+    info.innerHTML=`<span>📍 必穿：${item?item.name:''}</span><button onclick="setAnchor('')">✕ 清除</button>`;
+    info.classList.add("show");
+  }else{
+    info.classList.remove("show");
+    info.innerHTML="";
+  }
+}
+
+function setAnchor(id){
+  state.anchor=id||null;
+  renderAnchor();
+}
+
+function generateAndShow(){
+  if(!state.weather||!state.scene){
+    document.getElementById("genResult").innerHTML='<div class="empty" style="padding:1rem 0">先在上面选择天气和场合</div>';
+    return;
+  }
+  const btn=document.getElementById("genBtn");
+  btn.classList.add("spin");
+  setTimeout(()=>btn.classList.remove("spin"),200);
+  let items=null;
+  for(let i=0;i<5&&!items;i++)items=generateOutfit();
+  const area=document.getElementById("genResult");
+  if(!items||!items.length){
+    area.innerHTML='<div class="empty" style="padding:1rem 0">没有匹配的衣服了，换个心情或场合试试</div>';
+    return;
+  }
+  state.lastGen=items.map(i=>i.id);
+  area.innerHTML=outfitCard(items,{cls:"gen",showButtons:true,anchorId:state.anchor});
+}
+
+function toggleFav(btn,idsStr,styleCn){
+  const ids=idsStr.split(",");
+  const idx=state.favorites.findIndex(f=>f.items.length===ids.length&&f.items.every((x,i)=>x===ids[i]));
+  if(idx>=0){
+    state.favorites.splice(idx,1);
+  }else{
+    state.favorites.unshift({items:ids,style:styleCn,weather:state.weather,scene:state.scene,ts:Date.now()});
+  }
+  saveState();
+  render();
+  renderFavs();
+  if(state.lastGen){
+    const items=state.lastGen.map(gi).filter(Boolean);
+    document.getElementById("genResult").innerHTML=outfitCard(items,{cls:"gen",showButtons:true,anchorId:state.anchor});
+  }
+}
+
+function removeFav(idx){
+  state.favorites.splice(idx,1);
+  saveState();
+  render();
+  renderFavs();
+  if(state.lastGen){
+    const items=state.lastGen.map(gi).filter(Boolean);
+    document.getElementById("genResult").innerHTML=outfitCard(items,{cls:"gen",showButtons:true,anchorId:state.anchor});
+  }
+}
+
+function toggleFavPanel(){
+  const b=document.getElementById("fb");
+  const open=b.classList.toggle("open");
+  document.getElementById("fa").textContent=open?"▾":"▸";
+  if(open)renderFavList();
+}
+
+function renderFavList(){
+  const b=document.getElementById("fb");
+  const valid=state.favorites.map((f,i)=>({...f,idx:i})).filter(f=>f.items.every(id=>!isDel(id)&&gi(id)));
+  if(!valid.length){b.innerHTML='<div class="empty" style="padding:1rem 0">还没有收藏</div>';return;}
+  const groups={};
+  valid.forEach(f=>{
+    const k=f.weather&&f.scene?`${f.weather}-${f.scene}`:"_legacy";
+    (groups[k]=groups[k]||[]).push(f);
+  });
+  const orderedKeys=Object.keys(groups).sort();
+  b.innerHTML=orderedKeys.map(k=>{
+    const label=k==="_legacy"?"未分类":`${WEATHER_CN[k.split("-")[0]]||""} · ${SCENE_CN[k.split("-")[1]]||""}`;
+    const cards=groups[k].map(f=>{
+      const items=f.items.map(gi);
+      return outfitCard(items,{cls:"fav",style:f.style,title:f.style,isFav:true,favIdx:f.idx,showButtons:true});
+    }).join("");
+    return`<div class="mc">${label}</div>${cards}`;
+  }).join("");
+}
+
+function renderFavs(){
+  const panel=document.getElementById("favPanel");
+  const valid=state.favorites.filter(f=>f.items.every(id=>!isDel(id)&&gi(id)));
+  if(!valid.length){panel.style.display="none";return;}
+  panel.style.display="block";
+  document.getElementById("favTitle").textContent=`全部收藏 (${valid.length})`;
+  if(document.getElementById("fb").classList.contains("open"))renderFavList();
+}
+
+loadState();
+renderMoods();
+renderAnchor();
+render();
+renderFavs();
+</script>
+</body>
+</html>

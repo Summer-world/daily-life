@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Summer 的厨房</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7F5F0;--surface:#FFFFFF;--border:#E8E4DC;--border-dark:#C8C2B4;
+    --text-primary:#1A1814;--text-secondary:#6B6560;--text-hint:#A09A92;
+    --accent:#2D5A3D;--accent-light:#EAF2EC;--accent-mid:#4A8C60;
+    --warm:#8B4513;--warm-light:#F5EDE6;
+    --info:#1A3A5C;--info-light:#E6EEF6;
+    --amber:#7A4F00;--amber-light:#FDF3E3;
+    --purple:#4A1A6B;--purple-light:#F3EAF9;
+    --rose:#7A1A3A;--rose-light:#FDE8EF;
+    --cozy:#7A3A00;--cozy-light:#FDF0E3;
+    --short:#C0492B;--short-light:#FDF0EE;--short-mid:#E8B5A8;
+    --rotate:#8B6914;--rotate-light:#FBF6E5;--rotate-mid:#D9C588;
+    --shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 12px rgba(0,0,0,0.04);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--text-primary);min-height:100vh;}
+  header{background:var(--surface);border-bottom:1px solid var(--border);padding:1.25rem 2rem;display:flex;align-items:baseline;gap:1rem;}
+  header h1{font-family:'Noto Serif SC',serif;font-size:1.25rem;font-weight:600;letter-spacing:.02em;}
+  header .date{font-size:.78rem;color:var(--text-hint);font-weight:300;}
+  .main{max-width:820px;margin:0 auto;padding:1.75rem 1.5rem 3rem;}
+  .sh{font-family:'Noto Serif SC',serif;font-size:.85rem;font-weight:600;color:var(--text-secondary);letter-spacing:.05em;margin-bottom:.75rem;display:flex;align-items:center;gap:8px;}
+  .sh::after{content:'';flex:1;height:1px;background:var(--border);}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem;box-shadow:var(--shadow);}
+  .fl{font-size:.68rem;font-weight:500;color:var(--text-hint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.7rem;}
+  .tr{display:flex;flex-wrap:wrap;gap:8px;}
+  .tag{padding:6px 15px;border-radius:99px;font-size:.8rem;cursor:pointer;border:1px solid var(--border-dark);background:var(--surface);color:var(--text-secondary);transition:all .15s;user-select:none;line-height:1;font-family:inherit;}
+  .tag:hover{background:var(--bg);color:var(--text-primary);}
+  .tag.cuisine.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .tag.method.active{background:var(--cozy);color:#fff;border-color:var(--cozy);}
+  .divider{height:1px;background:var(--border);margin:1.5rem 0;}
+  .rh{display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem;}
+  .rl{font-size:.68rem;font-weight:500;color:var(--text-hint);letter-spacing:.1em;text-transform:uppercase;}
+  .rc{font-size:.72rem;color:var(--text-hint);}
+  .rb{font-size:.72rem;color:var(--text-hint);background:none;border:none;cursor:pointer;font-family:inherit;text-decoration:underline;}
+  .rb:hover{color:var(--text-secondary);}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;}
+  .meal{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 15px;cursor:pointer;transition:all .15s;box-shadow:var(--shadow);}
+  .meal:hover{border-color:var(--accent-mid);transform:translateY(-1px);}
+  .meal.selected{border-color:var(--accent);background:var(--accent-light);}
+  .meal.takeout:hover{border-color:var(--purple);}
+  .meal.takeout.selected{border-color:var(--purple);background:var(--purple-light);}
+  .mn{font-family:'Noto Serif SC',serif;font-size:.92rem;font-weight:600;color:var(--text-primary);margin-bottom:4px;}
+  .ms{font-size:.74rem;color:var(--text-secondary);line-height:1.55;margin-bottom:9px;}
+  .badges{display:flex;flex-wrap:wrap;gap:4px;}
+  .b{font-size:.66rem;padding:2px 8px;border-radius:99px;line-height:1.6;}
+  .b.time{background:var(--bg);color:var(--text-hint);border:1px solid var(--border);}
+  .b.using{background:var(--warm-light);color:var(--warm);}
+  .b.takeout-tag{background:var(--purple-light);color:var(--purple);}
+  .empty{text-align:center;padding:2.5rem 0;color:var(--text-hint);font-size:.85rem;line-height:2;}
+  .selected-panel{background:var(--accent-light);border:1.5px solid var(--accent-mid);border-radius:12px;padding:1.1rem 1.4rem;margin-top:1rem;display:none;animation:slideIn .2s ease;}
+  .selected-panel.show{display:block;}
+  .selected-panel.takeout{background:var(--purple-light);border-color:var(--purple);}
+  @keyframes slideIn{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+  .pl{font-size:.68rem;font-weight:500;color:var(--accent-mid);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;}
+  .pn{font-family:'Noto Serif SC',serif;font-size:1.1rem;font-weight:600;color:var(--accent);margin-bottom:.35rem;}
+  .ps{font-size:.8rem;color:var(--text-secondary);line-height:1.6;margin-bottom:.9rem;}
+  .sel-item{display:flex;align-items:center;gap:10px;padding:.55rem 0;border-top:1px solid rgba(0,0,0,.06);}
+  .sel-item:first-child{border-top:none;}
+  .sel-item-text{flex:1;min-width:0;}
+  .sel-item-name{font-family:'Noto Serif SC',serif;font-size:.98rem;font-weight:600;color:var(--accent);}
+  .selected-panel.takeout .sel-item-name{color:var(--purple);}
+  .sel-item-sub{font-size:.74rem;color:var(--text-secondary);margin-top:3px;line-height:1.5;}
+  .sel-remove{background:none;border:none;color:var(--text-hint);cursor:pointer;font-size:1.05rem;padding:2px 8px;border-radius:6px;flex-shrink:0;}
+  .sel-remove:hover{color:#c0392b;background:rgba(192,73,43,.08);}
+  .btn{font-family:inherit;font-size:.78rem;padding:7px 16px;border-radius:99px;border:1px solid;cursor:pointer;transition:all .15s;background:transparent;color:var(--accent);border-color:var(--accent-mid);}
+  .btn:hover{background:var(--accent-light);}
+
+  /* 库存 */
+  .summary{display:flex;align-items:center;gap:1.5rem;font-size:.82rem;}
+  .summary .stat{display:flex;align-items:baseline;gap:6px;}
+  .summary .stat-num{font-size:1.2rem;font-weight:600;font-family:'Noto Serif SC',serif;}
+  .summary .short-num{color:var(--short);}
+  .summary .rotate-num{color:var(--rotate);}
+  .summary .stock-num{color:var(--accent);}
+  .summary .reset-btn{margin-left:auto;font-size:.72rem;color:var(--text-hint);background:none;border:none;cursor:pointer;font-family:inherit;text-decoration:underline;}
+  .summary .reset-btn:hover{color:var(--text-primary);}
+  .help{font-size:.74rem;color:var(--text-hint);line-height:1.7;margin-bottom:.9rem;padding:.65rem .9rem;background:var(--bg);border-radius:8px;}
+  .layer-section{margin-bottom:1.1rem;}
+  .layer-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;}
+  .layer-title{font-family:'Noto Serif SC',serif;font-weight:600;font-size:.95rem;}
+  .layer.short .layer-title{color:var(--short);}
+  .layer.rotate .layer-title{color:var(--rotate);}
+  .layer.stock .layer-title{color:var(--accent);}
+  .layer-count{font-size:.7rem;color:var(--text-hint);}
+  .gc{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.75rem 1rem;margin-bottom:.55rem;box-shadow:var(--shadow);}
+  .layer.short .gc{border-left:3px solid var(--short);}
+  .layer.rotate .gc{border-left:3px solid var(--rotate);}
+  .layer.stock .gc{border-left:3px solid var(--accent);}
+  .gn{font-size:.62rem;font-weight:500;color:var(--text-hint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.45rem;}
+  .ig{display:flex;flex-wrap:wrap;gap:5px;}
+  .chip{display:inline-flex;align-items:center;gap:4px;padding:5px 11px;border-radius:99px;font-size:.8rem;border:1px solid var(--border-dark);background:var(--surface);color:var(--text-primary);cursor:pointer;transition:all .15s;user-select:none;font-family:inherit;}
+  .chip:hover{transform:translateY(-1px);}
+  .layer.short .chip:not(.dep){border-color:var(--short-mid);background:var(--short-light);color:var(--short);}
+  .layer.rotate .chip:not(.dep){border-color:var(--rotate-mid);background:var(--rotate-light);color:var(--rotate);}
+  .layer.stock .chip{background:var(--accent-light);border-color:var(--accent-light);color:var(--accent);}
+  .chip.dep{background:#F4F2EE!important;color:var(--text-hint)!important;text-decoration:line-through;border-style:dashed!important;border-color:var(--border)!important;}
+  .chip.dep::after{content:" ↻";font-size:.68rem;text-decoration:none;display:inline-block;}
+  .chip.anchored{background:var(--info-light)!important;border-color:var(--info)!important;color:var(--info)!important;font-weight:600;box-shadow:0 0 0 2px var(--info-light);}
+  .chip.anchored::before{content:"📌 ";}
+  .dep-x{margin-left:5px;color:var(--text-hint);font-size:.7rem;cursor:pointer;line-height:1;padding:0 3px;opacity:.55;border-radius:99px;}
+  .dep-x:hover{opacity:1;background:#FEE;color:#c0392b;}
+  .del-x{margin-left:3px;color:var(--text-hint);font-size:.75rem;cursor:pointer;line-height:1;padding:0 2px;opacity:.5;}
+  .del-x:hover{opacity:1;color:#c0392b;}
+  .anchor-bar{margin-bottom:.85rem;background:var(--info-light);border:1px solid var(--info);padding:.65rem .9rem;border-radius:8px;font-size:.8rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:var(--info);}
+  .anchor-bar .at{background:#fff;padding:2px 10px;border-radius:99px;font-size:.75rem;color:var(--info);font-weight:600;}
+  .anchor-bar .at.no-menu{background:#FBF6E5;color:var(--rotate);}
+  .anchor-bar .ac{margin-left:auto;background:none;border:none;color:var(--info);cursor:pointer;font-size:.75rem;text-decoration:underline;font-family:inherit;}
+  .stock-toggle{background:none;border:none;font-family:'Noto Serif SC',serif;color:var(--accent);cursor:pointer;display:flex;align-items:center;gap:6px;width:100%;font-size:.95rem;font-weight:600;padding:0;}
+  .stock-body{display:none;margin-top:.6rem;}
+  .stock-body.open{display:block;}
+  .add-fridge{margin-top:.9rem;background:var(--surface);border:1px dashed var(--border-dark);border-radius:10px;padding:.75rem 1rem;}
+  .add-fridge .at{background:none;border:none;font-family:inherit;font-size:.8rem;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;gap:6px;width:100%;}
+  .add-fridge .ab{display:none;margin-top:.6rem;}
+  .add-fridge .ab.open{display:block;}
+  .add-fridge input,.add-fridge select{width:100%;padding:.5rem .7rem;border:1px solid var(--border-dark);border-radius:7px;font-family:inherit;font-size:.82rem;margin-bottom:.45rem;background:var(--surface);color:var(--text-primary);}
+  .add-fridge button{margin-top:.2rem;width:100%;padding:.55rem;background:var(--accent);color:#fff;border:none;border-radius:7px;cursor:pointer;font-family:inherit;font-size:.82rem;}
+  .add-fridge button:hover{background:#1F4A2F;}
+
+  /* 甜点 */
+  .dessert-section{margin-top:2rem;}
+  .dessert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+  .dessert-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;box-shadow:var(--shadow);}
+  .dessert-name{font-family:'Noto Serif SC',serif;font-size:.88rem;font-weight:600;color:var(--rose);margin-bottom:3px;}
+  .dessert-sub{font-size:.72rem;color:var(--text-hint);}
+
+  /* 便当 */
+  .bento-section{margin-top:2rem;}
+  .bento-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
+  .bento-top{padding:1.1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-bottom:1px solid var(--border);}
+  .bento-top-label{font-size:.68rem;font-weight:500;color:var(--text-hint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px;}
+  .bento-top-title{font-family:'Noto Serif SC',serif;font-size:.95rem;font-weight:600;}
+  .bento-switch-row{display:flex;gap:8px;flex-wrap:wrap;}
+  .bento-btn{font-family:inherit;font-size:.76rem;padding:6px 14px;border-radius:99px;border:1px solid var(--border-dark);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:all .15s;white-space:nowrap;}
+  .bento-btn:hover{background:var(--bg);}
+  .bento-btn.active-s1{background:var(--amber);color:#fff;border-color:var(--amber);}
+  .bento-btn.active-s2{background:var(--warm);color:#fff;border-color:var(--warm);}
+  .bento-btn.active-baozi{background:var(--info);color:#fff;border-color:var(--info);}
+  .bento-btn.active-chicken{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .bento-body{padding:1.1rem 1.5rem;display:none;animation:slideIn .2s ease;}
+  .bento-body.show{display:block;}
+  .bento-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .bento-item{background:var(--bg);border-radius:8px;padding:10px 14px;}
+  .bento-item-label{font-size:.66rem;color:var(--text-hint);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
+  .bento-item-val{font-size:.82rem;line-height:1.6;}
+  .bento-item.hl-s1{border-left:3px solid var(--amber);}
+  .bento-item.hl-s2{border-left:3px solid var(--warm);}
+  .bento-item.hl-baozi{border-left:3px solid var(--info);}
+  .bento-item.hl-chicken{border-left:3px solid var(--accent);}
+  .bento-item.fixed{border-left:3px solid var(--border-dark);}
+
+  /* 编辑 */
+  .edit-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-top:2rem;box-shadow:var(--shadow);}
+  .edit-toggle{font-size:.78rem;color:var(--text-hint);cursor:pointer;background:none;border:none;font-family:inherit;display:flex;align-items:center;gap:6px;}
+  .edit-toggle:hover{color:var(--text-secondary);}
+  .edit-body{display:none;margin-top:1.25rem;}
+  .edit-body.open{display:block;}
+  .edit-list{list-style:none;}
+  .edit-item{display:flex;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:.8rem;color:var(--text-secondary);}
+  .edit-item:last-child{border-bottom:none;}
+  .edit-item-name{font-weight:500;color:var(--text-primary);min-width:120px;}
+  .del-btn{background:none;border:none;color:var(--text-hint);cursor:pointer;font-size:.85rem;padding:2px 6px;border-radius:4px;transition:all .1s;margin-left:auto;}
+  .del-btn:hover{background:#FEE;color:#c0392b;}
+  .add-form{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:1rem;}
+  .add-form input,.add-form select{font-family:inherit;font-size:.78rem;padding:8px 12px;border:1px solid var(--border-dark);border-radius:8px;background:var(--bg);color:var(--text-primary);outline:none;}
+  .add-form input:focus,.add-form select:focus{border-color:var(--accent-mid);}
+  .add-form .full{grid-column:1 / -1;}
+  .add-form button{grid-column:1 / -1;font-family:inherit;font-size:.8rem;padding:9px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:500;transition:background .15s;}
+  .add-form button:hover{background:#1e3f2b;}
+  footer{text-align:center;padding:2rem;font-size:.7rem;color:var(--text-hint);}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Summer 的厨房</h1>
+  <span class="date" id="date-label"></span>
+</header>
+
+<div class="main">
+
+  <div class="sh">今晚吃什么</div>
+
+  <div class="card">
+    <div class="fl">菜系</div>
+    <div class="tr" id="cuisine-row">
+      <span class="tag cuisine" data-val="chinese">中式家常</span>
+      <span class="tag cuisine" data-val="jpkr">日韩风</span>
+      <span class="tag cuisine" data-val="western">西式</span>
+      <span class="tag cuisine" data-val="hotpot">火锅/涮</span>
+    </div>
+    <div class="fl" style="margin-top:1rem">做法</div>
+    <div class="tr" id="method-row">
+      <span class="tag method" data-val="stirfry">炒</span>
+      <span class="tag method" data-val="stew">炖/煮</span>
+      <span class="tag method" data-val="steam">蒸</span>
+      <span class="tag method" data-val="grill">烤</span>
+      <span class="tag method" data-val="poach">涮</span>
+    </div>
+  </div>
+
+  <div class="sh">冰箱里有什么</div>
+  <div class="card">
+    <div class="help">💡 <b>点食材 = 今天想用它</b>，菜单会按你点的过滤（比如点牛排 → 只看牛肉菜）。再点取消。每个食材右边的小 <span style="color:#c0392b">✕</span> = 标为没了。库存变化时下方菜单实时刷新。</div>
+    <div class="summary">
+      <div class="stat"><span class="stat-num short-num" id="cShort">0</span><span style="color:var(--short)">短保</span></div>
+      <div class="stat"><span class="stat-num rotate-num" id="cRotate">0</span><span style="color:var(--rotate)">轮换</span></div>
+      <div class="stat"><span class="stat-num stock-num" id="cStock">0</span><span style="color:var(--accent)">常备</span></div>
+      <button class="reset-btn" onclick="resetFridge()">全部恢复</button>
+    </div>
+  </div>
+
+  <div class="layer-section layer short">
+    <div class="layer-head">
+      <div class="layer-title">🔴 保质短 · 优先用</div>
+      <div class="layer-count" id="shortCount"></div>
+    </div>
+    <div id="shortBody"></div>
+  </div>
+
+  <div class="layer-section layer rotate">
+    <div class="layer-head">
+      <div class="layer-title">🟡 轮换</div>
+      <div class="layer-count" id="rotateCount"></div>
+    </div>
+    <div id="rotateBody"></div>
+  </div>
+
+  <div class="layer-section layer stock">
+    <button class="stock-toggle" onclick="toggleStock()"><span id="stockArr">▸</span>🟢 常备库</button>
+    <div class="stock-body" id="stockBody"></div>
+  </div>
+
+  <div class="add-fridge">
+    <button class="at" onclick="toggleAdd()"><span id="addArr">▸</span>➕ 添加食材（买了新东西）</button>
+    <div class="ab" id="addForm">
+      <input type="text" id="addName" placeholder="食材名（如：草莓）" />
+      <select id="addLayer">
+        <option value="short">🔴 保质短</option>
+        <option value="rotate" selected>🟡 轮换</option>
+        <option value="stock">🟢 常备</option>
+      </select>
+      <input type="text" id="addGroup" placeholder="子分类（如：蔬菜、蛋白）" />
+      <select id="addMenu">
+        <option value="">关联菜单类别（可选）</option>
+        <optgroup label="肉/海鲜">
+          <option value="fish">鱼</option>
+          <option value="shrimp">虾</option>
+          <option value="beef">牛肉</option>
+          <option value="pork">猪肉</option>
+          <option value="lamb">羊肉</option>
+          <option value="chicken">鸡肉</option>
+          <option value="lurou">卤/腊肉</option>
+          <option value="snail">螺肉</option>
+        </optgroup>
+        <optgroup label="蔬菜">
+          <option value="pumpkin">南瓜</option>
+          <option value="tomato">西红柿</option>
+          <option value="pepper">灯笼椒</option>
+          <option value="cauliflower">花菜</option>
+          <option value="bokchoy">小白菜</option>
+          <option value="cucumber">黄瓜</option>
+          <option value="avocado">牛油果</option>
+          <option value="scallion">葱</option>
+          <option value="potato">土豆</option>
+          <option value="onion">洋葱</option>
+          <option value="egg">鸡蛋</option>
+          <option value="eggtofu">蛋豆腐</option>
+          <option value="doufugan">五香豆干</option>
+        </optgroup>
+        <option value="noodle">主食/面点</option>
+      </select>
+      <button onclick="addFridgeItem()">添加</button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="rh">
+    <div class="rl">能做的菜</div>
+    <div style="display:flex;gap:12px;align-items:center;">
+      <span class="rc" id="count-label"></span>
+      <button class="rb" onclick="resetMood()">清除筛选</button>
+    </div>
+  </div>
+
+  <div id="anchorBar"></div>
+  <div id="results-area">
+    <div class="empty">从冰箱里读你有什么…</div>
+  </div>
+
+  <div class="selected-panel" id="sel-panel">
+    <div class="pl" id="sel-label">今晚就吃</div>
+    <div id="sel-list"></div>
+    <div style="margin-top:.75rem;">
+      <button class="btn" onclick="clearSel()">清空</button>
+    </div>
+  </div>
+
+  <div class="dessert-section">
+    <div class="sh">今天来点甜点？</div>
+    <div class="dessert-grid">
+      <div class="dessert-card">
+        <div class="dessert-name">戚风蛋糕</div>
+        <div class="dessert-sub">自制 · 松软清甜</div>
+      </div>
+      <div class="dessert-card">
+        <div class="dessert-name">巴斯克蛋糕</div>
+        <div class="dessert-sub">自制 · 浓郁焦香</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bento-section">
+    <div class="sh">Emma 便当</div>
+    <div class="bento-card">
+      <div class="bento-top">
+        <div>
+          <div class="bento-top-label">明天主食</div>
+          <div class="bento-top-title">选一个</div>
+        </div>
+        <div class="bento-switch-row">
+          <button class="bento-btn" id="btn-s1" onclick="setBento('s1')">三明治 salami+cheese</button>
+          <button class="bento-btn" id="btn-s2" onclick="setBento('s2')">三明治 鸡蛋沙拉+salami</button>
+          <button class="bento-btn" id="btn-baozi" onclick="setBento('baozi')">包子 / 馒头</button>
+          <button class="bento-btn" id="btn-chicken" onclick="setBento('chicken')">炸鸡块</button>
+        </div>
+      </div>
+      <div class="bento-body" id="bento-body">
+        <div class="bento-grid" id="bento-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="edit-section">
+    <button class="edit-toggle" onclick="toggleEdit()">
+      <span id="edit-arrow">▸</span> 管理晚餐菜单库
+    </button>
+    <div class="edit-body" id="edit-body">
+      <ul class="edit-list" id="edit-list"></ul>
+      <div style="margin-top:1.25rem;font-size:.72rem;color:var(--text-hint);margin-bottom:.5rem;">添加新菜</div>
+      <div class="add-form">
+        <input type="text" id="new-name" placeholder="菜名" />
+        <input type="number" id="new-time" placeholder="时间(分钟)" min="5" max="180" />
+        <input type="text" class="full" id="new-sub" placeholder="简短描述（一句话）" />
+        <select id="new-ingr">
+          <option value="">主食材</option>
+          <optgroup label="肉/海鲜">
+            <option value="fish">鱼</option>
+            <option value="shrimp">虾</option>
+            <option value="beef">牛肉</option>
+            <option value="pork">猪肉</option>
+            <option value="lamb">羊肉</option>
+            <option value="chicken">鸡肉</option>
+            <option value="lurou">卤肉/腊肉</option>
+            <option value="snail">螺肉</option>
+          </optgroup>
+          <optgroup label="蔬菜">
+            <option value="pumpkin">南瓜</option>
+            <option value="tomato">西红柿</option>
+            <option value="pepper">灯笼椒</option>
+            <option value="cauliflower">花菜</option>
+            <option value="bokchoy">小白菜</option>
+            <option value="cucumber">黄瓜</option>
+            <option value="avocado">牛油果</option>
+            <option value="scallion">葱</option>
+            <option value="potato">土豆</option>
+            <option value="onion">洋葱</option>
+            <option value="egg">鸡蛋</option>
+          </optgroup>
+          <option value="noodle">主食/面点</option>
+          <option value="takeout">外卖</option>
+        </select>
+        <select id="new-cuisine">
+          <option value="">菜系</option>
+          <option value="chinese">中式家常</option>
+          <option value="jpkr">日韩风</option>
+          <option value="western">西式</option>
+          <option value="hotpot">火锅/涮</option>
+        </select>
+        <select id="new-method" class="full">
+          <option value="">做法</option>
+          <option value="stirfry">炒</option>
+          <option value="stew">炖/煮</option>
+          <option value="steam">蒸</option>
+          <option value="grill">烤</option>
+          <option value="poach">涮</option>
+        </select>
+        <button onclick="addMeal()">+ 添加到菜单库</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>Summer 的厨房 · 冰箱 → 今晚吃啥 · 2026</footer>
+
+<script>
+// ==================== 菜单库 ====================
+const DEFAULT_MEALS=[
+  {name:"清蒸barramundi",ingr:["fish"],cuisine:["chinese"],method:["steam"],time:20,sub:"整片鱼片蒸熟，葱姜蒸鱼豉油，清爽不腻"},
+  {name:"香煎鱼片",ingr:["fish"],cuisine:["chinese"],method:["stirfry"],time:15,sub:"鱼片煎至两面金黄，外酥里嫩"},
+  {name:"虾仁炒饭",ingr:["shrimp"],cuisine:["chinese"],method:["stirfry"],time:15,sub:"冻虾仁+米饭翻炒，快手满足感高"},
+  {name:"虾仁炒蛋",ingr:["shrimp"],cuisine:["chinese"],method:["stirfry"],time:10,sub:"嫩滑快手，配米饭刚刚好"},
+  {name:"牛排",ingr:["beef"],cuisine:["western"],method:["stirfry"],time:20,sub:"平底锅煎牛排，配土豆饼一起上"},
+  {name:"牛腩炖萝卜",ingr:["beef"],cuisine:["chinese"],method:["stew"],time:60,sub:"牛腹肉慢炖，软烂入味，秋冬首选"},
+  {name:"小炒黄牛肉",ingr:["beef"],cuisine:["chinese"],method:["stirfry"],time:15,sub:"大火爆炒，辣椒配嫩牛肉，下饭神器"},
+  {name:"腊肉炒豆角",ingr:["pork","lurou"],cuisine:["chinese"],method:["stirfry"],time:20,sub:"腊肉+冻豆角，咸香下饭，快手出锅"},
+  {name:"鸳鸯锅",ingr:["lamb","beef","pork","chicken","shrimp","fish"],cuisine:["hotpot"],method:["poach"],time:30,sub:"红白两锅，涮什么都行，秋冬聚餐必备"},
+  {name:"羊肉清汤",ingr:["lamb"],cuisine:["chinese"],method:["stew"],time:60,sub:"羊骨+羊肩肉慢炖，清汤暖胃"},
+  {name:"葱爆羊肉",ingr:["lamb"],cuisine:["chinese"],method:["stirfry"],time:15,sub:"羊肩肉切片大火爆炒，香味足"},
+  {name:"鸡腿烤/炖",ingr:["chicken"],cuisine:["chinese"],method:["grill","stew"],time:40,sub:"鸡腿腌制后烤或炖，5人份刚好"},
+  {name:"卤肉饭",ingr:["lurou"],cuisine:["chinese"],method:["stew"],time:10,sub:"卤肉直接加热盖饭，配袋装米饭，超省事"},
+  {name:"腊肉蒸饭",ingr:["lurou"],cuisine:["chinese"],method:["steam"],time:25,sub:"腊肉切片铺米饭上一起蒸，腊香渗入饭里"},
+  {name:"螺肉炒时蔬",ingr:["snail"],cuisine:["chinese"],method:["stirfry"],time:15,sub:"螺肉爆炒青菜，鲜味突出，清爽下饭"},
+  {name:"意面",ingr:["noodle","pork","chicken","beef"],cuisine:["western"],method:["stew"],time:25,sub:"百搭主食，肉酱/茄汁/奶油随意搭配"},
+  {name:"煎饼",ingr:["noodle"],cuisine:["chinese"],method:["stirfry"],time:10,sub:"快手小吃，面糊摊开加蛋，配酱料或葱"},
+  {name:"饺子/包子",ingr:["noodle"],cuisine:["chinese"],method:["stew","steam"],time:15,sub:"直接煮/蒸，冻库存搞定，零难度"},
+  {name:"土豆饼 + 煎蛋",ingr:["noodle"],cuisine:["western"],method:["stirfry"],time:10,sub:"土豆饼煎热配荷包蛋，简单快手"},
+  {name:"韩式拌饭",ingr:["beef","pork","chicken","shrimp"],cuisine:["jpkr"],method:["stew"],time:25,sub:"各色小菜拌饭，拌匀一口，层次丰富"},
+  {name:"寿司卷",ingr:["fish","shrimp","beef"],cuisine:["jpkr"],method:[],time:30,sub:"自制寿司卷，可随冰箱食材自由发挥"},
+  {name:"东北乱炖",ingr:["pork","beef","chicken","lamb"],cuisine:["chinese"],method:["stew"],time:60,sub:"土豆排骨豆角一锅炖，浓香软烂，最暖胃"},
+  {name:"披萨",ingr:["takeout"],cuisine:["western"],method:["grill"],time:0,sub:"叫外卖，Emma和大家都喜欢",isTakeout:true},
+  {name:"清炒南瓜",ingr:["pumpkin"],cuisine:["chinese"],method:["stirfry"],time:15,sub:"南瓜切薄片清炒，简单清甜"},
+  {name:"南瓜浓汤",ingr:["pumpkin"],cuisine:["western"],method:["stew"],time:30,sub:"南瓜熬至软烂打成奶油汤，秋冬暖胃"},
+  {name:"番茄炒蛋",ingr:["tomato","egg"],cuisine:["chinese"],method:["stirfry"],time:10,sub:"经典快手，配米饭刚刚好"},
+  {name:"罗宋汤",ingr:["tomato","beef"],cuisine:["western"],method:["stew"],time:45,sub:"番茄牛腩慢炖，酸甜浓郁，配面包"},
+  {name:"番茄鸡蛋面",ingr:["tomato","egg","noodle"],cuisine:["chinese"],method:["stew"],time:15,sub:"番茄汤底+面条+蛋花，一碗解决"},
+  {name:"青椒土豆丝",ingr:["pepper","potato"],cuisine:["chinese"],method:["stirfry"],time:15,sub:"青椒土豆切丝爆炒，清爽脆口"},
+  {name:"青椒炒肉丝",ingr:["pepper","pork"],cuisine:["chinese"],method:["stirfry"],time:15,sub:"猪肉丝配灯笼椒，下饭神器"},
+  {name:"干锅花菜",ingr:["cauliflower","pork"],cuisine:["chinese"],method:["stirfry"],time:25,sub:"花菜+五花肉煸炒，干香入味"},
+  {name:"蒜蓉花菜",ingr:["cauliflower"],cuisine:["chinese"],method:["stirfry"],time:12,sub:"花菜焯水蒜蓉爆香，清爽快手"},
+  {name:"上汤小白菜",ingr:["bokchoy"],cuisine:["chinese"],method:["stew"],time:10,sub:"高汤煮小白菜，清淡养胃"},
+  {name:"牛油果三明治",ingr:["avocado","noodle"],cuisine:["western"],method:["stirfry"],time:5,sub:"牛油果泥+面包+鸡蛋/午餐肉，5分钟搞定"},
+  {name:"葱油拌面",ingr:["scallion","noodle"],cuisine:["chinese"],method:["stew"],time:12,sub:"热油爆葱花淋面条，朴素又香"},
+  {name:"酸辣土豆丝",ingr:["potato"],cuisine:["chinese"],method:["stirfry"],time:15,sub:"土豆切丝醋溜，开胃又下饭"},
+  {name:"土豆炖牛肉",ingr:["potato","beef"],cuisine:["chinese"],method:["stew"],time:60,sub:"牛肩胛+土豆慢炖，暖到心里"},
+  {name:"洋葱炒牛肉",ingr:["onion","beef"],cuisine:["chinese"],method:["stirfry"],time:12,sub:"洋葱+牛肉片爆炒，香气足"},
+  {name:"蒸蛋羹",ingr:["egg"],cuisine:["chinese"],method:["steam"],time:15,sub:"鸡蛋打散加水蒸，嫩滑入口即化"},
+  {name:"咖喱鸡",ingr:["chicken","potato"],cuisine:["jpkr"],method:["stew"],time:40,sub:"鸡腿+土豆+咖喱块焖煮，配米饭/naan"},
+  {name:"红烧蛋豆腐",ingr:["eggtofu"],cuisine:["chinese"],method:["stew"],time:15,sub:"蛋豆腐切片煎黄，生抽老抽糖烧，软嫩入味"},
+  {name:"麻婆蛋豆腐",ingr:["eggtofu","pork"],cuisine:["chinese"],method:["stew"],time:20,sub:"猪肉末+豆瓣酱烧蛋豆腐，麻辣下饭"},
+  {name:"葱烧蛋豆腐",ingr:["eggtofu","scallion"],cuisine:["chinese"],method:["stew"],time:12,sub:"蛋豆腐切块，葱花酱油烧，简单咸香"},
+  {name:"香煎蛋豆腐",ingr:["eggtofu"],cuisine:["chinese"],method:["stirfry"],time:10,sub:"蛋豆腐切厚片两面煎金黄，蘸料随意"},
+  {name:"牛油果寿司卷",ingr:["avocado","noodle"],cuisine:["jpkr"],method:[],time:25,sub:"牛油果切条+寿司米卷海苔，奶香口感，可加黄瓜"},
+  {name:"豆干炒肉丝",ingr:["doufugan","pork"],cuisine:["chinese"],method:["stirfry"],time:15,sub:"五香豆干切条配猪肉丝爆炒，咸香弹牙"},
+  {name:"青椒豆干",ingr:["doufugan","pepper"],cuisine:["chinese"],method:["stirfry"],time:12,sub:"豆干切片+灯笼椒爆炒，朴素下饭"},
+];
+
+const MEAL_KEY="summer_meals_v4";
+const MEAL_MIGRATION="meals_migrated_veg2026";
+const MEAL_MIGRATION_CUISINE="meals_tagged_cuisine_v1";
+const MEAL_REMOVAL="meals_removed_2026_05";
+const REMOVED_DEFAULT_NAMES=["蒜蓉粉丝蒸虾","naan + 咖喱虾","拍黄瓜"];
+function loadMeals(){
+  try{
+    const s=localStorage.getItem(MEAL_KEY);
+    if(!s)return JSON.parse(JSON.stringify(DEFAULT_MEALS));
+    let stored=JSON.parse(s);
+    let dirty=false;
+    if(!localStorage.getItem(MEAL_MIGRATION)){
+      const names=new Set(stored.map(m=>m.name));
+      DEFAULT_MEALS.forEach(d=>{if(!names.has(d.name))stored.push(JSON.parse(JSON.stringify(d)));});
+      localStorage.setItem(MEAL_MIGRATION,"1");
+      dirty=true;
+    }
+    if(!localStorage.getItem(MEAL_MIGRATION_CUISINE)){
+      const byName={};
+      DEFAULT_MEALS.forEach(d=>{byName[d.name]=d;});
+      stored.forEach(m=>{
+        const def=byName[m.name];
+        if(def){
+          if(!m.cuisine)m.cuisine=[...def.cuisine];
+          if(!m.method)m.method=[...def.method];
+        }
+      });
+      localStorage.setItem(MEAL_MIGRATION_CUISINE,"1");
+      dirty=true;
+    }
+    if(!localStorage.getItem(MEAL_REMOVAL)){
+      const rm=new Set(REMOVED_DEFAULT_NAMES);
+      stored=stored.filter(m=>!rm.has(m.name));
+      localStorage.setItem(MEAL_REMOVAL,"1");
+      dirty=true;
+    }
+    if(!localStorage.getItem("meals_eggtofu_v1")){
+      const names=new Set(stored.map(m=>m.name));
+      ["红烧蛋豆腐","麻婆蛋豆腐","葱烧蛋豆腐","香煎蛋豆腐"].forEach(n=>{
+        const def=DEFAULT_MEALS.find(d=>d.name===n);
+        if(def&&!names.has(n))stored.push(JSON.parse(JSON.stringify(def)));
+      });
+      localStorage.setItem("meals_eggtofu_v1","1");
+      dirty=true;
+    }
+    if(!localStorage.getItem("meals_2026_05b")){
+      const rm=new Set(["汉堡"]);
+      stored=stored.filter(m=>!rm.has(m.name));
+      const names=new Set(stored.map(m=>m.name));
+      ["牛油果寿司卷","豆干炒肉丝","青椒豆干"].forEach(n=>{
+        const def=DEFAULT_MEALS.find(d=>d.name===n);
+        if(def&&!names.has(n))stored.push(JSON.parse(JSON.stringify(def)));
+      });
+      localStorage.setItem("meals_2026_05b","1");
+      dirty=true;
+    }
+    if(dirty)saveMeals(stored);
+    return stored;
+  }catch{return JSON.parse(JSON.stringify(DEFAULT_MEALS));}
+}
+function saveMeals(m){localStorage.setItem(MEAL_KEY,JSON.stringify(m));}
+let meals=loadMeals();
+
+// ==================== 冰箱 ====================
+const I=[
+  {id:"pumpkin",name:"南瓜",layer:"short",group:"蔬菜",menu:["pumpkin"]},
+  {id:"tomato",name:"西红柿",layer:"short",group:"蔬菜",menu:["tomato"]},
+  {id:"bell_pepper",name:"灯笼椒",layer:"short",group:"蔬菜",menu:["pepper"]},
+  {id:"cauliflower",name:"花菜",layer:"short",group:"蔬菜",menu:["cauliflower"]},
+  {id:"bok_choy",name:"小白菜",layer:"short",group:"蔬菜",menu:["bokchoy"]},
+  {id:"baby_cucumber",name:"baby黄瓜",layer:"short",group:"蔬菜",menu:["cucumber"]},
+  {id:"avocado",name:"牛油果",layer:"short",group:"蔬菜",menu:["avocado"]},
+  {id:"scallion",name:"大葱",layer:"short",group:"蔬菜",menu:["scallion"]},
+  {id:"kiwi",name:"猕猴桃",layer:"short",group:"水果"},
+  {id:"grape",name:"葡萄",layer:"short",group:"水果"},
+  {id:"melon",name:"哈密瓜",layer:"short",group:"水果"},
+  {id:"salad",name:"沙拉",layer:"short",group:"即食"},
+  {id:"xianglingjuan",name:"响铃卷",layer:"short",group:"即食"},
+  {id:"cheesecake",name:"芝士蛋糕",layer:"short",group:"即食"},
+  {id:"brie",name:"Brie",layer:"short",group:"即食"},
+  {id:"frozen_shrimp",name:"冻虾",layer:"rotate",group:"蛋白",menu:["shrimp"]},
+  {id:"steak",name:"牛排",layer:"rotate",group:"蛋白",menu:["beef"]},
+  {id:"beef_tenderloin",name:"牛里脊",layer:"rotate",group:"蛋白",menu:["beef"]},
+  {id:"fish",name:"鱼片",layer:"rotate",group:"蛋白",menu:["fish"]},
+  {id:"beef_belly",name:"牛腹肉",layer:"rotate",group:"蛋白",menu:["beef"]},
+  {id:"lamb_shoulder",name:"羊肩肉",layer:"rotate",group:"蛋白",menu:["lamb"]},
+  {id:"pork_belly",name:"猪五花",layer:"rotate",group:"蛋白",menu:["pork"]},
+  {id:"larou",name:"腊肉",layer:"rotate",group:"蛋白",menu:["lurou","pork"]},
+  {id:"beef_chuck",name:"牛肩胛",layer:"rotate",group:"蛋白",menu:["beef"]},
+  {id:"pork_strip",name:"猪肉",layer:"rotate",group:"蛋白",menu:["pork"]},
+  {id:"chicken_leg",name:"鸡腿",layer:"rotate",group:"蛋白",menu:["chicken"]},
+  {id:"shrimp_meat",name:"虾肉",layer:"rotate",group:"蛋白",menu:["shrimp"]},
+  {id:"snail",name:"螺肉",layer:"rotate",group:"蛋白",menu:["snail"]},
+  {id:"potato_cake",name:"土豆饼",layer:"rotate",group:"半成品",menu:["noodle"]},
+  {id:"frozen_veggie",name:"冷冻蔬菜",layer:"rotate",group:"半成品"},
+  {id:"mixed_veggie",name:"杂蔬",layer:"rotate",group:"半成品"},
+  {id:"luncheon",name:"午餐肉",layer:"rotate",group:"小份冷藏",menu:["pork"]},
+  {id:"salami",name:"Salami",layer:"rotate",group:"小份冷藏"},
+  {id:"egg_tofu",name:"蛋豆腐",layer:"rotate",group:"小份冷藏",menu:["eggtofu"]},
+  {id:"naan",name:"馕",layer:"rotate",group:"小份冷藏",menu:["noodle"]},
+  {id:"bread",name:"面包",layer:"rotate",group:"小份冷藏",menu:["noodle"]},
+  {id:"haagen",name:"哈根达斯",layer:"rotate",group:"零食"},
+  {id:"rice",name:"米饭",layer:"stock",group:"主食/干货",menu:["noodle"]},
+  {id:"mantou",name:"馒头",layer:"stock",group:"主食/干货",menu:["noodle"]},
+  {id:"noodles",name:"面条",layer:"stock",group:"主食/干货",menu:["noodle"]},
+  {id:"pasta",name:"意面",layer:"stock",group:"主食/干货",menu:["noodle"]},
+  {id:"rice_noodle",name:"米粉",layer:"stock",group:"主食/干货",menu:["noodle"]},
+  {id:"sushi_rice",name:"寿司米",layer:"stock",group:"主食/干货",menu:["noodle"]},
+  {id:"sushi_nori",name:"寿司海苔",layer:"stock",group:"主食/干货"},
+  {id:"flour",name:"面粉",layer:"stock",group:"主食/干货",menu:["noodle"]},
+  {id:"mixed_grain",name:"杂粮",layer:"stock",group:"主食/干货",menu:["noodle"]},
+  {id:"millet",name:"小米",layer:"stock",group:"主食/干货",menu:["noodle"]},
+  {id:"green_bean",name:"绿豆",layer:"stock",group:"主食/干货"},
+  {id:"red_date",name:"红枣",layer:"stock",group:"主食/干货"},
+  {id:"black_fungus",name:"干木耳",layer:"stock",group:"主食/干货"},
+  {id:"furu_skin",name:"干腐竹",layer:"stock",group:"主食/干货"},
+  {id:"egg",name:"鸡蛋",layer:"stock",group:"基础",menu:["egg"]},
+  {id:"a2_milk",name:"A2牛奶",layer:"stock",group:"基础"},
+  {id:"ginger",name:"生姜",layer:"stock",group:"基础"},
+  {id:"onion",name:"洋葱",layer:"stock",group:"基础",menu:["onion"]},
+  {id:"potato",name:"土豆",layer:"stock",group:"基础",menu:["potato"]},
+  {id:"pasta_sauce",name:"意面酱",layer:"stock",group:"基础"},
+  {id:"cheese",name:"芝士片",layer:"stock",group:"基础"},
+  {id:"natto",name:"纳豆",layer:"stock",group:"基础"},
+  {id:"doufugan",name:"五香豆干",layer:"stock",group:"基础",menu:["doufugan"]},
+];
+
+const FRIDGE_KEY="fridge_v2";
+const fridgeState={depleted:new Set(),customItems:[],stockOpen:false};
+function loadFridge(){try{const s=localStorage.getItem(FRIDGE_KEY);if(s){const d=JSON.parse(s);if(Array.isArray(d.depleted))fridgeState.depleted=new Set(d.depleted);if(d.customItems)fridgeState.customItems=d.customItems;if(d.stockOpen)fridgeState.stockOpen=d.stockOpen;}}catch(e){}}
+function saveFridge(){try{localStorage.setItem(FRIDGE_KEY,JSON.stringify({depleted:[...fridgeState.depleted],customItems:fridgeState.customItems,stockOpen:fridgeState.stockOpen}));}catch(e){}}
+
+function allFridgeItems(){return[...I,...fridgeState.customItems];}
+function isDepleted(id){return fridgeState.depleted.has(id);}
+function isCustom(id){return fridgeState.customItems.some(i=>i.id===id);}
+
+// 当前可用的 menu 类别集合
+function availableCategories(){
+  const set=new Set();
+  allFridgeItems().forEach(it=>{
+    if(it.layer==="stock"||!isDepleted(it.id)){
+      if(it.menu)it.menu.forEach(m=>set.add(m));
+    }
+  });
+  return set;
+}
+
+// ==================== 状态 ====================
+let state={cuisine:null,method:null,anchors:new Set()};
+let selectedNames=new Set();
+let bentoChoice=null;
+
+const d=new Date();
+const days=["日","一","二","三","四","五","六"];
+document.getElementById("date-label").textContent=`${d.getMonth()+1}月${d.getDate()}日 · 周${days[d.getDay()]}`;
+
+// ==================== 菜单交互 ====================
+function bindFilterTags(rowSel,key){
+  document.querySelectorAll(rowSel+" .tag").forEach(el=>{
+    el.addEventListener("click",()=>{
+      const val=el.dataset.val;
+      document.querySelectorAll(rowSel+" .tag").forEach(t=>t.classList.remove("active"));
+      state[key]=state[key]===val?null:val;
+      if(state[key])el.classList.add("active");
+      renderMeals();
+    });
+  });
+}
+bindFilterTags("#cuisine-row","cuisine");
+bindFilterTags("#method-row","method");
+
+function resetMood(){
+  state.cuisine=null;
+  state.method=null;
+  document.querySelectorAll(".tag.cuisine,.tag.method").forEach(t=>t.classList.remove("active"));
+  renderMeals();
+}
+
+function canMake(meal,avail){
+  if(meal.isTakeout)return true;
+  const meaningful=(meal.ingr||[]).filter(i=>i!=="takeout"&&i!=="other");
+  if(!meaningful.length)return true;
+  return meaningful.some(i=>avail.has(i));
+}
+
+function renderAnchorBar(){
+  const bar=document.getElementById("anchorBar");
+  if(state.anchors.size===0){bar.innerHTML="";return;}
+  const all=allFridgeItems();
+  const anchoredItems=[...state.anchors].map(id=>all.find(i=>i.id===id)).filter(Boolean);
+  const tags=anchoredItems.map(it=>{
+    const noMenu=!it.menu||it.menu.length===0;
+    return`<span class="at${noMenu?' no-menu':''}" title="${noMenu?'没有菜谱标签，仅作提醒':'按这个过滤菜单'}">${it.name}</span>`;
+  }).join(" ");
+  bar.innerHTML=`<div>📌 今天想用：</div>${tags}<button class="ac" onclick="clearAnchors()">✕ 清除</button>`;
+}
+
+function renderMeals(){
+  renderAnchorBar();
+  const area=document.getElementById("results-area");
+  const countEl=document.getElementById("count-label");
+  const avail=availableCategories();
+  // 锚定食材的 menu 类别集合
+  const anchorCats=new Set();
+  state.anchors.forEach(id=>{
+    const item=allFridgeItems().find(i=>i.id===id);
+    if(item&&item.menu)item.menu.forEach(c=>anchorCats.add(c));
+  });
+  const hasFilter=anchorCats.size>0;
+  let filtered=meals.filter(m=>{
+    if(!canMake(m,avail))return false;
+    if(state.cuisine){
+      if(!m.cuisine||!m.cuisine.includes(state.cuisine))return false;
+    }
+    if(state.method){
+      if(!m.method||!m.method.includes(state.method))return false;
+    }
+    if(hasFilter){
+      const meaningful=(m.ingr||[]).filter(i=>i!=="takeout"&&i!=="other");
+      if(!meaningful.some(i=>anchorCats.has(i)))return false;
+    }
+    return true;
+  });
+  countEl.textContent=filtered.length>0?`${filtered.length} 道`:"";
+  if(filtered.length===0){
+    const msg=hasFilter?'<div class="empty">没找到含选中食材的菜<br>试试取消选中或加点别的</div>':'<div class="empty">冰箱里这些做不了什么 ☹️<br>试试换个心情或补点货</div>';
+    area.innerHTML=msg;
+    return;
+  }
+  const INGR_LABELS={fish:"鱼",shrimp:"虾",beef:"牛肉",pork:"猪肉",lamb:"羊肉",chicken:"鸡肉",lurou:"卤/腊肉",snail:"螺肉",noodle:"面点",pumpkin:"南瓜",tomato:"番茄",pepper:"灯笼椒",cauliflower:"花菜",bokchoy:"小白菜",cucumber:"黄瓜",avocado:"牛油果",scallion:"葱",potato:"土豆",onion:"洋葱",egg:"鸡蛋",eggtofu:"蛋豆腐",doufugan:"豆干"};
+  const html=filtered.map(m=>{
+    const ri=meals.indexOf(m);
+    const cls=m.isTakeout?" takeout":"";
+    const usingIngr=(m.ingr||[]).filter(i=>avail.has(i)).slice(0,3);
+    const badges=[];
+    if(m.time>0)badges.push(`<span class="b time">${m.time} 分钟</span>`);
+    if(m.isTakeout)badges.push('<span class="b takeout-tag">外卖</span>');
+    else usingIngr.forEach(i=>badges.push(`<span class="b using">${INGR_LABELS[i]||i}</span>`));
+    return `<div class="meal${selectedNames.has(m.name)?' selected':''}${cls}" onclick="selectMeal(${ri})">
+      <div class="mn">${m.name}</div>
+      <div class="ms">${m.sub}</div>
+      <div class="badges">${badges.join("")}</div>
+    </div>`;
+  }).join("");
+  area.innerHTML=`<div class="grid">${html}</div>`;
+  renderSelectedPanel();
+}
+
+function selectMeal(idx){
+  const m=meals[idx];
+  if(selectedNames.has(m.name))selectedNames.delete(m.name);
+  else selectedNames.add(m.name);
+  renderMeals();
+}
+
+function unselectMeal(name){
+  selectedNames.delete(name);
+  renderMeals();
+}
+
+function clearSel(){
+  selectedNames.clear();
+  renderMeals();
+}
+
+function renderSelectedPanel(){
+  const panel=document.getElementById("sel-panel");
+  const label=document.getElementById("sel-label");
+  if(selectedNames.size===0){
+    panel.classList.remove("show","takeout");
+    return;
+  }
+  const items=[...selectedNames].map(n=>meals.find(m=>m.name===n)).filter(Boolean);
+  const hasTakeout=items.some(m=>m.isTakeout);
+  panel.classList.toggle("takeout",hasTakeout);
+  label.textContent=items.length>1?`今晚就吃这 ${items.length} 道`:"今晚就吃";
+  document.getElementById("sel-list").innerHTML=items.map(m=>`
+    <div class="sel-item">
+      <div class="sel-item-text">
+        <div class="sel-item-name">${m.name}</div>
+        <div class="sel-item-sub">${m.sub}</div>
+      </div>
+      <button class="sel-remove" onclick="unselectMeal('${m.name.replace(/'/g,"\\'")}')" title="去掉">×</button>
+    </div>
+  `).join("");
+  panel.classList.add("show");
+}
+
+// ==================== 冰箱交互 ====================
+function toggleAnchor(id){
+  const all=allFridgeItems();
+  const item=all.find(i=>i.id===id);
+  if(!item)return;
+  // depleted item: clicking restores it
+  if(fridgeState.depleted.has(id)){
+    fridgeState.depleted.delete(id);
+    saveFridge();
+    renderFridge();
+    renderMeals();
+    return;
+  }
+  // toggle anchor
+  if(state.anchors.has(id))state.anchors.delete(id);
+  else state.anchors.add(id);
+  renderFridge();
+  renderMeals();
+}
+
+function markDepleted(id){
+  fridgeState.depleted.add(id);
+  state.anchors.delete(id);
+  saveFridge();
+  renderFridge();
+  renderMeals();
+}
+
+function clearAnchors(){
+  state.anchors.clear();
+  renderFridge();
+  renderMeals();
+}
+
+function delFridgeItem(id){
+  if(!isCustom(id))return;
+  if(!confirm("删除这个食材吗？"))return;
+  fridgeState.customItems=fridgeState.customItems.filter(i=>i.id!==id);
+  fridgeState.depleted.delete(id);
+  saveFridge();
+  renderFridge();
+  renderMeals();
+}
+
+function resetFridge(){
+  if(!confirm("把所有食材都标为'有'？"))return;
+  fridgeState.depleted.clear();
+  saveFridge();
+  renderFridge();
+  renderMeals();
+}
+
+function toggleStock(){
+  const b=document.getElementById("stockBody");
+  const open=b.classList.toggle("open");
+  document.getElementById("stockArr").textContent=open?"▾":"▸";
+  fridgeState.stockOpen=open;
+  saveFridge();
+}
+
+function toggleAdd(){
+  const f=document.getElementById("addForm");
+  const open=f.classList.toggle("open");
+  document.getElementById("addArr").textContent=open?"▾":"▸";
+}
+
+function addFridgeItem(){
+  const name=document.getElementById("addName").value.trim();
+  if(!name){alert("请输入食材名");return;}
+  const layer=document.getElementById("addLayer").value;
+  const group=document.getElementById("addGroup").value.trim()||"其他";
+  const menuCat=document.getElementById("addMenu").value;
+  const id="custom_"+Date.now();
+  const item={id,name,layer,group};
+  if(menuCat)item.menu=[menuCat];
+  fridgeState.customItems.push(item);
+  saveFridge();
+  document.getElementById("addName").value="";
+  document.getElementById("addGroup").value="";
+  document.getElementById("addMenu").value="";
+  renderFridge();
+  renderMeals();
+}
+
+function renderChip(item){
+  const cust=isCustom(item.id);
+  const dep=isDepleted(item.id);
+  const anch=state.anchors.has(item.id);
+  const isStock=item.layer==="stock";
+  const delBtn=cust?`<span class="del-x" onclick="event.stopPropagation();delFridgeItem('${item.id}')" title="删除条目">🗑</span>`:"";
+  const depBtn=(!isStock&&!dep)?`<span class="dep-x" onclick="event.stopPropagation();markDepleted('${item.id}')" title="标为没了">✕</span>`:"";
+  const tip=dep?"点击恢复为'有'":(anch?"再点取消选中":"点击 = 今天想用它");
+  return`<span class="chip${dep?' dep':''}${anch?' anchored':''}" onclick="toggleAnchor('${item.id}')" title="${tip}">${item.name}${depBtn}${delBtn}</span>`;
+}
+
+function renderLayer(layer,bodyId){
+  const all=allFridgeItems().filter(i=>i.layer===layer);
+  if(!all.length){
+    document.getElementById(bodyId).innerHTML='<div style="color:var(--text-hint);text-align:center;padding:1rem;font-size:.85rem">没有食材</div>';
+    return;
+  }
+  const groups={};
+  all.forEach(i=>{(groups[i.group]=groups[i.group]||[]).push(i);});
+  document.getElementById(bodyId).innerHTML=Object.keys(groups).map(g=>`
+    <div class="gc">
+      <div class="gn">${g}</div>
+      <div class="ig">${groups[g].map(renderChip).join("")}</div>
+    </div>
+  `).join("");
+}
+
+function renderFridge(){
+  renderLayer("short","shortBody");
+  renderLayer("rotate","rotateBody");
+  renderLayer("stock","stockBody");
+  const all=allFridgeItems();
+  const sa=all.filter(i=>i.layer==="short"&&!isDepleted(i.id)).length;
+  const st=all.filter(i=>i.layer==="short").length;
+  const ra=all.filter(i=>i.layer==="rotate"&&!isDepleted(i.id)).length;
+  const rt=all.filter(i=>i.layer==="rotate").length;
+  const stt=all.filter(i=>i.layer==="stock").length;
+  document.getElementById("cShort").textContent=sa;
+  document.getElementById("cRotate").textContent=ra;
+  document.getElementById("cStock").textContent=stt;
+  document.getElementById("shortCount").textContent=`还剩 ${sa}/${st}`;
+  document.getElementById("rotateCount").textContent=`还剩 ${ra}/${rt}`;
+}
+
+// ==================== 便当 ====================
+const BENTO_OPTIONS={
+  s1:{label:"三明治（salami + cheese）",hl:"hl-s1",btnClass:"active-s1"},
+  s2:{label:"三明治（鸡蛋沙拉 + salami）",hl:"hl-s2",btnClass:"active-s2"},
+  baozi:{label:"包子 / 馒头",hl:"hl-baozi",btnClass:"active-baozi"},
+  chicken:{label:"炸鸡块",hl:"hl-chicken",btnClass:"active-chicken"},
+};
+function setBento(choice){
+  bentoChoice=bentoChoice===choice?null:choice;
+  ["s1","s2","baozi","chicken"].forEach(k=>{
+    document.getElementById("btn-"+k).className="bento-btn"+(bentoChoice===k?" "+BENTO_OPTIONS[k].btnClass:"");
+  });
+  const body=document.getElementById("bento-body");
+  if(!bentoChoice){body.classList.remove("show");return;}
+  const opt=BENTO_OPTIONS[bentoChoice];
+  const items=[
+    {label:"主食",val:opt.label,cls:opt.hl},
+    {label:"保温壶",val:"白粥",cls:"fixed"},
+    {label:"蔬菜",val:"黄瓜条 / 胡萝卜条",cls:"fixed"},
+    {label:"固定搭配",val:"Yakult + 饼干",cls:"fixed"},
+  ];
+  document.getElementById("bento-grid").innerHTML=items.map(it=>
+    `<div class="bento-item ${it.cls}"><div class="bento-item-label">${it.label}</div><div class="bento-item-val">${it.val}</div></div>`
+  ).join("");
+  body.classList.add("show");
+}
+
+// ==================== 编辑菜单库 ====================
+function toggleEdit(){
+  const body=document.getElementById("edit-body");
+  const open=body.classList.toggle("open");
+  document.getElementById("edit-arrow").textContent=open?"▾":"▸";
+  if(open)renderEditList();
+}
+function renderEditList(){
+  document.getElementById("edit-list").innerHTML=meals.map((m,i)=>
+    `<li class="edit-item"><span class="edit-item-name">${m.name}</span><span style="color:var(--text-hint);font-size:.72rem;flex:1;padding:0 12px;">${m.time>0?m.time+'分钟':'外卖'}</span><button class="del-btn" onclick="deleteMeal(${i})">✕</button></li>`
+  ).join("");
+}
+function deleteMeal(idx){
+  if(!confirm(`确认删除「${meals[idx].name}」？`))return;
+  meals.splice(idx,1);saveMeals(meals);renderEditList();renderMeals();
+}
+function addMeal(){
+  const name=document.getElementById("new-name").value.trim();
+  const sub=document.getElementById("new-sub").value.trim();
+  const time=parseInt(document.getElementById("new-time").value)||20;
+  const ingr=document.getElementById("new-ingr").value;
+  const cuisine=document.getElementById("new-cuisine").value;
+  const method=document.getElementById("new-method").value;
+  if(!name){alert("请填写菜名");return;}
+  meals.push({
+    name,
+    sub:sub||"暂无描述",
+    time,
+    ingr:ingr?[ingr]:["other"],
+    cuisine:cuisine?[cuisine]:[],
+    method:method?[method]:[],
+  });
+  saveMeals(meals);
+  ["new-name","new-sub","new-time"].forEach(id=>document.getElementById(id).value="");
+  ["new-ingr","new-cuisine","new-method"].forEach(id=>document.getElementById(id).value="");
+  renderEditList();renderMeals();
+}
+
+// ==================== 启动 ====================
+loadFridge();
+if(fridgeState.stockOpen){
+  document.getElementById("stockBody").classList.add("open");
+  document.getElementById("stockArr").textContent="▾";
+}
+renderFridge();
+renderMeals();
+</script>
+</body>
+</html>

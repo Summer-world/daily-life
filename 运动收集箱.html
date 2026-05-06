@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>运动收集箱</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --border: #E8E4DC;
+    --border-dark: #C8C2B4;
+    --text-primary: #1A1814;
+    --text-secondary: #6B6560;
+    --text-hint: #A09A92;
+    --accent: #2D5A3D;
+    --accent-light: #EAF2EC;
+    --accent-mid: #4A8C60;
+    --gold: #7A5C2E;
+    --gold-light: #F5EDE6;
+    --info: #1A3A5C;
+    --info-light: #E6EEF6;
+    --rose: #7A3A4A;
+    --rose-light: #FBEEF1;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; line-height: 1.7; }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem 2rem;
+  }
+  .head-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+  header h1 { font-family: 'Noto Serif SC', serif; font-size: 1.4rem; font-weight: 600; }
+  header .sub { font-size: 0.78rem; color: var(--text-hint); font-weight: 300; }
+  header a.back { font-size: 0.78rem; color: var(--text-secondary); text-decoration: none; padding: 4px 12px; border: 1px solid var(--border-dark); border-radius: 99px; }
+  header a.back:hover { background: var(--bg); }
+
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.75rem 1.5rem 3rem;
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 1.75rem;
+    align-items: start;
+  }
+
+  .pane {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+
+  /* ========== 表单 ========== */
+  .form-pane {
+    padding: 1.5rem 1.5rem 1.25rem;
+    position: sticky;
+    top: 1.5rem;
+    max-height: calc(100vh - 3rem);
+    overflow-y: auto;
+  }
+  .form-title { font-family: 'Noto Serif SC', serif; font-size: 1.05rem; font-weight: 600; margin-bottom: 1.1rem; display: flex; align-items: center; gap: 8px; }
+
+  .field { margin-bottom: 0.95rem; }
+  .field label { display: block; font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 500; }
+  .field label .req { color: var(--rose); margin-left: 2px; }
+  .field label .hint { color: var(--text-hint); font-weight: 400; font-size: 0.72rem; margin-left: 6px; }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    font-family: inherit;
+    font-size: 0.86rem;
+    padding: 8px 11px;
+    border: 1px solid var(--border-dark);
+    border-radius: 7px;
+    background: var(--surface);
+    color: var(--text-primary);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--accent-mid);
+    box-shadow: 0 0 0 3px var(--accent-light);
+  }
+  .field textarea { resize: vertical; min-height: 60px; line-height: 1.6; }
+
+  .goal-checks { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+  .goal-checks label {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 5px 11px;
+    border: 1px solid var(--border-dark);
+    border-radius: 99px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    background: var(--surface);
+    transition: all 0.15s;
+    margin: 0;
+  }
+  .goal-checks input { display: none; }
+  .goal-checks label:has(input:checked) {
+    background: var(--accent-light);
+    border-color: var(--accent);
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .form-actions { display: flex; gap: 8px; margin-top: 1.1rem; }
+  .btn {
+    font-family: inherit;
+    font-size: 0.86rem;
+    padding: 9px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    border: 1px solid var(--border-dark);
+    background: var(--surface);
+    color: var(--text-secondary);
+    transition: all 0.15s;
+    flex: 1;
+  }
+  .btn:hover { background: var(--bg); color: var(--text-primary); }
+  .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); flex: 2; }
+  .btn.primary:hover { background: #234630; color: #fff; }
+  .btn.danger:hover { background: var(--rose-light); color: var(--rose); border-color: var(--rose); }
+
+  .editing-tip {
+    background: var(--gold-light);
+    color: var(--gold);
+    border-left: 3px solid var(--gold);
+    padding: 7px 10px;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.76rem;
+    margin-bottom: 0.85rem;
+    display: none;
+  }
+  .editing-tip.show { display: block; }
+
+  /* ========== 列表 ========== */
+  .list-pane { padding: 1.25rem 1.5rem 1.5rem; }
+  .list-header {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.9rem;
+  }
+  .list-title { font-family: 'Noto Serif SC', serif; font-size: 1.05rem; font-weight: 600; }
+  .list-title .count { color: var(--accent); margin-left: 4px; }
+  .list-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+  .list-actions .btn { flex: 0 0 auto; padding: 6px 13px; font-size: 0.78rem; }
+
+  .filter-bar { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 0.85rem; }
+  .filter-chip {
+    font-family: inherit;
+    font-size: 0.74rem;
+    padding: 4px 11px;
+    border-radius: 99px;
+    cursor: pointer;
+    border: 1px solid var(--border-dark);
+    background: var(--surface);
+    color: var(--text-secondary);
+    transition: all 0.15s;
+  }
+  .filter-chip:hover { background: var(--bg); }
+  .filter-chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-hint);
+    font-size: 0.86rem;
+  }
+  .empty strong { color: var(--text-secondary); display: block; margin-bottom: 6px; font-size: 0.95rem; }
+
+  .item {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    margin-bottom: 0.7rem;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .item:hover { border-color: var(--border-dark); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+  .item.editing { border-color: var(--accent); background: var(--accent-light); }
+  .item-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .item-name { font-family: 'Noto Serif SC', serif; font-size: 1rem; font-weight: 600; flex: 1; min-width: 180px; }
+  .item-meta { display: flex; gap: 10px; flex-wrap: wrap; font-size: 0.76rem; color: var(--text-hint); margin-top: 4px; }
+  .item-meta span::before { content: '· '; }
+  .item-meta span:first-child::before { content: ''; }
+  .item-tags { margin-top: 6px; display: flex; gap: 5px; flex-wrap: wrap; }
+  .tag {
+    font-size: 0.7rem;
+    padding: 2px 9px;
+    border-radius: 99px;
+  }
+  .tag.cat { background: var(--info-light); color: var(--info); }
+  .tag.existing { background: var(--gold-light); color: var(--gold); font-weight: 500; }
+  .tag.goal-stamina { background: var(--gold-light); color: var(--gold); }
+  .tag.goal-shape { background: var(--accent-light); color: var(--accent); }
+  .tag.goal-rest { background: var(--info-light); color: var(--info); }
+  .item-notes {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 6px;
+    line-height: 1.65;
+    padding-top: 6px;
+    border-top: 1px dashed var(--border);
+  }
+  .item-link {
+    font-size: 0.74rem;
+    color: var(--accent);
+    text-decoration: none;
+    margin-top: 4px;
+    display: inline-block;
+    word-break: break-all;
+  }
+  .item-link:hover { text-decoration: underline; }
+  .item-actions { display: flex; gap: 4px; }
+  .icon-btn {
+    background: none;
+    border: none;
+    color: var(--text-hint);
+    font-family: inherit;
+    font-size: 0.74rem;
+    cursor: pointer;
+    padding: 3px 8px;
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .icon-btn:hover { background: var(--bg); color: var(--text-primary); }
+  .icon-btn.del:hover { background: var(--rose-light); color: var(--rose); }
+
+  /* ========== 导出弹窗 ========== */
+  .modal-mask {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: none;
+    align-items: center; justify-content: center;
+    z-index: 100;
+    padding: 1rem;
+  }
+  .modal-mask.show { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: 12px;
+    width: 100%;
+    max-width: 720px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .modal-head {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .modal-head h2 { font-family: 'Noto Serif SC', serif; font-size: 1.05rem; font-weight: 600; }
+  .modal-body { padding: 1rem 1.5rem; overflow-y: auto; flex: 1; }
+  .modal-body p { font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 0.75rem; }
+  .modal-body textarea {
+    width: 100%;
+    min-height: 320px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.78rem;
+    padding: 12px;
+    border: 1px solid var(--border-dark);
+    border-radius: 7px;
+    background: var(--bg);
+    line-height: 1.5;
+    resize: vertical;
+  }
+  .modal-foot {
+    padding: 0.85rem 1.5rem;
+    border-top: 1px solid var(--border);
+    display: flex; gap: 8px; justify-content: flex-end;
+  }
+  .modal-foot .btn { flex: 0 0 auto; padding: 8px 18px; }
+  .copied { color: var(--accent); font-size: 0.8rem; align-self: center; margin-right: auto; }
+
+  @media (max-width: 880px) {
+    main { grid-template-columns: 1fr; }
+    .form-pane { position: static; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-inner">
+    <div>
+      <h1>运动收集箱</h1>
+      <span class="sub">把小红书里收藏的运动先收集起来，整理完导出给 Claude 归档</span>
+    </div>
+    <a class="back" href="Summer的世界.html">← 回到 Summer 的世界</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ========== 表单 ========== -->
+  <section class="pane form-pane">
+    <div class="form-title">➕ 添加运动</div>
+
+    <div class="editing-tip" id="editing-tip">✏️ 正在编辑，点"保存修改"完成或"取消"放弃</div>
+
+    <form id="form">
+      <div class="field">
+        <label>运动名 <span class="req">*</span></label>
+        <input type="text" name="name" required placeholder="例：靠墙天使式">
+      </div>
+
+      <div class="field">
+        <label>博主 <span class="hint">来源</span></label>
+        <input type="text" name="creator" placeholder="例：欧阳春晓 / JJ 老师">
+      </div>
+
+      <div class="field">
+        <label>类型</label>
+        <select name="category">
+          <option value="">— 选择 —</option>
+          <option>呼吸与冥想</option>
+          <option>拉伸与放松</option>
+          <option>核心与腹部</option>
+          <option>体态与矫正</option>
+          <option>腿部与臀部</option>
+          <option>按摩</option>
+          <option>有氧与力量</option>
+          <option>其他/暂未分类</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>时长 <span class="hint">分钟</span></label>
+        <input type="text" name="duration" placeholder="例：5min / 10–15min">
+      </div>
+
+      <div class="field">
+        <label>姿势 <span class="hint">可自由输入</span></label>
+        <input type="text" name="posture" list="posture-list" placeholder="例：坐姿 / 躺/坐 / 站+地板">
+        <datalist id="posture-list">
+          <option value="站姿"></option>
+          <option value="坐姿"></option>
+          <option value="躺姿"></option>
+          <option value="盘腿"></option>
+          <option value="地板"></option>
+          <option value="躺/坐"></option>
+          <option value="坐+躺"></option>
+          <option value="站/坐/躺"></option>
+          <option value="站姿+地板"></option>
+          <option value="办公椅坐姿"></option>
+          <option value="混合"></option>
+        </datalist>
+      </div>
+
+      <div class="field">
+        <label>目标 <span class="hint">可多选/可不选</span></label>
+        <div class="goal-checks">
+          <label><input type="checkbox" name="goals" value="stamina">🔥 体能</label>
+          <label><input type="checkbox" name="goals" value="shape">💪 身材</label>
+          <label><input type="checkbox" name="goals" value="rest">🌿 养护</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>收藏链接 <span class="hint">小红书等</span></label>
+        <input type="text" name="link" placeholder="粘贴链接，方便之后查看">
+      </div>
+
+      <div class="field">
+        <label>备注 <span class="hint">想到啥写啥</span></label>
+        <textarea name="notes" placeholder="例：感觉对肩颈很有效 / 跟瘦腿组合一起做"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn" id="cancel-btn" style="display:none">取消</button>
+        <button type="submit" class="btn primary" id="submit-btn">保存（Ctrl+Enter）</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ========== 列表 ========== -->
+  <section class="pane list-pane">
+    <div class="list-header">
+      <div class="list-title">已收集<span class="count" id="total-count">0</span> 条</div>
+      <div class="list-actions">
+        <button class="btn" id="import-btn">📥 导入现有 29 项</button>
+        <button class="btn" id="export-btn">📤 导出给 Claude</button>
+        <button class="btn danger" id="clear-btn">清空全部</button>
+      </div>
+    </div>
+
+    <div class="filter-bar" id="filter-bar">
+      <button class="filter-chip active" data-filter="all">全部</button>
+      <!-- 类型筛选按钮动态渲染 -->
+    </div>
+
+    <div id="items"></div>
+  </section>
+
+</main>
+
+<!-- ========== 导出弹窗 ========== -->
+<div class="modal-mask" id="modal-mask">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>📤 导出给 Claude</h2>
+      <button class="icon-btn" id="modal-close" style="font-size:1.2rem">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>下面是收集好的运动列表。<strong>全选复制</strong>，粘贴到 Claude 对话里，告诉它「帮我看看怎么归档」即可。</p>
+      <textarea id="export-text" readonly></textarea>
+    </div>
+    <div class="modal-foot">
+      <span class="copied" id="copied-msg" style="display:none">✓ 已复制到剪贴板</span>
+      <button class="btn" id="modal-close-2">关闭</button>
+      <button class="btn primary" id="copy-btn">复制全部</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'exercise_collection_v1';
+  const GOAL_LABEL = { stamina: '🔥 体能', shape: '💪 身材', rest: '🌿 养护' };
+
+  // 现有 29 项（与 Summer的世界.html 中的动作详情库 + ACTION_GOALS 对齐）
+  const EXISTING_EXERCISES = [
+    { num: 1,  name: 'Nadi Shodhana 纳迪净化法',     creator: '',         category: '呼吸与冥想', duration: '',      posture: '坐姿',         goals: ['rest'],            notes: '交替呼吸' },
+    { num: 2,  name: 'Resonance Breathing 振谐呼吸法', creator: '',        category: '呼吸与冥想', duration: '',      posture: '坐姿',         goals: ['rest'],            notes: '缓慢呼吸，约 6 次/分钟' },
+    { num: 3,  name: '全身扫描',                      creator: '',         category: '呼吸与冥想', duration: '',      posture: '躺/坐',        goals: ['rest'],            notes: '身体扫描冥想，注意力从头到脚逐一觉察' },
+    { num: 4,  name: '自我肯定冥想',                  creator: '',         category: '呼吸与冥想', duration: '',      posture: '坐姿',         goals: ['rest'],            notes: '冥想状态下用肯定性语言与自己对话' },
+    { num: 5,  name: '自我疗愈和关爱冥想',            creator: '',         category: '呼吸与冥想', duration: '',      posture: '坐姿',         goals: ['rest'],            notes: '类似慈悲冥想，将温柔与关爱先送给自己' },
+    { num: 6,  name: 'JJ 老师 15 分钟全身拉伸',       creator: 'JJ 老师',  category: '拉伸与放松', duration: '15min', posture: '坐姿',         goals: ['rest'],            notes: '偏放松，博主流程' },
+    { num: 7,  name: 'Zoey 10min 全程站立拉伸',       creator: 'Zoey',     category: '拉伸与放松', duration: '10min', posture: '站姿',         goals: ['rest'],            notes: '放松与灵活性' },
+    { num: 8,  name: '睡前躺练',                      creator: '',         category: '拉伸与放松', duration: '',      posture: '躺姿',         goals: ['rest'],            notes: '睡前放松，博主流程' },
+    { num: 9,  name: '睡前体态管理',                  creator: '',         category: '拉伸与放松', duration: '',      posture: '',             goals: ['rest'],            notes: '⚠️ 暂不使用（做了不舒服）' },
+    { num: 10, name: '仙人揉腹',                      creator: '',         category: '拉伸与放松', duration: '',      posture: '躺/坐',        goals: ['rest'],            notes: '手掌在腹部圆形揉按，促进肠胃蠕动' },
+    { num: 11, name: '掰正骨盆懒人版',                creator: '',         category: '拉伸与放松', duration: '',      posture: '躺姿',         goals: ['rest'],            notes: '骨盆矫正' },
+    { num: 12, name: '萨尔曼瘦肚子',                  creator: '萨尔曼',   category: '核心与腹部', duration: '',      posture: '躺姿',         goals: ['shape'],           notes: '核心训练' },
+    { num: 13, name: '女明星仪态管理',                creator: '',         category: '体态与矫正', duration: '',      posture: '站姿',         goals: ['shape', 'rest'],   notes: '站姿矫正' },
+    { num: 14, name: '腹横肌激活',                    creator: '',         category: '核心与腹部', duration: '',      posture: '坐+躺',        goals: ['shape'],           notes: '博主流程' },
+    { num: 15, name: '真空腹训练',                    creator: '',         category: '核心与腹部', duration: '',      posture: '站/坐/躺',     goals: ['shape'],           notes: '深层核心收缩' },
+    { num: 16, name: '小腿精油按摩',                  creator: '欧阳春晓', category: '按摩',       duration: '',      posture: '',             goals: ['rest'],            notes: '欧阳春晓手法，促进循环消除疲劳' },
+    { num: 17, name: '腿部拉伸',                      creator: '',         category: '拉伸与放松', duration: '',      posture: '站姿+地板',    goals: ['rest'],            notes: '特定流程' },
+    { num: 18, name: '在工位上偷偷变美',              creator: '',         category: '体态与矫正', duration: '',      posture: '办公椅坐姿',   goals: ['shape', 'rest'],   notes: '偏全身' },
+    { num: 19, name: '足弓训练',                      creator: '欧阳春晓', category: '体态与矫正', duration: '',      posture: '站姿',         goals: ['rest'],            notes: '欧阳春晓流程' },
+    { num: 20, name: '林芊妤特快瘦大腿',              creator: '林芊妤',   category: '腿部与臀部', duration: '',      posture: '地板',         goals: ['shape'],           notes: '林芊妤流程' },
+    { num: 21, name: '韩小四改善膝超伸',              creator: '韩小四',   category: '体态与矫正', duration: '',      posture: '地板',         goals: ['rest'],            notes: '韩小四流程' },
+    { num: 22, name: '跳绳',                          creator: '',         category: '有氧与力量', duration: '',      posture: '站姿',         goals: ['stamina', 'shape'],notes: '博主流程' },
+    { num: 23, name: '坐姿练臀（弹力带版）',          creator: '',         category: '腿部与臀部', duration: '',      posture: '坐姿',         goals: ['shape'],           notes: '弹力带' },
+    { num: 24, name: '仰卧瘦大小腿',                  creator: '',         category: '腿部与臀部', duration: '',      posture: '躺姿',         goals: ['shape'],           notes: '博主流程' },
+    { num: 25, name: '欧阳春晓-肩颈背动态拉伸',       creator: '欧阳春晓', category: '拉伸与放松', duration: '',      posture: '坐姿',         goals: ['rest'],            notes: '欧阳春晓流程' },
+    { num: 26, name: '欧阳春晓-肩背功能性训练',       creator: '欧阳春晓', category: '体态与矫正', duration: '',      posture: '站/坐/盘腿',   goals: ['shape', 'rest'],   notes: '欧阳春晓流程' },
+    { num: 27, name: '欧阳春晓-YTWL 肩背矫正训练',    creator: '欧阳春晓', category: '体态与矫正', duration: '',      posture: '站/坐',        goals: ['shape', 'rest'],   notes: '欧阳春晓流程' },
+    { num: 28, name: '站姿哑铃全身运动',              creator: '',         category: '有氧与力量', duration: '',      posture: '站姿',         goals: ['stamina', 'shape'],notes: '哑铃' },
+    { num: 29, name: '八段锦',                        creator: '',         category: '有氧与力量', duration: '',      posture: '站姿',         goals: ['stamina', 'rest'], notes: '标准版' },
+  ];
+
+  let items = [];
+  let editingId = null;
+  let currentFilter = 'all';
+
+  try { const s = localStorage.getItem(STORAGE_KEY); if (s) items = JSON.parse(s); } catch(e) {}
+
+  function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
+  function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+
+  // ========== 渲染 ==========
+  function render() {
+    const total = items.length;
+    document.getElementById('total-count').textContent = total ? ` ${total}` : '';
+
+    // 类型筛选按钮
+    const cats = Array.from(new Set(items.map(i => i.category).filter(Boolean))).sort();
+    const filterBar = document.getElementById('filter-bar');
+    filterBar.innerHTML = '<button class="filter-chip ' + (currentFilter === 'all' ? 'active' : '') + '" data-filter="all">全部 ' + total + '</button>';
+    cats.forEach(cat => {
+      const cnt = items.filter(i => i.category === cat).length;
+      filterBar.innerHTML += `<button class="filter-chip ${currentFilter === cat ? 'active' : ''}" data-filter="${escapeAttr(cat)}">${escapeHtml(cat)} ${cnt}</button>`;
+    });
+    filterBar.querySelectorAll('.filter-chip').forEach(btn => {
+      btn.addEventListener('click', () => { currentFilter = btn.dataset.filter; render(); });
+    });
+
+    const list = document.getElementById('items');
+    const visible = items.filter(i => currentFilter === 'all' || i.category === currentFilter);
+
+    if (visible.length === 0) {
+      if (total === 0) {
+        list.innerHTML = '<div class="empty"><strong>还没有收集任何运动</strong>左边表单填好，点"保存"加进来</div>';
+      } else {
+        list.innerHTML = '<div class="empty">该分类下暂无内容</div>';
+      }
+      return;
+    }
+
+    list.innerHTML = visible.map(item => {
+      const goalsHtml = (item.goals || []).map(g =>
+        `<span class="tag goal-${g}">${GOAL_LABEL[g]}</span>`
+      ).join('');
+      const catTag = item.category ? `<span class="tag cat">${escapeHtml(item.category)}</span>` : '';
+      const existingTag = item.existingNum ? `<span class="tag existing">已有 #${item.existingNum}</span>` : '';
+      const meta = [
+        item.creator ? '👤 ' + escapeHtml(item.creator) : '',
+        item.duration ? '⏱ ' + escapeHtml(item.duration) : '',
+        item.posture ? '🧍 ' + escapeHtml(item.posture) : '',
+      ].filter(Boolean).map(s => `<span>${s}</span>`).join('');
+
+      return `
+        <div class="item ${editingId === item.id ? 'editing' : ''}">
+          <div class="item-head">
+            <div style="flex:1; min-width:180px;">
+              <div class="item-name">${escapeHtml(item.name)}</div>
+              ${meta ? `<div class="item-meta">${meta}</div>` : ''}
+            </div>
+            <div class="item-actions">
+              <button class="icon-btn" data-edit="${item.id}">编辑</button>
+              <button class="icon-btn del" data-del="${item.id}">删除</button>
+            </div>
+          </div>
+          ${(catTag || goalsHtml || existingTag) ? `<div class="item-tags">${existingTag}${catTag}${goalsHtml}</div>` : ''}
+          ${item.link ? `<a class="item-link" href="${escapeAttr(item.link)}" target="_blank" rel="noopener">🔗 ${escapeHtml(item.link)}</a>` : ''}
+          ${item.notes ? `<div class="item-notes">${escapeHtml(item.notes)}</div>` : ''}
+        </div>
+      `;
+    }).join('');
+
+    list.querySelectorAll('[data-edit]').forEach(btn => {
+      btn.addEventListener('click', () => startEdit(btn.dataset.edit));
+    });
+    list.querySelectorAll('[data-del]').forEach(btn => {
+      btn.addEventListener('click', () => removeItem(btn.dataset.del));
+    });
+  }
+
+  function escapeHtml(s) {
+    return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function escapeAttr(s) { return escapeHtml(s); }
+
+  // ========== 表单 ==========
+  const form = document.getElementById('form');
+  const submitBtn = document.getElementById('submit-btn');
+  const cancelBtn = document.getElementById('cancel-btn');
+  const editingTip = document.getElementById('editing-tip');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const goals = fd.getAll('goals');
+    const data = {
+      name: (fd.get('name') || '').trim(),
+      creator: (fd.get('creator') || '').trim(),
+      category: fd.get('category') || '',
+      duration: (fd.get('duration') || '').trim(),
+      posture: fd.get('posture') || '',
+      goals,
+      link: (fd.get('link') || '').trim(),
+      notes: (fd.get('notes') || '').trim(),
+    };
+    if (!data.name) return;
+
+    if (editingId) {
+      const idx = items.findIndex(i => i.id === editingId);
+      if (idx >= 0) items[idx] = { ...items[idx], ...data };
+      cancelEdit();
+    } else {
+      items.push({ id: uid(), ts: Date.now(), ...data });
+      form.reset();
+      form.querySelector('[name="name"]').focus();
+    }
+    save();
+    render();
+  });
+
+  // Ctrl+Enter 提交
+  form.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      form.requestSubmit();
+    }
+  });
+
+  function startEdit(id) {
+    const item = items.find(i => i.id === id);
+    if (!item) return;
+    editingId = id;
+    form.querySelector('[name="name"]').value = item.name || '';
+    form.querySelector('[name="creator"]').value = item.creator || '';
+    form.querySelector('[name="category"]').value = item.category || '';
+    form.querySelector('[name="duration"]').value = item.duration || '';
+    form.querySelector('[name="posture"]').value = item.posture || '';
+    form.querySelector('[name="link"]').value = item.link || '';
+    form.querySelector('[name="notes"]').value = item.notes || '';
+    form.querySelectorAll('[name="goals"]').forEach(cb => {
+      cb.checked = (item.goals || []).includes(cb.value);
+    });
+    submitBtn.textContent = '保存修改';
+    cancelBtn.style.display = '';
+    editingTip.classList.add('show');
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function cancelEdit() {
+    editingId = null;
+    form.reset();
+    submitBtn.textContent = '保存（Ctrl+Enter）';
+    cancelBtn.style.display = 'none';
+    editingTip.classList.remove('show');
+    render();
+  }
+  cancelBtn.addEventListener('click', cancelEdit);
+
+  function removeItem(id) {
+    const item = items.find(i => i.id === id);
+    if (!item) return;
+    if (!confirm(`删除"${item.name}"？`)) return;
+    items = items.filter(i => i.id !== id);
+    if (editingId === id) cancelEdit();
+    save();
+    render();
+  }
+
+  // ========== 导入现有 29 项 ==========
+  document.getElementById('import-btn').addEventListener('click', () => {
+    const existingNums = new Set(items.filter(i => i.existingNum).map(i => i.existingNum));
+    const toImport = EXISTING_EXERCISES.filter(e => !existingNums.has(e.num));
+
+    if (toImport.length === 0) {
+      alert('现有 29 项已全部导入完成 ✓');
+      return;
+    }
+    const skipped = EXISTING_EXERCISES.length - toImport.length;
+    const msg = skipped > 0
+      ? `将导入 ${toImport.length} 项（已存在的 ${skipped} 项会跳过）。继续？`
+      : `将一次性导入现有 29 项运动。继续？`;
+    if (!confirm(msg)) return;
+
+    toImport.forEach(e => {
+      items.push({
+        id: uid(),
+        ts: Date.now(),
+        existingNum: e.num,
+        name: e.name,
+        creator: e.creator,
+        category: e.category,
+        duration: e.duration,
+        posture: e.posture,
+        goals: e.goals,
+        link: '',
+        notes: e.notes,
+      });
+    });
+    save();
+    render();
+  });
+
+  // ========== 全部清空 ==========
+  document.getElementById('clear-btn').addEventListener('click', () => {
+    if (items.length === 0) return;
+    if (!confirm(`确定清空全部 ${items.length} 条收集？此操作不可撤销。`)) return;
+    items = [];
+    cancelEdit();
+    save();
+    render();
+  });
+
+  // ========== 导出 ==========
+  function buildExportText() {
+    if (items.length === 0) return '（暂无收集）';
+    const lines = [];
+    const existing = items.filter(i => i.existingNum);
+    const newItems = items.filter(i => !i.existingNum);
+
+    lines.push(`# 运动整理（共 ${items.length} 条 = 已有 ${existing.length} + 新增 ${newItems.length}）`);
+    lines.push('');
+    lines.push('请帮我把这些运动重新整理到「Summer的世界.html」：');
+    lines.push('1) 重新设计动作详情库的分类与编号（已有的可重新归类、合并或拆分）');
+    lines.push('2) 重新设计常用组合（体能 / 身材 / 养护），把新的也排进去');
+    lines.push('3) 必要时调整 5 个时段卡（晨起/白天/傍晚/睡后/睡前）的推荐');
+    lines.push('');
+    lines.push('---');
+    lines.push('');
+
+    // 按类型分组（混排已有+新增，便于按主题对照）
+    const groups = {};
+    items.forEach(i => {
+      const cat = i.category || '未分类';
+      (groups[cat] = groups[cat] || []).push(i);
+    });
+
+    Object.keys(groups).sort().forEach(cat => {
+      const g = groups[cat];
+      const ex = g.filter(i => i.existingNum).length;
+      const nw = g.length - ex;
+      lines.push(`## ${cat}（${g.length} 条 · 已有 ${ex} / 新增 ${nw}）`);
+      lines.push('');
+      // 已有在前（按原编号），新增在后
+      const sorted = g.slice().sort((a, b) => {
+        if (a.existingNum && b.existingNum) return a.existingNum - b.existingNum;
+        if (a.existingNum) return -1;
+        if (b.existingNum) return 1;
+        return (a.ts || 0) - (b.ts || 0);
+      });
+      sorted.forEach((it, idx) => {
+        const tag = it.existingNum ? `【已有 #${it.existingNum}】` : '【新增】';
+        lines.push(`### ${idx + 1}. ${tag}${it.name}`);
+        const meta = [];
+        if (it.creator) meta.push(`博主：${it.creator}`);
+        if (it.duration) meta.push(`时长：${it.duration}`);
+        if (it.posture) meta.push(`姿势：${it.posture}`);
+        if (it.goals && it.goals.length) meta.push(`目标：${it.goals.map(g => GOAL_LABEL[g]).join(' / ')}`);
+        if (meta.length) lines.push('- ' + meta.join('  ·  '));
+        if (it.link) lines.push(`- 链接：${it.link}`);
+        if (it.notes) lines.push(`- 备注：${it.notes}`);
+        lines.push('');
+      });
+    });
+
+    return lines.join('\n');
+  }
+
+  const modalMask = document.getElementById('modal-mask');
+  const exportText = document.getElementById('export-text');
+  const copiedMsg = document.getElementById('copied-msg');
+
+  document.getElementById('export-btn').addEventListener('click', () => {
+    exportText.value = buildExportText();
+    copiedMsg.style.display = 'none';
+    modalMask.classList.add('show');
+    setTimeout(() => exportText.select(), 50);
+  });
+  document.getElementById('modal-close').addEventListener('click', () => modalMask.classList.remove('show'));
+  document.getElementById('modal-close-2').addEventListener('click', () => modalMask.classList.remove('show'));
+  modalMask.addEventListener('click', (e) => { if (e.target === modalMask) modalMask.classList.remove('show'); });
+
+  document.getElementById('copy-btn').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(exportText.value);
+      copiedMsg.style.display = '';
+    } catch (err) {
+      exportText.select();
+      document.execCommand('copy');
+      copiedMsg.style.display = '';
+    }
+  });
+
+  render();
+</script>
+</body>
+</html>

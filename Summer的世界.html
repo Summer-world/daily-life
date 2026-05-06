@@ -29,13 +29,16 @@
   body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; line-height: 1.7; }
 
   /* ========== 顶部导航 ========== */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--surface);
+  }
   header.top {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
     padding: 1.25rem 2rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 50;
   }
   .top-inner { max-width: 980px; margin: 0 auto; }
   .top-row {
@@ -211,6 +214,7 @@
     border-radius: 12px;
     padding: 1.1rem 1.3rem;
     margin-bottom: 0.85rem;
+    scroll-margin-top: 185px;
   }
   .combo-title {
     font-family: 'Noto Serif SC', serif;
@@ -314,22 +318,75 @@
   .counter-btn:disabled { opacity: 0.35; cursor: not-allowed; }
   .counter-btn:disabled:hover { background: var(--surface); color: var(--text-secondary); border-color: var(--border-dark); }
 
+  /* 时段卡里的"动作快记"小按钮 */
+  .action-link {
+    display: inline-block;
+    padding: 1px 9px;
+    margin: 1px 1px;
+    font-family: inherit;
+    font-size: 0.82rem;
+    background: var(--surface);
+    border: 1px solid var(--border-dark);
+    border-radius: 99px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    line-height: 1.5;
+  }
+  .action-link:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+  .action-link.recently { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .action-link.recently::after { content: ' ✓'; }
+
   /* 单动作紧凑计数（详情表里） */
   .action-counter { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
   .action-counter .count { font-family: 'Noto Serif SC', serif; font-weight: 600; min-width: 18px; text-align: center; font-size: 0.88rem; color: var(--text-primary); }
   .action-counter .counter-btn { padding: 1px 8px; font-size: 0.78rem; min-width: 26px; line-height: 1.4; }
 
-  /* 时段卡内的"推荐组合"链接 */
-  .combo-suggest { margin-top: 0.85rem; padding-top: 0.7rem; border-top: 1px dashed var(--border); font-size: 0.78rem; line-height: 1.9; }
-  .combo-suggest .label { color: var(--text-hint); margin-right: 6px; font-size: 0.72rem; }
-  .combo-link { display: inline-block; padding: 3px 11px; margin: 2px 5px 2px 0; border-radius: 99px; text-decoration: none; font-size: 0.74rem; font-weight: 500; transition: all 0.15s; }
-  .combo-link.stamina { background: var(--gold-light); color: var(--gold); }
-  .combo-link.shape { background: var(--accent-light); color: var(--accent); }
-  .combo-link.rest { background: var(--info-light); color: var(--info); }
-  .combo-link:hover { transform: translateY(-1px); box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
-  .combo-link.stamina:hover { background: var(--gold); color: #fff; }
-  .combo-link.shape:hover { background: var(--accent); color: #fff; }
-  .combo-link.rest:hover { background: var(--info); color: #fff; }
+  /* 时段卡内的"推荐组合"预览 */
+  .combo-suggest { margin-top: 0.85rem; padding-top: 0.7rem; border-top: 1px dashed var(--border); }
+  .combo-suggest .label { display: block; color: var(--text-hint); font-size: 0.72rem; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+  .combo-preview {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    padding: 8px 12px;
+    margin: 5px 0;
+    border-radius: 8px;
+    border-left: 3px solid transparent;
+    background: var(--surface);
+  }
+  .combo-preview.stamina { border-left-color: var(--gold); background: var(--gold-light); }
+  .combo-preview.shape   { border-left-color: var(--accent); background: var(--accent-light); }
+  .combo-preview.rest    { border-left-color: var(--info); background: var(--info-light); }
+  .cp-main { flex: 1; min-width: 0; }
+  .cp-title { display: block; font-size: 0.84rem; font-weight: 500; margin-bottom: 2px; }
+  .combo-preview.stamina .cp-title { color: var(--gold); }
+  .combo-preview.shape   .cp-title { color: var(--accent); }
+  .combo-preview.rest    .cp-title { color: var(--info); }
+  .cp-flow { display: block; font-size: 0.76rem; color: var(--text-secondary); line-height: 1.5; }
+  .cp-tracker {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    padding-left: 8px;
+    border-left: 1px dashed rgba(0,0,0,0.08);
+  }
+  .cp-count {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    min-width: 18px;
+    text-align: center;
+  }
+  .combo-preview.stamina .cp-count { color: var(--gold); }
+  .combo-preview.shape   .cp-count { color: var(--accent); }
+  .combo-preview.rest    .cp-count { color: var(--info); }
+  .cp-tracker .counter-btn { padding: 2px 8px; font-size: 0.78rem; min-width: 24px; line-height: 1.4; }
+  @media (max-width: 600px) {
+    .combo-preview { flex-wrap: wrap; }
+    .cp-tracker { padding-left: 0; border-left: none; border-top: 1px dashed rgba(0,0,0,0.08); padding-top: 6px; margin-top: 4px; width: 100%; justify-content: flex-end; }
+  }
 
   /* 详情库折叠 */
   .detail-toggle { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.85rem 1.3rem; margin: 1.25rem 0 1rem; cursor: pointer; font-family: inherit; font-size: 0.88rem; color: var(--text-secondary); width: 100%; text-align: left; display: flex; align-items: center; gap: 8px; box-shadow: var(--shadow); transition: background 0.15s; }
@@ -350,6 +407,65 @@
 
   footer { text-align: center; padding: 2rem; font-size: 0.7rem; color: var(--text-hint); }
 
+  /* ========== 侧边目录 ========== */
+  .side-toc {
+    position: fixed;
+    top: 170px;
+    left: 1.25rem;
+    width: 168px;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+    background: var(--surface);
+    border: 1px solid var(--border-dark);
+    border-radius: 12px;
+    padding: 0.95rem 0.7rem;
+    box-shadow: var(--shadow);
+    z-index: 40;
+  }
+  .side-toc-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-hint);
+    letter-spacing: 0.12em;
+    margin: 0 0 0.55rem 0.5rem;
+    text-transform: uppercase;
+  }
+  .side-toc ul { list-style: none; padding: 0; margin: 0; }
+  .side-toc li { margin: 1px 0; }
+  .side-toc a {
+    display: block;
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: 6px;
+    border-left: 2px solid transparent;
+    line-height: 1.45;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .side-toc a:hover { background: var(--bg); color: var(--text-primary); }
+  .side-toc a.active {
+    color: var(--accent);
+    background: var(--accent-light);
+    border-left-color: var(--accent);
+    font-weight: 500;
+  }
+  .side-toc-sub { list-style: none; padding: 0; margin: 1px 0 4px 0; }
+  .side-toc-sub a {
+    font-size: 0.72rem;
+    padding: 4px 8px 4px 18px;
+    color: var(--text-hint);
+  }
+  .side-toc-sub a:hover { background: var(--bg); color: var(--text-secondary); }
+  .side-toc-sub a.active { background: var(--accent-light); color: var(--accent); }
+  .panel:not(.active) .side-toc { display: none; }
+  .toc-anchor { scroll-margin-top: 185px; }
+
+  @media (max-width: 1200px) {
+    .side-toc { display: none; }
+  }
+
   @media (max-width: 640px) {
     header.top { padding: 1rem 1rem 0; }
     .sub-nav { padding: 0.6rem 1rem; }
@@ -360,76 +476,144 @@
 </head>
 <body>
 
-<header class="top">
-  <div class="top-inner">
-    <div class="top-row">
-      <h1>Summer 的世界</h1>
-      <span class="sub">关于生活的一切</span>
+<div class="topbar">
+  <header class="top">
+    <div class="top-inner">
+      <div class="top-row">
+        <h1>Summer 的世界</h1>
+        <span class="sub">关于生活的一切</span>
+      </div>
+      <div class="main-tabs" id="main-tabs">
+        <button class="main-tab active" data-tab="today">今天</button>
+      </div>
     </div>
-    <div class="main-tabs" id="main-tabs">
-      <button class="main-tab active" data-tab="today">今天</button>
+  </header>
+
+  <div class="sub-nav show" id="sub-nav-today">
+    <div class="sub-nav-inner">
+      <button class="sub-tab active" data-sub="daily">日常</button>
+      <button class="sub-tab" data-sub="wardrobe">穿搭</button>
+      <button class="sub-tab" data-sub="menu">菜单</button>
     </div>
   </div>
-</header>
 
-<div class="sub-nav show" id="sub-nav-today">
-  <div class="sub-nav-inner">
-    <button class="sub-tab active" data-sub="daily">日常</button>
-    <button class="sub-tab" data-sub="wardrobe">穿搭</button>
-    <button class="sub-tab" data-sub="menu">菜单</button>
+  <div class="sub-nav" id="sub-nav-wisdom">
+    <div class="sub-nav-inner">
+      <button class="sub-tab active" data-sub="wisdom-godtalk">与神对话</button>
+      <button class="sub-tab" data-sub="wisdom-mother">母爱的羁绊</button>
+      <button class="sub-tab" data-sub="wisdom-gentle">最温柔的教养</button>
+      <button class="sub-tab" data-sub="wisdom-energy">精力管理</button>
+    </div>
   </div>
 </div>
 
 <!-- ============ 今天 / 穿搭 ============ -->
 <div class="panel" id="panel-wardrobe">
   <div class="iframe-wrap">
-    <iframe data-src="Summer的衣橱.html" title="穿搭"></iframe>
+    <iframe data-src="内容/Summer的衣橱.html" title="穿搭"></iframe>
   </div>
 </div>
 
 <!-- ============ 今天 / 菜单 ============ -->
 <div class="panel" id="panel-menu">
   <div class="iframe-wrap">
-    <iframe data-src="菜单灵感库.html" title="菜单"></iframe>
+    <iframe data-src="内容/菜单灵感库.html" title="菜单"></iframe>
   </div>
 </div>
 
 <!-- ============ 今天 / 日常 ============ -->
 <div class="panel active" id="panel-daily">
+
+  <aside class="side-toc" id="side-toc">
+    <div class="side-toc-title">目录</div>
+    <ul>
+      <li>
+        <a href="#toc-rhythm" class="active">今日的节奏</a>
+        <ul class="side-toc-sub">
+          <li><a href="#toc-morning">🌅 晨起</a></li>
+          <li><a href="#toc-day">☀️ 白天与间歇</a></li>
+          <li><a href="#toc-evening">🌇 傍晚修复</a></li>
+          <li><a href="#toc-postemma">🌙 Emma 睡后</a></li>
+          <li><a href="#toc-bedtime">😴 睡前</a></li>
+        </ul>
+      </li>
+      <li><a href="#toc-weekly">周固定</a></li>
+      <li><a href="#toc-period">经期护理</a></li>
+      <li><a href="#toc-hobby">日常兴趣爱好</a></li>
+      <li><a href="#toc-fitness">运动笔记目录</a></li>
+    </ul>
+  </aside>
+
   <div class="inline-content">
 
-    <div class="section-heading">今日的节奏</div>
+    <div class="section-heading toc-anchor" id="toc-rhythm">今日的节奏</div>
 
-    <div class="card">
+    <div class="card toc-anchor" id="toc-morning">
       <div class="card-title"><span class="icon">🌅</span>晨起 90 分钟</div>
       <div class="group-title">为精力充沛的一天定调</div>
       <ul class="list">
         <li><strong>迎接晨光：</strong>醒来后尽快接触自然光，唤醒身体</li>
         <li><strong>吃一顿丰盛的早餐：</strong>为身体提供能量</li>
         <li><strong>开启一天：</strong>低强度锻炼或浏览资讯，从容开启</li>
-        <li><strong>可选轻锻炼：</strong>八段锦 (#29) / Nadi Shodhana 呼吸 (#1) / Zoey 站立拉伸 (#7)</li>
+        <li><strong>可选轻锻炼：</strong><button class="action-link" data-num="33">八段锦 #33</button> <button class="action-link" data-num="1">Nadi 呼吸 #1</button> <button class="action-link" data-num="8">Zoey 站立拉伸 #8</button> <button class="action-link" data-num="40">第八套广播 #40</button> <button class="action-link" data-num="39">第九套广播 #39</button></li>
       </ul>
       <p class="para" style="font-size:.78rem;color:var(--text-hint);font-style:italic;margin-top:.6rem;">早起后家里安静的空白时光是最重要的独处时间——有就很好，没有也不垮。</p>
       <div class="combo-suggest">
-        <span class="label">推荐组合：</span>
-        <a class="combo-link rest" href="#combo-rest-morning">🌿 轻唤醒 15min</a>
-        <a class="combo-link stamina" href="#combo-stamina-fast">🔥 快速 10min</a>
-        <a class="combo-link shape" href="#combo-shape-fast">💪 快速 10min</a>
+        <span class="label">推荐组合（直接 +/− 记录）</span>
+        <div class="combo-preview rest" data-combo-id="combo-rest-morning">
+          <div class="cp-main"><span class="cp-title">🌿 轻唤醒 15min</span><span class="cp-flow">Nadi 呼吸（3min）→ Zoey 站立拉伸（10min）→ 真空腹（2min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-morning')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-morning')">+</button></div>
+        </div>
+        <div class="combo-preview rest" data-combo-id="combo-rest-detox">
+          <div class="cp-main"><span class="cp-title">🌿 晨起排毒 15min</span><span class="cp-flow">清晨排毒瑜伽（10min）→ 仙人揉腹（5min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-detox')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-detox')">+</button></div>
+        </div>
+        <div class="combo-preview stamina" data-combo-id="combo-stamina-fast">
+          <div class="cp-main"><span class="cp-title">🔥 快速 10min</span><span class="cp-flow">一首歌热身（4min）→ 跳绳（5min）→ 拉伸（1min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-fast')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-fast')">+</button></div>
+        </div>
+        <div class="combo-preview shape" data-combo-id="combo-shape-core">
+          <div class="cp-main"><span class="cp-title">💪 核心快速 10min</span><span class="cp-flow">真空腹（3min）→ 腹横肌激活（5min）→ 仙人揉腹（2min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-core')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-core')">+</button></div>
+        </div>
+        <div class="combo-preview shape" data-combo-id="combo-shape-yoga">
+          <div class="cp-main"><span class="cp-title">💪 晨起燃脂瑜伽 10min</span><span class="cp-flow">清晨燃脂瑜伽（10min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-yoga')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-yoga')">+</button></div>
+        </div>
+        <div class="combo-preview stamina" data-combo-id="combo-stamina-quick">
+          <div class="cp-main"><span class="cp-title">🔥 簿肌快练 9min</span><span class="cp-flow">一首歌热身（4min）→ 簿肌修炼·居家无器械（5min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-quick')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-quick')">+</button></div>
+        </div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card toc-anchor" id="toc-day">
       <div class="card-title"><span class="icon">☀️</span>白天与间歇</div>
       <div class="group-title">每隔 90 分钟，找机会修复</div>
       <ul class="list">
         <li><strong>午后小睡（1–3 点）：</strong>30 分钟最佳；闭目养神也行</li>
         <li><strong>每隔 90 min 休息片刻：</strong>冥想或把玩个人物品</li>
-        <li><strong>工位微动作：</strong>腹横肌激活 (#14) / 真空腹 (#15) / 在工位上偷偷变美 (#18)</li>
+        <li><strong>工位微动作：</strong><button class="action-link" data-num="17">腹横肌激活 #17</button> <button class="action-link" data-num="18">真空腹 #18</button> <button class="action-link" data-num="23">骨科腰椎操 #23</button> <button class="action-link" data-num="15">极度舒适拉伸 #15</button></li>
         <li><strong>鼻呼吸：</strong>尽量贯穿全天</li>
       </ul>
+      <div class="combo-suggest">
+        <span class="label">推荐组合（午休 / 下班前 / 短间歇）</span>
+        <div class="combo-preview rest" data-combo-id="combo-rest-posture">
+          <div class="cp-main"><span class="cp-title">🌿 体态快练 6min</span><span class="cp-flow">女明星仪态管理（3min）→ 骨科专家腰椎操（3min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-posture')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-posture')">+</button></div>
+        </div>
+        <div class="combo-preview shape" data-combo-id="combo-shape-core">
+          <div class="cp-main"><span class="cp-title">💪 核心快速 10min</span><span class="cp-flow">真空腹（3min）→ 腹横肌激活（5min）→ 仙人揉腹（2min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-core')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-core')">+</button></div>
+        </div>
+        <div class="combo-preview rest" data-combo-id="combo-rest-morning">
+          <div class="cp-main"><span class="cp-title">🌿 轻唤醒 15min · 午后小睡后做</span><span class="cp-flow">Nadi 呼吸（3min）→ Zoey 站立拉伸（10min）→ 真空腹（2min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-morning')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-morning')">+</button></div>
+        </div>
+      </div>
     </div>
 
-    <div class="card">
+    <div class="card toc-anchor" id="toc-evening">
       <div class="card-title"><span class="icon">🌇</span>傍晚修复期（5–7 点）</div>
       <div class="group-title">第二个黄金修复时段</div>
       <ul class="list">
@@ -438,20 +622,64 @@
         <li><strong>周固定锻炼：</strong>详见下方"周固定"</li>
       </ul>
       <div class="combo-suggest">
-        <span class="label">推荐组合：</span>
-        <a class="combo-link stamina" href="#combo-stamina-std">🔥 标准 25min</a>
-        <a class="combo-link shape" href="#combo-shape-std">💪 标准 25min</a>
-        <a class="combo-link shape" href="#combo-shape-power">💪 力量 30min</a>
-        <a class="combo-link stamina" href="#combo-stamina-deep">🔥 扎实 35min</a>
+        <span class="label">推荐组合（直接 +/− 记录）</span>
+        <div class="combo-preview stamina" data-combo-id="combo-stamina-std">
+          <div class="cp-main"><span class="cp-title">🔥 标准 20min · HIIT</span><span class="cp-flow">一首歌热身（4min）→ HIIT 欢乐训练（10min）→ 仙人揉腹（3min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-std')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-std')">+</button></div>
+        </div>
+        <div class="combo-preview stamina" data-combo-id="combo-stamina-power">
+          <div class="cp-main"><span class="cp-title">🔥 哑铃力量 30min</span><span class="cp-flow">八段锦（12min）→ 一副哑铃练全身（15min）→ 仙人揉腹（3min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-power')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-power')">+</button></div>
+        </div>
+        <div class="combo-preview stamina" data-combo-id="combo-stamina-cardio">
+          <div class="cp-main"><span class="cp-title">🔥 帕梅拉广播 19min</span><span class="cp-flow">一首歌热身（4min）→ 帕梅拉广播体操（15min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-cardio')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-cardio')">+</button></div>
+        </div>
+        <div class="combo-preview stamina" data-combo-id="combo-stamina-burn">
+          <div class="cp-main"><span class="cp-title">🔥 减脂操 19min</span><span class="cp-flow">一首歌热身（4min）→ 欧阳春晓有氧减脂操（15min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-burn')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-burn')">+</button></div>
+        </div>
+        <div class="combo-preview stamina" data-combo-id="combo-stamina-slowrun">
+          <div class="cp-main"><span class="cp-title">🔥 超慢跑 40min · 周末</span><span class="cp-flow">一首歌热身（4min）→ 180 步频超慢跑（40min）→ 360 度腿部拉伸（5min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-slowrun')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-slowrun')">+</button></div>
+        </div>
+        <div class="combo-preview shape" data-combo-id="combo-shape-belly">
+          <div class="cp-main"><span class="cp-title">💪 腹部扎实 18min</span><span class="cp-flow">真空腹（3min）→ 萨尔曼瘦肚子（5min）→ 腹横肌激活（5min）→ 古法内脏脂肪操（5min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-belly')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-belly')">+</button></div>
+        </div>
+        <div class="combo-preview shape" data-combo-id="combo-shape-leghip">
+          <div class="cp-main"><span class="cp-title">💪 腿臀套餐 32min</span><span class="cp-flow">林芊妤瘦腿（10min）→ 坐姿练臀弹力带（5min）→ 韩小四膝超伸（10min）→ 臀腿完整拉伸（7min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-leghip')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-leghip')">+</button></div>
+        </div>
+        <div class="combo-preview shape" data-combo-id="combo-shape-power">
+          <div class="cp-main"><span class="cp-title">💪 力量综合 30min</span><span class="cp-flow">真空腹（3min）→ 林芊妤瘦腿（10min）→ 坐姿练臀（5min）→ 一副哑铃练全身（10min）→ 拉伸（2min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-power')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-power')">+</button></div>
+        </div>
+        <div class="combo-preview shape" data-combo-id="combo-shape-back">
+          <div class="cp-main"><span class="cp-title">💪 美背修身 20min</span><span class="cp-flow">谁懂丝滑美背的杀伤力（15min）→ 居家哑铃背部跟练（5min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-back')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-back')">+</button></div>
+        </div>
+        <div class="combo-preview shape" data-combo-id="combo-shape-hip">
+          <div class="cp-main"><span class="cp-title">💪 假胯宽专项 14min</span><span class="cp-flow">一首歌热身（4min）→ 根除小肚腩·告别假胯宽（10min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-hip')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-hip')">+</button></div>
+        </div>
+        <div class="combo-preview shape" data-combo-id="combo-shape-arch">
+          <div class="cp-main"><span class="cp-title">💪 足弓训练 10min</span><span class="cp-flow">完善足弓训练·矫正腿型（10min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-arch')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-arch')">+</button></div>
+        </div>
+        <div class="combo-preview shape" data-combo-id="combo-shape-archdeep">
+          <div class="cp-main"><span class="cp-title">💪 足弓深度 20min · 周末</span><span class="cp-flow">足弓弹性重建 4.0（20min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-archdeep')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-archdeep')">+</button></div>
+        </div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card toc-anchor" id="toc-postemma">
       <div class="card-title"><span class="icon">🌙</span>Emma 睡后独处</div>
       <div class="group-title">每天的锚点</div>
       <ul class="list">
         <li><strong>状态好的时候：</strong>刷剧、做羊毛毡、弹琴练歌</li>
-        <li><strong>状态不好的时候：</strong>床上拉伸、精油按摩、JJ 老师全身拉伸 (#6)、睡前躺练 (#8)</li>
+        <li><strong>状态不好的时候：</strong>床上拉伸、精油按摩、<button class="action-link" data-num="7">JJ 全身拉伸 #7</button> <button class="action-link" data-num="9">全程躺练 #9</button> <button class="action-link" data-num="6">颂钵冥想 #6</button></li>
         <li><strong>幸福笔记：</strong>只记开心幸福的瞬间，不记流水账</li>
         <li><strong>手机停止信号：</strong>身体发出信号（眼睛累/头不舒服）→ 起身换地方 → 放下手机</li>
       </ul>
@@ -459,13 +687,27 @@
         <div class="highlight-text">独处<strong>质量</strong>比独处<strong>时长</strong>更重要——累的时候独处质量很差。<strong>幸福感以自我为核心，不依附他人。</strong></div>
       </div>
       <div class="combo-suggest">
-        <span class="label">推荐组合：</span>
-        <a class="combo-link rest" href="#combo-rest-posture">🌿 体态激活 20min</a>
-        <a class="combo-link rest" href="#combo-rest-deep">🌿 深度放松 25min</a>
+        <span class="label">推荐组合（直接 +/− 记录）</span>
+        <div class="combo-preview rest" data-combo-id="combo-rest-shoulder">
+          <div class="cp-main"><span class="cp-title">🌿 肩颈背修复 20min</span><span class="cp-flow">振谐呼吸（2min）→ 肩颈背动态拉伸（10min）→ 告别圆肩驼背 YTWL（8min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-shoulder')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-shoulder')">+</button></div>
+        </div>
+        <div class="combo-preview rest" data-combo-id="combo-rest-deep">
+          <div class="cp-main"><span class="cp-title">🌿 深度放松 25min</span><span class="cp-flow">全身扫描（5min）→ JJ 老师全身拉伸（15min）→ 小腿精油按摩（5min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-deep')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-deep')">+</button></div>
+        </div>
+        <div class="combo-preview rest" data-combo-id="combo-rest-bowl">
+          <div class="cp-main"><span class="cp-title">🌿 颂钵助眠 15min</span><span class="cp-flow">颂钵冥想（10min）→ 自我疗愈和关爱冥想（5min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-bowl')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-bowl')">+</button></div>
+        </div>
+        <div class="combo-preview rest" data-combo-id="combo-rest-posture">
+          <div class="cp-main"><span class="cp-title">🌿 体态快练 6min</span><span class="cp-flow">女明星仪态管理（3min）→ 骨科专家腰椎操（3min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-posture')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-posture')">+</button></div>
+        </div>
       </div>
     </div>
 
-    <div class="card">
+    <div class="card toc-anchor" id="toc-bedtime">
       <div class="card-title"><span class="icon">😴</span>睡前 90 分钟</div>
       <div class="group-title">进入睡眠的热身</div>
       <ul class="list">
@@ -478,26 +720,33 @@
       </ul>
       <div class="warn">⚠️ 度假或旅行后容易忘记重启程序，是状态变差的主要原因之一。</div>
       <div class="combo-suggest">
-        <span class="label">推荐组合：</span>
-        <a class="combo-link rest" href="#combo-rest-bedtime">🌿 睡前 10min</a>
+        <span class="label">推荐组合（直接 +/− 记录）</span>
+        <div class="combo-preview rest" data-combo-id="combo-rest-bedtime">
+          <div class="cp-main"><span class="cp-title">🌿 睡前 15min</span><span class="cp-flow">全程躺练（5min）→ 掰正骨盆懒人版（5min）→ 仙人揉腹（3min）→ 自我肯定冥想（2min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-bedtime')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-bedtime')">+</button></div>
+        </div>
+        <div class="combo-preview rest" data-combo-id="combo-rest-bowl">
+          <div class="cp-main"><span class="cp-title">🌿 颂钵助眠 15min</span><span class="cp-flow">颂钵冥想（10min）→ 自我疗愈和关爱冥想（5min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-bowl')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-bowl')">+</button></div>
+        </div>
       </div>
     </div>
 
-    <div class="section-heading">周固定</div>
+    <div class="section-heading toc-anchor" id="toc-weekly">周固定</div>
     <div class="card">
       <table>
         <thead><tr><th>时间</th><th>内容</th></tr></thead>
         <tbody>
-          <tr><td>周六早</td><td>Emma 攀岩课，自己 / 丈夫在攀岩馆健身房锻炼</td></tr>
+          <tr><td>每晚</td><td>每周 20 个 Anki 中文字 · 爸爸带 Emma 指读故事</td></tr>
           <tr><td>周一晚</td><td>Emma 游泳课，自己 / 丈夫同步游泳</td></tr>
           <tr><td>周二晚</td><td>和丈夫一起做 JJ 老师瑜伽 1 小时</td></tr>
+          <tr><td>周六早</td><td>Emma 攀岩课，自己 / 丈夫在攀岩馆健身房锻炼</td></tr>
           <tr><td>周末</td><td>不定期国家公园 hiking</td></tr>
-          <tr><td>每晚</td><td>全家共读《哈利波特》英文版</td></tr>
         </tbody>
       </table>
     </div>
 
-    <div class="section-heading">经期护理</div>
+    <div class="section-heading toc-anchor" id="toc-period">经期护理</div>
     <div class="card">
       <table>
         <thead><tr><th>类别</th><th>要点</th></tr></thead>
@@ -509,27 +758,102 @@
           <tr><td>情绪</td><td>接纳激素波动带来的烦躁低落，安排泡澡 / 看剧 / 听音乐等舒缓活动，记录周期与状态</td></tr>
         </tbody>
       </table>
+
+      <div class="group-title" style="margin-top:1.5rem">推荐运动</div>
+      <div class="warn">⚠️ 经期避免：跳绳 / HIIT / 哑铃负重 / 真空腹 / 腹横肌 / 萨尔曼瘦肚子 / 假胯宽 等高冲击或腹腔加压动作；揉腹可能增加经量也建议跳过</div>
+
+      <div class="group-title" style="font-size:.7rem;margin-top:1rem;color:var(--rose)">量大的 1–2 天 · 休息为主 + 情绪安抚</div>
+      <p class="para" style="margin-bottom:.5rem;">
+        <button class="action-link" data-num="2">振谐呼吸 #2</button>
+        <button class="action-link" data-num="3">全身扫描 #3</button>
+        <button class="action-link" data-num="5">自我疗愈冥想 #5</button>
+        <button class="action-link" data-num="6">颂钵冥想 #6</button>
+        <button class="action-link" data-num="30">小腿精油按摩 #30</button>
+      </p>
+      <div class="combo-preview rest" data-combo-id="combo-rest-bowl">
+        <div class="cp-main"><span class="cp-title">🌿 颂钵助眠 15min</span><span class="cp-flow">颂钵冥想（10min）→ 自我疗愈和关爱冥想（5min）</span></div>
+        <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-bowl')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-bowl')">+</button></div>
+      </div>
+
+      <div class="group-title" style="font-size:.7rem;margin-top:1.25rem;color:var(--accent)">后半段恢复 · 温和拉伸 + 低冲击</div>
+      <p class="para" style="margin-bottom:.5rem;">
+        <button class="action-link" data-num="33">八段锦 #33</button>
+        <button class="action-link" data-num="12">肩颈背拉伸 #12</button>
+        <button class="action-link" data-num="15">极度舒适拉伸 #15</button>
+        <button class="action-link" data-num="11">臀腿完整拉伸 #11</button>
+        <button class="action-link" data-num="14">360 度腿部拉伸 #14</button>
+        <button class="action-link" data-num="34">180 步频超慢跑 #34</button>
+      </p>
+      <div class="combo-preview rest" data-combo-id="combo-rest-deep">
+        <div class="cp-main"><span class="cp-title">🌿 深度放松 25min</span><span class="cp-flow">全身扫描（5min）→ JJ 老师全身拉伸（15min）→ 小腿精油按摩（5min）</span></div>
+        <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-deep')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-deep')">+</button></div>
+      </div>
+      <div class="combo-preview rest" data-combo-id="combo-rest-shoulder">
+        <div class="cp-main"><span class="cp-title">🌿 肩颈背修复 20min</span><span class="cp-flow">振谐呼吸（2min）→ 肩颈背动态拉伸（10min）→ 告别圆肩驼背 YTWL（8min）</span></div>
+        <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-shoulder')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-shoulder')">+</button></div>
+      </div>
     </div>
 
-    <div class="section-heading">兴趣爱好（自由项库）</div>
+    <div class="section-heading toc-anchor" id="toc-hobby">日常兴趣爱好</div>
 
     <div class="card">
-      <div class="card-title"><span class="icon">📚</span>阅读</div>
-      <p class="para"><strong>最喜欢的书：</strong>《与神对话》</p>
-      <p class="para"><strong>喜爱作者：</strong>刘慈欣、莫言（主要作品均已读完）</p>
-      <p class="para"><strong>偏好实用主义书籍：</strong></p>
-      <div style="margin: 0.5rem 0 0.8rem;">
-        <span class="tag">精力管理</span>
-        <span class="tag">时间管理</span>
-        <span class="tag">睡眠革命</span>
-        <span class="tag">呼吸革命</span>
-        <span class="tag">断舍离</span>
-        <span class="tag">控糖革命</span>
-      </div>
-      <p class="para"><strong>当前在读：</strong>英文版《哈利波特》（全家每晚一起读）</p>
+      <div class="card-title"><span class="icon">🌷</span>8 项日常爱好 · 附生理性好处</div>
+      <p class="para" style="font-size:.78rem;color:var(--text-hint);font-style:italic;margin-bottom:.85rem;">
+        知道为什么做有意义，更容易在没动力的时候坚持
+      </p>
+      <ul class="list">
+        <li>
+          <strong>📝 写幸福日记</strong>
+          <div style="font-size:.78rem;color:var(--text-hint);margin-top:3px;line-height:1.65;">
+            ↓ 皮质醇 · ↑ 血清素 · 强化迷走神经张力 · 改善睡眠质量 · 巩固积极情绪神经回路
+          </div>
+        </li>
+        <li>
+          <strong>🎵 听音乐</strong>
+          <div style="font-size:.78rem;color:var(--text-hint);margin-top:3px;line-height:1.65;">
+            激活伏隔核释放多巴胺 · 降低血压与静息心率 · 减少皮质醇 · 同步呼吸节律带来放松
+          </div>
+        </li>
+        <li>
+          <strong>🧶 玩羊毛毡</strong>
+          <div style="font-size:.78rem;color:var(--text-hint);margin-top:3px;line-height:1.65;">
+            重复手工进入心流 · 副交感神经主导 · 触觉输入缓解焦虑 · 训练手部精细动作与专注
+          </div>
+        </li>
+        <li>
+          <strong>📚 阅读</strong>
+          <div style="font-size:.78rem;color:var(--text-hint);margin-top:3px;line-height:1.65;">
+            6 分钟阅读可降压 68%（Sussex 大学研究）· 减缓心率 · 维持大脑灰质连接 · 延缓认知衰退
+          </div>
+        </li>
+        <li>
+          <strong>🎤 学习唱歌</strong>
+          <div style="font-size:.78rem;color:var(--text-hint);margin-top:3px;line-height:1.65;">
+            释放内啡肽与催产素 · 深呼吸提升肺活量 · 声带振动按摩内脏 · 激活迷走神经
+          </div>
+        </li>
+        <li>
+          <strong>🗂️ 整理收纳</strong>
+          <div style="font-size:.78rem;color:var(--text-hint);margin-top:3px;line-height:1.65;">
+            视觉秩序降低皮质醇 · 完成感释放多巴胺 · 减少决策疲劳 · 改善睡眠
+          </div>
+        </li>
+        <li>
+          <strong>🍃 断舍离</strong>
+          <div style="font-size:.78rem;color:var(--text-hint);margin-top:3px;line-height:1.65;">
+            减少环境刺激降低背景焦虑 · 提升前额叶执行能力 · 节省心智带宽 · 增强自我效能感
+          </div>
+        </li>
+        <li>
+          <strong>🎨 画画</strong>
+          <div style="font-size:.78rem;color:var(--text-hint);margin-top:3px;line-height:1.65;">
+            45 分钟艺术创作显著降低皮质醇（Drexel 大学研究）· 激活前额叶奖赏区 · 心流副交感主导
+          </div>
+        </li>
+      </ul>
     </div>
 
-    <div class="section-heading">运动笔记目录（详情库）</div>
+    <div class="section-heading toc-anchor" id="toc-fitness">运动笔记目录（详情库）</div>
 
     <div class="card weekly-tracker">
       <div class="card-title"><span class="icon">🎯</span>本周完成情况</div>
@@ -554,171 +878,52 @@
       </div>
     </div>
 
-    <div class="section-heading">常用组合参考</div>
+    <a href="运动参考库.html" target="_blank" style="display:flex;align-items:center;gap:8px;background:var(--info-light);border:1px dashed var(--info);color:var(--info);border-radius:12px;padding:0.85rem 1.3rem;margin:0 0 1rem;text-decoration:none;font-size:0.85rem;">
+      <span>📋</span>
+      <span>运动参考库</span>
+      <span style="margin-left:auto;font-size:0.74rem;color:var(--text-hint);">23 个组合 + 44 项动作详情 →</span>
+    </a>
 
-    <div class="combo-group-label stamina-label">🔥 体能向（本周目标 2 次）</div>
-
-    <div class="combo-card combo-stamina" data-goal="stamina" id="combo-stamina-fast">
-      <div class="combo-title">快速 10min</div>
-      <div class="combo-flow">八段锦节选（5min）→ 跳绳（5min）</div>
-    </div>
-
-    <div class="combo-card combo-stamina" data-goal="stamina" id="combo-stamina-std">
-      <div class="combo-title">标准 25min</div>
-      <div class="combo-flow">Nadi Shodhana 呼吸（3min）→ 跳绳 5min×3（15min）→ 拉伸（2min）</div>
-    </div>
-
-    <div class="combo-card combo-stamina" data-goal="stamina" id="combo-stamina-deep">
-      <div class="combo-title">扎实 35min</div>
-      <div class="combo-flow">振谐呼吸（3min）→ 八段锦（15min）→ 哑铃全身（15min）→ 仙人揉腹（2min）</div>
-    </div>
-
-    <div class="combo-group-label shape-label">💪 身材向（本周目标 3 次）</div>
-
-    <div class="combo-card combo-shape" data-goal="shape" id="combo-shape-fast">
-      <div class="combo-title">快速 10min</div>
-      <div class="combo-flow">真空腹（3min）→ 腹横肌激活（5min）→ 仙人揉腹（2min）</div>
-    </div>
-
-    <div class="combo-card combo-shape" data-goal="shape" id="combo-shape-std">
-      <div class="combo-title">标准 25min</div>
-      <div class="combo-flow">振谐呼吸（3min）→ 腹横肌激活（5min）→ 林芊妤瘦腿（8min）→ 坐姿练臀（7min）→ 拉伸（2min）</div>
-    </div>
-
-    <div class="combo-card combo-shape" data-goal="shape" id="combo-shape-power">
-      <div class="combo-title">力量 30min</div>
-      <div class="combo-flow">真空腹（3min）→ 林芊妤瘦腿（8min）→ 坐姿练臀（7min）→ 哑铃全身（10min）→ 拉伸（2min）</div>
-    </div>
-
-    <div class="combo-group-label rest-label">🌿 养护向（本周目标 7 次）</div>
-
-    <div class="combo-card combo-rest" data-goal="rest" id="combo-rest-bedtime">
-      <div class="combo-title">睡前 10min</div>
-      <div class="combo-flow">睡前躺练（5min）→ 仙人揉腹（3min）→ 自我肯定冥想（2min）</div>
-    </div>
-
-    <div class="combo-card combo-rest" data-goal="rest" id="combo-rest-morning">
-      <div class="combo-title">轻唤醒 15min</div>
-      <div class="combo-flow">Nadi Shodhana 呼吸（3min）→ Zoey 站立拉伸（10min）→ 真空腹（2min）</div>
-    </div>
-
-    <div class="combo-card combo-rest" data-goal="rest" id="combo-rest-posture">
-      <div class="combo-title">体态激活 20min</div>
-      <div class="combo-flow">振谐呼吸（3min）→ 欧阳春晓肩颈背（5min）→ 八段锦（10min）→ 仙人揉腹（2min）</div>
-    </div>
-
-    <div class="combo-card combo-rest" data-goal="rest" id="combo-rest-deep">
-      <div class="combo-title">深度放松 25min</div>
-      <div class="combo-flow">全身扫描（5min）→ JJ 老师全身拉伸（15min）→ 小腿精油按摩（5min）</div>
-    </div>
-
-    <button class="detail-toggle" id="detail-toggle" onclick="toggleDetails()">
-      <span class="arrow">▸</span>
-      <span>📋 动作详情库</span>
-      <span class="meta">29 个动作 · 平时收起</span>
-    </button>
-    <div class="detail-content" id="detail-content">
-
-    <div class="card">
-      <div class="card-title"><span class="icon">🧘</span>呼吸与冥想</div>
-      <table>
-        <thead><tr><th class="num">#</th><th>名称</th><th>姿势</th><th>说明</th></tr></thead>
-        <tbody>
-          <tr><td class="num">1</td><td>Nadi Shodhana 纳迪净化法</td><td>坐姿</td><td>交替呼吸</td></tr>
-          <tr><td class="num">2</td><td>Resonance Breathing 振谐呼吸法</td><td>坐姿</td><td>缓慢呼吸，约 6 次/分钟</td></tr>
-          <tr><td class="num">3</td><td>全身扫描</td><td>躺/坐</td><td>身体扫描冥想，注意力从头到脚逐一觉察</td></tr>
-          <tr><td class="num">4</td><td>自我肯定冥想</td><td>坐姿</td><td>冥想状态下用肯定性语言与自己对话</td></tr>
-          <tr><td class="num">5</td><td>自我疗愈和关爱冥想</td><td>坐姿</td><td>类似慈悲冥想，将温柔与关爱先送给自己</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><span class="icon">🤸</span>拉伸与放松</div>
-      <table>
-        <thead><tr><th class="num">#</th><th>名称</th><th>姿势</th><th>说明</th></tr></thead>
-        <tbody>
-          <tr><td class="num">6</td><td>JJ 老师 15 分钟全身拉伸</td><td>坐姿</td><td>偏放松，博主流程</td></tr>
-          <tr><td class="num">7</td><td>Zoey 10min 全程站立拉伸</td><td>站姿</td><td>10 分钟，放松与灵活性</td></tr>
-          <tr><td class="num">8</td><td>睡前躺练</td><td>躺姿</td><td>睡前放松，博主流程</td></tr>
-          <tr><td class="num">9</td><td>睡前体态管理</td><td>—</td><td>⚠️ 暂不使用（做了不舒服）</td></tr>
-          <tr><td class="num">10</td><td>仙人揉腹</td><td>躺/坐</td><td>手掌在腹部圆形揉按，促进肠胃蠕动</td></tr>
-          <tr><td class="num">11</td><td>掰正骨盆懒人版</td><td>躺姿</td><td>骨盆矫正</td></tr>
-          <tr><td class="num">17</td><td>腿部拉伸</td><td>站姿+地板</td><td>特定流程</td></tr>
-          <tr><td class="num">25</td><td>欧阳春晓-肩颈背动态拉伸</td><td>坐姿</td><td>欧阳春晓流程</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><span class="icon">💪</span>核心与腹部</div>
-      <table>
-        <thead><tr><th class="num">#</th><th>名称</th><th>姿势</th><th>说明</th></tr></thead>
-        <tbody>
-          <tr><td class="num">12</td><td>萨尔曼瘦肚子</td><td>躺姿</td><td>核心训练</td></tr>
-          <tr><td class="num">14</td><td>腹横肌激活</td><td>坐+躺</td><td>博主流程</td></tr>
-          <tr><td class="num">15</td><td>真空腹训练</td><td>站/坐/躺</td><td>深层核心收缩</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><span class="icon">🦴</span>体态与矫正</div>
-      <table>
-        <thead><tr><th class="num">#</th><th>名称</th><th>姿势</th><th>说明</th></tr></thead>
-        <tbody>
-          <tr><td class="num">13</td><td>女明星仪态管理</td><td>站姿</td><td>站姿矫正</td></tr>
-          <tr><td class="num">18</td><td>在工位上偷偷变美</td><td>办公椅坐姿</td><td>偏全身</td></tr>
-          <tr><td class="num">19</td><td>足弓训练</td><td>站姿</td><td>欧阳春晓流程</td></tr>
-          <tr><td class="num">21</td><td>韩小四改善膝超伸</td><td>地板</td><td>韩小四流程</td></tr>
-          <tr><td class="num">26</td><td>欧阳春晓-肩背功能性训练</td><td>站/坐/盘腿</td><td>欧阳春晓流程</td></tr>
-          <tr><td class="num">27</td><td>欧阳春晓-YTWL 肩背矫正训练</td><td>站/坐</td><td>欧阳春晓流程</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><span class="icon">🦵</span>腿部与臀部</div>
-      <table>
-        <thead><tr><th class="num">#</th><th>名称</th><th>姿势</th><th>说明</th></tr></thead>
-        <tbody>
-          <tr><td class="num">20</td><td>林芊妤特快瘦大腿</td><td>地板</td><td>林芊妤流程</td></tr>
-          <tr><td class="num">23</td><td>坐姿练臀（弹力带版）</td><td>坐姿</td><td>弹力带</td></tr>
-          <tr><td class="num">24</td><td>仰卧瘦大小腿</td><td>躺姿</td><td>博主流程</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><span class="icon">💆</span>按摩</div>
-      <table>
-        <thead><tr><th class="num">#</th><th>名称</th><th>说明</th></tr></thead>
-        <tbody>
-          <tr><td class="num">16</td><td>小腿精油按摩</td><td>欧阳春晓手法，促进循环消除疲劳</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><span class="icon">🔥</span>有氧与力量</div>
-      <table>
-        <thead><tr><th class="num">#</th><th>名称</th><th>姿势</th><th>说明</th></tr></thead>
-        <tbody>
-          <tr><td class="num">22</td><td>跳绳</td><td>站姿</td><td>博主流程</td></tr>
-          <tr><td class="num">28</td><td>站姿哑铃全身运动</td><td>站姿</td><td>哑铃</td></tr>
-          <tr><td class="num">29</td><td>八段锦</td><td>站姿</td><td>标准版</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    </div>
+    <a href="运动收集箱.html" target="_blank" style="display:flex;align-items:center;gap:8px;background:var(--gold-light);border:1px dashed var(--gold);color:var(--gold);border-radius:12px;padding:0.85rem 1.3rem;margin:0 0 1rem;text-decoration:none;font-size:0.85rem;">
+      <span>📥</span>
+      <span>运动收集箱</span>
+      <span style="margin-left:auto;font-size:0.74rem;color:var(--text-hint);">把小红书里收藏的运动加进来 →</span>
+    </a>
 
     <div class="highlight">
       <div class="highlight-text">
-        <strong>设计逻辑：</strong>每天按"今日的节奏"5 个时段走，固定锚点 + 自由项；运动详情按类别归档供查找；不需要从零规划，挑组合即可。
+        <strong>设计逻辑：</strong>每天按"今日的节奏"5 个时段走，固定锚点 + 自由项；每个时段下挂着对应组合，看完流程直接 +/− 打卡；想浏览全部 23 个组合或 44 项动作详情，去「📋 运动参考库」。
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- ============ 我的智慧 / 与神对话 ============ -->
+<div class="panel" id="panel-wisdom-godtalk">
+  <div class="iframe-wrap">
+    <iframe data-src="读书笔记/与神对话1.html" title="与神对话"></iframe>
+  </div>
+</div>
+
+<!-- ============ 我的智慧 / 母爱的羁绊 ============ -->
+<div class="panel" id="panel-wisdom-mother">
+  <div class="iframe-wrap">
+    <iframe data-src="读书笔记/母爱的羁绊.html" title="母爱的羁绊"></iframe>
+  </div>
+</div>
+
+<!-- ============ 我的智慧 / 最温柔的教养 ============ -->
+<div class="panel" id="panel-wisdom-gentle">
+  <div class="iframe-wrap">
+    <iframe data-src="读书笔记/最温柔的教养.html" title="最温柔的教养"></iframe>
+  </div>
+</div>
+
+<!-- ============ 我的智慧 / 精力管理 ============ -->
+<div class="panel" id="panel-wisdom-energy">
+  <div class="iframe-wrap">
+    <iframe data-src="读书笔记/精力管理.html" title="精力管理"></iframe>
   </div>
 </div>
 
@@ -727,6 +932,7 @@
 <script>
   const TAB_MAP = {
     today: { sub: 'today', defaultPanel: 'daily' },
+    wisdom: { sub: 'wisdom', defaultPanel: 'wisdom-godtalk' },
   };
 
   function lazyLoadIframe(panelEl) {
@@ -780,14 +986,23 @@
   // ==================== 健身周追踪 ====================
   const GOAL_LABEL = { stamina: '体能', shape: '身材', rest: '养护' };
   const ACTION_GOALS = {
-    1:['rest'], 2:['rest'], 3:['rest'], 4:['rest'], 5:['rest'],
-    6:['rest'], 7:['rest'], 8:['rest'], 9:['rest'], 10:['rest'], 11:['rest'],
-    12:['shape'], 13:['shape','rest'], 14:['shape'], 15:['shape'],
-    16:['rest'], 17:['rest'], 18:['shape','rest'], 19:['rest'],
-    20:['shape'], 21:['rest'],
-    22:['stamina','shape'], 23:['shape'], 24:['shape'],
-    25:['rest'], 26:['shape','rest'], 27:['shape','rest'],
-    28:['stamina','shape'], 29:['stamina','rest'],
+    // 呼吸与冥想
+    1:['rest'], 2:['rest'], 3:['rest'], 4:['rest'], 5:['rest'], 6:['rest'],
+    // 拉伸与放松
+    7:['rest'], 8:['rest'], 9:['rest'], 10:['rest'], 11:['rest'], 12:['rest'], 13:['rest'], 14:['rest'], 15:['rest'],
+    // 核心与腹部
+    16:['shape'], 17:['shape'], 18:['shape'],
+    // 体态与矫正
+    19:['rest'], 20:['shape','rest'], 21:['shape','rest'], 22:['shape','rest'], 23:['rest'], 24:['shape','rest'],
+    // 腿部与臀部
+    25:['shape'], 26:['shape'], 27:['shape'], 28:['shape','rest'], 29:['shape','rest'],
+    // 按摩
+    30:['rest'],
+    // 有氧与力量
+    31:['stamina','shape'], 32:['stamina','shape'], 33:['stamina','rest'],
+    34:['stamina'], 35:['stamina','shape'], 36:['shape'], 37:['rest'],
+    38:['shape','rest'], 39:['shape'], 40:['shape'], 41:['shape','rest'],
+    42:['stamina','shape'], 43:['stamina','shape'], 44:['stamina','shape'],
   };
   const LOG_KEY = 'fitness_log_v1';
   let actionLog = [];
@@ -872,14 +1087,12 @@
     const dow = today.getDay() || 7; // 周一=1, 周日=7
     const progress = dow / 7;
     const gaps = [];
-    document.querySelectorAll('.combo-card').forEach(el => el.classList.remove('needed'));
     ['stamina','shape','rest'].forEach(g => {
       const target = GOAL_TARGET[g];
       const expected = Math.ceil(target * progress);
       if (c[g] < expected) {
         const remaining = target - c[g];
         gaps.push({ goal: g, remaining });
-        document.querySelectorAll(`.combo-card[data-goal="${g}"]`).forEach(el => el.classList.add('needed'));
       }
     });
     const gapEl = document.getElementById('gap-text');
@@ -887,7 +1100,7 @@
       if (gaps.length === 0) {
         gapEl.innerHTML = '<span style="color:var(--accent)">👍 本周进度良好，按需挑组合即可</span>';
       } else {
-        gapEl.innerHTML = '📌 <strong>本周还需：</strong>' + gaps.map(g => `${GOAL_ICON[g.goal]} ${GOAL_LABEL[g.goal]} ${g.remaining} 次`).join(' · ') + '<br><span style="color:var(--text-hint);font-size:0.75rem;">下方对应组合已用 📌 标出</span>';
+        gapEl.innerHTML = '📌 <strong>本周还需：</strong>' + gaps.map(g => `${GOAL_ICON[g.goal]} ${GOAL_LABEL[g.goal]} ${g.remaining} 次`).join(' · ');
       }
     }
 
@@ -912,60 +1125,35 @@
     if (typeof updateAllActionCounters === 'function') updateAllActionCounters();
   }
 
-  function decorateActionTables() {
-    const dailyPanel = document.getElementById('panel-daily');
-    if (!dailyPanel) return;
-    // 直接找所有包含 td.num 的卡片（运动详情库的特征）
-    dailyPanel.querySelectorAll('.card').forEach(card => {
-      if (card.querySelectorAll('tbody td.num').length === 0) return;
-      const thead = card.querySelector('thead tr');
-      if (thead && !thead.dataset.decorated) {
-        thead.dataset.decorated = '1';
-        const th = document.createElement('th');
-        th.textContent = '本周';
-        th.style.width = '110px';
-        thead.appendChild(th);
-      }
-      card.querySelectorAll('tbody tr').forEach(tr => {
-        if (tr.dataset.decorated) return;
-        tr.dataset.decorated = '1';
-        const numCell = tr.querySelector('td.num');
-        if (!numCell) return;
-        const num = parseInt(numCell.textContent);
-        if (!num) return;
-        const goals = ACTION_GOALS[num] || [];
-        const nameCell = numCell.nextElementSibling;
-        if (nameCell && goals.length) {
-          const tagHtml = goals.map(g => `<span class="g-tag ${g}">${GOAL_LABEL[g]}</span>`).join('');
-          nameCell.innerHTML += '<br>' + tagHtml;
-        }
-        const td = document.createElement('td');
-        td.innerHTML =
-          `<span class="action-counter" data-num="${num}">` +
-            `<button class="counter-btn minus" onclick="actionMinus(${num})">−</button>` +
-            `<span class="count">0</span>` +
-            `<button class="counter-btn plus" onclick="actionPlus(${num})">+</button>` +
-          `</span>`;
-        tr.appendChild(td);
-      });
-    });
-    updateAllActionCounters();
-  }
-
-  decorateActionTables();
 
   // ==================== 组合一键完成 ====================
   const COMBO_ACTIONS = {
-    'combo-stamina-fast':   [29, 22],
-    'combo-stamina-std':    [1, 22],
-    'combo-stamina-deep':   [2, 29, 28, 10],
-    'combo-shape-fast':     [15, 14, 10],
-    'combo-shape-std':      [2, 14, 20, 23],
-    'combo-shape-power':    [15, 20, 23, 28],
-    'combo-rest-bedtime':   [8, 10, 4],
-    'combo-rest-morning':   [1, 7, 15],
-    'combo-rest-posture':   [2, 25, 29, 10],
-    'combo-rest-deep':      [3, 6, 16],
+    // 🔥 体能向
+    'combo-stamina-fast':    [37, 31],          // 一首歌热身 + 跳绳
+    'combo-stamina-std':     [37, 42, 10],      // 热身 + HIIT欢乐 + 仙人揉腹
+    'combo-stamina-power':   [33, 32, 10],      // 八段锦 + 哑铃全身 + 仙人揉腹
+    'combo-stamina-slowrun': [37, 34, 14],      // 热身 + 超慢跑 + 360度腿部拉伸
+    'combo-stamina-cardio':  [37, 35],          // 热身 + 帕梅拉广播体操
+    'combo-stamina-burn':    [37, 41],          // 热身 + 欧阳春晓有氧减脂操
+    'combo-stamina-quick':   [37, 43],          // 热身 + 簿肌修炼
+    // 💪 身材向
+    'combo-shape-core':      [18, 17, 10],      // 真空腹 + 腹横肌 + 仙人揉腹
+    'combo-shape-belly':     [18, 16, 17, 36],  // 真空腹 + 萨尔曼 + 腹横肌 + 古法脂肪操
+    'combo-shape-leghip':    [25, 26, 28, 11],  // 林芊妤 + 练臀 + 膝超伸 + 臀腿完整拉伸
+    'combo-shape-power':     [18, 25, 26, 32],  // 真空腹 + 林芊妤 + 练臀 + 哑铃
+    'combo-shape-back':      [21, 44],          // 谁懂丝滑美背 + 居家哑铃背
+    'combo-shape-yoga':      [38],              // 清晨燃脂瑜伽
+    'combo-shape-hip':       [37, 24],          // 热身 + 假胯宽
+    'combo-shape-arch':      [27],              // 完善足弓训练
+    'combo-shape-archdeep':  [29],              // 足弓 4.0
+    // 🌿 养护向
+    'combo-rest-morning':    [1, 8, 18],        // Nadi + Zoey + 真空腹
+    'combo-rest-detox':      [13, 10],          // 清晨排毒瑜伽 + 仙人揉腹
+    'combo-rest-shoulder':   [2, 12, 22],       // 振谐呼吸 + 肩颈背动态 + YTWL
+    'combo-rest-deep':       [3, 7, 30],        // 全身扫描 + JJ全身拉伸 + 小腿按摩
+    'combo-rest-bedtime':    [9, 19, 10, 4],    // 全程躺练 + 掰正骨盆 + 仙人揉腹 + 自我肯定
+    'combo-rest-bowl':       [6, 5],            // 颂钵 + 自我疗愈冥想
+    'combo-rest-posture':    [20, 23],          // 女明星仪态 + 骨科腰椎操
   };
 
   const COMBO_LOG_KEY = 'fitness_combo_log_v1';
@@ -1009,48 +1197,72 @@
 
   function updateComboCounters() {
     Object.keys(COMBO_ACTIONS).forEach(id => {
-      const card = document.getElementById(id);
-      if (!card) return;
       const cnt = thisWeekComboCount(id);
-      const cntEl = card.querySelector('.combo-counter .count');
-      if (cntEl) cntEl.textContent = cnt;
-      const minusBtn = card.querySelector('.counter-btn.minus');
-      if (minusBtn) minusBtn.disabled = cnt === 0;
+      document.querySelectorAll(`[data-combo-id="${id}"]`).forEach(el => {
+        const cntEl = el.querySelector('.cp-count, .combo-counter .count');
+        if (cntEl) cntEl.textContent = cnt;
+        const minusBtn = el.querySelector('.counter-btn.minus');
+        if (minusBtn) minusBtn.disabled = cnt === 0;
+      });
     });
   }
 
-  function decorateCombos() {
-    Object.keys(COMBO_ACTIONS).forEach(id => {
-      const card = document.getElementById(id);
-      if (!card || card.querySelector('.combo-counter')) return;
-      const div = document.createElement('div');
-      div.className = 'combo-counter';
-      div.innerHTML =
-        '<span>本周 <span class="count">0</span> 次</span>' +
-        '<div class="counter-btns">' +
-          `<button class="counter-btn minus" onclick="comboMinus('${id}')">−1</button>` +
-          `<button class="counter-btn plus" onclick="comboPlus('${id}')">+1</button>` +
-        '</div>';
-      card.appendChild(div);
-    });
-    updateComboCounters();
-  }
-  decorateCombos();
-
+  updateComboCounters();
   renderTracker();
 
-  // 详情库折叠
-  function toggleDetails() {
-    const btn = document.getElementById('detail-toggle');
-    const content = document.getElementById('detail-content');
-    const open = content.classList.toggle('open');
-    btn.classList.toggle('open', open);
-    localStorage.setItem('fitness_detail_open', open ? '1' : '0');
-  }
-  if (localStorage.getItem('fitness_detail_open') === '1') {
-    document.getElementById('detail-content').classList.add('open');
-    document.getElementById('detail-toggle').classList.add('open');
-  }
+  // ==================== 侧边目录 scroll-spy ====================
+  (function setupSideToc() {
+    const toc = document.getElementById('side-toc');
+    if (!toc) return;
+    const links = Array.from(toc.querySelectorAll('a[href^="#"]'));
+    const map = new Map();
+    links.forEach(a => {
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (el) map.set(el, a);
+    });
+    if (map.size === 0) return;
+
+    function setActive(linkEl) {
+      links.forEach(a => a.classList.toggle('active', a === linkEl));
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      // 选最靠上的可见 anchor
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+      if (visible[0]) {
+        const link = map.get(visible[0].target);
+        if (link) setActive(link);
+      }
+    }, { rootMargin: '-160px 0px -65% 0px', threshold: 0 });
+
+    map.forEach((_, el) => io.observe(el));
+
+    // 点击立即高亮（避免观察器延迟）
+    links.forEach(a => a.addEventListener('click', () => setActive(a)));
+  })();
+
+  // ==================== 时段卡内的动作快记 ====================
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.action-link[data-num]');
+    if (!btn) return;
+    const num = parseInt(btn.dataset.num);
+    if (!num) return;
+    actionPlus(num);
+    btn.classList.add('recently');
+    setTimeout(() => btn.classList.remove('recently'), 1500);
+  });
+
+  // ==================== 跨标签页同步（与运动参考库共享数据） ====================
+  window.addEventListener('storage', (e) => {
+    if (e.key !== LOG_KEY && e.key !== COMBO_LOG_KEY) return;
+    try { const s = localStorage.getItem(LOG_KEY); if (s) actionLog = JSON.parse(s); } catch(err) {}
+    try { const s = localStorage.getItem(COMBO_LOG_KEY); if (s) comboLog = JSON.parse(s); } catch(err) {}
+    renderTracker();
+    updateComboCounters();
+  });
 </script>
 </body>
 </html>

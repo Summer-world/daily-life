@@ -171,6 +171,7 @@
   .goal-stat.stamina .goal-num { color: var(--gold); }
   .goal-stat.shape .goal-num { color: var(--accent); }
   .goal-stat.rest .goal-num { color: var(--info); }
+  .goal-sub { font-size: 0.72rem; color: var(--text-hint); margin-top: 0.2rem; }
 
   @media (max-width: 640px) {
     header { padding: 1rem 1rem; }
@@ -204,15 +205,18 @@
     <div class="goal-stats">
       <div class="goal-stat stamina">
         <span class="goal-label">🔥 体能</span>
-        <span class="goal-num"><span id="cnt-stamina">0</span><span class="goal-target">/2</span></span>
+        <span class="goal-num"><span id="min-stamina">0</span><span class="goal-target">/100 分钟</span></span>
+        <span class="goal-sub"><span id="cnt-stamina">0</span> 次</span>
       </div>
       <div class="goal-stat shape">
         <span class="goal-label">💪 身材</span>
-        <span class="goal-num"><span id="cnt-shape">0</span><span class="goal-target">/3</span></span>
+        <span class="goal-num"><span id="min-shape">0</span><span class="goal-target">/150 分钟</span></span>
+        <span class="goal-sub"><span id="cnt-shape">0</span> 次</span>
       </div>
       <div class="goal-stat rest">
         <span class="goal-label">🌿 养护</span>
-        <span class="goal-num"><span id="cnt-rest">0</span><span class="goal-target">/7</span></span>
+        <span class="goal-num"><span id="min-rest">0</span><span class="goal-target">/150 分钟</span></span>
+        <span class="goal-sub"><span id="cnt-rest">0</span> 次</span>
       </div>
     </div>
   </div>
@@ -220,26 +224,26 @@
   <!-- ========== 常用组合 ========== -->
   <div class="section-heading" id="combos">常用组合 <span class="count-pill">23 个</span></div>
 
-  <div class="combo-group-label stamina-label">🔥 体能向（本周目标 2 次）</div>
+  <div class="combo-group-label stamina-label">🔥 体能向（本周目标 100 分钟）</div>
 
   <div class="combo-card combo-stamina" data-combo-id="combo-stamina-fast">
-    <div class="combo-title">快速 10min</div>
-    <div class="combo-flow">一首歌热身（4min）→ 跳绳（5min）→ 拉伸（1min）</div>
+    <div class="combo-title">快速 9min</div>
+    <div class="combo-flow">一首歌热身（4min）→ 跳绳（5min）</div>
   </div>
 
   <div class="combo-card combo-stamina" data-combo-id="combo-stamina-std">
-    <div class="combo-title">标准 20min · HIIT</div>
-    <div class="combo-flow">一首歌热身（4min）→ HIIT 欢乐训练（10min）→ 仙人揉腹（3min）</div>
+    <div class="combo-title">标准 24min · HIIT</div>
+    <div class="combo-flow">一首歌热身（4min）→ HIIT 欢乐训练（10min）→ 仙人揉腹（10min）</div>
   </div>
 
   <div class="combo-card combo-stamina" data-combo-id="combo-stamina-power">
-    <div class="combo-title">哑铃力量 30min</div>
-    <div class="combo-flow">八段锦（12min）→ 一副哑铃练全身（15min）→ 仙人揉腹（3min）</div>
+    <div class="combo-title">哑铃力量 37min</div>
+    <div class="combo-flow">八段锦（12min）→ 一副哑铃练全身（15min）→ 仙人揉腹（10min）</div>
   </div>
 
   <div class="combo-card combo-stamina" data-combo-id="combo-stamina-slowrun">
-    <div class="combo-title">超慢跑 40min · 周末</div>
-    <div class="combo-flow">一首歌热身（4min）→ 180步频超慢跑（40min）→ 360度腿部拉伸（5min）</div>
+    <div class="combo-title">超慢跑 54min · 周末</div>
+    <div class="combo-flow">一首歌热身（4min）→ 180步频超慢跑（40min）→ 360度腿部拉伸（10min）</div>
   </div>
 
   <div class="combo-card combo-stamina" data-combo-id="combo-stamina-cardio">
@@ -257,16 +261,16 @@
     <div class="combo-flow">一首歌热身（4min）→ 簿肌修炼·居家无器械（5min）</div>
   </div>
 
-  <div class="combo-group-label shape-label">💪 身材向（本周目标 3 次）</div>
+  <div class="combo-group-label shape-label">💪 身材向（本周目标 150 分钟）</div>
 
   <div class="combo-card combo-shape" data-combo-id="combo-shape-core">
-    <div class="combo-title">核心快速 10min</div>
-    <div class="combo-flow">真空腹（3min）→ 腹横肌激活（5min）→ 仙人揉腹（2min）</div>
+    <div class="combo-title">核心快速 20min</div>
+    <div class="combo-flow">真空腹（5min）→ 腹横肌激活（5min）→ 仙人揉腹（10min）</div>
   </div>
 
   <div class="combo-card combo-shape" data-combo-id="combo-shape-belly">
-    <div class="combo-title">腹部扎实 18min</div>
-    <div class="combo-flow">真空腹（3min）→ 萨尔曼瘦肚子（5min）→ 腹横肌激活（5min）→ 古法内脏脂肪操（5min）</div>
+    <div class="combo-title">腹部扎实 23min</div>
+    <div class="combo-flow">真空腹（5min）→ 萨尔曼瘦肚子（5min）→ 腹横肌激活（5min）→ 古法内脏脂肪操（8min）</div>
   </div>
 
   <div class="combo-card combo-shape" data-combo-id="combo-shape-leghip">
@@ -275,8 +279,8 @@
   </div>
 
   <div class="combo-card combo-shape" data-combo-id="combo-shape-power">
-    <div class="combo-title">力量综合 30min</div>
-    <div class="combo-flow">真空腹（3min）→ 林芊妤瘦腿（10min）→ 坐姿练臀（5min）→ 一副哑铃练全身（10min）→ 拉伸（2min）</div>
+    <div class="combo-title">力量综合 35min</div>
+    <div class="combo-flow">真空腹（5min）→ 林芊妤瘦腿（10min）→ 坐姿练臀（5min）→ 一副哑铃练全身（15min）</div>
   </div>
 
   <div class="combo-card combo-shape" data-combo-id="combo-shape-back">
@@ -300,25 +304,25 @@
   </div>
 
   <div class="combo-card combo-shape" data-combo-id="combo-shape-archdeep">
-    <div class="combo-title">足弓深度 20min · 周末</div>
+    <div class="combo-title">足弓深度 20min</div>
     <div class="combo-flow">足弓弹性重建 4.0（20min）</div>
   </div>
 
-  <div class="combo-group-label rest-label">🌿 养护向（本周目标 7 次）</div>
+  <div class="combo-group-label rest-label">🌿 养护向（本周目标 150 分钟）</div>
 
   <div class="combo-card combo-rest" data-combo-id="combo-rest-morning">
-    <div class="combo-title">晨起轻唤醒 15min</div>
-    <div class="combo-flow">Nadi Shodhana 呼吸（3min）→ Zoey 站立拉伸（10min）→ 真空腹（2min）</div>
+    <div class="combo-title">晨起轻唤醒 20min</div>
+    <div class="combo-flow">Nadi Shodhana 呼吸（5min）→ Zoey 站立拉伸（10min）→ 真空腹（5min）</div>
   </div>
 
   <div class="combo-card combo-rest" data-combo-id="combo-rest-detox">
-    <div class="combo-title">晨起排毒 15min</div>
-    <div class="combo-flow">清晨排毒瑜伽（10min）→ 仙人揉腹（5min）</div>
+    <div class="combo-title">晨起排毒 20min</div>
+    <div class="combo-flow">清晨排毒瑜伽（10min）→ 仙人揉腹（10min）</div>
   </div>
 
   <div class="combo-card combo-rest" data-combo-id="combo-rest-shoulder">
-    <div class="combo-title">肩颈背修复 20min</div>
-    <div class="combo-flow">振谐呼吸（2min）→ 肩颈背动态拉伸（10min）→ 告别圆肩驼背 YTWL（8min）</div>
+    <div class="combo-title">肩颈背修复 23min</div>
+    <div class="combo-flow">振谐呼吸（5min）→ 肩颈背动态拉伸（10min）→ 告别圆肩驼背 YTWL（8min）</div>
   </div>
 
   <div class="combo-card combo-rest" data-combo-id="combo-rest-deep">
@@ -327,13 +331,13 @@
   </div>
 
   <div class="combo-card combo-rest" data-combo-id="combo-rest-bedtime">
-    <div class="combo-title">睡前 15min</div>
-    <div class="combo-flow">全程躺练（5min）→ 掰正骨盆懒人版（5min）→ 仙人揉腹（3min）→ 自我肯定冥想（2min）</div>
+    <div class="combo-title">睡前 30min</div>
+    <div class="combo-flow">全程躺练（10min）→ 掰正骨盆懒人版（5min）→ 仙人揉腹（10min）→ 自我肯定冥想（5min）</div>
   </div>
 
   <div class="combo-card combo-rest" data-combo-id="combo-rest-bowl">
-    <div class="combo-title">颂钵助眠 15min</div>
-    <div class="combo-flow">颂钵冥想（10min）→ 自我疗愈和关爱冥想（5min）</div>
+    <div class="combo-title">颂钵助眠 20min</div>
+    <div class="combo-flow">颂钵冥想（10min）→ 自我疗愈和关爱冥想（10min）</div>
   </div>
 
   <div class="combo-card combo-rest" data-combo-id="combo-rest-posture">
@@ -457,7 +461,18 @@
   // ==================== 共享数据 ====================
   const GOAL_LABEL = { stamina: '体能', shape: '身材', rest: '养护' };
   const GOAL_ICON = { stamina: '🔥', shape: '💪', rest: '🌿' };
-  const GOAL_TARGET = { stamina: 2, shape: 3, rest: 7 };
+  const GOAL_TARGET = { stamina: 100, shape: 150, rest: 150 };
+
+  // 每个动作的视频实际时长（分钟）。#2 振谐呼吸、#3 全身扫描按用户设定为 5min。
+  const ACTION_DURATIONS = {
+    1:5, 2:5, 3:5, 4:5, 5:10, 6:10,
+    7:15, 8:10, 9:10, 10:10, 11:7, 12:10, 13:10, 14:10, 15:3,
+    16:5, 17:5, 18:5,
+    19:5, 20:3, 21:15, 22:8, 23:3, 24:10,
+    25:10, 26:5, 27:10, 28:10, 29:20,
+    30:5,
+    31:5, 32:15, 33:12, 34:40, 35:15, 36:8, 37:4, 38:10, 39:4, 40:4, 41:15, 42:10, 43:5, 44:5,
+  };
 
   const ACTION_GOALS = {
     1:['rest'], 2:['rest'], 3:['rest'], 4:['rest'], 5:['rest'], 6:['rest'],
@@ -522,6 +537,34 @@
       (ACTION_GOALS[e.num] || []).forEach(g => counts[g]++);
     });
     return counts;
+  }
+
+  // 组合主类（由 comboId 前缀决定）
+  function comboGoal(comboId) {
+    if (comboId.startsWith('combo-stamina-')) return 'stamina';
+    if (comboId.startsWith('combo-shape-'))   return 'shape';
+    if (comboId.startsWith('combo-rest-'))    return 'rest';
+    return null;
+  }
+  // 组合总时长 = 构成动作的时长之和
+  function comboDuration(comboId) {
+    return (COMBO_ACTIONS[comboId] || []).reduce((s, n) => s + (ACTION_DURATIONS[n] || 0), 0);
+  }
+  // 本周分钟数：组合时长全部归入主类；独立动作按 ACTION_GOALS 第一项归类
+  function weekMinutes() {
+    const start = thisWeekStart();
+    const mins = { stamina: 0, shape: 0, rest: 0 };
+    const comboTs = new Set();
+    comboLog.filter(e => e.ts >= start).forEach(e => {
+      comboTs.add(e.ts);
+      const g = comboGoal(e.comboId);
+      if (g) mins[g] += comboDuration(e.comboId);
+    });
+    actionLog.filter(e => e.ts >= start && !comboTs.has(e.ts)).forEach(e => {
+      const goals = ACTION_GOALS[e.num];
+      if (goals && goals.length) mins[goals[0]] += (ACTION_DURATIONS[e.num] || 0);
+    });
+    return mins;
   }
 
   function thisWeekActionCount(num) {
@@ -616,9 +659,12 @@
 
   function renderTracker() {
     const c = weekCounts();
+    const m = weekMinutes();
     ['stamina','shape','rest'].forEach(g => {
-      const el = document.getElementById('cnt-' + g);
-      if (el) el.textContent = c[g];
+      const minEl = document.getElementById('min-' + g);
+      if (minEl) minEl.textContent = m[g];
+      const cntEl = document.getElementById('cnt-' + g);
+      if (cntEl) cntEl.textContent = c[g];
     });
   }
 

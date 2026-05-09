@@ -595,14 +595,6 @@
           <div class="cp-main"><span class="cp-title">🔥 哑铃力量 37min</span><span class="cp-flow">八段锦（12min）→ 一副哑铃练全身（15min）→ 仙人揉腹（10min）</span></div>
           <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-power')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-power')">+</button></div>
         </div>
-        <div class="combo-preview stamina" data-combo-id="combo-stamina-std">
-          <div class="cp-main"><span class="cp-title">🔥 标准 24min · HIIT</span><span class="cp-flow">一首歌热身（4min）→ HIIT 欢乐训练（10min）→ 仙人揉腹（10min）</span></div>
-          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-std')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-std')">+</button></div>
-        </div>
-        <div class="combo-preview stamina" data-combo-id="combo-stamina-cardio">
-          <div class="cp-main"><span class="cp-title">🔥 帕梅拉广播 19min</span><span class="cp-flow">一首歌热身（4min）→ 帕梅拉广播体操（15min）</span></div>
-          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-cardio')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-cardio')">+</button></div>
-        </div>
         <div class="combo-preview stamina" data-combo-id="combo-stamina-burn">
           <div class="cp-main"><span class="cp-title">🔥 减脂操 19min</span><span class="cp-flow">一首歌热身（4min）→ 欧阳春晓有氧减脂操（15min）</span></div>
           <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-burn')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-burn')">+</button></div>
@@ -1058,9 +1050,9 @@
     30:['rest'],
     // 有氧与力量
     31:['stamina','shape'], 32:['stamina','shape'], 33:['stamina','rest'],
-    34:['stamina'], 35:['stamina','shape'], 36:['shape'], 37:['rest'],
+    34:['stamina'], 36:['shape'], 37:['rest'],
     38:['shape','rest'], 39:['shape'], 40:['shape'], 41:['shape','rest'],
-    42:['stamina','shape'], 43:['stamina','shape'], 44:['stamina','shape'],
+    43:['stamina','shape'], 44:['stamina','shape'],
   };
   const LOG_KEY = 'fitness_log_v1';
   let actionLog = [];
@@ -1092,7 +1084,7 @@
     19:5, 20:3, 21:15, 22:8, 23:3, 24:10,
     25:10, 26:5, 27:10, 28:10, 29:20,
     30:5,
-    31:5, 32:15, 33:12, 34:40, 35:15, 36:8, 37:4, 38:10, 39:4, 40:4, 41:15, 42:10, 43:5, 44:5,
+    31:5, 32:15, 33:12, 34:40, 36:8, 37:4, 38:10, 39:4, 40:4, 41:15, 43:5, 44:5,
   };
   function comboGoal(comboId) {
     if (comboId.startsWith('combo-stamina-')) return 'stamina';
@@ -1229,10 +1221,8 @@
   const COMBO_ACTIONS = {
     // 🔥 体能向
     'combo-stamina-fast':    [37, 31],          // 一首歌热身 + 跳绳
-    'combo-stamina-std':     [37, 42, 10],      // 热身 + HIIT欢乐 + 仙人揉腹
     'combo-stamina-power':   [33, 32, 10],      // 八段锦 + 哑铃全身 + 仙人揉腹
     'combo-stamina-slowrun': [37, 34, 14],      // 热身 + 超慢跑 + 360度腿部拉伸
-    'combo-stamina-cardio':  [37, 35],          // 热身 + 帕梅拉广播体操
     'combo-stamina-burn':    [37, 41],          // 热身 + 欧阳春晓有氧减脂操
     'combo-stamina-quick':   [37, 43],          // 热身 + 簿肌修炼
     // 💪 身材向

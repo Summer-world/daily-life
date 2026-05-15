@@ -517,7 +517,6 @@
       </div>
       <div class="main-tabs" id="main-tabs">
         <button class="main-tab active" data-tab="today">今天</button>
-        <button class="main-tab" data-tab="guangzhou">回广州</button>
       </div>
     </div>
   </header>
@@ -540,14 +539,6 @@
     </div>
   </div>
 
-  <div class="sub-nav" id="sub-nav-guangzhou">
-    <div class="sub-nav-inner">
-      <button class="sub-tab active" data-sub="gz-plan">规划清单</button>
-      <button class="sub-tab" data-sub="gz-fengbian">风变练习</button>
-      <button class="sub-tab" data-sub="gz-emma">Emma 教育</button>
-      <button class="sub-tab" data-sub="gz-todo">待办事项</button>
-    </div>
-  </div>
 </div>
 
 <!-- ============ 今天 / 穿搭 ============ -->
@@ -1133,41 +1124,11 @@
   </div>
 </div>
 
-<!-- ============ 回广州 / 规划清单 ============ -->
-<div class="panel" id="panel-gz-plan">
-  <div class="iframe-wrap">
-    <iframe data-src="回广州/规划清单.html" title="规划清单"></iframe>
-  </div>
-</div>
-
-<!-- ============ 回广州 / 风变练习 ============ -->
-<div class="panel" id="panel-gz-fengbian">
-  <div class="iframe-wrap">
-    <iframe data-src="fengbian/我的练习记录.html" title="风变练习"></iframe>
-  </div>
-</div>
-
-<!-- ============ 回广州 / Emma 教育 ============ -->
-<div class="panel" id="panel-gz-emma">
-  <div class="iframe-wrap">
-    <iframe data-src="回广州/Emma教育.html" title="Emma 教育"></iframe>
-  </div>
-</div>
-
-<!-- ============ 回广州 / 待办事项 ============ -->
-<div class="panel" id="panel-gz-todo">
-  <div class="iframe-wrap">
-    <iframe data-src="回广州/待办事项.html" title="待办事项"></iframe>
-  </div>
-</div>
-
 <footer>Summer 的世界 · 2026</footer>
 
 <script>
   const TAB_MAP = {
     today: { sub: 'today', defaultPanel: 'daily' },
-    wisdom: { sub: 'wisdom', defaultPanel: 'wisdom-godtalk' },
-    guangzhou: { sub: 'guangzhou', defaultPanel: 'gz-plan' },
   };
 
   function lazyLoadIframe(panelEl) {

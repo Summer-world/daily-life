@@ -473,6 +473,37 @@
     .main-tab { padding: 10px 14px; font-size: 0.88rem; }
     .iframe-wrap { height: calc(100vh - 130px); }
   }
+
+  /* ========== 额外运动（游泳/hiking）========== */
+  .extra-block { padding: 0.85rem 0; border-top: 1px dashed var(--border); }
+  .extra-block:first-of-type { border-top: none; padding-top: 0.2rem; }
+  .extra-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 0.55rem; flex-wrap: wrap; }
+  .extra-title { font-family: 'Noto Serif SC', serif; font-weight: 600; font-size: 0.94rem; }
+  .extra-week { font-size: 0.8rem; color: var(--accent); font-weight: 500; }
+  .extra-input { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 0.5rem; }
+  .extra-input input[type=date],
+  .extra-input input[type=number] {
+    font-family: inherit; font-size: 0.83rem; padding: 5px 10px;
+    border: 1px solid var(--border-dark); border-radius: 8px;
+    background: var(--surface); color: var(--text-primary);
+  }
+  .extra-input input[type=number] { width: 90px; }
+  .extra-add {
+    font-family: inherit; font-size: 0.82rem; padding: 5px 14px;
+    background: var(--accent-light); color: var(--accent);
+    border: 1px solid var(--accent); border-radius: 99px; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .extra-add:hover { background: var(--accent); color: #fff; }
+  .extra-list { display: flex; flex-direction: column; gap: 4px; }
+  .extra-row {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.82rem; color: var(--text-secondary);
+    padding: 5px 12px; background: var(--bg); border-radius: 6px;
+  }
+  .extra-row .del { background: none; border: none; color: var(--text-hint); cursor: pointer; font-size: 1rem; padding: 0 4px; line-height: 1; }
+  .extra-row .del:hover { color: var(--rose); }
+  .extra-empty { font-size: 0.78rem; color: var(--text-hint); font-style: italic; padding: 4px 10px; }
 </style>
 </head>
 <body>
@@ -486,6 +517,7 @@
       </div>
       <div class="main-tabs" id="main-tabs">
         <button class="main-tab active" data-tab="today">今天</button>
+        <button class="main-tab" data-tab="guangzhou">回广州</button>
       </div>
     </div>
   </header>
@@ -504,6 +536,16 @@
       <button class="sub-tab" data-sub="wisdom-mother">母爱的羁绊</button>
       <button class="sub-tab" data-sub="wisdom-gentle">最温柔的教养</button>
       <button class="sub-tab" data-sub="wisdom-energy">精力管理</button>
+      <button class="sub-tab" data-sub="wisdom-fengbian-course">风变课程</button>
+    </div>
+  </div>
+
+  <div class="sub-nav" id="sub-nav-guangzhou">
+    <div class="sub-nav-inner">
+      <button class="sub-tab active" data-sub="gz-plan">规划清单</button>
+      <button class="sub-tab" data-sub="gz-fengbian">风变练习</button>
+      <button class="sub-tab" data-sub="gz-emma">Emma 教育</button>
+      <button class="sub-tab" data-sub="gz-todo">待办事项</button>
     </div>
   </div>
 </div>
@@ -541,8 +583,10 @@
       </li>
       <li><a href="#toc-weekly">周固定</a></li>
       <li><a href="#toc-period">经期护理</a></li>
+      <li><a href="#toc-disrupt">周末/假期/聚会</a></li>
       <li><a href="#toc-hobby">日常兴趣爱好</a></li>
       <li><a href="#toc-fitness">运动笔记目录</a></li>
+      <li><a href="#toc-weekly-review">运动周总结</a></li>
     </ul>
   </aside>
 
@@ -558,7 +602,7 @@
         <li><strong>核心 4 步：</strong>坐起 → 开窗帘（光启动昼夜节律）→ 下床换衣 → 烧水</li>
         <li><strong>扩展流程：</strong>蒸早饭 → 洗漱化妆 → 早饭 + 喝水（⚠️ 浏览不回复）→ 通勤 30 min</li>
         <li><strong>不上班日替代：</strong>散步送 Emma → 9 点到家 → 立刻进<strong>高强度黄金窗口</strong></li>
-        <li style="line-height:2.2;"><strong>可选轻锻炼：</strong><button class="action-link" data-num="33">八段锦 #33</button> <button class="action-link" data-num="1">Nadi 呼吸 #1</button> <button class="action-link" data-num="8">Zoey 站立拉伸 #8</button> <button class="action-link" data-num="40">第八套广播 #40</button> <button class="action-link" data-num="39">第九套广播 #39</button></li>
+        <li style="line-height:2.2;"><strong>可选轻锻炼：</strong><button class="action-link" data-num="43">八段锦 #43</button> <button class="action-link" data-num="11">Nadi 呼吸 #11</button> <button class="action-link" data-num="22">Zoey 站立拉伸 #22</button> <button class="action-link" data-num="49">第八套广播 #49</button> <button class="action-link" data-num="48">第九套广播 #48</button></li>
       </ul>
 
       <p class="para" style="font-size:.78rem;color:var(--text-hint);font-style:italic;">早起后家里安静的空白时光是最重要的独处时间——有就很好，没有也不垮。</p>
@@ -600,6 +644,10 @@
           <div class="cp-main"><span class="cp-title">🔥 减脂操 19min</span><span class="cp-flow">一首歌热身（4min）→ 欧阳春晓有氧减脂操（15min）</span></div>
           <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-burn')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-burn')">+</button></div>
         </div>
+        <div class="combo-preview stamina" data-combo-id="combo-stamina-radio">
+          <div class="cp-main"><span class="cp-title">🔥 广播体操套餐 12min</span><span class="cp-flow">一首歌热身（4min）→ 第八套广播体操（4min）→ 第九套广播体操（4min）</span></div>
+          <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-radio')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-radio')">+</button></div>
+        </div>
         <div class="combo-preview shape" data-combo-id="combo-shape-leghip">
           <div class="cp-main"><span class="cp-title">💪 腿臀套餐 32min</span><span class="cp-flow">林芊妤瘦腿（10min）→ 坐姿练臀弹力带（5min）→ 韩小四膝超伸（10min）→ Bella 臀腿完整拉伸（7min）</span></div>
           <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-leghip')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-leghip')">+</button></div>
@@ -626,7 +674,7 @@
       <p style="font-size:.85rem;color:var(--text-primary);margin:.7rem 0 .25rem;font-weight:600;">🪑 上班日 · 工作时段（见缝插针）</p>
       <ul class="list">
         <li><strong>任务间隙 5–15 min：</strong>转脖子、站起来走两步、做组体态快练（你已 ✓）</li>
-        <li><strong>工位微动作：</strong><button class="action-link" data-num="20">女明星仪态 #20</button> <button class="action-link" data-num="23">骨科腰椎操 #23</button> <button class="action-link" data-num="17">腹横肌激活 #17</button> <button class="action-link" data-num="18">真空腹 #18</button> <button class="action-link" data-num="15">极度舒适拉伸 #15</button> <button class="action-link" data-num="2">振谐呼吸 #2</button></li>
+        <li><strong>工位微动作：</strong><button class="action-link" data-num="2">女明星仪态 #2</button> <button class="action-link" data-num="5">骨科腰椎操 #5</button> <button class="action-link" data-num="62">腹横肌激活 #62</button> <button class="action-link" data-num="63">真空腹 #63</button> <button class="action-link" data-num="29">极度舒适拉伸 #29</button> <button class="action-link" data-num="16">谐振呼吸 #16</button></li>
         <li><strong>鼻呼吸贯穿全天：</strong>越忙越要用鼻子，不张嘴呼吸</li>
       </ul>
 
@@ -643,7 +691,7 @@
 
         <p style="font-size:.76rem;color:var(--text-hint);margin:.6rem 0 .4rem;font-weight:500;">🪑 工作时段微恢复（5–15 min · 任务间隙）</p>
         <div class="combo-preview rest" data-combo-id="combo-rest-posture">
-          <div class="cp-main"><span class="cp-title">🌿 体态快练 6min</span><span class="cp-flow">女明星仪态管理（3min）→ 骨科专家腰椎操（3min）</span></div>
+          <div class="cp-main"><span class="cp-title">🌿 体态快练 9min</span><span class="cp-flow">女明星仪态管理（3min）→ 骨科专家腰椎操（3min）→ 极度舒适拉伸（3min）</span></div>
           <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-posture')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-posture')">+</button></div>
         </div>
 
@@ -713,7 +761,7 @@
           <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-shoulder')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-shoulder')">+</button></div>
         </div>
         <div class="combo-preview rest" data-combo-id="combo-rest-posture">
-          <div class="cp-main"><span class="cp-title">🌿 体态快练 6min</span><span class="cp-flow">女明星仪态管理（3min）→ 骨科专家腰椎操（3min）</span></div>
+          <div class="cp-main"><span class="cp-title">🌿 体态快练 9min</span><span class="cp-flow">女明星仪态管理（3min）→ 骨科专家腰椎操（3min）→ 极度舒适拉伸（3min）</span></div>
           <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-posture')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-posture')">+</button></div>
         </div>
         <div class="combo-preview rest" data-combo-id="combo-rest-detox">
@@ -748,7 +796,7 @@
       <div class="group-title">每天的锚点</div>
       <ul class="list">
         <li><strong>状态好的时候：</strong>刷剧、做羊毛毡、弹琴练歌</li>
-        <li><strong>状态不好的时候：</strong>床上拉伸、精油按摩、<button class="action-link" data-num="7">JJ 全身拉伸 #7</button> <button class="action-link" data-num="9">全程躺练 #9</button> <button class="action-link" data-num="6">颂钵冥想 #6</button></li>
+        <li><strong>状态不好的时候：</strong>床上拉伸、精油按摩、<button class="action-link" data-num="21">JJ 全身拉伸 #21</button> <button class="action-link" data-num="23">全程躺练 #23</button> <button class="action-link" data-num="15">颂钵冥想 #15</button></li>
         <li><strong>幸福笔记：</strong>只记开心幸福的瞬间，不记流水账</li>
         <li><strong>手机停止信号：</strong>身体发出信号（眼睛累/头不舒服）→ 起身换地方 → 放下手机</li>
       </ul>
@@ -770,7 +818,7 @@
           <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-bowl')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-bowl')">+</button></div>
         </div>
         <div class="combo-preview rest" data-combo-id="combo-rest-posture">
-          <div class="cp-main"><span class="cp-title">🌿 体态快练 6min</span><span class="cp-flow">女明星仪态管理（3min）→ 骨科专家腰椎操（3min）</span></div>
+          <div class="cp-main"><span class="cp-title">🌿 体态快练 9min</span><span class="cp-flow">女明星仪态管理（3min）→ 骨科专家腰椎操（3min）→ 极度舒适拉伸（3min）</span></div>
           <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-posture')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-posture')">+</button></div>
         </div>
       </div>
@@ -819,6 +867,52 @@
       </table>
     </div>
 
+    <div class="card">
+      <div class="card-title"><span class="icon">🏞️</span>额外运动 · 时间记录</div>
+      <p class="para" style="font-size:.78rem;color:var(--text-hint);font-style:italic;margin-bottom:.85rem;">
+        周固定之外的额外运动；记录在这里会自动汇入周总结。
+      </p>
+
+      <div class="extra-block">
+        <div class="extra-head">
+          <span class="extra-title">🏊 游泳</span>
+          <span class="extra-week" id="extra-swim-summary">本周 0 次 · 0 min</span>
+        </div>
+        <div class="extra-input">
+          <input type="date" id="swim-date">
+          <input type="number" id="swim-min" placeholder="分钟" min="1" max="600">
+          <button class="extra-add" onclick="extraAdd('swim')">+ 添加</button>
+        </div>
+        <div class="extra-list" id="extra-swim-list"></div>
+      </div>
+
+      <div class="extra-block">
+        <div class="extra-head">
+          <span class="extra-title">⛰️ Hiking</span>
+          <span class="extra-week" id="extra-hike-summary">本周 0 次 · 0 min</span>
+        </div>
+        <div class="extra-input">
+          <input type="date" id="hike-date">
+          <input type="number" id="hike-min" placeholder="分钟" min="1" max="600">
+          <button class="extra-add" onclick="extraAdd('hike')">+ 添加</button>
+        </div>
+        <div class="extra-list" id="extra-hike-list"></div>
+      </div>
+
+      <div class="extra-block">
+        <div class="extra-head">
+          <span class="extra-title">🧘 JJ 老师瑜伽 <span style="font-size:.74rem;color:var(--text-hint);font-weight:400;">· 周二晚和丈夫</span></span>
+          <span class="extra-week" id="extra-yoga-summary">本周 0 次 · 0 min</span>
+        </div>
+        <div class="extra-input">
+          <input type="date" id="yoga-date">
+          <input type="number" id="yoga-min" placeholder="分钟" min="1" max="600" value="60">
+          <button class="extra-add" onclick="extraAdd('yoga')">+ 添加</button>
+        </div>
+        <div class="extra-list" id="extra-yoga-list"></div>
+      </div>
+    </div>
+
     <div class="section-heading toc-anchor" id="toc-period">经期护理</div>
     <div class="card">
       <table>
@@ -837,11 +931,11 @@
 
       <div class="group-title" style="font-size:.7rem;margin-top:1rem;color:var(--rose)">量大的 1–2 天 · 休息为主 + 情绪安抚</div>
       <p class="para" style="margin-bottom:.5rem;">
-        <button class="action-link" data-num="2">振谐呼吸 #2</button>
-        <button class="action-link" data-num="3">全身扫描 #3</button>
-        <button class="action-link" data-num="5">自我疗愈冥想 #5</button>
-        <button class="action-link" data-num="6">颂钵冥想 #6</button>
-        <button class="action-link" data-num="30">小腿精油按摩 #30</button>
+        <button class="action-link" data-num="16">谐振呼吸 #16</button>
+        <button class="action-link" data-num="12">全身扫描 #12</button>
+        <button class="action-link" data-num="14">自我疗愈冥想 #14</button>
+        <button class="action-link" data-num="15">颂钵冥想 #15</button>
+        <button class="action-link" data-num="31">小腿精油按摩 #31</button>
       </p>
       <div class="combo-preview rest" data-combo-id="combo-rest-bowl">
         <div class="cp-main"><span class="cp-title">🌿 颂钵助眠 20min</span><span class="cp-flow">颂钵冥想（10min）→ 自我疗愈和关爱冥想（10min）</span></div>
@@ -850,12 +944,12 @@
 
       <div class="group-title" style="font-size:.7rem;margin-top:1.25rem;color:var(--accent)">后半段恢复 · 温和拉伸 + 低冲击</div>
       <p class="para" style="margin-bottom:.5rem;">
-        <button class="action-link" data-num="33">八段锦 #33</button>
-        <button class="action-link" data-num="12">肩颈背拉伸 #12</button>
-        <button class="action-link" data-num="15">极度舒适拉伸 #15</button>
-        <button class="action-link" data-num="11">臀腿完整拉伸 #11</button>
-        <button class="action-link" data-num="14">360 度腿部拉伸 #14</button>
-        <button class="action-link" data-num="34">180 步频超慢跑 #34</button>
+        <button class="action-link" data-num="43">八段锦 #43</button>
+        <button class="action-link" data-num="26">肩颈背拉伸 #26</button>
+        <button class="action-link" data-num="29">极度舒适拉伸 #29</button>
+        <button class="action-link" data-num="25">臀腿完整拉伸 #25</button>
+        <button class="action-link" data-num="28">360 度腿部拉伸 #28</button>
+        <button class="action-link" data-num="44">180 步频超慢跑 #44</button>
       </p>
       <div class="combo-preview rest" data-combo-id="combo-rest-deep">
         <div class="cp-main"><span class="cp-title">🌿 深度放松 25min</span><span class="cp-flow">全身扫描（5min）→ JJ 老师全身拉伸（15min）→ 小腿精油按摩（5min）</span></div>
@@ -865,6 +959,35 @@
         <div class="cp-main"><span class="cp-title">🌿 肩颈背修复 28min</span><span class="cp-flow">振谐呼吸（10min）→ 肩颈背动态拉伸（10min）→ 告别圆肩驼背 YTWL（8min）</span></div>
         <div class="cp-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-shoulder')">−</button><span class="cp-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-shoulder')">+</button></div>
       </div>
+    </div>
+
+    <div class="section-heading toc-anchor" id="toc-disrupt">周末/假期/聚会</div>
+    <div class="card">
+      <p class="para" style="font-size:.78rem;color:var(--text-hint);font-style:italic;margin-bottom:.85rem;">
+        扰动期应对协议 · 把 1:1 恢复期压低 · 详细原理见<strong>回广州 · 风变练习 · 会话二</strong>
+      </p>
+      <table>
+        <thead><tr><th style="width:22%;">类别</th><th>要点</th></tr></thead>
+        <tbody>
+          <tr><td><strong>接到邀请</strong></td><td>"我看下日历，今晚 / 明天答你" → 24h buffer → 查前后 48h 有没有 heavy event → 有 → <strong>协商 reschedule</strong>（不是拒绝）</td></tr>
+          <tr><td><strong>聚会前</strong></td><td>① 出门前在家吃 protein + veg ② 喝一大杯水<br>heavy event 前 2 天：早睡 + 控糖严格 + 轻运动（把"扰动前血量"打满）</td></tr>
+          <tr><td><strong>聚会中（食物）</strong></td><td>🍰 <strong>美食 binge</strong>：选 1–2 个最让你眼睛发亮的 + 顺序（protein → 糖）<br>🕐 <strong>持续吃</strong>：<strong>持续端热茶 / 热水</strong>（手有喝的就不太会拿食物）+ <strong>物理远离 buffet 区</strong>（移到对话区）</td></tr>
+          <tr><td><strong>聚会中（恢复）</strong></td><td>活动间隙找独立空间躺 / 坐 15–20min（边际有效，配合用，不依赖）<br>能量见底就走，不死撑到结束</td></tr>
+          <tr><td><strong>聚会后</strong></td><td>预留 <strong>24–48h 空白档</strong>，绝不接第二个 event<br>1:1 恢复期是正常生理反应（身体降速时长），不是"我没调整好"</td></tr>
+          <tr><td><strong>见母亲（NPD）</strong></td><td>住老公家是<strong>物理底线</strong>（不松动）· 单次 1–3h · 不在母亲家过夜<br>见前 1 天 well-rested + 见后 24h 空白档 · 频次自定，无 obligation 数</td></tr>
+          <tr><td><strong>回老家</strong></td><td>整个假期默认 <strong>1x</strong>（住老公家 = 普通假期）<br>只在"实际见母亲那次"用 1.5x 系数<br>年夜饭 / 不可控接触另算 1.5x</td></tr>
+        </tbody>
+      </table>
+
+      <div class="warn">⚠️ 已证伪（试过没用，不要再试）：时间 anchor（"吃到 X 点就停"）· Eric stop cue · 小盘子限量 · 提前离场 · 选择策略对"持续吃"无效 · "内嵌休息"作为主力（只能配菜）</div>
+
+      <div class="group-title" style="margin-top:1.25rem;font-size:.7rem;color:var(--accent)">关键纪律</div>
+      <ul class="list" style="margin-top:.3rem;">
+        <li><strong>主力是 B 密度管理</strong>——零成本零意志力，效果直接（日历操作）</li>
+        <li>食物战场<strong>不在现场，在出门前</strong>——意志力前置而非临场</li>
+        <li>持续吃的真正解药是<strong>给手 / 口非食物 occupation</strong>，不是控量</li>
+        <li>1:1 恢复期改不了，但<strong>起点血量决定崩到多低</strong>——预付 recovery 是兜底</li>
+      </ul>
     </div>
 
     <div class="section-heading toc-anchor" id="toc-hobby">日常兴趣爱好</div>
@@ -954,10 +1077,10 @@
       </div>
     </div>
 
-    <a href="运动参考库.html" target="_blank" style="display:flex;align-items:center;gap:8px;background:var(--info-light);border:1px dashed var(--info);color:var(--info);border-radius:12px;padding:0.85rem 1.3rem;margin:0 0 1rem;text-decoration:none;font-size:0.85rem;">
-      <span>📋</span>
-      <span>运动参考库</span>
-      <span style="margin-left:auto;font-size:0.74rem;color:var(--text-hint);">23 个组合 + 44 项动作详情 →</span>
+    <a href="运动周总结.html" target="_blank" id="toc-weekly-review" class="toc-anchor" style="display:flex;align-items:center;gap:8px;background:var(--accent-light);border:1px dashed var(--accent);color:var(--accent);border-radius:12px;padding:0.85rem 1.3rem;margin:0 0 1rem;text-decoration:none;font-size:0.85rem;">
+      <span>📈</span>
+      <span>运动 · 周总结＋参考库</span>
+      <span style="margin-left:auto;font-size:0.74rem;color:var(--text-hint);">周复盘 · 22 个组合 + 42 项动作详情 →</span>
     </a>
 
     <a href="运动收集箱.html" target="_blank" style="display:flex;align-items:center;gap:8px;background:var(--gold-light);border:1px dashed var(--gold);color:var(--gold);border-radius:12px;padding:0.85rem 1.3rem;margin:0 0 1rem;text-decoration:none;font-size:0.85rem;">
@@ -1003,12 +1126,48 @@
   </div>
 </div>
 
+<!-- ============ 我的智慧 / 风变课程 ============ -->
+<div class="panel" id="panel-wisdom-fengbian-course">
+  <div class="iframe-wrap">
+    <iframe data-src="fengbian/web/index.html" title="风变课程"></iframe>
+  </div>
+</div>
+
+<!-- ============ 回广州 / 规划清单 ============ -->
+<div class="panel" id="panel-gz-plan">
+  <div class="iframe-wrap">
+    <iframe data-src="回广州/规划清单.html" title="规划清单"></iframe>
+  </div>
+</div>
+
+<!-- ============ 回广州 / 风变练习 ============ -->
+<div class="panel" id="panel-gz-fengbian">
+  <div class="iframe-wrap">
+    <iframe data-src="fengbian/我的练习记录.html" title="风变练习"></iframe>
+  </div>
+</div>
+
+<!-- ============ 回广州 / Emma 教育 ============ -->
+<div class="panel" id="panel-gz-emma">
+  <div class="iframe-wrap">
+    <iframe data-src="回广州/Emma教育.html" title="Emma 教育"></iframe>
+  </div>
+</div>
+
+<!-- ============ 回广州 / 待办事项 ============ -->
+<div class="panel" id="panel-gz-todo">
+  <div class="iframe-wrap">
+    <iframe data-src="回广州/待办事项.html" title="待办事项"></iframe>
+  </div>
+</div>
+
 <footer>Summer 的世界 · 2026</footer>
 
 <script>
   const TAB_MAP = {
     today: { sub: 'today', defaultPanel: 'daily' },
     wisdom: { sub: 'wisdom', defaultPanel: 'wisdom-godtalk' },
+    guangzhou: { sub: 'guangzhou', defaultPanel: 'gz-plan' },
   };
 
   function lazyLoadIframe(panelEl) {
@@ -1044,8 +1203,37 @@
     }
   }
 
+  // ==================== 导航状态持久化 ====================
+  const NAV_KEY = 'summer_nav_v1';
+
+  function saveNav() {
+    const tab = document.querySelector('.main-tab.active')?.dataset.tab;
+    const subNavVisible = document.querySelector('.sub-nav.show');
+    const sub = subNavVisible?.querySelector('.sub-tab.active')?.dataset.sub || null;
+    if (tab) {
+      try { localStorage.setItem(NAV_KEY, JSON.stringify({ tab, sub })); } catch(e) {}
+    }
+  }
+
+  function restoreNav() {
+    let saved;
+    try { saved = JSON.parse(localStorage.getItem(NAV_KEY) || '{}'); } catch(e) { return; }
+    if (!saved.tab || !TAB_MAP[saved.tab]) return;
+
+    // 如果有保存的子页，先把对应 sub-tab 标为 active，showMainTab 会自动捡起来
+    if (saved.sub) {
+      const subBtn = document.querySelector(`.sub-tab[data-sub="${saved.sub}"]`);
+      if (subBtn) {
+        const subNav = subBtn.closest('.sub-nav');
+        subNav.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+        subBtn.classList.add('active');
+      }
+    }
+    showMainTab(saved.tab);
+  }
+
   document.querySelectorAll('.main-tab').forEach(btn => {
-    btn.addEventListener('click', () => showMainTab(btn.dataset.tab));
+    btn.addEventListener('click', () => { showMainTab(btn.dataset.tab); saveNav(); });
   });
 
   document.querySelectorAll('.sub-tab').forEach(btn => {
@@ -1054,36 +1242,60 @@
       subNav.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
       btn.classList.add('active');
       showPanel(btn.dataset.sub);
+      saveNav();
     });
   });
+
+  restoreNav();
 
   // 初始化：日常面板为内联内容，无需加载 iframe
 
   // ==================== 健身周追踪 ====================
   const GOAL_LABEL = { stamina: '体能', shape: '身材', rest: '养护' };
   const ACTION_GOALS = {
-    // 呼吸与冥想
-    1:['rest'], 2:['rest'], 3:['rest'], 4:['rest'], 5:['rest'], 6:['rest'],
-    // 拉伸与放松
-    7:['rest'], 8:['rest'], 9:['rest'], 10:['rest'], 11:['rest'], 12:['rest'], 13:['rest'], 14:['rest'], 15:['rest'],
-    // 核心与腹部
-    16:['shape'], 17:['shape'], 18:['shape'],
-    // 体态与矫正
-    19:['rest'], 20:['shape','rest'], 21:['shape','rest'], 22:['shape','rest'], 23:['rest'], 24:['shape','rest'],
-    // 腿部与臀部
-    25:['shape'], 26:['shape'], 27:['shape'], 28:['shape','rest'], 29:['shape','rest'],
-    // 按摩
-    30:['rest'],
-    // 有氧与力量
-    31:['stamina','shape'], 32:['stamina','shape'], 33:['stamina','rest'],
-    34:['stamina'], 36:['shape'], 37:['rest'],
-    38:['shape','rest'], 39:['shape'], 40:['shape'], 41:['shape','rest'],
-    43:['stamina','shape'], 44:['stamina','shape'],
+    // 体态与矫正 1-9
+    1:['rest'], 2:['shape','rest'], 3:['shape','rest'], 4:['shape','rest'], 5:['rest'], 6:['shape','rest'],
+    // 呼吸与冥想 11-19
+    11:['rest'], 12:['rest'], 13:['rest'], 14:['rest'], 15:['rest'], 16:['rest'],
+    // 拉伸与放松 21-29
+    21:['rest'], 22:['rest'], 23:['rest'], 24:['rest'], 25:['rest'], 26:['rest'], 27:['rest'], 28:['rest'], 29:['rest'],
+    // 按摩 31-39
+    31:['rest'],
+    // 有氧与力量 41-59
+    41:['stamina','shape'], 42:['stamina','shape'], 43:['stamina','rest'], 44:['stamina'],
+    45:['shape'], 46:['rest'], 47:['shape','rest'], 48:['shape'], 49:['shape'],
+    50:['shape','rest'], 51:['stamina','shape'], 52:['stamina','shape'],
+    // 核心与腹部 61-69
+    61:['shape'], 62:['shape'], 63:['shape'],
+    // 腿部与臀部 71-79
+    71:['shape'], 72:['shape'], 73:['shape'], 74:['shape','rest'], 75:['shape','rest'],
   };
   const LOG_KEY = 'fitness_log_v1';
   let actionLog = [];
   try { const s = localStorage.getItem(LOG_KEY); if (s) actionLog = JSON.parse(s); } catch(e) {}
   function saveLog() { localStorage.setItem(LOG_KEY, JSON.stringify(actionLog)); }
+
+  // ==================== 一次性迁移：旧编号 → 新编号（2026-05-15 编号重构）====================
+  const ACTION_RENUMBER_V2 = {
+    1:11, 2:16, 3:12, 4:13, 5:14, 6:15,
+    7:21, 8:22, 9:23, 10:24, 11:25, 12:26, 13:27, 14:28, 15:29,
+    16:61, 17:62, 18:63,
+    19:1, 20:2, 21:3, 22:4, 23:5, 24:6,
+    25:71, 26:72, 27:73, 28:74, 29:75,
+    30:31,
+    31:41, 32:42, 33:43, 34:44, 36:45, 37:46, 38:47, 39:48, 40:49, 41:50, 43:51, 44:52,
+  };
+  const RENUMBER_FLAG = 'fitness_log_renumber_v2';
+  if (!localStorage.getItem(RENUMBER_FLAG)) {
+    let migrated = 0;
+    actionLog = actionLog.map(e => {
+      if (ACTION_RENUMBER_V2[e.num]) { migrated++; return { ...e, num: ACTION_RENUMBER_V2[e.num] }; }
+      return e;
+    });
+    saveLog();
+    localStorage.setItem(RENUMBER_FLAG, '1');
+    if (migrated > 0) console.log(`[fitness] 迁移了 ${migrated} 条历史打卡到新编号`);
+  }
 
   function thisWeekStart() {
     const d = new Date();
@@ -1102,15 +1314,22 @@
     return counts;
   }
 
-  // 每个动作的视频实际时长（分钟）。#3 全身扫描按用户设定为 5min。
+  // 每个动作的视频实际时长（分钟）
   const ACTION_DURATIONS = {
-    1:5, 2:10, 3:5, 4:5, 5:10, 6:10,
-    7:15, 8:10, 9:10, 10:10, 11:7, 12:10, 13:10, 14:10, 15:3,
-    16:5, 17:5, 18:5,
-    19:5, 20:3, 21:15, 22:8, 23:3, 24:10,
-    25:10, 26:5, 27:10, 28:10, 29:20,
-    30:5,
-    31:5, 32:15, 33:12, 34:40, 36:8, 37:4, 38:10, 39:4, 40:4, 41:15, 43:5, 44:5,
+    // 体态与矫正
+    1:5, 2:3, 3:15, 4:8, 5:3, 6:10,
+    // 呼吸与冥想
+    11:5, 12:5, 13:5, 14:10, 15:10, 16:10,
+    // 拉伸与放松
+    21:15, 22:10, 23:10, 24:10, 25:7, 26:10, 27:10, 28:10, 29:3,
+    // 按摩
+    31:5,
+    // 有氧与力量
+    41:5, 42:15, 43:12, 44:40, 45:8, 46:4, 47:10, 48:4, 49:4, 50:15, 51:5, 52:5,
+    // 核心与腹部
+    61:5, 62:5, 63:5,
+    // 腿部与臀部
+    71:10, 72:5, 73:10, 74:10, 75:20,
   };
   function comboGoal(comboId) {
     if (comboId.startsWith('combo-stamina-')) return 'stamina';
@@ -1236,39 +1455,109 @@
       comboLog = comboLog.filter(e => e.ts < start);
       saveComboLog();
     }
+    if (typeof extraLog !== 'undefined') {
+      extraLog = extraLog.filter(e => e.ts < start);
+      saveExtraLog();
+    }
     saveLog();
     renderTracker();
     if (typeof updateComboCounters === 'function') updateComboCounters();
     if (typeof updateAllActionCounters === 'function') updateAllActionCounters();
+    if (typeof renderExtra === 'function') renderExtra();
   }
+
+  // ==================== 额外运动（游泳 / hiking）====================
+  const EXTRA_LOG_KEY = 'extra_exercise_log_v1';
+  let extraLog = [];
+  try { const s = localStorage.getItem(EXTRA_LOG_KEY); if (s) extraLog = JSON.parse(s); } catch(e) {}
+  function saveExtraLog() { localStorage.setItem(EXTRA_LOG_KEY, JSON.stringify(extraLog)); }
+
+  const EXTRA_META = {
+    swim: { listId: 'extra-swim-list', summaryId: 'extra-swim-summary', dateId: 'swim-date', minId: 'swim-min', defaultMin: '' },
+    hike: { listId: 'extra-hike-list', summaryId: 'extra-hike-summary', dateId: 'hike-date', minId: 'hike-min', defaultMin: '' },
+    yoga: { listId: 'extra-yoga-list', summaryId: 'extra-yoga-summary', dateId: 'yoga-date', minId: 'yoga-min', defaultMin: '60' },
+  };
+
+  function extraAdd(type) {
+    const meta = EXTRA_META[type]; if (!meta) return;
+    const dateStr = document.getElementById(meta.dateId).value;
+    const min = parseInt(document.getElementById(meta.minId).value, 10);
+    if (!dateStr || !min || min <= 0) { alert('请填日期和分钟数'); return; }
+    const ts = new Date(dateStr + 'T12:00:00').getTime();
+    const id = Date.now() + Math.random();
+    extraLog.push({ type, minutes: min, ts, id });
+    saveExtraLog();
+    document.getElementById(meta.minId).value = meta.defaultMin;
+    renderExtra();
+  }
+
+  function extraDel(id) {
+    extraLog = extraLog.filter(e => e.id !== id);
+    saveExtraLog();
+    renderExtra();
+  }
+
+  function renderExtra() {
+    const start = thisWeekStart();
+    ['swim','hike','yoga'].forEach(type => {
+      const meta = EXTRA_META[type];
+      const list = document.getElementById(meta.listId);
+      const summary = document.getElementById(meta.summaryId);
+      if (!list || !summary) return;
+      const weekItems = extraLog
+        .filter(e => e.type === type && e.ts >= start)
+        .sort((a,b) => b.ts - a.ts);
+      const totalMin = weekItems.reduce((s,e) => s + e.minutes, 0);
+      summary.textContent = `本周 ${weekItems.length} 次 · ${totalMin} min`;
+      list.innerHTML = weekItems.length === 0
+        ? '<div class="extra-empty">本周还没有记录</div>'
+        : weekItems.map(e => {
+            const d = new Date(e.ts);
+            const md = `${d.getMonth()+1}/${d.getDate()}`;
+            const wd = ['日','一','二','三','四','五','六'][d.getDay()];
+            return `<div class="extra-row"><span>${md} 周${wd} · ${e.minutes} min</span><button class="del" onclick="extraDel(${e.id})" title="删除">×</button></div>`;
+          }).join('');
+    });
+  }
+
+  function initExtraDates() {
+    const today = new Date().toISOString().slice(0,10);
+    ['swim-date','hike-date','yoga-date'].forEach(id => {
+      const el = document.getElementById(id); if (el && !el.value) el.value = today;
+    });
+  }
+
+  initExtraDates();
+  renderExtra();
 
 
   // ==================== 组合一键完成 ====================
   const COMBO_ACTIONS = {
     // 🔥 体能向
-    'combo-stamina-fast':    [37, 31],          // 一首歌热身 + 跳绳
-    'combo-stamina-power':   [33, 32, 10],      // 八段锦 + 哑铃全身 + 仙人揉腹
-    'combo-stamina-slowrun': [37, 34, 14],      // 热身 + 超慢跑 + 360度腿部拉伸
-    'combo-stamina-burn':    [37, 41],          // 热身 + 欧阳春晓有氧减脂操
-    'combo-stamina-quick':   [37, 43],          // 热身 + 簿肌修炼
+    'combo-stamina-fast':    [46, 41],          // 一首歌热身 + 跳绳
+    'combo-stamina-power':   [43, 42, 24],      // 八段锦 + 哑铃全身 + 仙人揉腹
+    'combo-stamina-slowrun': [46, 44, 28],      // 热身 + 超慢跑 + 360度腿部拉伸
+    'combo-stamina-burn':    [46, 50],          // 热身 + 有氧减脂操
+    'combo-stamina-quick':   [46, 51],          // 热身 + 簿肌修炼
+    'combo-stamina-radio':   [46, 49, 48],      // 热身 + 第八套广播 + 第九套广播
     // 💪 身材向
-    'combo-shape-core':      [18, 17, 10],      // 真空腹 + 腹横肌 + 仙人揉腹
-    'combo-shape-belly':     [18, 16, 17, 36],  // 真空腹 + 萨尔曼 + 腹横肌 + 古法脂肪操
-    'combo-shape-leghip':    [25, 26, 28, 11],  // 林芊妤 + 练臀 + 膝超伸 + 臀腿完整拉伸
-    'combo-shape-power':     [18, 25, 26, 32],  // 真空腹 + 林芊妤 + 练臀 + 哑铃
-    'combo-shape-back':      [21, 44],          // 谁懂丝滑美背 + 居家哑铃背
-    'combo-shape-yoga':      [38],              // 清晨燃脂瑜伽
-    'combo-shape-hip':       [37, 24],          // 热身 + 假胯宽
-    'combo-shape-arch':      [27],              // 完善足弓训练
-    'combo-shape-archdeep':  [29],              // 足弓 4.0
+    'combo-shape-core':      [63, 62, 24],      // 真空腹 + 腹横肌 + 仙人揉腹
+    'combo-shape-belly':     [63, 61, 62, 45],  // 真空腹 + 萨尔曼 + 腹横肌 + 古法脂肪操
+    'combo-shape-leghip':    [71, 72, 74, 25],  // 林芊妤 + 练臀 + 膝超伸 + 臀腿完整拉伸
+    'combo-shape-power':     [63, 71, 72, 42],  // 真空腹 + 林芊妤 + 练臀 + 哑铃
+    'combo-shape-back':      [3, 52],           // 谁懂丝滑美背 + 居家哑铃背
+    'combo-shape-yoga':      [47],              // 清晨燃脂瑜伽
+    'combo-shape-hip':       [46, 6],           // 热身 + 假胯宽
+    'combo-shape-arch':      [73],              // 完善足弓训练
+    'combo-shape-archdeep':  [75],              // 足弓 4.0
     // 🌿 养护向
-    'combo-rest-morning':    [1, 8, 18],        // Nadi + Zoey + 真空腹
-    'combo-rest-detox':      [13, 10],          // 清晨排毒瑜伽 + 仙人揉腹
-    'combo-rest-shoulder':   [2, 12, 22],       // 振谐呼吸 + 肩颈背动态 + YTWL
-    'combo-rest-deep':       [3, 7, 30],        // 全身扫描 + JJ全身拉伸 + 小腿按摩
-    'combo-rest-bedtime':    [9, 19, 10, 4],    // 全程躺练 + 掰正骨盆 + 仙人揉腹 + 自我肯定
-    'combo-rest-bowl':       [6, 5],            // 颂钵 + 自我疗愈冥想
-    'combo-rest-posture':    [20, 23],          // 女明星仪态 + 骨科腰椎操
+    'combo-rest-morning':    [11, 22, 63],      // Nadi + Zoey + 真空腹
+    'combo-rest-detox':      [27, 24],          // 清晨排毒瑜伽 + 仙人揉腹
+    'combo-rest-shoulder':   [16, 26, 4],       // 谐振呼吸 + 肩颈背动态 + YTWL
+    'combo-rest-deep':       [12, 21, 31],      // 全身扫描 + JJ全身拉伸 + 小腿按摩
+    'combo-rest-bedtime':    [23, 1, 24, 13],   // 全程躺练 + 掰正骨盆 + 仙人揉腹 + 自我肯定
+    'combo-rest-bowl':       [15, 14],          // 颂钵 + 我值得无条件的爱
+    'combo-rest-posture':    [2, 5, 29],        // 女明星仪态 + 骨科腰椎操 + 极度舒适拉伸
   };
 
   const COMBO_LOG_KEY = 'fitness_combo_log_v1';
@@ -1370,13 +1659,15 @@
     setTimeout(() => btn.classList.remove('recently'), 1500);
   });
 
-  // ==================== 跨标签页同步（与运动参考库共享数据） ====================
+  // ==================== 跨标签页同步（与运动参考库、周总结页共享数据） ====================
   window.addEventListener('storage', (e) => {
-    if (e.key !== LOG_KEY && e.key !== COMBO_LOG_KEY) return;
+    if (e.key !== LOG_KEY && e.key !== COMBO_LOG_KEY && e.key !== EXTRA_LOG_KEY) return;
     try { const s = localStorage.getItem(LOG_KEY); if (s) actionLog = JSON.parse(s); } catch(err) {}
     try { const s = localStorage.getItem(COMBO_LOG_KEY); if (s) comboLog = JSON.parse(s); } catch(err) {}
+    try { const s = localStorage.getItem(EXTRA_LOG_KEY); if (s) extraLog = JSON.parse(s); } catch(err) {}
     renderTracker();
     updateComboCounters();
+    renderExtra();
   });
 </script>
 </body>

@@ -321,20 +321,25 @@
   <div class="bento-section">
     <div class="sh">Emma 便当</div>
     <div class="bento-card">
-      <div class="bento-top">
-        <div>
-          <div class="bento-top-label">明天主食</div>
-          <div class="bento-top-title">选一个</div>
+      <div class="bento-body show">
+        <div class="bento-top-label" style="margin-bottom:.5rem;">主食可选</div>
+        <div class="bento-grid">
+          <div class="bento-item hl-s1"><div class="bento-item-val">三明治 salami + cheese</div></div>
+          <div class="bento-item hl-s2"><div class="bento-item-val">三明治 鸡蛋沙拉 + salami</div></div>
+          <div class="bento-item hl-s2"><div class="bento-item-val">鸡蛋牛油果三明治</div></div>
+          <div class="bento-item hl-baozi"><div class="bento-item-val">包子 / 馒头</div></div>
+          <div class="bento-item hl-chicken"><div class="bento-item-val">炸鸡块</div></div>
+          <div class="bento-item hl-s1"><div class="bento-item-val">寿司</div></div>
+          <div class="bento-item hl-chicken"><div class="bento-item-val">蛋糕</div></div>
+          <div class="bento-item hl-baozi"><div class="bento-item-val">蒜蓉面包</div></div>
         </div>
-        <div class="bento-switch-row">
-          <button class="bento-btn" id="btn-s1" onclick="setBento('s1')">三明治 salami+cheese</button>
-          <button class="bento-btn" id="btn-s2" onclick="setBento('s2')">三明治 鸡蛋沙拉+salami</button>
-          <button class="bento-btn" id="btn-baozi" onclick="setBento('baozi')">包子 / 馒头</button>
-          <button class="bento-btn" id="btn-chicken" onclick="setBento('chicken')">炸鸡块</button>
+
+        <div class="bento-top-label" style="margin:1.25rem 0 .5rem;">固定搭配</div>
+        <div class="bento-grid">
+          <div class="bento-item fixed"><div class="bento-item-label">保温壶</div><div class="bento-item-val">白粥</div></div>
+          <div class="bento-item fixed"><div class="bento-item-label">蔬菜</div><div class="bento-item-val">黄瓜条 / 胡萝卜条</div></div>
+          <div class="bento-item fixed" style="grid-column:1 / -1;"><div class="bento-item-label">加餐</div><div class="bento-item-val">Yakult + 饼干</div></div>
         </div>
-      </div>
-      <div class="bento-body" id="bento-body">
-        <div class="bento-grid" id="bento-grid"></div>
       </div>
     </div>
   </div>
@@ -603,7 +608,6 @@ function availableCategories(){
 // ==================== 状态 ====================
 let state={cuisine:null,method:null,anchors:new Set()};
 let selectedNames=new Set();
-let bentoChoice=null;
 
 const d=new Date();
 const days=["日","一","二","三","四","五","六"];
@@ -867,33 +871,6 @@ function renderFridge(){
   document.getElementById("cStock").textContent=stt;
   document.getElementById("shortCount").textContent=`还剩 ${sa}/${st}`;
   document.getElementById("rotateCount").textContent=`还剩 ${ra}/${rt}`;
-}
-
-// ==================== 便当 ====================
-const BENTO_OPTIONS={
-  s1:{label:"三明治（salami + cheese）",hl:"hl-s1",btnClass:"active-s1"},
-  s2:{label:"三明治（鸡蛋沙拉 + salami）",hl:"hl-s2",btnClass:"active-s2"},
-  baozi:{label:"包子 / 馒头",hl:"hl-baozi",btnClass:"active-baozi"},
-  chicken:{label:"炸鸡块",hl:"hl-chicken",btnClass:"active-chicken"},
-};
-function setBento(choice){
-  bentoChoice=bentoChoice===choice?null:choice;
-  ["s1","s2","baozi","chicken"].forEach(k=>{
-    document.getElementById("btn-"+k).className="bento-btn"+(bentoChoice===k?" "+BENTO_OPTIONS[k].btnClass:"");
-  });
-  const body=document.getElementById("bento-body");
-  if(!bentoChoice){body.classList.remove("show");return;}
-  const opt=BENTO_OPTIONS[bentoChoice];
-  const items=[
-    {label:"主食",val:opt.label,cls:opt.hl},
-    {label:"保温壶",val:"白粥",cls:"fixed"},
-    {label:"蔬菜",val:"黄瓜条 / 胡萝卜条",cls:"fixed"},
-    {label:"固定搭配",val:"Yakult + 饼干",cls:"fixed"},
-  ];
-  document.getElementById("bento-grid").innerHTML=items.map(it=>
-    `<div class="bento-item ${it.cls}"><div class="bento-item-label">${it.label}</div><div class="bento-item-val">${it.val}</div></div>`
-  ).join("");
-  body.classList.add("show");
 }
 
 // ==================== 编辑菜单库 ====================

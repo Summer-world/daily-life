@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>运动 · 周总结＋参考库</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FFFFFF;
+    --border: #E8E4DC;
+    --border-dark: #C8C2B4;
+    --text-primary: #1A1814;
+    --text-secondary: #6B6560;
+    --text-hint: #A09A92;
+    --accent: #2D5A3D;
+    --accent-light: #EAF2EC;
+    --accent-mid: #4A8C60;
+    --gold: #7A5C2E;
+    --gold-light: #F5EDE6;
+    --info: #1A3A5C;
+    --info-light: #E6EEF6;
+    --rose: #7A3A4A;
+    --rose-light: #FBEEF1;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; line-height: 1.7; }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .head-inner { max-width: 980px; margin: 0 auto; display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; }
+  header h1 { font-family: 'Noto Serif SC', serif; font-size: 1.4rem; font-weight: 600; letter-spacing: 0.02em; }
+  header .sub { font-size: 0.78rem; color: var(--text-hint); font-weight: 300; }
+  header a.back { font-size: 0.78rem; color: var(--text-secondary); text-decoration: none; padding: 5px 14px; border: 1px solid var(--border-dark); border-radius: 99px; }
+  header a.back:hover { background: var(--bg); }
+
+  main { max-width: 1180px; margin: 0 auto; padding: 1.5rem 1.5rem 3rem; }
+
+  /* ========== 侧边目录布局 ========== */
+  .layout { display: grid; grid-template-columns: 210px 1fr; gap: 1.75rem; align-items: start; }
+  .side-toc {
+    position: sticky; top: 5.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    box-shadow: var(--shadow);
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+  }
+  .side-toc-title { font-family: 'Noto Serif SC', serif; font-size: 0.78rem; color: var(--text-hint); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.6rem; }
+  .side-toc ul { list-style: none; padding: 0; margin: 0; }
+  .side-toc > ul > li { margin-bottom: 0.2rem; }
+  .side-toc a {
+    display: block; padding: 5px 10px;
+    font-size: 0.85rem; text-decoration: none;
+    color: var(--text-secondary); border-radius: 6px;
+    line-height: 1.5;
+    transition: background 0.1s, color 0.1s;
+  }
+  .side-toc a:hover { background: var(--bg); color: var(--text-primary); }
+  .side-toc a.active { background: var(--accent-light); color: var(--accent); font-weight: 500; }
+  .side-toc .sub { padding-left: 16px; }
+  .side-toc .sub a { font-size: 0.78rem; padding: 3px 10px; color: var(--text-hint); }
+  .side-toc .sub a:hover { color: var(--text-secondary); }
+  .toc-anchor { scroll-margin-top: 5.5rem; }
+
+  /* ========== 常用组合卡 ========== */
+  .combo-group-label { font-family: 'Noto Serif SC', serif; font-size: 0.92rem; font-weight: 600; margin: 1.4rem 0 0.6rem; padding: 0.4rem 0.85rem; border-radius: 6px; display: inline-block; scroll-margin-top: 5.5rem; }
+  .combo-group-label.stamina-label { background: var(--gold-light); color: var(--gold); }
+  .combo-group-label.shape-label { background: var(--accent-light); color: var(--accent); }
+  .combo-group-label.rest-label { background: var(--info-light); color: var(--info); }
+  .combo-card {
+    background: var(--accent-light);
+    border: 1px solid var(--accent-mid);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.7rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .combo-card.combo-stamina { border-left: 3px solid var(--gold); background: var(--gold-light); border-color: var(--gold); }
+  .combo-card.combo-shape { border-left: 3px solid var(--accent); background: var(--accent-light); border-color: var(--accent-mid); }
+  .combo-card.combo-rest { border-left: 3px solid var(--info); background: var(--info-light); border-color: var(--info); }
+  .cc-main { flex: 1; min-width: 0; }
+  .combo-card .combo-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+  }
+  .combo-stamina .combo-title { color: var(--gold); }
+  .combo-shape .combo-title { color: var(--accent); }
+  .combo-rest .combo-title { color: var(--info); }
+  .combo-card .combo-flow { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.65; }
+
+  /* 组合卡的 +/- 打卡器 */
+  .cc-tracker { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+  .cc-count {
+    font-family: 'Noto Serif SC', serif; font-weight: 600;
+    font-size: 0.95rem; min-width: 20px; text-align: center;
+  }
+  .combo-stamina .cc-count { color: var(--gold); }
+  .combo-shape   .cc-count { color: var(--accent); }
+  .combo-rest    .cc-count { color: var(--info); }
+  .counter-btn {
+    background: var(--surface); border: 1px solid var(--border-dark);
+    color: var(--text-secondary); font-family: inherit; font-size: 0.85rem;
+    padding: 3px 11px; border-radius: 99px; cursor: pointer;
+    transition: all 0.1s; min-width: 32px; line-height: 1.3;
+  }
+  .counter-btn.plus:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .counter-btn.minus:hover { background: #FEE; color: #c0392b; border-color: #E8B5A8; }
+  .counter-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .counter-btn:disabled:hover { background: var(--surface); color: var(--text-secondary); border-color: var(--border-dark); }
+
+  @media (max-width: 540px) {
+    .combo-card { flex-wrap: wrap; }
+    .cc-tracker { width: 100%; justify-content: flex-end; }
+  }
+
+  /* ========== 动作详情表 ========== */
+  .action-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+  .action-table th, .action-table td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  .action-table th { background: var(--bg); color: var(--text-hint); font-weight: 500; font-size: 0.74rem; letter-spacing: 0.02em; }
+  .action-table td { color: var(--text-secondary); line-height: 1.6; }
+  .action-table td.num { color: var(--text-hint); width: 48px; text-align: center; font-size: 0.78rem; }
+  .action-table th.action-track-th,
+  .action-table td.action-track {
+    width: 118px; text-align: center; padding: 4px 8px;
+  }
+  .action-table .at-tracker { display: inline-flex; align-items: center; gap: 4px; }
+  .action-table .at-count {
+    font-family: 'Noto Serif SC', serif; font-weight: 600;
+    min-width: 14px; text-align: center; color: var(--accent);
+    font-size: 0.85rem;
+  }
+  .action-table .counter-btn { padding: 2px 9px; font-size: 0.78rem; min-width: 28px; line-height: 1.3; }
+  @media (max-width: 640px) {
+    .action-table th.action-track-th, .action-table td.action-track { width: auto; padding: 4px 6px; }
+    .action-table th, .action-table td { padding: 6px 6px; }
+  }
+  .cat-card-title {
+    font-family: 'Noto Serif SC', serif; font-size: 1rem; font-weight: 600;
+    margin-bottom: 0.7rem; display: flex; align-items: center; gap: 8px;
+    scroll-margin-top: 5.5rem;
+  }
+  .cat-card-title .count-hint { font-size: 0.74rem; font-weight: 400; color: var(--text-hint); }
+
+  @media (max-width: 1100px) {
+    .layout { grid-template-columns: 1fr; }
+    .side-toc { display: none; }
+  }
+
+  .section-heading {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+    margin: 1.75rem 0 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-heading:first-child { margin-top: 0; }
+  .section-heading::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow);
+  }
+  .card-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* ==== 周选择器 ==== */
+  .week-picker {
+    background: linear-gradient(180deg, var(--accent-light) 0%, var(--surface) 100%);
+    border: 1px solid var(--accent-mid);
+    border-radius: 12px;
+    padding: 1.1rem 1.5rem;
+    margin-bottom: 1.25rem;
+    display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between;
+  }
+  .week-range-wrap { display: flex; flex-direction: column; gap: 2px; }
+  .week-range {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .week-tag { font-size: 0.78rem; color: var(--text-hint); }
+  .week-nav { display: flex; gap: 6px; }
+  .week-nav button {
+    font-family: inherit; font-size: 0.82rem; padding: 6px 14px;
+    background: var(--surface); color: var(--text-secondary);
+    border: 1px solid var(--border-dark); border-radius: 99px; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .week-nav button:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .week-nav button.this-week { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* ==== 数据汇总 ==== */
+  .goal-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+  .goal-stat {
+    padding: 0.95rem 1.1rem;
+    border-radius: 10px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .goal-stat.stamina { background: var(--gold-light); border-left: 3px solid var(--gold); }
+  .goal-stat.shape { background: var(--accent-light); border-left: 3px solid var(--accent); }
+  .goal-stat.rest { background: var(--info-light); border-left: 3px solid var(--info); }
+  .goal-label { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); }
+  .goal-num { font-family: 'Noto Serif SC', serif; font-size: 1.4rem; font-weight: 600; line-height: 1; }
+  .goal-num.met { color: var(--accent); }
+  .goal-num.miss { color: var(--rose); }
+  .goal-target { font-size: 0.78rem; color: var(--text-hint); font-weight: 400; margin-left: 4px; }
+  .goal-sub { font-size: 0.74rem; color: var(--text-hint); }
+  .goal-pct { font-size: 0.74rem; font-weight: 500; }
+  .goal-pct.met { color: var(--accent); }
+  .goal-pct.miss { color: var(--rose); }
+
+  .extra-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+  .extra-stat {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.85rem 1.1rem;
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .extra-stat .label { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); }
+  .extra-stat .num { font-family: 'Noto Serif SC', serif; font-size: 1.2rem; font-weight: 600; color: var(--text-primary); }
+  .extra-stat .sub { font-size: 0.74rem; color: var(--text-hint); }
+
+  .total-bar {
+    margin-top: 0.75rem; padding: 0.65rem 1rem;
+    background: var(--bg); border-radius: 8px;
+    font-size: 0.85rem; color: var(--text-secondary);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  .total-bar strong { color: var(--text-primary); font-family: 'Noto Serif SC', serif; }
+
+  /* ==== 组合明细 ==== */
+  table { width: 100%; border-collapse: collapse; font-size: 0.83rem; margin: 0.25rem 0; }
+  th, td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  th { background: var(--bg); color: var(--text-hint); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.02em; }
+  td { color: var(--text-secondary); line-height: 1.7; }
+  td.right { text-align: right; }
+  td .pill {
+    display: inline-block; padding: 1px 9px; border-radius: 99px; font-size: 0.72rem;
+    background: var(--bg); color: var(--text-hint);
+  }
+  td .pill.s { background: var(--gold-light); color: var(--gold); }
+  td .pill.h { background: var(--accent-light); color: var(--accent); }
+  td .pill.r { background: var(--info-light); color: var(--info); }
+  .empty-row { text-align: center; color: var(--text-hint); font-style: italic; padding: 1.25rem; font-size: 0.83rem; }
+
+  /* ==== 建议 ==== */
+  .suggest-block {
+    background: var(--accent-light);
+    border: 1px dashed var(--accent);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.7rem;
+  }
+  .suggest-block.celebrate { background: var(--gold-light); border-color: var(--gold); }
+  .suggest-title { font-family: 'Noto Serif SC', serif; font-weight: 600; font-size: 0.92rem; margin-bottom: 0.5rem; color: var(--accent); }
+  .suggest-block.celebrate .suggest-title { color: var(--gold); }
+  .suggest-list { list-style: none; padding: 0; }
+  .suggest-list li {
+    font-size: 0.85rem; color: var(--text-secondary);
+    padding: 0.35rem 0 0.35rem 1.1rem; position: relative; line-height: 1.7;
+  }
+  .suggest-list li::before {
+    content: '→'; position: absolute; left: 0; color: var(--accent-mid); font-weight: 600;
+  }
+  .suggest-block.celebrate .suggest-list li::before { color: var(--gold); }
+
+  /* ==== 文字复盘 ==== */
+  .review-block { margin-bottom: 1rem; }
+  .review-label {
+    display: block; font-size: 0.85rem; font-weight: 500;
+    margin-bottom: 0.45rem; color: var(--text-primary);
+  }
+  .review-label .hint { font-size: 0.75rem; color: var(--text-hint); font-weight: 400; margin-left: 6px; }
+  textarea {
+    width: 100%; min-height: 100px;
+    font-family: inherit; font-size: 0.88rem; line-height: 1.7;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-dark); border-radius: 10px;
+    background: var(--surface); color: var(--text-primary);
+    resize: vertical;
+  }
+  textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
+
+  .save-row { display: flex; gap: 10px; align-items: center; margin-top: 0.5rem; flex-wrap: wrap; }
+  .save-btn {
+    font-family: inherit; font-size: 0.88rem; padding: 9px 24px;
+    background: var(--accent); color: #fff;
+    border: none; border-radius: 99px; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .save-btn:hover { background: var(--accent-mid); }
+  .save-status { font-size: 0.8rem; color: var(--accent); }
+  .save-status.shown { animation: fadeOut 3s forwards; }
+  @keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; } }
+
+  /* ==== 历史归档 ==== */
+  .archive-item {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .archive-head {
+    padding: 0.7rem 1.1rem;
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    font-size: 0.88rem;
+    transition: background 0.1s;
+  }
+  .archive-head:hover { background: var(--bg); }
+  .archive-week { font-family: 'Noto Serif SC', serif; font-weight: 600; color: var(--text-primary); }
+  .archive-summary { font-size: 0.78rem; color: var(--text-hint); flex: 1; margin: 0 12px; }
+  .archive-toggle { color: var(--text-hint); font-size: 0.9rem; }
+  .archive-body {
+    padding: 0 1.1rem 1rem;
+    border-top: 1px solid var(--border);
+    display: none;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+  .archive-body.open { display: block; padding-top: 0.85rem; }
+  .archive-body .field-label {
+    font-size: 0.77rem; color: var(--text-hint); font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.05em;
+    margin-top: 0.8rem; margin-bottom: 0.3rem;
+  }
+  .archive-body .field-label:first-child { margin-top: 0; }
+  .archive-body p { white-space: pre-wrap; line-height: 1.75; }
+  .archive-body .archive-data {
+    background: var(--bg); border-radius: 8px; padding: 0.6rem 0.9rem;
+    font-size: 0.8rem;
+  }
+  .archive-empty {
+    text-align: center; color: var(--text-hint); padding: 1.5rem;
+    font-style: italic; font-size: 0.85rem;
+  }
+
+  @media (max-width: 680px) {
+    .goal-stats { grid-template-columns: 1fr; }
+    .extra-stats { grid-template-columns: 1fr; }
+    header { padding: 1rem 1rem; }
+    main { padding: 1.25rem 1rem 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-inner">
+    <div>
+      <h1>运动 · 周总结＋参考库</h1>
+      <span class="sub">周日晚 9 点复盘 · 22 个组合 + 42 项动作详情 · 长期追踪</span>
+    </div>
+    <a class="back" href="Summer的世界.html">← 回到 Summer 的世界</a>
+  </div>
+</header>
+
+<main>
+<div class="layout">
+
+  <aside class="side-toc" id="side-toc">
+    <div class="side-toc-title">目录</div>
+    <ul>
+      <li><a href="#sec-week">📅 本周复盘</a>
+        <ul class="sub">
+          <li><a href="#sec-data">完成数据</a></li>
+          <li><a href="#sec-detail">组合明细</a></li>
+          <li><a href="#sec-suggest">下周建议</a></li>
+          <li><a href="#sec-review">这周的话</a></li>
+        </ul>
+      </li>
+      <li><a href="#sec-archive">📚 历史归档</a></li>
+      <li><a href="#sec-combos">📋 常用组合</a>
+        <ul class="sub">
+          <li><a href="#combo-stamina-group">🔥 体能向</a></li>
+          <li><a href="#combo-shape-group">💪 身材向</a></li>
+          <li><a href="#combo-rest-group">🌿 养护向</a></li>
+        </ul>
+      </li>
+      <li><a href="#sec-actions">🎯 动作详情</a>
+        <ul class="sub">
+          <li><a href="#act-posture">体态与矫正</a></li>
+          <li><a href="#act-breath">呼吸与冥想</a></li>
+          <li><a href="#act-stretch">拉伸与放松</a></li>
+          <li><a href="#act-massage">按摩</a></li>
+          <li><a href="#act-cardio">有氧与力量</a></li>
+          <li><a href="#act-core">核心与腹部</a></li>
+          <li><a href="#act-leg">腿部与臀部</a></li>
+        </ul>
+      </li>
+    </ul>
+  </aside>
+
+  <div class="content-col">
+
+  <!-- ==== 周选择器 ==== -->
+  <div class="week-picker" id="sec-week">
+    <div class="week-range-wrap">
+      <div class="week-range" id="week-range">—</div>
+      <div class="week-tag" id="week-tag">—</div>
+    </div>
+    <div class="week-nav">
+      <button onclick="navWeek(-1)">← 上一周</button>
+      <button onclick="navWeek(0)" class="this-week" id="btn-thisweek">本周</button>
+      <button onclick="navWeek(1)" id="btn-next">下一周 →</button>
+    </div>
+  </div>
+
+  <!-- ==== 数据汇总 ==== -->
+  <div class="section-heading toc-anchor" id="sec-data">📊 完成数据</div>
+  <div class="card">
+    <div class="goal-stats">
+      <div class="goal-stat stamina">
+        <span class="goal-label">🔥 体能</span>
+        <span><span class="goal-num" id="num-stamina">0</span><span class="goal-target">/100 分钟</span></span>
+        <span class="goal-sub"><span id="cnt-stamina">0</span> 次组合 · <span class="goal-pct" id="pct-stamina">0%</span></span>
+      </div>
+      <div class="goal-stat shape">
+        <span class="goal-label">💪 身材</span>
+        <span><span class="goal-num" id="num-shape">0</span><span class="goal-target">/150 分钟</span></span>
+        <span class="goal-sub"><span id="cnt-shape">0</span> 次组合 · <span class="goal-pct" id="pct-shape">0%</span></span>
+      </div>
+      <div class="goal-stat rest">
+        <span class="goal-label">🌿 养护</span>
+        <span><span class="goal-num" id="num-rest">0</span><span class="goal-target">/150 分钟</span></span>
+        <span class="goal-sub"><span id="cnt-rest">0</span> 次组合 · <span class="goal-pct" id="pct-rest">0%</span></span>
+      </div>
+    </div>
+
+    <div class="extra-stats">
+      <div class="extra-stat">
+        <span class="label">🏊 游泳</span>
+        <span class="num"><span id="num-swim">0</span> min</span>
+        <span class="sub"><span id="cnt-swim">0</span> 次</span>
+      </div>
+      <div class="extra-stat">
+        <span class="label">⛰️ Hiking</span>
+        <span class="num"><span id="num-hike">0</span> min</span>
+        <span class="sub"><span id="cnt-hike">0</span> 次</span>
+      </div>
+      <div class="extra-stat">
+        <span class="label">🧘 JJ 瑜伽</span>
+        <span class="num"><span id="num-yoga">0</span> min</span>
+        <span class="sub"><span id="cnt-yoga">0</span> 次</span>
+      </div>
+    </div>
+
+    <div class="total-bar">
+      <span>本周总运动量</span>
+      <span><strong id="total-minutes">0</strong> 分钟 · 室内组合 <span id="total-indoor">0</span> + 户外/水中 <span id="total-extra">0</span></span>
+    </div>
+  </div>
+
+  <!-- ==== 组合明细 ==== -->
+  <div class="section-heading toc-anchor" id="sec-detail">📋 组合明细</div>
+  <div class="card" style="padding: 0.5rem 0.5rem;">
+    <table>
+      <thead><tr><th>分类</th><th>组合</th><th class="right">次数</th><th class="right">分钟</th></tr></thead>
+      <tbody id="combo-detail-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- ==== 自动建议 ==== -->
+  <div class="section-heading toc-anchor" id="sec-suggest">💡 下周建议</div>
+  <div id="suggestions"></div>
+
+  <!-- ==== 文字复盘 ==== -->
+  <div class="section-heading toc-anchor" id="sec-review">✍️ 这周的话</div>
+  <div class="card">
+    <div class="review-block">
+      <label class="review-label" for="ta-highlights">上周亮点 / 感受 <span class="hint">做得好的、状态、身体反馈</span></label>
+      <textarea id="ta-highlights" placeholder="比如：周六的 hiking 走了 12 公里居然没崩；周三晚太累跳了一次养护；睡前组合做完入睡很快……"></textarea>
+    </div>
+    <div class="review-block">
+      <label class="review-label" for="ta-adjust">下周想调整 <span class="hint">具体动作，能立刻执行的</span></label>
+      <textarea id="ta-adjust" placeholder="比如：把身材组合从 1 次提到 3 次；周五早上加一次跳绳；hiking 改在周六上午……"></textarea>
+    </div>
+    <div class="save-row">
+      <button class="save-btn" onclick="saveReview()">💾 保存这周的复盘</button>
+      <span class="save-status" id="save-status"></span>
+    </div>
+  </div>
+
+  <!-- ==== 历史归档 ==== -->
+  <div class="section-heading toc-anchor" id="sec-archive">📚 历史归档</div>
+  <div id="archive-list"></div>
+
+  <!-- ============================================================== -->
+  <!-- ==== 常用组合（参考库）================================================ -->
+  <!-- ============================================================== -->
+  <div class="section-heading toc-anchor" id="sec-combos">📋 常用组合 · 22 个</div>
+
+  <p class="para" style="font-size:.78rem;color:var(--text-hint);font-style:italic;margin-bottom:.85rem;">
+    点 + 打卡（计入本周），点 − 撤销最近一次。数据跟 Summer 的世界 自动同步。
+  </p>
+
+  <div class="combo-group-label stamina-label toc-anchor" id="combo-stamina-group">🔥 体能向（本周目标 100 分钟）</div>
+
+  <div class="combo-card combo-stamina" data-combo-id="combo-stamina-fast">
+    <div class="cc-main">
+      <div class="combo-title">快速 9min</div>
+      <div class="combo-flow">一首歌热身（4min）→ 跳绳（5min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-fast')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-fast')">+</button></div>
+  </div>
+  <div class="combo-card combo-stamina" data-combo-id="combo-stamina-power">
+    <div class="cc-main">
+      <div class="combo-title">哑铃力量 37min</div>
+      <div class="combo-flow">八段锦（12min）→ 一副哑铃练全身（15min）→ 仙人揉腹（10min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-power')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-power')">+</button></div>
+  </div>
+  <div class="combo-card combo-stamina" data-combo-id="combo-stamina-slowrun">
+    <div class="cc-main">
+      <div class="combo-title">超慢跑 54min · 周末</div>
+      <div class="combo-flow">一首歌热身（4min）→ 180步频超慢跑（40min）→ 360度腿部拉伸（10min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-slowrun')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-slowrun')">+</button></div>
+  </div>
+  <div class="combo-card combo-stamina" data-combo-id="combo-stamina-burn">
+    <div class="cc-main">
+      <div class="combo-title">减脂操 19min</div>
+      <div class="combo-flow">一首歌热身（4min）→ 欧阳春晓有氧减脂操（15min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-burn')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-burn')">+</button></div>
+  </div>
+  <div class="combo-card combo-stamina" data-combo-id="combo-stamina-quick">
+    <div class="cc-main">
+      <div class="combo-title">簿肌快练 9min</div>
+      <div class="combo-flow">一首歌热身（4min）→ 簿肌修炼·居家无器械（5min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-quick')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-quick')">+</button></div>
+  </div>
+  <div class="combo-card combo-stamina" data-combo-id="combo-stamina-radio">
+    <div class="cc-main">
+      <div class="combo-title">广播体操套餐 12min</div>
+      <div class="combo-flow">一首歌热身（4min）→ 第八套广播体操（4min）→ 第九套广播体操（4min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-radio')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-radio')">+</button></div>
+  </div>
+
+  <div class="combo-group-label shape-label toc-anchor" id="combo-shape-group">💪 身材向（本周目标 150 分钟）</div>
+
+  <div class="combo-card combo-shape" data-combo-id="combo-shape-core">
+    <div class="cc-main">
+      <div class="combo-title">核心快速 20min</div>
+      <div class="combo-flow">真空腹（5min）→ 腹横肌激活（5min）→ 仙人揉腹（10min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-core')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-core')">+</button></div>
+  </div>
+  <div class="combo-card combo-shape" data-combo-id="combo-shape-belly">
+    <div class="cc-main">
+      <div class="combo-title">腹部扎实 23min</div>
+      <div class="combo-flow">真空腹（5min）→ 萨尔曼瘦肚子（5min）→ 腹横肌激活（5min）→ 古法内脏脂肪操（8min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-belly')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-belly')">+</button></div>
+  </div>
+  <div class="combo-card combo-shape" data-combo-id="combo-shape-leghip">
+    <div class="cc-main">
+      <div class="combo-title">腿臀套餐 32min</div>
+      <div class="combo-flow">林芊妤瘦腿（10min）→ 坐姿练臀弹力带（5min）→ 韩小四膝超伸（10min）→ Bella 臀腿完整拉伸（7min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-leghip')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-leghip')">+</button></div>
+  </div>
+  <div class="combo-card combo-shape" data-combo-id="combo-shape-power">
+    <div class="cc-main">
+      <div class="combo-title">力量综合 35min</div>
+      <div class="combo-flow">真空腹（5min）→ 林芊妤瘦腿（10min）→ 坐姿练臀（5min）→ 一副哑铃练全身（15min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-power')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-power')">+</button></div>
+  </div>
+  <div class="combo-card combo-shape" data-combo-id="combo-shape-back">
+    <div class="cc-main">
+      <div class="combo-title">美背修身 20min</div>
+      <div class="combo-flow">谁懂丝滑美背的杀伤力（15min）→ 居家哑铃背部跟练（5min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-back')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-back')">+</button></div>
+  </div>
+  <div class="combo-card combo-shape" data-combo-id="combo-shape-yoga">
+    <div class="cc-main">
+      <div class="combo-title">晨起燃脂瑜伽 10min</div>
+      <div class="combo-flow">清晨燃脂瑜伽（10min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-yoga')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-yoga')">+</button></div>
+  </div>
+  <div class="combo-card combo-shape" data-combo-id="combo-shape-hip">
+    <div class="cc-main">
+      <div class="combo-title">假胯宽专项 14min</div>
+      <div class="combo-flow">一首歌热身（4min）→ 根除小肚腩·告别假胯宽（10min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-hip')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-hip')">+</button></div>
+  </div>
+  <div class="combo-card combo-shape" data-combo-id="combo-shape-arch">
+    <div class="cc-main">
+      <div class="combo-title">足弓训练 10min</div>
+      <div class="combo-flow">完善足弓训练·矫正腿型（10min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-arch')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-arch')">+</button></div>
+  </div>
+  <div class="combo-card combo-shape" data-combo-id="combo-shape-archdeep">
+    <div class="cc-main">
+      <div class="combo-title">足弓深度 20min</div>
+      <div class="combo-flow">足弓弹性重建 4.0（20min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-archdeep')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-archdeep')">+</button></div>
+  </div>
+
+  <div class="combo-group-label rest-label toc-anchor" id="combo-rest-group">🌿 养护向（本周目标 150 分钟）</div>
+
+  <div class="combo-card combo-rest" data-combo-id="combo-rest-morning">
+    <div class="cc-main">
+      <div class="combo-title">晨起轻唤醒 20min</div>
+      <div class="combo-flow">Nadi Shodhana 呼吸（5min）→ Zoey 站立拉伸（10min）→ 真空腹（5min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-morning')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-morning')">+</button></div>
+  </div>
+  <div class="combo-card combo-rest" data-combo-id="combo-rest-detox">
+    <div class="cc-main">
+      <div class="combo-title">晨起排毒 20min</div>
+      <div class="combo-flow">清晨排毒瑜伽（10min）→ 仙人揉腹（10min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-detox')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-detox')">+</button></div>
+  </div>
+  <div class="combo-card combo-rest" data-combo-id="combo-rest-shoulder">
+    <div class="cc-main">
+      <div class="combo-title">肩颈背修复 28min</div>
+      <div class="combo-flow">谐振呼吸（10min）→ 肩颈背动态拉伸（10min）→ 告别圆肩驼背 YTWL（8min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-shoulder')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-shoulder')">+</button></div>
+  </div>
+  <div class="combo-card combo-rest" data-combo-id="combo-rest-deep">
+    <div class="cc-main">
+      <div class="combo-title">深度放松 25min</div>
+      <div class="combo-flow">全身扫描（5min）→ JJ 老师全身拉伸（15min）→ 小腿精油按摩（5min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-deep')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-deep')">+</button></div>
+  </div>
+  <div class="combo-card combo-rest" data-combo-id="combo-rest-bedtime">
+    <div class="cc-main">
+      <div class="combo-title">睡前 30min</div>
+      <div class="combo-flow">全程躺练（10min）→ 掰正骨盆懒人版（5min）→ 仙人揉腹（10min）→ 自我肯定冥想（5min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-bedtime')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-bedtime')">+</button></div>
+  </div>
+  <div class="combo-card combo-rest" data-combo-id="combo-rest-bowl">
+    <div class="cc-main">
+      <div class="combo-title">颂钵助眠 20min</div>
+      <div class="combo-flow">颂钵冥想（10min）→ 我值得无条件的爱冥想（10min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-bowl')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-bowl')">+</button></div>
+  </div>
+  <div class="combo-card combo-rest" data-combo-id="combo-rest-posture">
+    <div class="cc-main">
+      <div class="combo-title">体态快练 9min</div>
+      <div class="combo-flow">女明星仪态管理（3min）→ 骨科专家腰椎操（3min）→ 极度舒适拉伸（3min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-posture')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-posture')">+</button></div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- ==== 动作详情（参考库）================================================ -->
+  <!-- ============================================================== -->
+  <div class="section-heading toc-anchor" id="sec-actions">🎯 动作详情 · 42 项</div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-posture"><span>🦴</span>体态与矫正 <span class="count-hint">· 6 项 · #1–9</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th>博主</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1</td><td>掰正骨盆懒人版</td><td>雪儿很棒</td><td>5min</td><td>躺姿</td></tr>
+        <tr><td class="num">2</td><td>女明星仪态管理</td><td>美佳老师</td><td>3min</td><td>站姿</td></tr>
+        <tr><td class="num">3</td><td>谁懂丝滑美背的杀伤力</td><td>欧阳春晓</td><td>15min</td><td>站/坐/盘腿</td></tr>
+        <tr><td class="num">4</td><td>告别圆肩驼背·YTWL 矫正训练</td><td>欧阳春晓</td><td>8min</td><td>站/坐</td></tr>
+        <tr><td class="num">5</td><td>骨科专家腰椎操·久坐快练</td><td>小昕爱养生</td><td>3min</td><td>站姿</td></tr>
+        <tr><td class="num">6</td><td>根除小肚腩·告别假胯宽</td><td>欧阳春晓</td><td>10min</td><td>地板</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-breath"><span>🧘</span>呼吸与冥想 <span class="count-hint">· 6 项 · #11–19</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th>博主</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody>
+        <tr><td class="num">11</td><td>Nadi Shodhana 纳迪净化法（缓焦提专注）</td><td>TheS艾斯</td><td>5min</td><td>坐姿</td></tr>
+        <tr><td class="num">12</td><td>全身扫描冥想</td><td>能量派</td><td>5min</td><td>躺/坐</td></tr>
+        <tr><td class="num">13</td><td>自我肯定冥想·训练内心强大</td><td>FLOW心流所</td><td>5min</td><td>坐姿</td></tr>
+        <tr><td class="num">14</td><td>冥想疗愈·我值得无条件的爱</td><td>马四月</td><td>10min</td><td>坐姿</td></tr>
+        <tr><td class="num">15</td><td>颂钵冥想·睡前助眠放松</td><td>马四月</td><td>10min</td><td>躺/坐</td></tr>
+        <tr><td class="num">16</td><td>谐振呼吸冥想·最深的宁静与放松</td><td>能量派</td><td>10min</td><td>躺/坐</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-stretch"><span>🤸</span>拉伸与放松 <span class="count-hint">· 9 项 · #21–29</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th>博主</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody>
+        <tr><td class="num">21</td><td>15 分钟全身快速拉伸</td><td>瑜伽老师JJ</td><td>15min</td><td>地板</td></tr>
+        <tr><td class="num">22</td><td>全程站立全身拉伸·从头到脚舒缓激活</td><td>周六野Zoey</td><td>10min</td><td>站姿</td></tr>
+        <tr><td class="num">23</td><td>全程躺练·消除疲劳恢复活力</td><td>瑜伽玛拉</td><td>10min</td><td>躺姿</td></tr>
+        <tr><td class="num">24</td><td>仙人揉腹跟练·古法八式</td><td>不圆的汤圆崽</td><td>10min</td><td>躺/坐</td></tr>
+        <tr><td class="num">25</td><td>新手练臀必备·臀腿完整拉伸</td><td>Bella</td><td>7min</td><td>站+地板</td></tr>
+        <tr><td class="num">26</td><td>坐姿 10min 肩颈背动态拉伸</td><td>欧阳春晓</td><td>10min</td><td>坐姿</td></tr>
+        <tr><td class="num">27</td><td>清晨排毒瑜伽</td><td>瑜伽老师JJ</td><td>10min</td><td>站+躺</td></tr>
+        <tr><td class="num">28</td><td>360 度无死角腿部拉伸</td><td>噔噔噔邓</td><td>10min</td><td>地板</td></tr>
+        <tr><td class="num">29</td><td>极度舒适拉伸·不觉得累</td><td>泡椒味桃子</td><td>3min</td><td>站姿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-massage"><span>💆</span>按摩 <span class="count-hint">· 1 项 · #31–39</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th>博主</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody>
+        <tr><td class="num">31</td><td>小腿精油按摩</td><td>欧阳春晓</td><td>5min</td><td>坐姿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-cardio"><span>🔥</span>有氧与力量 <span class="count-hint">· 12 项 · #41–59</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th>博主</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody>
+        <tr><td class="num">41</td><td>间歇跳绳</td><td>bit by bit</td><td>5min</td><td>站姿</td></tr>
+        <tr><td class="num">42</td><td>一副哑铃练全身</td><td>Nina</td><td>15min</td><td>站姿</td></tr>
+        <tr><td class="num">43</td><td>八段锦</td><td>—</td><td>12min</td><td>站姿</td></tr>
+        <tr><td class="num">44</td><td>180 步频超慢跑</td><td>旋风小红</td><td>40min</td><td>站姿</td></tr>
+        <tr><td class="num">45</td><td>古法内脏脂肪操</td><td>雪儿很棒</td><td>8min</td><td>站姿</td></tr>
+        <tr><td class="num">46</td><td>一首歌运动前热身</td><td>刘逗逗</td><td>4min</td><td>站姿</td></tr>
+        <tr><td class="num">47</td><td>清晨燃脂瑜伽</td><td>瑜伽老师JJ</td><td>10min</td><td>地板</td></tr>
+        <tr><td class="num">48</td><td>第九套广播体操</td><td>Mina</td><td>4min</td><td>站姿</td></tr>
+        <tr><td class="num">49</td><td>第八套广播体操</td><td>彤姐</td><td>4min</td><td>站姿</td></tr>
+        <tr><td class="num">50</td><td>有氧减脂操·低缓冲全身</td><td>欧阳春晓</td><td>15min</td><td>站姿</td></tr>
+        <tr><td class="num">51</td><td>簿肌修炼·居家无器械全身</td><td>房子</td><td>5min</td><td>地板</td></tr>
+        <tr><td class="num">52</td><td>居家哑铃背部跟练</td><td>ting</td><td>5min</td><td>站姿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-core"><span>💪</span>核心与腹部 <span class="count-hint">· 3 项 · #61–69</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th>博主</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody>
+        <tr><td class="num">61</td><td>萨尔曼瘦肚子·平坦小腹</td><td>叫我瓜瓜</td><td>5min</td><td>躺姿</td></tr>
+        <tr><td class="num">62</td><td>激活腹横肌·细腰又护腰</td><td>钳钳妈阿曼达</td><td>5min</td><td>坐+躺</td></tr>
+        <tr><td class="num">63</td><td>真空腹训练</td><td>欧阳春晓</td><td>5min</td><td>站/坐/躺</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-leg"><span>🦵</span>腿部与臀部 <span class="count-hint">· 5 项 · #71–79</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th>博主</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody>
+        <tr><td class="num">71</td><td>10min 特快瘦大腿</td><td>林芊妤</td><td>10min</td><td>地板</td></tr>
+        <tr><td class="num">72</td><td>5 分钟带你练臀（弹力带版）</td><td>Nina</td><td>5min</td><td>坐姿</td></tr>
+        <tr><td class="num">73</td><td>完善足弓训练·矫正腿型拉长跟腱</td><td>欧阳春晓</td><td>10min</td><td>站姿</td></tr>
+        <tr><td class="num">74</td><td>膝超伸运动·细直大长腿</td><td>韩小四</td><td>10min</td><td>地板</td></tr>
+        <tr><td class="num">75</td><td>纠正不良腿型·足弓弹性重建 4.0</td><td>欧阳春晓</td><td>20min</td><td>地板</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  </div><!-- /.content-col -->
+</div><!-- /.layout -->
+</main>
+
+<script>
+  // ==================== 共享 localStorage Keys ====================
+  const LOG_KEY = 'fitness_log_v1';
+  const COMBO_LOG_KEY = 'fitness_combo_log_v1';
+  const EXTRA_LOG_KEY = 'extra_exercise_log_v1';
+  const REVIEW_KEY = 'weekly_review_v1';
+
+  // ==================== 组合元数据（与 Summer的世界.html 同步）====================
+  const COMBO_META = {
+    'combo-stamina-fast':    { name: '快速', mins: 9,  goal: 'stamina' },
+    'combo-stamina-power':   { name: '哑铃力量', mins: 37, goal: 'stamina' },
+    'combo-stamina-slowrun': { name: '超慢跑', mins: 54, goal: 'stamina' },
+    'combo-stamina-burn':    { name: '减脂操', mins: 19, goal: 'stamina' },
+    'combo-stamina-quick':   { name: '簿肌快练', mins: 9, goal: 'stamina' },
+    'combo-stamina-radio':   { name: '广播体操套餐', mins: 12, goal: 'stamina' },
+    'combo-shape-core':      { name: '核心快速', mins: 20, goal: 'shape' },
+    'combo-shape-belly':     { name: '腹部扎实', mins: 23, goal: 'shape' },
+    'combo-shape-leghip':    { name: '腿臀套餐', mins: 32, goal: 'shape' },
+    'combo-shape-power':     { name: '力量综合', mins: 35, goal: 'shape' },
+    'combo-shape-back':      { name: '美背修身', mins: 20, goal: 'shape' },
+    'combo-shape-yoga':      { name: '晨起燃脂瑜伽', mins: 10, goal: 'shape' },
+    'combo-shape-hip':       { name: '假胯宽专项', mins: 14, goal: 'shape' },
+    'combo-shape-arch':      { name: '足弓训练', mins: 10, goal: 'shape' },
+    'combo-shape-archdeep':  { name: '足弓深度', mins: 20, goal: 'shape' },
+    'combo-rest-morning':    { name: '晨起轻唤醒', mins: 20, goal: 'rest' },
+    'combo-rest-detox':      { name: '晨起排毒', mins: 20, goal: 'rest' },
+    'combo-rest-shoulder':   { name: '肩颈背修复', mins: 28, goal: 'rest' },
+    'combo-rest-deep':       { name: '深度放松', mins: 25, goal: 'rest' },
+    'combo-rest-bedtime':    { name: '睡前', mins: 30, goal: 'rest' },
+    'combo-rest-bowl':       { name: '颂钵助眠', mins: 20, goal: 'rest' },
+    'combo-rest-posture':    { name: '体态快练', mins: 9, goal: 'rest' },
+  };
+
+  // 独立动作的目标归类与时长（与 Summer的世界.html 同步）
+  const ACTION_GOALS = {
+    1:['rest'], 2:['shape','rest'], 3:['shape','rest'], 4:['shape','rest'], 5:['rest'], 6:['shape','rest'],
+    11:['rest'], 12:['rest'], 13:['rest'], 14:['rest'], 15:['rest'], 16:['rest'],
+    21:['rest'], 22:['rest'], 23:['rest'], 24:['rest'], 25:['rest'], 26:['rest'], 27:['rest'], 28:['rest'], 29:['rest'],
+    31:['rest'],
+    41:['stamina','shape'], 42:['stamina','shape'], 43:['stamina','rest'], 44:['stamina'],
+    45:['shape'], 46:['rest'], 47:['shape','rest'], 48:['shape'], 49:['shape'],
+    50:['shape','rest'], 51:['stamina','shape'], 52:['stamina','shape'],
+    61:['shape'], 62:['shape'], 63:['shape'],
+    71:['shape'], 72:['shape'], 73:['shape'], 74:['shape','rest'], 75:['shape','rest'],
+  };
+  const ACTION_DURATIONS = {
+    1:5, 2:3, 3:15, 4:8, 5:3, 6:10,
+    11:5, 12:5, 13:5, 14:10, 15:10, 16:10,
+    21:15, 22:10, 23:10, 24:10, 25:7, 26:10, 27:10, 28:10, 29:3,
+    31:5,
+    41:5, 42:15, 43:12, 44:40, 45:8, 46:4, 47:10, 48:4, 49:4, 50:15, 51:5, 52:5,
+    61:5, 62:5, 63:5,
+    71:10, 72:5, 73:10, 74:10, 75:20,
+  };
+  const GOAL_TARGET = { stamina: 100, shape: 150, rest: 150 };
+  const GOAL_LABEL = { stamina: '体能', shape: '身材', rest: '养护' };
+  const GOAL_ICON = { stamina: '🔥', shape: '💪', rest: '🌿' };
+  const GOAL_PILL_CLASS = { stamina: 's', shape: 'h', rest: 'r' };
+
+  // ==================== 读取 ====================
+  function readJSON(key, fallback) {
+    try { const s = localStorage.getItem(key); return s ? JSON.parse(s) : fallback; }
+    catch(e) { return fallback; }
+  }
+  function writeJSON(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+
+  let actionLog = readJSON(LOG_KEY, []);
+  let comboLog = readJSON(COMBO_LOG_KEY, []);
+  let extraLog = readJSON(EXTRA_LOG_KEY, []);
+  let reviews = readJSON(REVIEW_KEY, {});
+
+  // 一次性迁移：旧动作编号 → 新编号（2026-05-15 重构）
+  const ACTION_RENUMBER_V2 = {
+    1:11, 2:16, 3:12, 4:13, 5:14, 6:15,
+    7:21, 8:22, 9:23, 10:24, 11:25, 12:26, 13:27, 14:28, 15:29,
+    16:61, 17:62, 18:63,
+    19:1, 20:2, 21:3, 22:4, 23:5, 24:6,
+    25:71, 26:72, 27:73, 28:74, 29:75,
+    30:31,
+    31:41, 32:42, 33:43, 34:44, 36:45, 37:46, 38:47, 39:48, 40:49, 41:50, 43:51, 44:52,
+  };
+  const RENUMBER_FLAG = 'fitness_log_renumber_v2';
+  if (!localStorage.getItem(RENUMBER_FLAG)) {
+    actionLog = actionLog.map(e => ACTION_RENUMBER_V2[e.num] ? { ...e, num: ACTION_RENUMBER_V2[e.num] } : e);
+    writeJSON(LOG_KEY, actionLog);
+    localStorage.setItem(RENUMBER_FLAG, '1');
+  }
+
+  // ==================== 周计算 ====================
+  // 给任意时间，返回它所在周的周一 00:00 时间戳
+  function weekStartFor(date) {
+    const d = new Date(date);
+    d.setHours(0,0,0,0);
+    const day = d.getDay() || 7;
+    d.setDate(d.getDate() - day + 1);
+    return d.getTime();
+  }
+  function weekEndFor(startMs) {
+    return startMs + 7 * 24 * 60 * 60 * 1000;
+  }
+  function fmtDate(ms) {
+    const d = new Date(ms);
+    return `${d.getMonth()+1}月${d.getDate()}日`;
+  }
+  // 周 key = 周一日期 YYYY-MM-DD
+  function weekKey(startMs) {
+    const d = new Date(startMs);
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const dd = String(d.getDate()).padStart(2,'0');
+    return `${y}-${m}-${dd}`;
+  }
+
+  // 当前选中的"周"（以周一时间戳标识）
+  let currentWeekStart = weekStartFor(new Date());
+
+  // ==================== 聚合统计 ====================
+  function statsForWeek(startMs) {
+    const endMs = weekEndFor(startMs);
+    const inWeek = (e) => e.ts >= startMs && e.ts < endMs;
+
+    const mins = { stamina: 0, shape: 0, rest: 0 };
+    const counts = { stamina: 0, shape: 0, rest: 0 };
+    const comboDetail = {}; // comboId -> count
+
+    const comboTs = new Set();
+    comboLog.filter(inWeek).forEach(e => {
+      comboTs.add(e.ts);
+      const meta = COMBO_META[e.comboId];
+      if (!meta) return;
+      mins[meta.goal] += meta.mins;
+      counts[meta.goal]++;
+      comboDetail[e.comboId] = (comboDetail[e.comboId] || 0) + 1;
+    });
+    // 独立动作（不属于组合的）
+    actionLog.filter(e => inWeek(e) && !comboTs.has(e.ts)).forEach(e => {
+      const goals = ACTION_GOALS[e.num];
+      if (goals && goals.length) {
+        mins[goals[0]] += (ACTION_DURATIONS[e.num] || 0);
+        counts[goals[0]]++;
+      }
+    });
+
+    const extras = { swim: { count:0, mins:0 }, hike: { count:0, mins:0 }, yoga: { count:0, mins:0 } };
+    extraLog.filter(inWeek).forEach(e => {
+      if (extras[e.type]) {
+        extras[e.type].count++;
+        extras[e.type].mins += e.minutes;
+      }
+    });
+
+    return { mins, counts, comboDetail, extras };
+  }
+
+  // ==================== 渲染 ====================
+  function renderWeekPicker() {
+    const endMs = weekEndFor(currentWeekStart) - 1;
+    document.getElementById('week-range').textContent = `${fmtDate(currentWeekStart)} – ${fmtDate(endMs)}`;
+    const today = new Date(); today.setHours(0,0,0,0);
+    const thisWeekStart = weekStartFor(today);
+    const diff = Math.round((thisWeekStart - currentWeekStart) / (7*24*60*60*1000));
+    let tag = '';
+    if (diff === 0) {
+      const dow = today.getDay() || 7; // 1=Mon, 7=Sun
+      const wname = ['一','二','三','四','五','六','日'][dow-1];
+      tag = `本周（今天周${wname}）`;
+    } else if (diff === 1) tag = '上一周';
+    else if (diff > 1) tag = `${diff} 周前`;
+    else tag = `未来 ${-diff} 周后`;
+    document.getElementById('week-tag').textContent = tag;
+    document.getElementById('btn-thisweek').classList.toggle('this-week', diff === 0);
+    document.getElementById('btn-next').disabled = diff <= 0;
+    document.getElementById('btn-next').style.opacity = diff <= 0 ? 0.4 : 1;
+  }
+
+  function renderStats() {
+    const s = statsForWeek(currentWeekStart);
+    ['stamina','shape','rest'].forEach(g => {
+      const target = GOAL_TARGET[g];
+      const mins = s.mins[g];
+      const pct = Math.round(mins / target * 100);
+      const numEl = document.getElementById('num-' + g);
+      numEl.textContent = mins;
+      numEl.classList.toggle('met', mins >= target);
+      numEl.classList.toggle('miss', mins < target);
+      document.getElementById('cnt-' + g).textContent = s.counts[g];
+      const pctEl = document.getElementById('pct-' + g);
+      pctEl.textContent = pct + '%';
+      pctEl.classList.toggle('met', mins >= target);
+      pctEl.classList.toggle('miss', mins < target);
+    });
+    document.getElementById('num-swim').textContent = s.extras.swim.mins;
+    document.getElementById('cnt-swim').textContent = s.extras.swim.count;
+    document.getElementById('num-hike').textContent = s.extras.hike.mins;
+    document.getElementById('cnt-hike').textContent = s.extras.hike.count;
+    document.getElementById('num-yoga').textContent = s.extras.yoga.mins;
+    document.getElementById('cnt-yoga').textContent = s.extras.yoga.count;
+
+    const indoor = s.mins.stamina + s.mins.shape + s.mins.rest;
+    const extraMins = s.extras.swim.mins + s.extras.hike.mins + s.extras.yoga.mins;
+    document.getElementById('total-indoor').textContent = indoor;
+    document.getElementById('total-extra').textContent = extraMins;
+    document.getElementById('total-minutes').textContent = indoor + extraMins;
+  }
+
+  function renderComboDetail() {
+    const s = statsForWeek(currentWeekStart);
+    const tbody = document.getElementById('combo-detail-tbody');
+    const rows = Object.entries(s.comboDetail)
+      .map(([id, cnt]) => {
+        const meta = COMBO_META[id];
+        if (!meta) return null;
+        return { id, name: meta.name, mins: meta.mins, goal: meta.goal, cnt, total: meta.mins * cnt };
+      })
+      .filter(Boolean)
+      .sort((a,b) => {
+        const ord = { stamina: 0, shape: 1, rest: 2 };
+        if (ord[a.goal] !== ord[b.goal]) return ord[a.goal] - ord[b.goal];
+        return b.cnt - a.cnt;
+      });
+    if (rows.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" class="empty-row">这周还没有组合记录</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td><span class="pill ${GOAL_PILL_CLASS[r.goal]}">${GOAL_ICON[r.goal]} ${GOAL_LABEL[r.goal]}</span></td>
+        <td>${r.name} <span style="color:var(--text-hint);font-size:.78rem;">${r.mins}min</span></td>
+        <td class="right">${r.cnt}</td>
+        <td class="right">${r.total}</td>
+      </tr>
+    `).join('');
+  }
+
+  function renderSuggestions() {
+    const s = statsForWeek(currentWeekStart);
+    const container = document.getElementById('suggestions');
+    const gaps = [];
+    ['stamina','shape','rest'].forEach(g => {
+      const target = GOAL_TARGET[g];
+      const remain = target - s.mins[g];
+      if (remain > 0) gaps.push({ goal: g, remain });
+    });
+    const totalExtra = s.extras.swim.mins + s.extras.hike.mins + s.extras.yoga.mins;
+
+    let html = '';
+
+    if (gaps.length === 0) {
+      html += `<div class="suggest-block celebrate">
+        <div class="suggest-title">🎉 本周三个目标全部达成</div>
+        <ul class="suggest-list">
+          <li>下周可以保持当前节奏，把"够了"沉淀成肌肉记忆</li>
+          <li>有余力可以尝试新组合（运动收集箱里有没整理的存货？）</li>
+          ${totalExtra > 0 ? `<li>额外运动 ${totalExtra}min 是 bonus，记住身体喜欢的强度</li>` : ''}
+        </ul>
+      </div>`;
+    } else {
+      html += `<div class="suggest-block">
+        <div class="suggest-title">📌 下周缺口</div>
+        <ul class="suggest-list">`;
+      gaps.forEach(g => {
+        const suggestion = goalSuggestion(g.goal, g.remain);
+        html += `<li><strong>${GOAL_ICON[g.goal]} ${GOAL_LABEL[g.goal]}</strong> 差 ${g.remain} 分钟 → ${suggestion}</li>`;
+      });
+      html += `</ul></div>`;
+    }
+
+    // 模式观察
+    const patterns = [];
+    if (s.extras.hike.count === 0 && s.mins.stamina < GOAL_TARGET.stamina) {
+      patterns.push('体能没到、又没 hiking — 周末可以安排一次国家公园');
+    }
+    if (s.extras.swim.count === 0) {
+      patterns.push('本周没游泳记录 — 周一 Emma 课时是不是漏打了？');
+    }
+    if (s.extras.yoga.count === 0) {
+      patterns.push('本周没 JJ 瑜伽记录 — 周二晚和丈夫的 1 小时是不是漏打了？');
+    }
+    if (s.mins.rest > GOAL_TARGET.rest && s.mins.stamina < GOAL_TARGET.stamina * 0.6) {
+      patterns.push('养护超额但体能偏少 — 可能这周比较累，下周早上挑一次低门槛的快速组合先动起来');
+    }
+    if (s.counts.stamina + s.counts.shape + s.counts.rest === 0 && s.extras.swim.count + s.extras.hike.count + s.extras.yoga.count === 0) {
+      patterns.push('这周完全没记录 — 是真的没动，还是忘记打卡了？');
+    }
+
+    if (patterns.length > 0) {
+      html += `<div class="suggest-block">
+        <div class="suggest-title">👀 模式观察</div>
+        <ul class="suggest-list">${patterns.map(p => `<li>${p}</li>`).join('')}</ul>
+      </div>`;
+    }
+
+    container.innerHTML = html;
+  }
+
+  function goalSuggestion(goal, remain) {
+    if (goal === 'stamina') {
+      if (remain >= 60) return '安排一次 hiking 或两次哑铃力量（37min）';
+      if (remain >= 30) return '一次哑铃力量（37min）或减脂操（19min）+ 跳绳';
+      return '跳绳 / 簿肌快练（9min）补一次即可';
+    }
+    if (goal === 'shape') {
+      if (remain >= 90) return '需要 3 次身材组合，可以选腿臀套餐 + 核心快速 + 力量综合';
+      if (remain >= 45) return '安排 2 次身材组合（腹部扎实 / 美背修身 / 假胯宽专项 选两个）';
+      return '核心快速（20min）或晨起燃脂瑜伽（10min）补一次';
+    }
+    if (goal === 'rest') {
+      if (remain >= 75) return '每天加一个养护：晨起轻唤醒 / 睡前 30min / 颂钵助眠';
+      if (remain >= 30) return '睡前 30min 或肩颈背修复（28min）补 1–2 次';
+      return '体态快练（6min）或深度放松（25min）补一次';
+    }
+    return '';
+  }
+
+  function renderArchive() {
+    const list = document.getElementById('archive-list');
+    const keys = Object.keys(reviews).sort().reverse();
+    if (keys.length === 0) {
+      list.innerHTML = '<div class="archive-empty">还没有保存过的周复盘。这周保存后会在这里出现。</div>';
+      return;
+    }
+    list.innerHTML = keys.map(k => {
+      const r = reviews[k];
+      const startMs = new Date(k + 'T00:00:00').getTime();
+      const endMs = weekEndFor(startMs) - 1;
+      const s = r.data || statsForWeek(startMs);
+      const yogaMins = s.extras && s.extras.yoga ? s.extras.yoga.mins : 0;
+      const yogaCount = s.extras && s.extras.yoga ? s.extras.yoga.count : 0;
+      const totalMins = (s.mins ? (s.mins.stamina + s.mins.shape + s.mins.rest) : 0)
+                     + (s.extras ? (s.extras.swim.mins + s.extras.hike.mins + yogaMins) : 0);
+      const extraCount = s.extras ? (s.extras.swim.count + s.extras.hike.count + yogaCount) : 0;
+      const summary = [
+        s.mins ? `🔥${s.mins.stamina} 💪${s.mins.shape} 🌿${s.mins.rest}min` : '',
+        s.extras && extraCount > 0 ? `🏊${s.extras.swim.mins} ⛰️${s.extras.hike.mins} 🧘${yogaMins}` : '',
+        `总 ${totalMins}min`,
+      ].filter(Boolean).join(' · ');
+      return `
+        <div class="archive-item">
+          <div class="archive-head" onclick="toggleArchive('${k}')">
+            <span class="archive-week">${fmtDate(startMs)} – ${fmtDate(endMs)}</span>
+            <span class="archive-summary">${summary}</span>
+            <span class="archive-toggle" id="toggle-${k}">▼</span>
+          </div>
+          <div class="archive-body" id="body-${k}">
+            <div class="archive-data">${summary}</div>
+            <div class="field-label">上周亮点 / 感受</div>
+            <p>${escapeHtml(r.highlights || '（未填）')}</p>
+            <div class="field-label">下周想调整</div>
+            <p>${escapeHtml(r.adjustments || '（未填）')}</p>
+            <div style="margin-top:.85rem;font-size:.72rem;color:var(--text-hint);">
+              保存于 ${new Date(r.savedAt).toLocaleString('zh-CN')}
+              · <a href="#" onclick="jumpToWeek('${k}');return false;" style="color:var(--accent);">查看完整数据 →</a>
+              · <a href="#" onclick="deleteArchive('${k}');return false;" style="color:var(--rose);">删除</a>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function escapeHtml(s) {
+    return (s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function toggleArchive(key) {
+    const body = document.getElementById('body-' + key);
+    const toggle = document.getElementById('toggle-' + key);
+    const isOpen = body.classList.toggle('open');
+    toggle.textContent = isOpen ? '▲' : '▼';
+  }
+
+  function jumpToWeek(key) {
+    currentWeekStart = new Date(key + 'T00:00:00').getTime();
+    renderAll();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function deleteArchive(key) {
+    if (!confirm('删除这一周的复盘？数据汇总不会动，只是删文字部分。')) return;
+    delete reviews[key];
+    writeJSON(REVIEW_KEY, reviews);
+    renderArchive();
+    if (weekKey(currentWeekStart) === key) loadCurrentReview();
+  }
+
+  // ==================== 文字复盘加载/保存 ====================
+  function loadCurrentReview() {
+    const key = weekKey(currentWeekStart);
+    const r = reviews[key] || {};
+    document.getElementById('ta-highlights').value = r.highlights || '';
+    document.getElementById('ta-adjust').value = r.adjustments || '';
+  }
+
+  function saveReview() {
+    const key = weekKey(currentWeekStart);
+    const highlights = document.getElementById('ta-highlights').value.trim();
+    const adjustments = document.getElementById('ta-adjust').value.trim();
+    const data = statsForWeek(currentWeekStart);
+    reviews[key] = {
+      highlights,
+      adjustments,
+      data,
+      savedAt: Date.now(),
+    };
+    writeJSON(REVIEW_KEY, reviews);
+    const status = document.getElementById('save-status');
+    status.textContent = '✓ 已保存';
+    status.classList.remove('shown');
+    void status.offsetWidth; // restart animation
+    status.classList.add('shown');
+    renderArchive();
+  }
+
+  // ==================== 周导航 ====================
+  function navWeek(direction) {
+    if (direction === 0) {
+      currentWeekStart = weekStartFor(new Date());
+    } else {
+      currentWeekStart += direction * 7 * 24 * 60 * 60 * 1000;
+      const today = weekStartFor(new Date());
+      if (currentWeekStart > today) currentWeekStart = today; // 不允许越过本周
+    }
+    renderAll();
+  }
+
+  function renderAll() {
+    renderWeekPicker();
+    renderStats();
+    renderComboDetail();
+    renderSuggestions();
+    loadCurrentReview();
+    updateComboCounters();
+    updateActionCounters();
+  }
+
+  // ==================== 组合卡 +/- 打卡 ====================
+  // 计数永远显示"今天所在的本周"次数，不跟随周选择器
+  function liveWeekStart() { return weekStartFor(new Date()); }
+
+  function comboCountThisWeek(comboId) {
+    const start = liveWeekStart();
+    return comboLog.filter(e => e.comboId === comboId && e.ts >= start).length;
+  }
+
+  function comboPlus(comboId) {
+    comboLog.push({ comboId, ts: Date.now() });
+    writeJSON(COMBO_LOG_KEY, comboLog);
+    afterLogChange();
+  }
+
+  function comboMinus(comboId) {
+    const start = liveWeekStart();
+    for (let i = comboLog.length - 1; i >= 0; i--) {
+      if (comboLog[i].comboId === comboId && comboLog[i].ts >= start) {
+        comboLog.splice(i, 1);
+        writeJSON(COMBO_LOG_KEY, comboLog);
+        afterLogChange();
+        return;
+      }
+    }
+  }
+
+  function updateComboCounters() {
+    document.querySelectorAll('[data-combo-id]').forEach(card => {
+      const id = card.dataset.comboId;
+      const count = comboCountThisWeek(id);
+      const cntEl = card.querySelector('.cc-count');
+      if (cntEl) cntEl.textContent = count;
+      const minus = card.querySelector('.counter-btn.minus');
+      if (minus) minus.disabled = count === 0;
+    });
+  }
+
+  // ==================== 动作 +/- 打卡 ====================
+  function injectActionTrackers() {
+    document.querySelectorAll('.action-table').forEach(table => {
+      const headRow = table.querySelector('thead tr');
+      if (headRow && !headRow.querySelector('.action-track-th')) {
+        const th = document.createElement('th');
+        th.className = 'action-track-th';
+        th.textContent = '打卡';
+        headRow.appendChild(th);
+      }
+      table.querySelectorAll('tbody tr').forEach(tr => {
+        if (tr.querySelector('.action-track')) return;
+        const numCell = tr.querySelector('td.num');
+        if (!numCell) return;
+        const num = parseInt(numCell.textContent.trim(), 10);
+        if (!num) return;
+        const td = document.createElement('td');
+        td.className = 'action-track';
+        td.dataset.num = num;
+        td.innerHTML = `<div class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(${num})">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(${num})">+</button></div>`;
+        tr.appendChild(td);
+      });
+    });
+  }
+
+  function actionCountThisWeek(num) {
+    const start = liveWeekStart();
+    return actionLog.filter(e => e.num === num && e.ts >= start).length;
+  }
+
+  function actionPlus(num) {
+    actionLog.push({ num, ts: Date.now() });
+    writeJSON(LOG_KEY, actionLog);
+    afterLogChange();
+  }
+
+  function actionMinus(num) {
+    const start = liveWeekStart();
+    for (let i = actionLog.length - 1; i >= 0; i--) {
+      if (actionLog[i].num === num && actionLog[i].ts >= start) {
+        actionLog.splice(i, 1);
+        writeJSON(LOG_KEY, actionLog);
+        afterLogChange();
+        return;
+      }
+    }
+  }
+
+  function updateActionCounters() {
+    document.querySelectorAll('.action-track[data-num]').forEach(cell => {
+      const num = parseInt(cell.dataset.num, 10);
+      const count = actionCountThisWeek(num);
+      const cnt = cell.querySelector('.at-count');
+      if (cnt) cnt.textContent = count;
+      const minus = cell.querySelector('.counter-btn.minus');
+      if (minus) minus.disabled = count === 0;
+    });
+  }
+
+  function afterLogChange() {
+    updateComboCounters();
+    updateActionCounters();
+    // 如果当前查看的就是本周，刷新上面的数据 / 明细 / 建议
+    if (currentWeekStart === liveWeekStart()) {
+      renderStats();
+      renderComboDetail();
+      renderSuggestions();
+    }
+  }
+
+  // ==================== 跨标签页同步 ====================
+  window.addEventListener('storage', (e) => {
+    if (![LOG_KEY, COMBO_LOG_KEY, EXTRA_LOG_KEY, REVIEW_KEY].includes(e.key)) return;
+    actionLog = readJSON(LOG_KEY, []);
+    comboLog = readJSON(COMBO_LOG_KEY, []);
+    extraLog = readJSON(EXTRA_LOG_KEY, []);
+    reviews = readJSON(REVIEW_KEY, {});
+    renderAll();
+    renderArchive();
+  });
+
+  // ==================== 初始化 ====================
+  injectActionTrackers();
+  renderAll();
+  renderArchive();
+</script>
+
+</body>
+</html>

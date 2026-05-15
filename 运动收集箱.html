@@ -387,7 +387,6 @@
     <div class="list-header">
       <div class="list-title">已收集<span class="count" id="total-count">0</span> 条</div>
       <div class="list-actions">
-        <button class="btn" id="import-btn">📥 导入现有 29 项</button>
         <button class="btn" id="export-btn">📤 导出给 Claude</button>
         <button class="btn danger" id="clear-btn">清空全部</button>
       </div>
@@ -425,39 +424,6 @@
 <script>
   const STORAGE_KEY = 'exercise_collection_v1';
   const GOAL_LABEL = { stamina: '🔥 体能', shape: '💪 身材', rest: '🌿 养护' };
-
-  // 现有 29 项（与 Summer的世界.html 中的动作详情库 + ACTION_GOALS 对齐）
-  const EXISTING_EXERCISES = [
-    { num: 1,  name: 'Nadi Shodhana 纳迪净化法',     creator: '',         category: '呼吸与冥想', duration: '',      posture: '坐姿',         goals: ['rest'],            notes: '交替呼吸' },
-    { num: 2,  name: 'Resonance Breathing 振谐呼吸法', creator: '',        category: '呼吸与冥想', duration: '',      posture: '坐姿',         goals: ['rest'],            notes: '缓慢呼吸，约 6 次/分钟' },
-    { num: 3,  name: '全身扫描',                      creator: '',         category: '呼吸与冥想', duration: '',      posture: '躺/坐',        goals: ['rest'],            notes: '身体扫描冥想，注意力从头到脚逐一觉察' },
-    { num: 4,  name: '自我肯定冥想',                  creator: '',         category: '呼吸与冥想', duration: '',      posture: '坐姿',         goals: ['rest'],            notes: '冥想状态下用肯定性语言与自己对话' },
-    { num: 5,  name: '自我疗愈和关爱冥想',            creator: '',         category: '呼吸与冥想', duration: '',      posture: '坐姿',         goals: ['rest'],            notes: '类似慈悲冥想，将温柔与关爱先送给自己' },
-    { num: 6,  name: 'JJ 老师 15 分钟全身拉伸',       creator: 'JJ 老师',  category: '拉伸与放松', duration: '15min', posture: '坐姿',         goals: ['rest'],            notes: '偏放松，博主流程' },
-    { num: 7,  name: 'Zoey 10min 全程站立拉伸',       creator: 'Zoey',     category: '拉伸与放松', duration: '10min', posture: '站姿',         goals: ['rest'],            notes: '放松与灵活性' },
-    { num: 8,  name: '睡前躺练',                      creator: '',         category: '拉伸与放松', duration: '',      posture: '躺姿',         goals: ['rest'],            notes: '睡前放松，博主流程' },
-    { num: 9,  name: '睡前体态管理',                  creator: '',         category: '拉伸与放松', duration: '',      posture: '',             goals: ['rest'],            notes: '⚠️ 暂不使用（做了不舒服）' },
-    { num: 10, name: '仙人揉腹',                      creator: '',         category: '拉伸与放松', duration: '',      posture: '躺/坐',        goals: ['rest'],            notes: '手掌在腹部圆形揉按，促进肠胃蠕动' },
-    { num: 11, name: '掰正骨盆懒人版',                creator: '',         category: '拉伸与放松', duration: '',      posture: '躺姿',         goals: ['rest'],            notes: '骨盆矫正' },
-    { num: 12, name: '萨尔曼瘦肚子',                  creator: '萨尔曼',   category: '核心与腹部', duration: '',      posture: '躺姿',         goals: ['shape'],           notes: '核心训练' },
-    { num: 13, name: '女明星仪态管理',                creator: '',         category: '体态与矫正', duration: '',      posture: '站姿',         goals: ['shape', 'rest'],   notes: '站姿矫正' },
-    { num: 14, name: '腹横肌激活',                    creator: '',         category: '核心与腹部', duration: '',      posture: '坐+躺',        goals: ['shape'],           notes: '博主流程' },
-    { num: 15, name: '真空腹训练',                    creator: '',         category: '核心与腹部', duration: '',      posture: '站/坐/躺',     goals: ['shape'],           notes: '深层核心收缩' },
-    { num: 16, name: '小腿精油按摩',                  creator: '欧阳春晓', category: '按摩',       duration: '',      posture: '',             goals: ['rest'],            notes: '欧阳春晓手法，促进循环消除疲劳' },
-    { num: 17, name: '腿部拉伸',                      creator: '',         category: '拉伸与放松', duration: '',      posture: '站姿+地板',    goals: ['rest'],            notes: '特定流程' },
-    { num: 18, name: '在工位上偷偷变美',              creator: '',         category: '体态与矫正', duration: '',      posture: '办公椅坐姿',   goals: ['shape', 'rest'],   notes: '偏全身' },
-    { num: 19, name: '足弓训练',                      creator: '欧阳春晓', category: '体态与矫正', duration: '',      posture: '站姿',         goals: ['rest'],            notes: '欧阳春晓流程' },
-    { num: 20, name: '林芊妤特快瘦大腿',              creator: '林芊妤',   category: '腿部与臀部', duration: '',      posture: '地板',         goals: ['shape'],           notes: '林芊妤流程' },
-    { num: 21, name: '韩小四改善膝超伸',              creator: '韩小四',   category: '体态与矫正', duration: '',      posture: '地板',         goals: ['rest'],            notes: '韩小四流程' },
-    { num: 22, name: '跳绳',                          creator: '',         category: '有氧与力量', duration: '',      posture: '站姿',         goals: ['stamina', 'shape'],notes: '博主流程' },
-    { num: 23, name: '坐姿练臀（弹力带版）',          creator: '',         category: '腿部与臀部', duration: '',      posture: '坐姿',         goals: ['shape'],           notes: '弹力带' },
-    { num: 24, name: '仰卧瘦大小腿',                  creator: '',         category: '腿部与臀部', duration: '',      posture: '躺姿',         goals: ['shape'],           notes: '博主流程' },
-    { num: 25, name: '欧阳春晓-肩颈背动态拉伸',       creator: '欧阳春晓', category: '拉伸与放松', duration: '',      posture: '坐姿',         goals: ['rest'],            notes: '欧阳春晓流程' },
-    { num: 26, name: '欧阳春晓-肩背功能性训练',       creator: '欧阳春晓', category: '体态与矫正', duration: '',      posture: '站/坐/盘腿',   goals: ['shape', 'rest'],   notes: '欧阳春晓流程' },
-    { num: 27, name: '欧阳春晓-YTWL 肩背矫正训练',    creator: '欧阳春晓', category: '体态与矫正', duration: '',      posture: '站/坐',        goals: ['shape', 'rest'],   notes: '欧阳春晓流程' },
-    { num: 28, name: '站姿哑铃全身运动',              creator: '',         category: '有氧与力量', duration: '',      posture: '站姿',         goals: ['stamina', 'shape'],notes: '哑铃' },
-    { num: 29, name: '八段锦',                        creator: '',         category: '有氧与力量', duration: '',      posture: '站姿',         goals: ['stamina', 'rest'], notes: '标准版' },
-  ];
 
   let items = [];
   let editingId = null;
@@ -624,40 +590,6 @@
     save();
     render();
   }
-
-  // ========== 导入现有 29 项 ==========
-  document.getElementById('import-btn').addEventListener('click', () => {
-    const existingNums = new Set(items.filter(i => i.existingNum).map(i => i.existingNum));
-    const toImport = EXISTING_EXERCISES.filter(e => !existingNums.has(e.num));
-
-    if (toImport.length === 0) {
-      alert('现有 29 项已全部导入完成 ✓');
-      return;
-    }
-    const skipped = EXISTING_EXERCISES.length - toImport.length;
-    const msg = skipped > 0
-      ? `将导入 ${toImport.length} 项（已存在的 ${skipped} 项会跳过）。继续？`
-      : `将一次性导入现有 29 项运动。继续？`;
-    if (!confirm(msg)) return;
-
-    toImport.forEach(e => {
-      items.push({
-        id: uid(),
-        ts: Date.now(),
-        existingNum: e.num,
-        name: e.name,
-        creator: e.creator,
-        category: e.category,
-        duration: e.duration,
-        posture: e.posture,
-        goals: e.goals,
-        link: '',
-        notes: e.notes,
-      });
-    });
-    save();
-    render();
-  });
 
   // ========== 全部清空 ==========
   document.getElementById('clear-btn').addEventListener('click', () => {

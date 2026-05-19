@@ -506,6 +506,125 @@
   .extra-row .del { background: none; border: none; color: var(--text-hint); cursor: pointer; font-size: 1rem; padding: 0 4px; line-height: 1; }
   .extra-row .del:hover { color: var(--rose); }
   .extra-empty { font-size: 0.78rem; color: var(--text-hint); font-style: italic; padding: 4px 10px; }
+
+  /* ========== 阅读打卡 ========== */
+  .reading-checkin {
+    background: var(--gold-light);
+    border: 1px solid var(--gold);
+    border-radius: 12px;
+    padding: 1.1rem 1.3rem;
+    margin-top: 0.85rem;
+  }
+  .rc-top {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.9rem;
+  }
+  .rc-streak {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+  .rc-streak-num {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.85rem;
+    font-weight: 600;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .rc-stat { margin-left: auto; font-size: 0.8rem; color: var(--text-secondary); }
+  .rc-stat strong { color: var(--gold); font-size: 1rem; }
+
+  .rc-input {
+    width: 100%;
+    font-family: inherit;
+    font-size: 0.84rem;
+    color: var(--text-primary);
+    background: var(--surface);
+    border: 1px solid var(--border-dark);
+    border-radius: 8px;
+    padding: 8px 11px;
+    margin-bottom: 0.55rem;
+    resize: none;
+  }
+  .rc-input:focus { outline: none; border-color: var(--gold); }
+  .rc-note { line-height: 1.6; min-height: 2.7rem; }
+
+  .rc-btn {
+    width: 100%;
+    font-family: inherit;
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: #fff;
+    background: var(--gold);
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+  }
+  .rc-btn:hover { opacity: 0.9; }
+  .rc-btn.done {
+    background: var(--surface);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    cursor: default;
+  }
+  .rc-btn.done:hover { opacity: 1; }
+  .rc-cancel {
+    display: none;
+    width: 100%;
+    text-align: center;
+    font-size: 0.74rem;
+    color: var(--text-hint);
+    margin-top: 0.5rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: inherit;
+  }
+  .rc-cancel:hover { color: var(--gold); text-decoration: underline; }
+
+  .rc-week { display: flex; gap: 6px; margin: 1rem 0 0.2rem; }
+  .rc-day { flex: 1; text-align: center; }
+  .rc-day-dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    margin: 0 auto 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    background: var(--surface);
+    border: 1px solid var(--border-dark);
+    color: var(--text-hint);
+  }
+  .rc-day.filled .rc-day-dot { background: var(--gold); border-color: var(--gold); color: #fff; }
+  .rc-day.today .rc-day-dot { border-color: var(--gold); border-width: 2px; }
+  .rc-day.future .rc-day-dot { opacity: 0.4; }
+  .rc-day-label { font-size: 0.68rem; color: var(--text-hint); }
+
+  .rc-log-title {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-hint);
+    letter-spacing: 0.1em;
+    margin: 1rem 0 0.3rem;
+  }
+  .rc-log-item {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    padding: 0.5rem 0;
+    border-top: 1px dashed var(--border);
+    line-height: 1.65;
+  }
+  .rc-log-date { color: var(--gold); font-weight: 500; margin-right: 8px; }
+  .rc-log-book { color: var(--text-primary); font-weight: 500; }
+  .rc-log-empty { font-size: 0.8rem; color: var(--text-hint); font-style: italic; padding: 0.4rem 0; }
 </style>
 </head>
 <body>
@@ -519,7 +638,6 @@
       </div>
       <div class="main-tabs" id="main-tabs">
         <button class="main-tab active" data-tab="today">今天</button>
-        <button class="main-tab" data-tab="emma">Emma</button>
       </div>
     </div>
   </header>
@@ -532,15 +650,6 @@
     </div>
   </div>
 
-  <div class="sub-nav" id="sub-nav-wisdom">
-    <div class="sub-nav-inner">
-      <button class="sub-tab active" data-sub="wisdom-godtalk">与神对话</button>
-      <button class="sub-tab" data-sub="wisdom-mother">母爱的羁绊</button>
-      <button class="sub-tab" data-sub="wisdom-gentle">最温柔的教养</button>
-      <button class="sub-tab" data-sub="wisdom-energy">精力管理</button>
-      <button class="sub-tab" data-sub="wisdom-fengbian-course">风变课程</button>
-    </div>
-  </div>
 
 </div>
 
@@ -571,6 +680,7 @@
           <li><a href="#toc-day">☀️ 白天与间歇</a></li>
           <li><a href="#toc-workday">🍱 工作日饮食与休息</a></li>
           <li><a href="#toc-evening">🌇 傍晚修复</a></li>
+          <li><a href="#toc-reading">📖 阅读 10 分钟</a></li>
           <li><a href="#toc-postemma">🌙 Emma 睡后 → 入睡</a></li>
         </ul>
       </li>
@@ -750,6 +860,40 @@
       </div>
     </div>
 
+    <div class="card toc-anchor" id="toc-reading">
+      <div class="card-title"><span class="icon">📖</span>阅读 10 分钟（Emma 故事时间）</div>
+      <div class="group-title">把阅读焊在已有的锚点上 · 不靠自律，靠习惯叠加</div>
+
+      <table>
+        <thead><tr><th style="width:22%;">环节</th><th>怎么做</th></tr></thead>
+        <tbody>
+          <tr><td><strong>⏰ 锚点</strong></td><td>每晚 <strong>8:30</strong> Eric 给 Emma 讲故事——他俩一坐下，就是你的闹钟，不用自己记</td></tr>
+          <tr><td><strong>📖 怎么做</strong></td><td>在同一个房间，读你<strong>自己的书</strong>；一家三个人、同一段安静时间，也是给 Emma 的示范</td></tr>
+          <tr><td><strong>🎯 目标</strong></td><td>只是"翻开，读一页"。10 分钟是上限不是任务，读 2 分钟也算赢——先保住每天都碰到书</td></tr>
+          <tr><td><strong>🛋️ 小动作</strong></td><td>把在读的书固定放在你常坐的位置旁；先挑好读、想翻下一页的书，别一上来啃硬的</td></tr>
+        </tbody>
+      </table>
+
+      <p class="para" style="font-size:.78rem;color:var(--text-hint);font-style:italic;">这 10 分钟是 Eric 完整接手 Emma 的时间，正大光明属于你——物理家务可以等，不必愧疚。</p>
+
+      <div class="reading-checkin" id="reading-checkin">
+        <div class="rc-top">
+          <div class="rc-streak">已连续 <span class="rc-streak-num" id="rc-streak-num">0</span> 天</div>
+          <div class="rc-stat">本周已读 <strong id="rc-week-count">0</strong> / 7 天</div>
+        </div>
+
+        <input type="text" id="rc-book" class="rc-input" placeholder="在读的书（书名）" autocomplete="off">
+        <textarea id="rc-note" class="rc-input rc-note" placeholder="今天读到哪 / 一句话感受（可留空）"></textarea>
+        <button id="rc-btn" class="rc-btn">✓ 完成今天的 10 分钟</button>
+        <button id="rc-cancel" class="rc-cancel">取消今天的打卡</button>
+
+        <div class="rc-week" id="rc-week"></div>
+
+        <div class="rc-log-title">最近记录</div>
+        <div class="rc-log" id="rc-log"></div>
+      </div>
+    </div>
+
     <div class="card toc-anchor" id="toc-postemma">
       <div class="card-title"><span class="icon">🌙</span>Emma 睡后 → 入睡</div>
       <div class="group-title">从独处到进入睡眠 · 一整段夜晚</div>
@@ -909,54 +1053,11 @@
   </div>
 </div>
 
-<!-- ============ 我的智慧 / 与神对话 ============ -->
-<div class="panel" id="panel-wisdom-godtalk">
-  <div class="iframe-wrap">
-    <iframe data-src="读书笔记/与神对话1.html" title="与神对话"></iframe>
-  </div>
-</div>
-
-<!-- ============ 我的智慧 / 母爱的羁绊 ============ -->
-<div class="panel" id="panel-wisdom-mother">
-  <div class="iframe-wrap">
-    <iframe data-src="读书笔记/母爱的羁绊.html" title="母爱的羁绊"></iframe>
-  </div>
-</div>
-
-<!-- ============ 我的智慧 / 最温柔的教养 ============ -->
-<div class="panel" id="panel-wisdom-gentle">
-  <div class="iframe-wrap">
-    <iframe data-src="读书笔记/最温柔的教养.html" title="最温柔的教养"></iframe>
-  </div>
-</div>
-
-<!-- ============ 我的智慧 / 精力管理 ============ -->
-<div class="panel" id="panel-wisdom-energy">
-  <div class="iframe-wrap">
-    <iframe data-src="读书笔记/精力管理.html" title="精力管理"></iframe>
-  </div>
-</div>
-
-<!-- ============ 我的智慧 / 风变课程 ============ -->
-<div class="panel" id="panel-wisdom-fengbian-course">
-  <div class="iframe-wrap">
-    <iframe data-src="fengbian/web/index.html" title="风变课程"></iframe>
-  </div>
-</div>
-
-<!-- ============ Emma ============ -->
-<div class="panel" id="panel-emma">
-  <div class="iframe-wrap">
-    <iframe data-src="Emma/Emma的世界.html" title="Emma 的世界"></iframe>
-  </div>
-</div>
-
 <footer>Summer 的世界 · 2026</footer>
 
 <script>
   const TAB_MAP = {
     today: { sub: 'today', defaultPanel: 'daily' },
-    emma: { sub: null, panel: 'emma' },
   };
 
   function lazyLoadIframe(panelEl) {
@@ -1071,6 +1172,141 @@
 
     // 点击立即高亮（避免观察器延迟）
     links.forEach(a => a.addEventListener('click', () => setActive(a)));
+  })();
+
+  // ==================== 阅读打卡 ====================
+  (function setupReadingCheckin(){
+    const root = document.getElementById('reading-checkin');
+    if (!root) return;
+    const KEY = 'summer_reading_v1';
+
+    const $ = sel => root.querySelector(sel);
+    function esc(s){
+      return String(s).replace(/[&<>"]/g, c =>
+        ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+    }
+    function ymd(d){
+      return d.getFullYear() + '-' +
+        String(d.getMonth()+1).padStart(2,'0') + '-' +
+        String(d.getDate()).padStart(2,'0');
+    }
+    function load(){
+      try { return JSON.parse(localStorage.getItem(KEY) || '{}'); }
+      catch(e){ return {}; }
+    }
+    function persist(){
+      try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e){}
+    }
+
+    let data = load();                 // { 'YYYY-MM-DD': { book, note } }
+    const todayKey = ymd(new Date());
+
+    function streak(){
+      let n = 0;
+      const d = new Date();
+      if (!data[ymd(d)]) d.setDate(d.getDate()-1);   // 今天没打卡则从昨天算起
+      while (data[ymd(d)]) { n++; d.setDate(d.getDate()-1); }
+      return n;
+    }
+    function weekCount(){
+      const now = new Date();
+      const dow = (now.getDay()+6)%7;                // 周一=0
+      let c = 0;
+      for (let i=0;i<=dow;i++){
+        const t = new Date(); t.setDate(now.getDate()-i);
+        if (data[ymd(t)]) c++;
+      }
+      return c;
+    }
+    function lastBook(){
+      const keys = Object.keys(data).sort().reverse();
+      for (const k of keys){ if (data[k] && data[k].book) return data[k].book; }
+      return '';
+    }
+
+    function renderWeek(){
+      const names = ['一','二','三','四','五','六','日'];
+      const now = new Date();
+      const dow = (now.getDay()+6)%7;
+      const monday = new Date(); monday.setDate(now.getDate()-dow);
+      let html = '';
+      for (let i=0;i<7;i++){
+        const d = new Date(monday); d.setDate(monday.getDate()+i);
+        const k = ymd(d);
+        const filled = !!data[k];
+        const isToday = k === todayKey;
+        const isFuture = k > todayKey;
+        html += '<div class="rc-day' + (filled?' filled':'') +
+          (isToday?' today':'') + (isFuture?' future':'') + '">' +
+          '<div class="rc-day-dot">' + (filled?'✓':'') + '</div>' +
+          '<div class="rc-day-label">' + names[i] + '</div></div>';
+      }
+      $('#rc-week').innerHTML = html;
+    }
+    function renderLog(){
+      const keys = Object.keys(data).sort().reverse().slice(0,7);
+      if (!keys.length){
+        $('#rc-log').innerHTML =
+          '<div class="rc-log-empty">还没有记录——今晚开始第一笔。</div>';
+        return;
+      }
+      $('#rc-log').innerHTML = keys.map(k => {
+        const e = data[k] || {};
+        const md = k.slice(5).replace('-','/');
+        const book = e.book
+          ? '<span class="rc-log-book">' + esc(e.book) + '</span>'
+          : '<span class="rc-log-book" style="color:var(--text-hint)">（未填书名）</span>';
+        return '<div class="rc-log-item"><span class="rc-log-date">' + md + '</span>' +
+          book + (e.note ? '<br>' + esc(e.note) : '') + '</div>';
+      }).join('');
+    }
+    function render(){
+      const done = !!data[todayKey];
+      $('#rc-streak-num').textContent = streak();
+      $('#rc-week-count').textContent = weekCount();
+
+      const bookEl = $('#rc-book'), noteEl = $('#rc-note');
+      const focused = document.activeElement === bookEl || document.activeElement === noteEl;
+      if (!focused){
+        bookEl.value = (data[todayKey] && data[todayKey].book) || lastBook();
+        noteEl.value = (data[todayKey] && data[todayKey].note) || '';
+      }
+      const btn = $('#rc-btn');
+      btn.classList.toggle('done', done);
+      btn.textContent = done ? '今天已完成 ✓' : '✓ 完成今天的 10 分钟';
+      $('#rc-cancel').style.display = done ? 'block' : 'none';
+
+      renderWeek();
+      renderLog();
+    }
+
+    $('#rc-btn').addEventListener('click', () => {
+      data[todayKey] = {
+        book: $('#rc-book').value.trim(),
+        note: $('#rc-note').value.trim()
+      };
+      persist();
+      render();
+    });
+    // 已打卡后，修改书名 / 感受即时存档
+    ['#rc-book','#rc-note'].forEach(sel => {
+      $(sel).addEventListener('input', () => {
+        if (!data[todayKey]) return;
+        data[todayKey] = {
+          book: $('#rc-book').value.trim(),
+          note: $('#rc-note').value.trim()
+        };
+        persist();
+        renderLog();
+      });
+    });
+    $('#rc-cancel').addEventListener('click', () => {
+      delete data[todayKey];
+      persist();
+      render();
+    });
+
+    render();
   })();
 
 </script>

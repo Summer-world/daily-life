@@ -625,6 +625,36 @@
   .rc-log-date { color: var(--gold); font-weight: 500; margin-right: 8px; }
   .rc-log-book { color: var(--text-primary); font-weight: 500; }
   .rc-log-empty { font-size: 0.8rem; color: var(--text-hint); font-style: italic; padding: 0.4rem 0; }
+
+  /* 清洁日 · 点击划线 */
+  .ck-item {
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.15s, opacity 0.15s;
+    padding: 1px 3px;
+    border-radius: 4px;
+  }
+  .ck-item:hover { background: var(--accent-light); color: var(--accent); }
+  .ck-item.done {
+    color: var(--text-hint);
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px;
+    opacity: 0.65;
+  }
+  .ck-item.done:hover { background: var(--bg); color: var(--text-secondary); }
+  .ck-reset {
+    margin-left: auto;
+    font-family: inherit;
+    font-size: 0.72rem;
+    padding: 3px 11px;
+    border-radius: 99px;
+    border: 1px solid var(--border-dark);
+    background: var(--surface);
+    color: var(--text-hint);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .ck-reset:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent-mid); }
 </style>
 </head>
 <body>
@@ -688,6 +718,7 @@
         <a href="#toc-cycle">周期与扰动</a>
         <ul class="side-toc-sub">
           <li><a href="#toc-weekly">📅 周固定</a></li>
+          <li><a href="#toc-cleaning">🧹 清洁日</a></li>
           <li><a href="#toc-period">🌹 经期护理</a></li>
           <li><a href="#toc-disrupt">🎉 周末/假期/聚会</a></li>
         </ul>
@@ -954,6 +985,38 @@
           <tr><td>周六早</td><td>Emma 攀岩课，自己 / 丈夫在攀岩馆健身房锻炼</td></tr>
           <tr><td>周日下午</td><td>羽毛球</td></tr>
           <tr><td>周末</td><td>不定期国家公园 hiking</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card toc-anchor" id="toc-cleaning">
+      <div class="card-title" style="display:flex;align-items:center;gap:8px;">
+        <span class="icon">🧹</span><span>清洁日 · 每周一次</span>
+        <button class="ck-reset" id="ck-reset" title="清空所有划线">重置</button>
+      </div>
+      <p class="para" style="font-size:.82rem;color:var(--text-secondary);margin-bottom:.85rem;">
+        每周挑一天，约 <strong>45–50 分钟</strong> 走完。按顺序做：整理 → 除尘 → 湿擦 → 拖地，不用来回换工具。租房保洁，够用就行。<br>
+        <span style="color:var(--text-hint);font-size:.78rem;">💡 点一下动作就划掉，做到哪儿都记得;做完整周点右上「重置」清空。</span>
+      </p>
+      <table>
+        <thead><tr><th style="width:22%;">阶段</th><th>动作</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>1️⃣ 整理归位</strong><br><span style="font-size:.72rem;color:var(--text-hint);font-weight:400;">≈ 10 min</span></td>
+            <td><span class="ck-item" data-id="c1-1">抱枕毯子归位</span> · <span class="ck-item" data-id="c1-2">台面餐桌清空</span> · <span class="ck-item" data-id="c1-3">拉 Emma 一起收玩具</span> · <span class="ck-item" data-id="c1-4">衣物归位</span> · <span class="ck-item" data-id="c1-5">鞋归位玄关</span> · <span class="ck-item" data-id="c1-6">"暂时放着"的杂物各回各位</span></td>
+          </tr>
+          <tr>
+            <td><strong>2️⃣ 擦灰除尘</strong><br><span style="font-size:.72rem;color:var(--text-hint);font-weight:400;">≈ 8 min</span></td>
+            <td><span class="ck-item" data-id="c2-1">茶几 / 电视柜 / 装饰品</span> · <span class="ck-item" data-id="c2-2">床头柜 + Emma 书桌</span> · <span class="ck-item" data-id="c2-3">冰箱外门</span> · <span class="ck-item" data-id="c2-4">镜子（卧室 / 玄关 / 洗手台）</span> · <span class="ck-item" data-id="c2-5">门把手 / 开关 / 遥控器</span></td>
+          </tr>
+          <tr>
+            <td><strong>3️⃣ 去油去污湿擦</strong><br><span style="font-size:.72rem;color:var(--text-hint);font-weight:400;">≈ 18 min</span></td>
+            <td><strong>厨房：</strong><span class="ck-item" data-id="c3-1">灶台</span> · <span class="ck-item" data-id="c3-2">水槽 + 排水口</span> · <span class="ck-item" data-id="c3-3">餐桌椅</span><br><strong>卫生间：</strong><span class="ck-item" data-id="c3-4">洗手台</span> · <span class="ck-item" data-id="c3-5">马桶（内外）</span> · <span class="ck-item" data-id="c3-6">淋浴间 / 浴缸</span><br><strong>拖鞋：</strong><span class="ck-item" data-id="c3-7">刷洗晾起来（接着拖地，地干拖鞋也干）</span></td>
+          </tr>
+          <tr>
+            <td><strong>4️⃣ 扫拖地</strong><br><span style="font-size:.72rem;color:var(--text-hint);font-weight:400;">≈ 15 min</span></td>
+            <td><span class="ck-item" data-id="c4-1">厨房（油渍区先扫再拖）</span> · <span class="ck-item" data-id="c4-2">卫生间 + 排水口</span> · <span class="ck-item" data-id="c4-3">客厅</span> · <span class="ck-item" data-id="c4-4">主卧 + Emma 房</span> · <span class="ck-item" data-id="c4-5">沙发缝 / 地毯吸尘（<strong>隔周一次</strong>）</span></td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -1360,6 +1423,35 @@
     });
 
     render();
+  })();
+
+  // ==================== 清洁日 · 点击划线 + localStorage ====================
+  (function setupCleaningChecklist() {
+    const KEY = 'cleaning_checked_v1';
+    let state;
+    try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { state = {}; }
+    if (!state.checked) state.checked = {};
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+
+    const items = document.querySelectorAll('#toc-cleaning .ck-item');
+    items.forEach(el => {
+      const id = el.dataset.id;
+      if (state.checked[id]) el.classList.add('done');
+      el.addEventListener('click', () => {
+        const isDone = el.classList.toggle('done');
+        if (isDone) state.checked[id] = true; else delete state.checked[id];
+        save();
+      });
+    });
+
+    const resetBtn = document.getElementById('ck-reset');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        state.checked = {};
+        save();
+        items.forEach(el => el.classList.remove('done'));
+      });
+    }
   })();
 
 </script>

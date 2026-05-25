@@ -198,6 +198,16 @@
   }
   .tag.cat { background: var(--info-light); color: var(--info); }
   .tag.existing { background: var(--gold-light); color: var(--gold); font-weight: 500; }
+  .tag.promoted { background: var(--accent-light); color: var(--accent); font-weight: 500; }
+  .icon-btn.promote { color: var(--accent); }
+  .icon-btn.promote:hover { background: var(--accent-light); color: var(--accent); }
+  .icon-btn.unpromote:hover { background: var(--rose-light); color: var(--rose); }
+  .promote-modal .field { margin-bottom: 0.95rem; }
+  .promote-modal .field label { display: block; font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 5px; font-weight: 500; }
+  .promote-modal .field label .req { color: var(--rose); margin-left: 2px; }
+  .promote-modal .field label .hint { color: var(--text-hint); font-weight: 400; font-size: 0.72rem; margin-left: 6px; }
+  .promote-modal .field input[type=number] { width: 100%; font-family: inherit; font-size: 0.86rem; padding: 8px 11px; border: 1px solid var(--border-dark); border-radius: 7px; }
+  .promote-name-display { font-family: 'Noto Serif SC', serif; font-size: 1rem; color: var(--text-primary); padding: 8px 11px; background: var(--bg); border-radius: 7px; }
   .tag.goal-stamina { background: var(--gold-light); color: var(--gold); }
   .tag.goal-shape { background: var(--accent-light); color: var(--accent); }
   .tag.goal-rest { background: var(--info-light); color: var(--info); }
@@ -293,7 +303,7 @@
   <div class="head-inner">
     <div>
       <h1>运动收集箱</h1>
-      <span class="sub">把小红书里收藏的运动先收集起来，整理完导出给 Claude 归档</span>
+      <span class="sub">收藏→整理→点 ⭐ 加入打卡库，直接去「运动周总结」打卡</span>
     </div>
     <a class="back" href="Summer的世界.html">← 回到 Summer 的世界</a>
   </div>
@@ -387,7 +397,7 @@
     <div class="list-header">
       <div class="list-title">已收集<span class="count" id="total-count">0</span> 条</div>
       <div class="list-actions">
-        <button class="btn" id="export-btn">📤 导出给 Claude</button>
+        <button class="btn" id="renumber-btn" title="把 #101+ 的自定义动作尽量搬到对应分类的空号位（同步更新打卡历史）">🔧 整理编号</button>
         <button class="btn danger" id="clear-btn">清空全部</button>
       </div>
     </div>
@@ -402,28 +412,109 @@
 
 </main>
 
-<!-- ========== 导出弹窗 ========== -->
-<div class="modal-mask" id="modal-mask">
-  <div class="modal">
+<!-- ========== 加入打卡库 弹窗 ========== -->
+<div class="modal-mask" id="promote-mask">
+  <div class="modal promote-modal" style="max-width:460px;">
     <div class="modal-head">
-      <h2>📤 导出给 Claude</h2>
-      <button class="icon-btn" id="modal-close" style="font-size:1.2rem">✕</button>
+      <h2>⭐ 加入打卡库</h2>
+      <button class="icon-btn" id="promote-close" style="font-size:1.2rem">✕</button>
     </div>
     <div class="modal-body">
-      <p>下面是收集好的运动列表。<strong>全选复制</strong>，粘贴到 Claude 对话里，告诉它「帮我看看怎么归档」即可。</p>
-      <textarea id="export-text" readonly></textarea>
+      <p style="font-size:0.84rem;color:var(--text-secondary);margin-bottom:0.85rem;">放进打卡库后，可在「运动周总结」页面 +/− 打卡，并自动计入周复盘的目标分钟数。</p>
+      <div class="field">
+        <label>动作名</label>
+        <div class="promote-name-display" id="promote-name"></div>
+      </div>
+      <div class="field">
+        <label>时长 <span class="req">*</span><span class="hint">分钟，用于累计</span></label>
+        <input type="number" id="promote-minutes" min="1" max="180" step="1">
+      </div>
+      <div class="field">
+        <label>目标分类 <span class="req">*</span><span class="hint">至少选一个</span></label>
+        <div class="goal-checks" id="promote-goals">
+          <label><input type="checkbox" value="stamina">🔥 体能</label>
+          <label><input type="checkbox" value="shape">💪 身材</label>
+          <label><input type="checkbox" value="rest">🌿 养护</label>
+        </div>
+      </div>
     </div>
     <div class="modal-foot">
-      <span class="copied" id="copied-msg" style="display:none">✓ 已复制到剪贴板</span>
-      <button class="btn" id="modal-close-2">关闭</button>
-      <button class="btn primary" id="copy-btn">复制全部</button>
+      <button class="btn" id="promote-cancel">取消</button>
+      <button class="btn primary" id="promote-confirm">加入打卡库</button>
     </div>
   </div>
 </div>
 
 <script>
   const STORAGE_KEY = 'exercise_collection_v1';
+  const CUSTOM_ACTIONS_KEY = 'fitness_custom_actions_v1';
   const GOAL_LABEL = { stamina: '🔥 体能', shape: '💪 身材', rest: '🌿 养护' };
+
+  // ========== 主库 44 个动作的名字 → 编号映射 ==========
+  // 用于自动识别收集箱里的条目是否已在「运动周总结.html」主库中存在，
+  // 避免重复入打卡库（造成同一动作 #N + #101 双重计数）。
+  // ⚠️ 与 运动周总结.html 第 893–995 行的 .action-table 内容保持同步；主库改动时这里也要改。
+  const MAIN_LIBRARY_NAMES = {
+    '掰正骨盆懒人版': 1, '女明星仪态管理': 2, '谁懂丝滑美背的杀伤力': 3,
+    '告别圆肩驼背·YTWL 矫正训练': 4, '骨科专家腰椎操·久坐快练': 5, '根除小肚腩·告别假胯宽': 6,
+    '骨盆回正训练': 7,
+    'Nadi Shodhana 纳迪净化法（缓焦提专注）': 11, '全身扫描冥想': 12, '自我肯定冥想·训练内心强大': 13,
+    '冥想疗愈·我值得无条件的爱': 14, '颂钵冥想·睡前助眠放松': 15, '谐振呼吸冥想·最深的宁静与放松': 16,
+    '15 分钟全身快速拉伸': 21, '全程站立全身拉伸·从头到脚舒缓激活': 22, '全程躺练·消除疲劳恢复活力': 23,
+    '仙人揉腹跟练·古法八式': 24, '新手练臀必备·臀腿完整拉伸': 25, '坐姿 10min 肩颈背动态拉伸': 26,
+    '清晨排毒瑜伽': 27, '360 度无死角腿部拉伸': 28, '极度舒适拉伸·不觉得累': 29,
+    '小腿精油按摩': 31,
+    '间歇跳绳': 41, '一副哑铃练全身': 42, '八段锦': 43,
+    '古法内脏脂肪操': 45, '一首歌运动前热身': 46, '清晨燃脂瑜伽': 47, '第九套广播体操': 48,
+    '第八套广播体操': 49, '有氧减脂操·低缓冲全身': 50, '簿肌修炼·居家无器械全身': 51, '居家哑铃背部跟练': 52,
+    '全身塑形哑铃跟练': 53,
+    '萨尔曼瘦肚子·平坦小腹': 61, '激活腹横肌·细腰又护腰': 62, '真空腹训练': 63,
+    '10min 特快瘦大腿': 71, '5 分钟带你练臀（弹力带版）': 72, '完善足弓训练·矫正腿型拉长跟腱': 73,
+    '膝超伸运动·细直大长腿': 74, '纠正不良腿型·足弓弹性重建 4.0': 75,
+  };
+
+  // 名字规范化：去掉所有空白、标点、分隔符，转小写。
+  // 让 "颂钵冥想·睡前助眠放松" / "颂钵冥想|睡前助眠放松，缓解压力疲劳" 都能识别为同一类。
+  function canonName(s) {
+    return String(s || '')
+      .replace(/[\s·|！，。、,.!?！？:：;；\-—–（）()\[\]【】《》""''`~～\/、]+/g, '')
+      .toLowerCase();
+  }
+  const MAIN_CANON = Object.entries(MAIN_LIBRARY_NAMES).map(([name, num]) => ({
+    num, canon: canonName(name), name,
+  }));
+
+  // 三档识别：精确匹配 → 子串包含（短/长 ≥ 50%）→ Jaccard 字符相似度 ≥ 0.55
+  // 设计目标：能识别她随手写法（多加"教你/给你/根本性"等定语，标点不一致等）
+  // 同时避免把"全身塑形哑铃跟练"误判成"一副哑铃练全身"（Jaccard 0.5 < 阈值）。
+  function lookupMainNum(rawName) {
+    const a = canonName(rawName);
+    if (!a) return null;
+
+    for (const m of MAIN_CANON) if (m.canon === a) return m.num;
+
+    for (const m of MAIN_CANON) {
+      const b = m.canon;
+      if (!b) continue;
+      if (a.includes(b) || b.includes(a)) {
+        const ratio = Math.min(a.length, b.length) / Math.max(a.length, b.length);
+        if (ratio >= 0.5) return m.num;
+      }
+    }
+
+    let bestNum = null, bestScore = 0;
+    const setA = new Set(a);
+    for (const m of MAIN_CANON) {
+      const b = m.canon;
+      if (!b) continue;
+      const setB = new Set(b);
+      let inter = 0; for (const c of setA) if (setB.has(c)) inter++;
+      const union = setA.size + setB.size - inter;
+      const j = union ? inter / union : 0;
+      if (j > bestScore) { bestScore = j; bestNum = m.num; }
+    }
+    return bestScore >= 0.55 ? bestNum : null;
+  }
 
   let items = [];
   let editingId = null;
@@ -433,6 +524,46 @@
 
   function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); }
   function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+
+  // ========== 打卡库（fitness_custom_actions_v1）==========
+  function readCustoms() {
+    try { return JSON.parse(localStorage.getItem(CUSTOM_ACTIONS_KEY) || '[]'); }
+    catch(e) { return []; }
+  }
+  function writeCustoms(arr) { localStorage.setItem(CUSTOM_ACTIONS_KEY, JSON.stringify(arr)); }
+  function getPromotedFor(sourceId) { return readCustoms().find(a => a.sourceId === sourceId); }
+  function parseDurationMin(s) {
+    if (!s) return 10;
+    const m = String(s).match(/\d+/);
+    return m ? Math.max(1, parseInt(m[0], 10)) : 10;
+  }
+  // 主库各分类预留的编号区间。新自定义动作优先填进自己分类的空位（接着主库已用的最大号继续），
+  // 区间满了或未归类 → 回退到 #101+ 自增。
+  const CATEGORY_RANGES = {
+    '体态与矫正': [1, 9],
+    '呼吸与冥想': [11, 19],
+    '拉伸与放松': [21, 29],
+    '按摩':        [31, 39],
+    '有氧与力量': [41, 59],
+    '核心与腹部': [61, 69],
+    '腿部与臀部': [71, 79],
+  };
+  const MAIN_LIBRARY_USED = new Set(Object.values(MAIN_LIBRARY_NAMES));
+
+  function nextCustomNum(category) {
+    const customNums = new Set(readCustoms().map(a => a.num).filter(n => typeof n === 'number'));
+    const used = new Set([...MAIN_LIBRARY_USED, ...customNums]);
+    const range = CATEGORY_RANGES[category];
+    if (range) {
+      for (let n = range[0]; n <= range[1]; n++) {
+        if (!used.has(n)) return n;
+      }
+    }
+    // 分类未知 or 区间满 → 回退到 101+
+    let n = 101;
+    while (used.has(n)) n++;
+    return n;
+  }
 
   // ========== 渲染 ==========
   function render() {
@@ -464,16 +595,29 @@
     }
 
     list.innerHTML = visible.map(item => {
+      const promoted = getPromotedFor(item.id);
+      // existingNum 优先用手动标记的，没有则按名字自动比对主库
+      const mainNum = item.existingNum || lookupMainNum(item.name);
       const goalsHtml = (item.goals || []).map(g =>
         `<span class="tag goal-${g}">${GOAL_LABEL[g]}</span>`
       ).join('');
       const catTag = item.category ? `<span class="tag cat">${escapeHtml(item.category)}</span>` : '';
-      const existingTag = item.existingNum ? `<span class="tag existing">已有 #${item.existingNum}</span>` : '';
+      const existingTag = mainNum ? `<span class="tag existing">已在主库 #${mainNum}</span>` : '';
+      const promotedTag = promoted ? `<span class="tag promoted">✓ 已入打卡库 #${promoted.num} · ${promoted.duration_min}min</span>` : '';
+      const conflictTag = (promoted && mainNum)
+        ? `<span class="tag" style="background:var(--rose-light);color:var(--rose);font-weight:600;">⚠ 跟主库 #${mainNum} 重复，建议点 🗑 出库</span>`
+        : '';
       const meta = [
         item.creator ? '👤 ' + escapeHtml(item.creator) : '',
         item.duration ? '⏱ ' + escapeHtml(item.duration) : '',
         item.posture ? '🧍 ' + escapeHtml(item.posture) : '',
       ].filter(Boolean).map(s => `<span>${s}</span>`).join('');
+
+      const promoteBtn = promoted
+        ? `<button class="icon-btn unpromote" data-unpromote="${item.id}" title="从打卡库移除（历史打卡保留）">🗑 出库</button>`
+        : (mainNum
+            ? '' // 已在主库，不重复入库（主库 #N 已经能在运动周总结打卡）
+            : `<button class="icon-btn promote" data-promote="${item.id}" title="加入打卡库，可以在运动周总结打卡">⭐ 加入打卡库</button>`);
 
       return `
         <div class="item ${editingId === item.id ? 'editing' : ''}">
@@ -483,11 +627,12 @@
               ${meta ? `<div class="item-meta">${meta}</div>` : ''}
             </div>
             <div class="item-actions">
+              ${promoteBtn}
               <button class="icon-btn" data-edit="${item.id}">编辑</button>
               <button class="icon-btn del" data-del="${item.id}">删除</button>
             </div>
           </div>
-          ${(catTag || goalsHtml || existingTag) ? `<div class="item-tags">${existingTag}${catTag}${goalsHtml}</div>` : ''}
+          ${(catTag || goalsHtml || existingTag || promotedTag || conflictTag) ? `<div class="item-tags">${conflictTag}${promotedTag}${existingTag}${catTag}${goalsHtml}</div>` : ''}
           ${item.link ? `<a class="item-link" href="${escapeAttr(item.link)}" target="_blank" rel="noopener">🔗 ${escapeHtml(item.link)}</a>` : ''}
           ${item.notes ? `<div class="item-notes">${escapeHtml(item.notes)}</div>` : ''}
         </div>
@@ -499,6 +644,12 @@
     });
     list.querySelectorAll('[data-del]').forEach(btn => {
       btn.addEventListener('click', () => removeItem(btn.dataset.del));
+    });
+    list.querySelectorAll('[data-promote]').forEach(btn => {
+      btn.addEventListener('click', () => openPromoteModal(btn.dataset.promote));
+    });
+    list.querySelectorAll('[data-unpromote]').forEach(btn => {
+      btn.addEventListener('click', () => removeFromLibrary(btn.dataset.unpromote));
     });
   }
 
@@ -584,12 +735,129 @@
   function removeItem(id) {
     const item = items.find(i => i.id === id);
     if (!item) return;
-    if (!confirm(`删除"${item.name}"？`)) return;
+    const promoted = getPromotedFor(id);
+    let msg = `删除"${item.name}"？`;
+    if (promoted) msg += `\n\n此动作已在打卡库 (#${promoted.num})，会一并出库（历史打卡记录保留）。`;
+    if (!confirm(msg)) return;
     items = items.filter(i => i.id !== id);
+    if (promoted) writeCustoms(readCustoms().filter(a => a.sourceId !== id));
     if (editingId === id) cancelEdit();
     save();
     render();
   }
+
+  // ========== 加入打卡库 弹窗 ==========
+  let promotingItemId = null;
+  const promoteMask = document.getElementById('promote-mask');
+
+  function openPromoteModal(itemId) {
+    const item = items.find(i => i.id === itemId);
+    if (!item) return;
+    promotingItemId = itemId;
+    document.getElementById('promote-name').textContent = item.name || '(无名)';
+    document.getElementById('promote-minutes').value = parseDurationMin(item.duration);
+    document.querySelectorAll('#promote-goals input').forEach(cb => {
+      cb.checked = (item.goals || []).includes(cb.value);
+    });
+    promoteMask.classList.add('show');
+    setTimeout(() => document.getElementById('promote-minutes').focus(), 50);
+  }
+  function closePromoteModal() {
+    promotingItemId = null;
+    promoteMask.classList.remove('show');
+  }
+  function confirmPromote() {
+    if (!promotingItemId) return;
+    const item = items.find(i => i.id === promotingItemId);
+    if (!item) { closePromoteModal(); return; }
+    const minutes = parseInt(document.getElementById('promote-minutes').value, 10);
+    if (!minutes || minutes < 1) { alert('请填一个有效的时长（≥ 1 分钟）'); return; }
+    const goals = Array.from(document.querySelectorAll('#promote-goals input:checked')).map(cb => cb.value);
+    if (goals.length === 0) { alert('请至少选一个目标分类（🔥/💪/🌿）'); return; }
+
+    const customs = readCustoms();
+    customs.push({
+      num: nextCustomNum(item.category),
+      name: item.name,
+      creator: item.creator || '',
+      duration_min: minutes,
+      goals,
+      posture: item.posture || '',
+      category: item.category || '',
+      sourceId: item.id,
+      addedAt: Date.now(),
+    });
+    writeCustoms(customs);
+    closePromoteModal();
+    render();
+  }
+  function removeFromLibrary(sourceId) {
+    const customs = readCustoms();
+    const target = customs.find(a => a.sourceId === sourceId);
+    if (!target) return;
+    if (!confirm(`从打卡库移除「${target.name}」(#${target.num})？\n\n历史打卡记录保留，仅卡片消失。`)) return;
+    writeCustoms(customs.filter(a => a.sourceId !== sourceId));
+    render();
+  }
+
+  document.getElementById('promote-close').addEventListener('click', closePromoteModal);
+  document.getElementById('promote-cancel').addEventListener('click', closePromoteModal);
+  document.getElementById('promote-confirm').addEventListener('click', confirmPromote);
+  promoteMask.addEventListener('click', (e) => { if (e.target === promoteMask) closePromoteModal(); });
+  promoteMask.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); confirmPromote(); }
+    if (e.key === 'Escape') closePromoteModal();
+  });
+
+  // ========== 整理编号（把 #101+ 搬到分类区间，同步打卡历史） ==========
+  const FITNESS_LOG_KEY = 'fitness_log_v1';
+  function readFitnessLog() {
+    try { return JSON.parse(localStorage.getItem(FITNESS_LOG_KEY) || '[]'); }
+    catch(e) { return []; }
+  }
+  function writeFitnessLog(arr) { localStorage.setItem(FITNESS_LOG_KEY, JSON.stringify(arr)); }
+
+  document.getElementById('renumber-btn').addEventListener('click', () => {
+    const customs = readCustoms();
+    if (customs.length === 0) { alert('打卡库里还没有自定义动作。'); return; }
+
+    // 已用编号集合：主库已用 + 所有自定义里不需要改的（即编号 < 100 的）
+    const used = new Set(MAIN_LIBRARY_USED);
+    customs.forEach(a => { if (a.num < 100) used.add(a.num); });
+
+    const renames = []; // {oldNum, newNum, name}
+    customs.forEach(a => {
+      if (a.num < 100) return; // 已经在分类区间，跳过
+      const range = CATEGORY_RANGES[a.category];
+      if (!range) return; // 类别未知或"其他"，没有目标区间
+      for (let n = range[0]; n <= range[1]; n++) {
+        if (!used.has(n)) {
+          renames.push({ oldNum: a.num, newNum: n, name: a.name });
+          a.num = n;
+          used.add(n);
+          break;
+        }
+      }
+    });
+
+    if (renames.length === 0) {
+      alert('没有需要重排的。\n\n要么所有自定义动作都已在分类区间内，要么对应分类区间已满。');
+      return;
+    }
+
+    const preview = renames.map(r => `· ${r.name}: #${r.oldNum} → #${r.newNum}`).join('\n');
+    if (!confirm(`将重排 ${renames.length} 个自定义动作：\n\n${preview}\n\n相关的打卡历史记录也会同步更新（保持对应关系）。继续？`)) return;
+
+    // 同步更新打卡历史
+    const log = readFitnessLog();
+    const renameMap = Object.fromEntries(renames.map(r => [r.oldNum, r.newNum]));
+    log.forEach(e => { if (renameMap[e.num]) e.num = renameMap[e.num]; });
+
+    writeCustoms(customs);
+    writeFitnessLog(log);
+    render();
+    alert('完成！刷新「运动周总结」就能看到新编号。');
+  });
 
   // ========== 全部清空 ==========
   document.getElementById('clear-btn').addEventListener('click', () => {
@@ -601,85 +869,6 @@
     render();
   });
 
-  // ========== 导出 ==========
-  function buildExportText() {
-    if (items.length === 0) return '（暂无收集）';
-    const lines = [];
-    const existing = items.filter(i => i.existingNum);
-    const newItems = items.filter(i => !i.existingNum);
-
-    lines.push(`# 运动整理（共 ${items.length} 条 = 已有 ${existing.length} + 新增 ${newItems.length}）`);
-    lines.push('');
-    lines.push('请帮我把这些运动重新整理到「Summer的世界.html」：');
-    lines.push('1) 重新设计动作详情库的分类与编号（已有的可重新归类、合并或拆分）');
-    lines.push('2) 重新设计常用组合（体能 / 身材 / 养护），把新的也排进去');
-    lines.push('3) 必要时调整 5 个时段卡（晨起/白天/傍晚/睡后/睡前）的推荐');
-    lines.push('');
-    lines.push('---');
-    lines.push('');
-
-    // 按类型分组（混排已有+新增，便于按主题对照）
-    const groups = {};
-    items.forEach(i => {
-      const cat = i.category || '未分类';
-      (groups[cat] = groups[cat] || []).push(i);
-    });
-
-    Object.keys(groups).sort().forEach(cat => {
-      const g = groups[cat];
-      const ex = g.filter(i => i.existingNum).length;
-      const nw = g.length - ex;
-      lines.push(`## ${cat}（${g.length} 条 · 已有 ${ex} / 新增 ${nw}）`);
-      lines.push('');
-      // 已有在前（按原编号），新增在后
-      const sorted = g.slice().sort((a, b) => {
-        if (a.existingNum && b.existingNum) return a.existingNum - b.existingNum;
-        if (a.existingNum) return -1;
-        if (b.existingNum) return 1;
-        return (a.ts || 0) - (b.ts || 0);
-      });
-      sorted.forEach((it, idx) => {
-        const tag = it.existingNum ? `【已有 #${it.existingNum}】` : '【新增】';
-        lines.push(`### ${idx + 1}. ${tag}${it.name}`);
-        const meta = [];
-        if (it.creator) meta.push(`博主：${it.creator}`);
-        if (it.duration) meta.push(`时长：${it.duration}`);
-        if (it.posture) meta.push(`姿势：${it.posture}`);
-        if (it.goals && it.goals.length) meta.push(`目标：${it.goals.map(g => GOAL_LABEL[g]).join(' / ')}`);
-        if (meta.length) lines.push('- ' + meta.join('  ·  '));
-        if (it.link) lines.push(`- 链接：${it.link}`);
-        if (it.notes) lines.push(`- 备注：${it.notes}`);
-        lines.push('');
-      });
-    });
-
-    return lines.join('\n');
-  }
-
-  const modalMask = document.getElementById('modal-mask');
-  const exportText = document.getElementById('export-text');
-  const copiedMsg = document.getElementById('copied-msg');
-
-  document.getElementById('export-btn').addEventListener('click', () => {
-    exportText.value = buildExportText();
-    copiedMsg.style.display = 'none';
-    modalMask.classList.add('show');
-    setTimeout(() => exportText.select(), 50);
-  });
-  document.getElementById('modal-close').addEventListener('click', () => modalMask.classList.remove('show'));
-  document.getElementById('modal-close-2').addEventListener('click', () => modalMask.classList.remove('show'));
-  modalMask.addEventListener('click', (e) => { if (e.target === modalMask) modalMask.classList.remove('show'); });
-
-  document.getElementById('copy-btn').addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(exportText.value);
-      copiedMsg.style.display = '';
-    } catch (err) {
-      exportText.select();
-      document.execCommand('copy');
-      copiedMsg.style.display = '';
-    }
-  });
 
   render();
 </script>

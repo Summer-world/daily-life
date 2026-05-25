@@ -44,6 +44,17 @@
   header .sub { font-size: 0.78rem; color: var(--text-hint); font-weight: 300; }
   header a.back { font-size: 0.78rem; color: var(--text-secondary); text-decoration: none; padding: 5px 14px; border: 1px solid var(--border-dark); border-radius: 99px; }
   header a.back:hover { background: var(--bg); }
+  .head-actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+  .head-btn {
+    font-size: 0.78rem; color: var(--accent);
+    background: var(--accent-light);
+    padding: 5px 14px; border: 1px solid var(--accent-mid);
+    border-radius: 99px; cursor: pointer;
+    font-family: inherit; line-height: 1.5;
+  }
+  .head-btn:hover { background: var(--accent); color: #fff; }
+  .head-btn.stale { background: var(--gold-light); border-color: var(--gold); color: var(--gold); }
+  .head-btn.stale:hover { background: var(--gold); color: #fff; }
 
   main { max-width: 1180px; margin: 0 auto; padding: 1.5rem 1.5rem 3rem; }
 
@@ -135,6 +146,10 @@
   .action-table th { background: var(--bg); color: var(--text-hint); font-weight: 500; font-size: 0.74rem; letter-spacing: 0.02em; }
   .action-table td { color: var(--text-secondary); line-height: 1.6; }
   .action-table td.num { color: var(--text-hint); width: 48px; text-align: center; font-size: 0.78rem; }
+  .action-table th.goal-col, .action-table td.goal-cell { text-align: center; width: 78px; font-size: 0.92rem; letter-spacing: 1px; padding-left: 6px; padding-right: 6px; }
+  .action-table tr.custom-row td.num { color: var(--accent-mid); font-weight: 500; }
+  .action-table tr.custom-row td.num::before { content: '🌱 '; font-size: 0.7em; }
+  .action-table tr.custom-row { background: rgba(74, 140, 96, 0.04); }
   .action-table th.action-track-th,
   .action-table td.action-track {
     width: 118px; text-align: center; padding: 4px 8px;
@@ -482,9 +497,12 @@
   <div class="head-inner">
     <div>
       <h1>运动 · 周总结＋参考库</h1>
-      <span class="sub">周日晚 9 点复盘 · 22 个组合 + 42 项动作详情 · 长期追踪</span>
+      <span class="sub">周日晚 9 点复盘 · 22 个组合 + 43 项动作详情 · 长期追踪</span>
     </div>
-    <a class="back" href="Summer的世界.html">← 回到 Summer 的世界</a>
+    <div class="head-actions">
+      <button class="head-btn" id="btn-export" type="button" title="导出全部运动数据为 JSON，用于备份 + 给 Claude 读取">⬇ 导出运动数据</button>
+      <a class="back" href="Summer的世界.html">← 回到 Summer 的世界</a>
+    </div>
   </div>
 </header>
 
@@ -520,6 +538,7 @@
           <li><a href="#act-cardio">有氧与力量</a></li>
           <li><a href="#act-core">核心与腹部</a></li>
           <li><a href="#act-leg">腿部与臀部</a></li>
+          <li id="custom-toc-item" style="display:none"><a href="#act-custom">🌱 我的新增</a></li>
         </ul>
       </li>
     </ul>
@@ -551,7 +570,7 @@
       </div>
       <div class="goal-stat shape">
         <span class="goal-label">💪 身材</span>
-        <span><span class="goal-num" id="num-shape">0</span><span class="goal-target">/150 分钟</span></span>
+        <span><span class="goal-num" id="num-shape">0</span><span class="goal-target">/100 分钟</span></span>
         <span class="goal-sub"><span id="cnt-shape">0</span> 次 · <span class="goal-pct" id="pct-shape">0%</span></span>
       </div>
       <div class="goal-stat rest">
@@ -715,20 +734,6 @@
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-fast')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-fast')">+</button></div>
   </div>
-  <div class="combo-card combo-stamina" data-combo-id="combo-stamina-power">
-    <div class="cc-main">
-      <div class="combo-title">哑铃力量 37min</div>
-      <div class="combo-flow">八段锦（12min）→ 一副哑铃练全身（15min）→ 仙人揉腹（10min）</div>
-    </div>
-    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-power')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-power')">+</button></div>
-  </div>
-  <div class="combo-card combo-stamina" data-combo-id="combo-stamina-slowrun">
-    <div class="cc-main">
-      <div class="combo-title">超慢跑 54min · 周末</div>
-      <div class="combo-flow">一首歌热身（4min）→ 180步频超慢跑（40min）→ 360度腿部拉伸（10min）</div>
-    </div>
-    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-slowrun')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-slowrun')">+</button></div>
-  </div>
   <div class="combo-card combo-stamina" data-combo-id="combo-stamina-burn">
     <div class="cc-main">
       <div class="combo-title">减脂操 19min</div>
@@ -743,27 +748,20 @@
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-quick')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-quick')">+</button></div>
   </div>
-  <div class="combo-card combo-stamina" data-combo-id="combo-stamina-radio">
-    <div class="cc-main">
-      <div class="combo-title">广播体操套餐 12min</div>
-      <div class="combo-flow">一首歌热身（4min）→ 第八套广播体操（4min）→ 第九套广播体操（4min）</div>
-    </div>
-    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-radio')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-radio')">+</button></div>
-  </div>
 
-  <div class="combo-group-label shape-label toc-anchor" id="combo-shape-group">💪 身材向（本周目标 150 分钟）</div>
+  <div class="combo-group-label shape-label toc-anchor" id="combo-shape-group">💪 身材向（本周目标 100 分钟）</div>
 
   <div class="combo-card combo-shape" data-combo-id="combo-shape-core">
     <div class="cc-main">
-      <div class="combo-title">核心快速 20min</div>
-      <div class="combo-flow">真空腹（5min）→ 腹横肌激活（5min）→ 仙人揉腹（10min）</div>
+      <div class="combo-title">核心快速 25min</div>
+      <div class="combo-flow">真空腹（5min）→ 腹横肌激活（10min）→ 仙人揉腹（10min）</div>
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-core')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-core')">+</button></div>
   </div>
   <div class="combo-card combo-shape" data-combo-id="combo-shape-belly">
     <div class="cc-main">
-      <div class="combo-title">腹部扎实 23min</div>
-      <div class="combo-flow">真空腹（5min）→ 萨尔曼瘦肚子（5min）→ 腹横肌激活（5min）→ 古法内脏脂肪操（8min）</div>
+      <div class="combo-title">腹部扎实 30min</div>
+      <div class="combo-flow">真空腹（5min）→ 萨尔曼瘦肚子（5min）→ 腹横肌激活（10min）→ 古法内脏脂肪操（10min）</div>
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-belly')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-belly')">+</button></div>
   </div>
@@ -780,6 +778,13 @@
       <div class="combo-flow">真空腹（5min）→ 林芊妤瘦腿（10min）→ 坐姿练臀（5min）→ 一副哑铃练全身（15min）</div>
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-power')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-power')">+</button></div>
+  </div>
+  <div class="combo-card combo-shape" data-combo-id="combo-stamina-power">
+    <div class="cc-main">
+      <div class="combo-title">哑铃力量 35min</div>
+      <div class="combo-flow">一副哑铃练全身（15min）→ 全身塑形哑铃跟练（20min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-power')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-power')">+</button></div>
   </div>
   <div class="combo-card combo-shape" data-combo-id="combo-shape-back">
     <div class="cc-main">
@@ -821,8 +826,8 @@
 
   <div class="combo-card combo-rest" data-combo-id="combo-rest-morning">
     <div class="cc-main">
-      <div class="combo-title">晨起轻唤醒 20min</div>
-      <div class="combo-flow">Nadi Shodhana 呼吸（5min）→ Zoey 站立拉伸（10min）→ 真空腹（5min）</div>
+      <div class="combo-title">晨起轻唤醒 28min</div>
+      <div class="combo-flow">Nadi Shodhana 呼吸（5min）→ Zoey 站立拉伸（10min）→ 真空腹（5min）→ 骨盆回正训练（8min）</div>
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-morning')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-morning')">+</button></div>
   </div>
@@ -842,8 +847,8 @@
   </div>
   <div class="combo-card combo-rest" data-combo-id="combo-rest-deep">
     <div class="cc-main">
-      <div class="combo-title">深度放松 25min</div>
-      <div class="combo-flow">全身扫描（5min）→ JJ 老师全身拉伸（15min）→ 小腿精油按摩（5min）</div>
+      <div class="combo-title">深度放松 35min</div>
+      <div class="combo-flow">全身扫描（5min）→ JJ 老师全身拉伸（15min）→ 小腿精油按摩（5min）→ 360 度腿部拉伸（10min）</div>
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-deep')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-deep')">+</button></div>
   </div>
@@ -868,32 +873,47 @@
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-posture')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-posture')">+</button></div>
   </div>
+  <div class="combo-card combo-rest" data-combo-id="combo-rest-baduanjin">
+    <div class="cc-main">
+      <div class="combo-title">八段锦 12min</div>
+      <div class="combo-flow">八段锦（12min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-baduanjin')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-baduanjin')">+</button></div>
+  </div>
+  <div class="combo-card combo-rest" data-combo-id="combo-stamina-radio">
+    <div class="cc-main">
+      <div class="combo-title">广播体操套餐 12min</div>
+      <div class="combo-flow">一首歌热身（4min）→ 第八套广播体操（4min）→ 第九套广播体操（4min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-radio')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-radio')">+</button></div>
+  </div>
 
   <!-- ============================================================== -->
   <!-- ==== 动作详情（参考库）================================================ -->
   <!-- ============================================================== -->
-  <div class="section-heading toc-anchor" id="sec-actions">🎯 动作详情 · 42 项</div>
+  <div class="section-heading toc-anchor" id="sec-actions">🎯 动作详情 · 43 项</div>
 
   <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-posture"><span>🦴</span>体态与矫正 <span class="count-hint">· 6 项 · #1–9</span></div>
+    <div class="cat-card-title toc-anchor" id="act-posture"><span>🦴</span>体态与矫正 <span class="count-hint" data-base-text="· 7 项 · #1–9">· 7 项 · #1–9</span></div>
     <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th>博主</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody>
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="体态与矫正">
         <tr><td class="num">1</td><td>掰正骨盆懒人版</td><td>雪儿很棒</td><td>5min</td><td>躺姿</td></tr>
         <tr><td class="num">2</td><td>女明星仪态管理</td><td>美佳老师</td><td>3min</td><td>站姿</td></tr>
         <tr><td class="num">3</td><td>谁懂丝滑美背的杀伤力</td><td>欧阳春晓</td><td>15min</td><td>站/坐/盘腿</td></tr>
         <tr><td class="num">4</td><td>告别圆肩驼背·YTWL 矫正训练</td><td>欧阳春晓</td><td>8min</td><td>站/坐</td></tr>
         <tr><td class="num">5</td><td>骨科专家腰椎操·久坐快练</td><td>小昕爱养生</td><td>3min</td><td>站姿</td></tr>
         <tr><td class="num">6</td><td>根除小肚腩·告别假胯宽</td><td>欧阳春晓</td><td>10min</td><td>地板</td></tr>
+        <tr><td class="num">7</td><td>骨盆回正训练</td><td>欧阳春晓</td><td>8min</td><td>躺姿</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-breath"><span>🧘</span>呼吸与冥想 <span class="count-hint">· 6 项 · #11–19</span></div>
+    <div class="cat-card-title toc-anchor" id="act-breath"><span>🧘</span>呼吸与冥想 <span class="count-hint" data-base-text="· 6 项 · #11–19">· 6 项 · #11–19</span></div>
     <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th>博主</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody>
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="呼吸与冥想">
         <tr><td class="num">11</td><td>Nadi Shodhana 纳迪净化法（缓焦提专注）</td><td>TheS艾斯</td><td>5min</td><td>坐姿</td></tr>
         <tr><td class="num">12</td><td>全身扫描冥想</td><td>能量派</td><td>5min</td><td>躺/坐</td></tr>
         <tr><td class="num">13</td><td>自我肯定冥想·训练内心强大</td><td>FLOW心流所</td><td>5min</td><td>坐姿</td></tr>
@@ -905,10 +925,10 @@
   </div>
 
   <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-stretch"><span>🤸</span>拉伸与放松 <span class="count-hint">· 9 项 · #21–29</span></div>
+    <div class="cat-card-title toc-anchor" id="act-stretch"><span>🤸</span>拉伸与放松 <span class="count-hint" data-base-text="· 9 项 · #21–29">· 9 项 · #21–29</span></div>
     <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th>博主</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody>
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="拉伸与放松">
         <tr><td class="num">21</td><td>15 分钟全身快速拉伸</td><td>瑜伽老师JJ</td><td>15min</td><td>地板</td></tr>
         <tr><td class="num">22</td><td>全程站立全身拉伸·从头到脚舒缓激活</td><td>周六野Zoey</td><td>10min</td><td>站姿</td></tr>
         <tr><td class="num">23</td><td>全程躺练·消除疲劳恢复活力</td><td>瑜伽玛拉</td><td>10min</td><td>躺姿</td></tr>
@@ -923,25 +943,24 @@
   </div>
 
   <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-massage"><span>💆</span>按摩 <span class="count-hint">· 1 项 · #31–39</span></div>
+    <div class="cat-card-title toc-anchor" id="act-massage"><span>💆</span>按摩 <span class="count-hint" data-base-text="· 1 项 · #31–39">· 1 项 · #31–39</span></div>
     <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th>博主</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody>
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="按摩">
         <tr><td class="num">31</td><td>小腿精油按摩</td><td>欧阳春晓</td><td>5min</td><td>坐姿</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-cardio"><span>🔥</span>有氧与力量 <span class="count-hint">· 12 项 · #41–59</span></div>
+    <div class="cat-card-title toc-anchor" id="act-cardio"><span>🔥</span>有氧与力量 <span class="count-hint" data-base-text="· 12 项 · #41–59">· 12 项 · #41–59</span></div>
     <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th>博主</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody>
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="有氧与力量">
         <tr><td class="num">41</td><td>间歇跳绳</td><td>bit by bit</td><td>5min</td><td>站姿</td></tr>
         <tr><td class="num">42</td><td>一副哑铃练全身</td><td>Nina</td><td>15min</td><td>站姿</td></tr>
         <tr><td class="num">43</td><td>八段锦</td><td>—</td><td>12min</td><td>站姿</td></tr>
-        <tr><td class="num">44</td><td>180 步频超慢跑</td><td>旋风小红</td><td>40min</td><td>站姿</td></tr>
-        <tr><td class="num">45</td><td>古法内脏脂肪操</td><td>雪儿很棒</td><td>8min</td><td>站姿</td></tr>
+        <tr><td class="num">45</td><td>古法内脏脂肪操</td><td>雪儿很棒</td><td>10min</td><td>站姿</td></tr>
         <tr><td class="num">46</td><td>一首歌运动前热身</td><td>刘逗逗</td><td>4min</td><td>站姿</td></tr>
         <tr><td class="num">47</td><td>清晨燃脂瑜伽</td><td>瑜伽老师JJ</td><td>10min</td><td>地板</td></tr>
         <tr><td class="num">48</td><td>第九套广播体操</td><td>Mina</td><td>4min</td><td>站姿</td></tr>
@@ -949,33 +968,44 @@
         <tr><td class="num">50</td><td>有氧减脂操·低缓冲全身</td><td>欧阳春晓</td><td>15min</td><td>站姿</td></tr>
         <tr><td class="num">51</td><td>簿肌修炼·居家无器械全身</td><td>房子</td><td>5min</td><td>地板</td></tr>
         <tr><td class="num">52</td><td>居家哑铃背部跟练</td><td>ting</td><td>5min</td><td>站姿</td></tr>
+        <tr><td class="num">53</td><td>全身塑形哑铃跟练</td><td>冰冰教练</td><td>20min</td><td>站姿</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-core"><span>💪</span>核心与腹部 <span class="count-hint">· 3 项 · #61–69</span></div>
+    <div class="cat-card-title toc-anchor" id="act-core"><span>💪</span>核心与腹部 <span class="count-hint" data-base-text="· 3 项 · #61–69">· 3 项 · #61–69</span></div>
     <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th>博主</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody>
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="核心与腹部">
         <tr><td class="num">61</td><td>萨尔曼瘦肚子·平坦小腹</td><td>叫我瓜瓜</td><td>5min</td><td>躺姿</td></tr>
-        <tr><td class="num">62</td><td>激活腹横肌·细腰又护腰</td><td>钳钳妈阿曼达</td><td>5min</td><td>坐+躺</td></tr>
+        <tr><td class="num">62</td><td>激活腹横肌·细腰又护腰</td><td>钳钳妈阿曼达</td><td>10min</td><td>坐+躺</td></tr>
         <tr><td class="num">63</td><td>真空腹训练</td><td>欧阳春晓</td><td>5min</td><td>站/坐/躺</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-leg"><span>🦵</span>腿部与臀部 <span class="count-hint">· 5 项 · #71–79</span></div>
+    <div class="cat-card-title toc-anchor" id="act-leg"><span>🦵</span>腿部与臀部 <span class="count-hint" data-base-text="· 5 项 · #71–79">· 5 项 · #71–79</span></div>
     <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th>博主</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody>
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="腿部与臀部">
         <tr><td class="num">71</td><td>10min 特快瘦大腿</td><td>林芊妤</td><td>10min</td><td>地板</td></tr>
         <tr><td class="num">72</td><td>5 分钟带你练臀（弹力带版）</td><td>Nina</td><td>5min</td><td>坐姿</td></tr>
         <tr><td class="num">73</td><td>完善足弓训练·矫正腿型拉长跟腱</td><td>欧阳春晓</td><td>10min</td><td>站姿</td></tr>
         <tr><td class="num">74</td><td>膝超伸运动·细直大长腿</td><td>韩小四</td><td>10min</td><td>地板</td></tr>
         <tr><td class="num">75</td><td>纠正不良腿型·足弓弹性重建 4.0</td><td>欧阳春晓</td><td>20min</td><td>地板</td></tr>
       </tbody>
+    </table>
+  </div>
+
+  <!-- 我的新增 · 未归类兜底（其余有 category 的会按分类合并进上面 7 个卡）-->
+  <div class="card" id="custom-actions-card" style="display:none">
+    <div class="cat-card-title toc-anchor" id="act-custom"><span>🌱</span>我的新增 · 未归类 <span class="count-hint" id="custom-count-hint">· 0 项</span></div>
+    <div style="font-size:0.78rem;color:var(--text-hint);margin:-0.3rem 0 0.7rem;padding-left:2px;">收集箱里 category 选了"其他/暂未分类"或留空的动作；归到具体类型的会出现在上面对应的卡里（带 🌱 标记）</div>
+    <table class="action-table" id="custom-actions-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody id="custom-actions-tbody"></tbody>
     </table>
   </div>
 
@@ -989,17 +1019,19 @@
   const COMBO_LOG_KEY = 'fitness_combo_log_v1';
   const EXTRA_LOG_KEY = 'extra_exercise_log_v1';
   const REVIEW_KEY = 'weekly_review_v1';
+  const CUSTOM_ACTIONS_KEY = 'fitness_custom_actions_v1';
 
   // ==================== 组合元数据（与 Summer的世界.html 同步）====================
   const COMBO_META = {
     'combo-stamina-fast':    { name: '快速', mins: 9,  goal: 'stamina' },
-    'combo-stamina-power':   { name: '哑铃力量', mins: 37, goal: 'stamina' },
-    'combo-stamina-slowrun': { name: '超慢跑', mins: 54, goal: 'stamina' },
     'combo-stamina-burn':    { name: '减脂操', mins: 19, goal: 'stamina' },
     'combo-stamina-quick':   { name: '簿肌快练', mins: 9, goal: 'stamina' },
-    'combo-stamina-radio':   { name: '广播体操套餐', mins: 12, goal: 'stamina' },
-    'combo-shape-core':      { name: '核心快速', mins: 20, goal: 'shape' },
-    'combo-shape-belly':     { name: '腹部扎实', mins: 23, goal: 'shape' },
+    // combo-stamina-power 移到身材向，goal 改为 shape，时长 35（重构为 哑铃#42 + 全身塑形哑铃#53）
+    'combo-stamina-power':   { name: '哑铃力量', mins: 35, goal: 'shape' },
+    // combo-stamina-radio 移到养护向，goal 改为 rest（八段锦/广播体操降级后整体偏养护）
+    'combo-stamina-radio':   { name: '广播体操套餐', mins: 12, goal: 'rest' },
+    'combo-shape-core':      { name: '核心快速', mins: 25, goal: 'shape' },
+    'combo-shape-belly':     { name: '腹部扎实', mins: 30, goal: 'shape' },
     'combo-shape-leghip':    { name: '腿臀套餐', mins: 32, goal: 'shape' },
     'combo-shape-power':     { name: '力量综合', mins: 35, goal: 'shape' },
     'combo-shape-back':      { name: '美背修身', mins: 20, goal: 'shape' },
@@ -1007,37 +1039,38 @@
     'combo-shape-hip':       { name: '假胯宽专项', mins: 14, goal: 'shape' },
     'combo-shape-arch':      { name: '足弓训练', mins: 10, goal: 'shape' },
     'combo-shape-archdeep':  { name: '足弓深度', mins: 20, goal: 'shape' },
-    'combo-rest-morning':    { name: '晨起轻唤醒', mins: 20, goal: 'rest' },
+    'combo-rest-morning':    { name: '晨起轻唤醒', mins: 28, goal: 'rest' },
     'combo-rest-detox':      { name: '晨起排毒', mins: 20, goal: 'rest' },
     'combo-rest-shoulder':   { name: '肩颈背修复', mins: 28, goal: 'rest' },
-    'combo-rest-deep':       { name: '深度放松', mins: 25, goal: 'rest' },
+    'combo-rest-deep':       { name: '深度放松', mins: 35, goal: 'rest' },
     'combo-rest-bedtime':    { name: '睡前', mins: 30, goal: 'rest' },
     'combo-rest-bowl':       { name: '颂钵助眠', mins: 20, goal: 'rest' },
     'combo-rest-posture':    { name: '体态快练', mins: 9, goal: 'rest' },
+    'combo-rest-baduanjin':  { name: '八段锦', mins: 12, goal: 'rest' },
   };
 
   // 独立动作的目标归类与时长（与 Summer的世界.html 同步）
   const ACTION_GOALS = {
-    1:['rest'], 2:['shape','rest'], 3:['shape','rest'], 4:['shape','rest'], 5:['rest'], 6:['shape','rest'],
+    1:['rest'], 2:['shape','rest'], 3:['shape','rest'], 4:['shape','rest'], 5:['rest'], 6:['shape','rest'], 7:['rest'],
     11:['rest'], 12:['rest'], 13:['rest'], 14:['rest'], 15:['rest'], 16:['rest'],
     21:['rest'], 22:['rest'], 23:['rest'], 24:['rest'], 25:['rest'], 26:['rest'], 27:['rest'], 28:['rest'], 29:['rest'],
     31:['rest'],
-    41:['stamina','shape'], 42:['stamina','shape'], 43:['stamina','rest'], 44:['stamina'],
-    45:['shape'], 46:['rest'], 47:['shape','rest'], 48:['shape'], 49:['shape'],
-    50:['shape','rest'], 51:['stamina','shape'], 52:['stamina','shape'],
-    61:['shape'], 62:['shape'], 63:['shape'],
-    71:['shape'], 72:['shape'], 73:['shape'], 74:['shape','rest'], 75:['shape','rest'],
+    41:['stamina','shape'], 42:['shape'], 43:['rest'],
+    45:['shape'], 46:['stamina'], 47:['shape','rest'], 48:['rest'], 49:['rest'],
+    50:['stamina','shape'], 51:['stamina','shape'], 52:['shape'], 53:['shape'],
+    61:['shape'], 62:['shape','rest'], 63:['shape'],
+    71:['shape'], 72:['shape'], 73:['shape','rest'], 74:['shape','rest'], 75:['shape','rest'],
   };
   const ACTION_DURATIONS = {
-    1:5, 2:3, 3:15, 4:8, 5:3, 6:10,
+    1:5, 2:3, 3:15, 4:8, 5:3, 6:10, 7:8,
     11:5, 12:5, 13:5, 14:10, 15:10, 16:10,
     21:15, 22:10, 23:10, 24:10, 25:7, 26:10, 27:10, 28:10, 29:3,
     31:5,
-    41:5, 42:15, 43:12, 44:40, 45:8, 46:4, 47:10, 48:4, 49:4, 50:15, 51:5, 52:5,
-    61:5, 62:5, 63:5,
+    41:5, 42:15, 43:12, 45:10, 46:4, 47:10, 48:4, 49:4, 50:15, 51:5, 52:5, 53:20,
+    61:5, 62:10, 63:5,
     71:10, 72:5, 73:10, 74:10, 75:20,
   };
-  const GOAL_TARGET = { stamina: 100, shape: 150, rest: 150 };
+  const GOAL_TARGET = { stamina: 100, shape: 100, rest: 150 };
   const GOAL_LABEL = { stamina: '体能', shape: '身材', rest: '养护' };
   const GOAL_ICON = { stamina: '🔥', shape: '💪', rest: '🌿' };
   const GOAL_PILL_CLASS = { stamina: 's', shape: 'h', rest: 'r' };
@@ -1055,6 +1088,16 @@
   let comboLog = readJSON(COMBO_LOG_KEY, []);
   let extraLog = readJSON(EXTRA_LOG_KEY, []);
   let reviews = readJSON(REVIEW_KEY, {});
+  let customActions = readJSON(CUSTOM_ACTIONS_KEY, []);
+
+  // 把"我的新增"动作合并进 ACTION_GOALS / ACTION_DURATIONS 查表，
+  // 这样后续所有目标计算与计数逻辑都能直接命中，无需特判。
+  customActions.forEach(a => {
+    if (typeof a.num === 'number') {
+      ACTION_GOALS[a.num] = Array.isArray(a.goals) ? a.goals : [];
+      ACTION_DURATIONS[a.num] = a.duration_min || 0;
+    }
+  });
 
   // 一次性迁移：旧动作编号 → 新编号（2026-05-15 重构）
   const ACTION_RENUMBER_V2 = {
@@ -1838,8 +1881,310 @@
     renderArchive();
   });
 
+  // ==================== 主库行：把第 3 列"博主"替换成"方向"图标 ====================
+  // 静态 HTML 里第 3 列写的还是博主名（便于源代码可读），运行时替换成 ACTION_GOALS 对应的图标，
+  // 博主名搬到 row 的 title 属性（鼠标悬停可见）。custom-row 跳过（它们已经在 buildRow 里直接渲染好了）。
+  function populateGoalColumn() {
+    document.querySelectorAll('.action-table tbody tr').forEach(tr => {
+      if (tr.classList.contains('custom-row')) return;
+      const numCell = tr.querySelector('td.num');
+      if (!numCell) return;
+      const num = parseInt(numCell.textContent.trim(), 10);
+      if (!num) return;
+      const cells = tr.querySelectorAll('td');
+      if (cells.length < 3) return;
+      const cell = cells[2]; // 第 3 个 td
+      const creator = cell.textContent.trim();
+      if (creator && creator !== '—' && !tr.title) tr.title = '博主：' + creator;
+      const goals = ACTION_GOALS[num] || [];
+      cell.className = 'goal-cell';
+      cell.textContent = goals.map(g => GOAL_ICON[g] || '').join('');
+    });
+  }
+
+  // ==================== 我的新增 · 按分类合并到主库卡片 ====================
+  // 已知的 7 个 category（收集箱填的）→ 渲染到对应的主库卡 tbody（tbody[data-cat="..."]）。
+  // 其他/未归类 → 落到"我的新增 · 未归类"兜底卡。
+  const KNOWN_CATEGORIES = new Set([
+    '体态与矫正', '呼吸与冥想', '拉伸与放松', '按摩', '有氧与力量', '核心与腹部', '腿部与臀部'
+  ]);
+
+  function renderCustomActions() {
+    // 1) 清掉之前插入的 custom-row（防止重复渲染累加）
+    document.querySelectorAll('.action-table tr.custom-row').forEach(tr => tr.remove());
+    // 2) 把每个 count-hint 还原为 base-text
+    document.querySelectorAll('.count-hint[data-base-text]').forEach(el => {
+      el.textContent = el.dataset.baseText;
+    });
+
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function buildRow(a) {
+      const icons = (a.goals || []).map(g => GOAL_ICON[g] || '').join('');
+      const titleAttr = a.creator ? ` title="博主：${esc(a.creator)}"` : '';
+      return `<tr class="custom-row" data-custom-num="${a.num}"${titleAttr}>
+        <td class="num">${a.num}</td>
+        <td>${esc(a.name)}</td>
+        <td class="goal-cell">${icons}</td>
+        <td>${a.duration_min}min</td>
+        <td>${esc(a.posture) || '—'}</td>
+      </tr>`;
+    }
+
+    const sorted = customActions.slice().sort((a, b) => (a.num || 0) - (b.num || 0));
+
+    // 按 category 分组
+    const grouped = {}; // cat → [actions]
+    const fallback = [];
+    sorted.forEach(a => {
+      const cat = a.category || '';
+      if (KNOWN_CATEGORIES.has(cat)) {
+        (grouped[cat] = grouped[cat] || []).push(a);
+      } else {
+        fallback.push(a);
+      }
+    });
+
+    // 3) 插入到每个匹配的主库卡 tbody，并更新该卡的 count-hint
+    Object.entries(grouped).forEach(([cat, list]) => {
+      const tbody = document.querySelector(`tbody[data-cat="${cat}"]`);
+      if (!tbody) { fallback.push(...list); return; }
+      tbody.insertAdjacentHTML('beforeend', list.map(buildRow).join(''));
+
+      // 更新 count-hint：在原文本后追加 · +N 我的新增
+      const card = tbody.closest('.card');
+      const hint = card && card.querySelector('.count-hint[data-base-text]');
+      if (hint) hint.textContent = hint.dataset.baseText + ' · +' + list.length + ' 🌱我的新增';
+    });
+
+    // 4) 渲染兜底卡（未归类）
+    const card = document.getElementById('custom-actions-card');
+    const tbody = document.getElementById('custom-actions-tbody');
+    const tocItem = document.getElementById('custom-toc-item');
+    const countHint = document.getElementById('custom-count-hint');
+    if (!card || !tbody) return;
+
+    if (fallback.length === 0) {
+      card.style.display = 'none';
+      if (tocItem) tocItem.style.display = 'none';
+      tbody.innerHTML = '';
+    } else {
+      card.style.display = '';
+      if (tocItem) tocItem.style.display = '';
+      if (countHint) {
+        countHint.textContent = '· ' + fallback.length + ' 项 · #' + fallback[0].num +
+          (fallback.length > 1 ? '–' + fallback[fallback.length-1].num : '');
+      }
+      tbody.innerHTML = fallback.map(a => {
+        const row = buildRow(a);
+        // fallback 兜底卡里的 row 也保留 custom-row 标记，injectActionTrackers 同样工作
+        return row;
+      }).join('');
+    }
+  }
+
+  // ==================== 导出运动数据（给 Claude 读 + 备份）====================
+  // 升级版：优先用 File System Access API（首次选位置→记住→后续直接覆盖，零弹窗）
+  // 不支持时（如 Firefox/Safari）回退到下载到 Downloads 文件夹。
+  const EXPORT_TS_KEY = 'fitness_export_last_ts';
+  const EXPORT_FILENAME = '运动数据.json';
+  const RECOMMENDED_PATH = 'C:\\Users\\Summer\\Desktop\\Claude\\' + EXPORT_FILENAME;
+
+  // --- IndexedDB：持久化文件句柄 ---
+  const FH_DB = 'fitness_export_db', FH_STORE = 'handles', FH_KEY = 'export_file_handle';
+  function fhOpenDB() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open(FH_DB, 1);
+      req.onupgradeneeded = () => req.result.createObjectStore(FH_STORE);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+  async function fhGet() {
+    try {
+      const db = await fhOpenDB();
+      return await new Promise((res, rej) => {
+        const r = db.transaction(FH_STORE, 'readonly').objectStore(FH_STORE).get(FH_KEY);
+        r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+      });
+    } catch (e) { return null; }
+  }
+  async function fhPut(handle) {
+    try {
+      const db = await fhOpenDB();
+      await new Promise((res, rej) => {
+        const tx = db.transaction(FH_STORE, 'readwrite');
+        tx.objectStore(FH_STORE).put(handle, FH_KEY);
+        tx.oncomplete = res; tx.onerror = () => rej(tx.error);
+      });
+    } catch (e) { /* ignore */ }
+  }
+  async function fhClear() {
+    try {
+      const db = await fhOpenDB();
+      await new Promise((res, rej) => {
+        const tx = db.transaction(FH_STORE, 'readwrite');
+        tx.objectStore(FH_STORE).delete(FH_KEY);
+        tx.oncomplete = res; tx.onerror = () => rej(tx.error);
+      });
+    } catch (e) { /* ignore */ }
+  }
+  async function ensurePermission(handle) {
+    const opts = { mode: 'readwrite' };
+    if ((await handle.queryPermission(opts)) === 'granted') return true;
+    return (await handle.requestPermission(opts)) === 'granted';
+  }
+
+  // --- 数据 payload ---
+  function buildPayload() {
+    const now = new Date();
+    return {
+      schema: 'summer-fitness-v1',
+      exportedAt: now.toISOString(),
+      exportedAtLocal: now.toLocaleString('zh-CN', { hour12: false }),
+      note: '由 运动周总结.html「⬇ 导出运动数据」按钮生成。文件位置建议 ' + RECOMMENDED_PATH + '。',
+      data: {
+        fitness_log_v1: readJSON(LOG_KEY, []),
+        fitness_combo_log_v1: readJSON(COMBO_LOG_KEY, []),
+        extra_exercise_log_v1: readJSON(EXTRA_LOG_KEY, []),
+        weekly_review_v1: readJSON(REVIEW_KEY, {}),
+        fitness_custom_actions_v1: readJSON(CUSTOM_ACTIONS_KEY, []),
+        exercise_collection_v1: readJSON('exercise_collection_v1', []),
+      },
+    };
+  }
+
+  // --- 小提示条（替代 alert）---
+  function showToast(msg, kind) {
+    let t = document.getElementById('export-toast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'export-toast';
+      t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:10px 18px;border-radius:99px;font-size:0.85rem;box-shadow:0 4px 16px rgba(0,0,0,0.2);z-index:9999;opacity:0;transition:opacity 0.3s;max-width:90vw;text-align:center;line-height:1.5;';
+      document.body.appendChild(t);
+    }
+    t.style.background = kind === 'warn' ? 'var(--gold)' : kind === 'info' ? 'var(--info)' : 'var(--accent)';
+    t.textContent = msg;
+    requestAnimationFrame(() => { t.style.opacity = '1'; });
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => { t.style.opacity = '0'; }, kind === 'info' ? 6000 : 3500);
+  }
+
+  // --- 写入文件 ---
+  async function writeToHandle(handle, content) {
+    const w = await handle.createWritable();
+    await w.write(content);
+    await w.close();
+  }
+  function downloadFallback(content) {
+    const blob = new Blob([content], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = EXPORT_FILENAME;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  // --- 主导出函数 ---
+  async function exportFitnessData() {
+    const json = JSON.stringify(buildPayload(), null, 2);
+
+    if ('showSaveFilePicker' in window) {
+      try {
+        let handle = await fhGet();
+        if (handle) {
+          if (await ensurePermission(handle)) {
+            await writeToHandle(handle, json);
+            markExported();
+            showToast('✓ 已覆盖保存到上次选的位置');
+            return;
+          } else {
+            await fhClear();
+            showToast('权限被拒，请重新选位置', 'warn');
+          }
+        }
+        handle = await window.showSaveFilePicker({
+          suggestedName: EXPORT_FILENAME,
+          types: [{ description: 'JSON 数据', accept: { 'application/json': ['.json'] } }],
+        });
+        await writeToHandle(handle, json);
+        await fhPut(handle);
+        markExported();
+        showToast('✓ 已保存。以后点按钮直接覆盖此文件，不再问。', 'info');
+        return;
+      } catch (err) {
+        if (err && err.name === 'AbortError') return; // 用户取消
+        console.warn('FSA 失败，回退到下载', err);
+      }
+    }
+
+    // 回退路径
+    downloadFallback(json);
+    markExported();
+    showToast('已下载到 Downloads，请移动到 ' + RECOMMENDED_PATH, 'info');
+  }
+
+  function markExported() {
+    localStorage.setItem(EXPORT_TS_KEY, String(Date.now()));
+    updateExportBtnState();
+  }
+
+  async function resetExportLocation() {
+    await fhClear();
+    showToast('已忘记上次位置，下次点导出会重新选');
+    updateExportBtnState();
+  }
+
+  async function updateExportBtnState() {
+    const btn = document.getElementById('btn-export');
+    if (!btn) return;
+    const last = parseInt(localStorage.getItem(EXPORT_TS_KEY) || '0', 10);
+    const hasFSA = 'showSaveFilePicker' in window;
+    const hasHandle = hasFSA ? !!(await fhGet()) : false;
+    const lockIcon = hasHandle ? '📌 ' : '';
+
+    if (!last) {
+      btn.textContent = '⬇ 导出运动数据（首次）';
+      btn.classList.add('stale');
+    } else {
+      const days = Math.floor((Date.now() - last) / 86400000);
+      if (days >= 7) {
+        btn.textContent = lockIcon + '⬇ 导出运动数据（' + days + ' 天未更新）';
+        btn.classList.add('stale');
+      } else if (days === 0) {
+        btn.textContent = lockIcon + '✓ 今天已导出（点击覆盖）';
+        btn.classList.remove('stale');
+      } else {
+        btn.textContent = lockIcon + '⬇ 导出运动数据（' + days + ' 天前）';
+        btn.classList.remove('stale');
+      }
+    }
+
+    // 显示/更新「改位置」链接
+    let reset = document.getElementById('btn-reset-loc');
+    if (hasHandle) {
+      if (!reset) {
+        reset = document.createElement('button');
+        reset.id = 'btn-reset-loc'; reset.type = 'button';
+        reset.title = '忘记保存位置，下次重新选';
+        reset.style.cssText = 'font-size:0.7rem;background:none;border:none;color:var(--text-hint);cursor:pointer;padding:5px 4px;font-family:inherit;';
+        reset.textContent = '↻ 改位置';
+        reset.addEventListener('click', resetExportLocation);
+        btn.insertAdjacentElement('afterend', reset);
+      }
+    } else if (reset) {
+      reset.remove();
+    }
+  }
+
+  document.getElementById('btn-export').addEventListener('click', exportFitnessData);
+  updateExportBtnState();
+
   // ==================== 初始化 ====================
-  injectActionTrackers();
+  renderCustomActions();   // 先把"我的新增"行写进表（按分类合并）
+  populateGoalColumn();    // 主库行第 3 列：博主 → 方向图标
+  injectActionTrackers();  // 给所有行追加 +/− 打卡按钮列
   initExtraDates();
   renderAll();
   renderExtra();

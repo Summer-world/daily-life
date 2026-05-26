@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
+    /* ─── 结构 / 文字（中性） ─── */
     --bg: #F7F5F0;
     --surface: #FFFFFF;
     --border: #E8E4DC;
@@ -14,20 +15,29 @@
     --text-primary: #1A1814;
     --text-secondary: #6B6560;
     --text-hint: #A09A92;
+    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+
+    /* ─── 全局 3 角色 ───
+       accent = 主操作 / 进行中 / 关键结论
+       gold   = 注意 / 警示 / 缺口
+       mist   = 参考 / 资料 / 中性强调（替代过去乱用的 info） */
     --accent: #2D5A3D;
     --accent-light: #EAF2EC;
     --accent-mid: #4A8C60;
-    --shape: #57A773;
-    --shape-light: #E9F3ED;
     --gold: #E8743B;
     --gold-light: #FBEAE0;
-    --info: #5B9BD5;
-    --info-light: #E8F1FA;
-    --rose: #7A3A4A;
-    --rose-light: #FBEEF1;
     --mist: #8AA6BF;
     --mist-light: #EDF2F7;
-    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+
+    /* ─── 运动 domain 局部色（只在运动模块内用，不要外溢）─── */
+    --shape: #57A773;
+    --shape-light: #E9F3ED;
+    --info: #5B9BD5;       /* = rest 类组合 */
+    --info-light: #E8F1FA;
+
+    /* ─── 经期 domain 局部色 ─── */
+    --rose: #7A3A4A;
+    --rose-light: #FBEEF1;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; line-height: 1.7; }
@@ -123,13 +133,121 @@
     border-color: var(--accent);
   }
 
+  /* ========== 状态条（全局上下文）========== */
+  .status-strip {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .status-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0.4rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .status-left {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+    font-size: 0.78rem;
+  }
+  .status-date {
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .status-badge {
+    font-size: 0.7rem;
+    padding: 2px 9px;
+    border-radius: 99px;
+    background: var(--mist-light);
+    color: var(--mist);
+    white-space: nowrap;
+  }
+  .status-badge.is-overload { background: var(--mist-light); color: var(--mist); }
+  .status-badge.is-weekend  { background: var(--accent-light); color: var(--accent); }
+  .status-period {
+    font-family: inherit;
+    font-size: 0.74rem;
+    background: var(--surface);
+    border: 1px solid var(--border-dark);
+    color: var(--text-secondary);
+    padding: 3px 12px;
+    border-radius: 99px;
+    cursor: pointer;
+    display: inline-flex;
+    gap: 6px;
+    align-items: baseline;
+    transition: border-color .15s, background .15s, color .15s;
+    user-select: none;
+  }
+  .status-period:hover { border-color: var(--rose); color: var(--rose); }
+  .status-period .sp-label { color: var(--text-hint); font-size: 0.7rem; }
+  .status-period .sp-value { color: var(--text-primary); font-weight: 500; }
+  .status-period.is-active { background: var(--rose-light); border-color: var(--rose); }
+  .status-period.is-active .sp-label { color: var(--rose); }
+  .status-period.is-active .sp-value { color: var(--rose); }
+
+  .status-period-panel {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0.55rem 2rem 0.65rem;
+    background: var(--surface);
+    border-top: 1px dashed var(--border);
+  }
+  .status-period-panel[hidden] { display: none; }
+  .spp-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+  .spp-row input[type=date] {
+    font-family: inherit;
+    font-size: 0.8rem;
+    padding: 3px 9px;
+    border: 1px solid var(--border-dark);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text-primary);
+  }
+  .spp-quick, .spp-clear {
+    font-family: inherit;
+    font-size: 0.74rem;
+    padding: 3px 11px;
+    border-radius: 99px;
+    border: 1px solid var(--border-dark);
+    background: var(--surface);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .spp-quick:hover { background: var(--rose-light); color: var(--rose); border-color: var(--rose); }
+  .spp-clear:hover { color: var(--rose); border-color: var(--rose); }
+  .spp-hint {
+    font-size: 0.74rem;
+    color: var(--text-hint);
+    margin-top: 0.35rem;
+    font-style: italic;
+  }
+  @media (max-width: 640px) {
+    .status-inner { padding: 0.4rem 1rem; }
+    .status-period-panel { padding: 0.5rem 1rem 0.6rem; }
+  }
+
   /* ========== 面板 ========== */
   .panel { display: none; }
   .panel.active { display: block; }
 
   .iframe-wrap {
     width: 100%;
-    height: calc(100vh - 145px);
+    height: calc(100vh - 185px);
     min-height: 600px;
     background: var(--surface);
     border: none;
@@ -218,7 +336,7 @@
     border-radius: 12px;
     padding: 1.1rem 1.3rem;
     margin-bottom: 0.85rem;
-    scroll-margin-top: 185px;
+    scroll-margin-top: 225px;
   }
   .combo-title {
     font-family: 'Noto Serif SC', serif;
@@ -233,31 +351,41 @@
     line-height: 1.85;
   }
 
+  /* ========== 行内提示块（.note 一族）==========
+     出现在 card 内的 inline emphasis；3 种语调：
+       默认 / .is-warn / .is-ref
+     旧名 .highlight (= 默认) / .warn (= is-warn) 保持别名兼容 */
+  .note,
+  .highlight,
   .warn {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 0.7rem 1rem;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.85rem;
+    line-height: 1.75;
+    margin: 0.85rem 0;
+  }
+  .note.is-warn,
+  .warn {
+    border-left-color: var(--gold);
     background: var(--gold-light);
     color: var(--gold);
-    border-left: 3px solid var(--gold);
-    padding: 0.7rem 1rem;
-    border-radius: 0 6px 6px 0;
-    font-size: 0.8rem;
-    margin-top: 0.75rem;
-    line-height: 1.7;
   }
-
-  .highlight {
-    background: var(--accent-light);
-    border: 1px solid var(--accent-mid);
-    border-radius: 12px;
-    padding: 1.1rem 1.3rem;
-    margin: 1rem 0;
+  .note.is-ref,
+  .highlight.is-ref {
+    border-left-color: var(--mist);
+    background: var(--mist-light);
+    color: var(--mist);
   }
   .highlight-text {
-    font-size: 0.86rem;
-    color: var(--accent);
-    line-height: 1.8;
+    font-size: inherit;
+    color: inherit;
+    line-height: inherit;
   }
 
-  .tag { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 0.72rem; background: var(--info-light); color: var(--info); margin-right: 6px; margin-bottom: 4px; }
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 0.72rem; background: var(--mist-light); color: var(--mist); margin-right: 6px; margin-bottom: 4px; }
 
   /* 周目标追踪 */
   .weekly-tracker { background: linear-gradient(180deg, var(--accent-light) 0%, var(--surface) 100%); border: 1px solid var(--accent-mid); }
@@ -415,10 +543,10 @@
   /* ========== 侧边目录 ========== */
   .side-toc {
     position: fixed;
-    top: 170px;
+    top: 210px;
     left: 1.25rem;
     width: 168px;
-    max-height: calc(100vh - 200px);
+    max-height: calc(100vh - 240px);
     overflow-y: auto;
     background: var(--surface);
     border: 1px solid var(--border-dark);
@@ -465,7 +593,7 @@
   .side-toc-sub a:hover { background: var(--bg); color: var(--text-secondary); }
   .side-toc-sub a.active { background: var(--accent-light); color: var(--accent); }
   .panel:not(.active) .side-toc { display: none; }
-  .toc-anchor { scroll-margin-top: 185px; }
+  .toc-anchor { scroll-margin-top: 225px; }
 
   @media (max-width: 1200px) {
     .side-toc { display: none; }
@@ -475,7 +603,7 @@
     header.top { padding: 1rem 1rem 0; }
     .sub-nav { padding: 0.6rem 1rem; }
     .main-tab { padding: 10px 14px; font-size: 0.88rem; }
-    .iframe-wrap { height: calc(100vh - 130px); }
+    .iframe-wrap { height: calc(100vh - 170px); }
   }
 
   /* ========== 额外运动（游泳/hiking）========== */
@@ -645,10 +773,10 @@
   }
   .ck-item.done:hover { background: var(--bg); color: var(--text-secondary); }
   .ck-item.daily {
-    background: var(--info-light);
-    color: var(--info);
+    background: var(--mist-light);
+    color: var(--mist);
   }
-  .ck-item.daily:hover { background: var(--info); color: #fff; }
+  .ck-item.daily:hover { background: var(--mist); color: #fff; }
   .ck-item.daily.done { background: transparent; color: var(--text-hint); }
   .ck-item.daily.done:hover { background: var(--bg); color: var(--text-secondary); }
   .ck-reset {
@@ -741,9 +869,32 @@
     </div>
   </header>
 
+  <div class="status-strip">
+    <div class="status-inner">
+      <div class="status-left">
+        <span class="status-date" id="status-date">—</span>
+        <span class="status-badge" id="status-day-badge" hidden></span>
+      </div>
+      <button class="status-period" id="status-period" type="button" aria-expanded="false">
+        <span class="sp-label">经期</span>
+        <span class="sp-value" id="sp-value">未设置</span>
+      </button>
+    </div>
+    <div class="status-period-panel" id="status-period-panel" hidden>
+      <div class="spp-row">
+        <span>本周期开始日：</span>
+        <input type="date" id="spp-input">
+        <button class="spp-quick" id="spp-today" type="button">今天 D1</button>
+        <button class="spp-clear" id="spp-clear" type="button">清除</button>
+      </div>
+      <div class="spp-hint" id="spp-hint"></div>
+    </div>
+  </div>
+
   <div class="sub-nav show" id="sub-nav-today">
     <div class="sub-nav-inner">
       <button class="sub-tab active" data-sub="daily">日常</button>
+      <button class="sub-tab" data-sub="daily-test">日常 test</button>
       <button class="sub-tab" data-sub="wardrobe">穿搭</button>
       <button class="sub-tab" data-sub="menu">菜单</button>
     </div>
@@ -763,6 +914,13 @@
 <div class="panel" id="panel-menu">
   <div class="iframe-wrap">
     <iframe data-src="内容/菜单灵感库.html" title="菜单"></iframe>
+  </div>
+</div>
+
+<!-- ============ 今天 / 日常 test（精简重构版） ============ -->
+<div class="panel" id="panel-daily-test">
+  <div class="iframe-wrap">
+    <iframe data-src="内容/日常test.html" title="日常 test"></iframe>
   </div>
 </div>
 
@@ -1037,7 +1195,11 @@
         <tbody>
           <tr><td><strong>🛋️ 独处 · 状态好</strong></td><td>做日常兴趣爱好：🎵 听音乐、🧶 玩羊毛毡、📚 阅读、🎤 学唱歌、🗂️ 整理收纳、🍃 断舍离、🎨 画画</td></tr>
           <tr><td><strong>🛋️ 独处 · 状态不好</strong></td><td>床上拉伸、精油按摩、<button class="action-link" data-num="21">JJ 全身拉伸 #21</button> <button class="action-link" data-num="23">全程躺练 #23</button> <button class="action-link" data-num="15">颂钵冥想 #15</button></td></tr>
-          <tr><td><strong>✍️ 睡前纸笔</strong></td><td>幸福笔记（只记开心幸福的瞬间）+ 下载你的一天（写下待办 / 今日总结，清空大脑）</td></tr>
+          <tr><td><strong>✍️ 睡前纸笔</strong></td><td>
+            <strong>① 幸福笔记</strong>：只记开心幸福的瞬间<br>
+            <strong>② 下载你的一天</strong>：今日总结，清空大脑<br>
+            <strong>③ 几个决定</strong>：明天的 ootd · 明日菜单 · 明日待办
+          </td></tr>
           <tr><td><strong>📵 电子产品</strong></td><td>独处时身体发出"够了"信号（眼睛累 / 头不舒服）就放下；睡前 90 分钟彻底关闭——蓝光会抑制褪黑素</td></tr>
           <tr><td><strong>🛏️ 睡眠环境</strong></td><td>从明亮到昏暗、用暖色光源 · 简单整理让一切各得其所 · 卧室 16–18°C · 整晚用鼻子呼吸</td></tr>
         </tbody>
@@ -1109,7 +1271,7 @@
         </tbody>
       </table>
 
-      <div class="highlight" style="background:var(--mist-light);">
+      <div class="highlight is-ref">
         <div class="highlight-text">💡 <strong>成功标准</strong>：没刷手机硬熬、被音轨带睡着就赢（<strong>中段醒了想刷？叫老公一声</strong>）；日记没写、明天没排都不算输。<strong>早躺不是失败，是这天唯一正确的赢法。</strong></div>
       </div>
 
@@ -1135,7 +1297,7 @@
       </div>
       <p class="para" style="font-size:.82rem;color:var(--text-secondary);margin-bottom:.85rem;">
         每周挑一天，约 <strong>45–50 分钟</strong> 走完。按顺序做：整理 → 除尘 → 湿擦 → 拖地，不用来回换工具。租房保洁，够用就行。<br>
-        <span style="color:var(--text-hint);font-size:.78rem;">💡 点一下动作就划掉，做到哪儿都记得;做完整周点右上「重置」清空。<span style="display:inline-block;padding:1px 6px;border-radius:4px;background:var(--info-light);color:var(--info);margin:0 2px;">蓝色项</span> = 日常顺手就能维护，清洁日可能已经不脏。</span>
+        <span style="color:var(--text-hint);font-size:.78rem;">💡 点一下动作就划掉，做到哪儿都记得;做完整周点右上「重置」清空。<span style="display:inline-block;padding:1px 6px;border-radius:4px;background:var(--mist-light);color:var(--mist);margin:0 2px;">蓝灰项</span> = 日常顺手就能维护，清洁日可能已经不脏。</span>
       </p>
       <table>
         <thead><tr><th style="width:22%;">阶段</th><th>动作</th></tr></thead>
@@ -1420,7 +1582,7 @@
         const link = map.get(visible[0].target);
         if (link) setActive(link);
       }
-    }, { rootMargin: '-160px 0px -65% 0px', threshold: 0 });
+    }, { rootMargin: '-200px 0px -65% 0px', threshold: 0 });
 
     map.forEach((_, el) => io.observe(el));
 
@@ -1656,6 +1818,110 @@
         });
       });
     }
+  })();
+
+  // ==================== 状态条（日期 + 周四满载 / 周末 + 经期） ====================
+  (function statusStrip(){
+    const dateEl  = document.getElementById('status-date');
+    const badgeEl = document.getElementById('status-day-badge');
+    const btn     = document.getElementById('status-period');
+    const panel   = document.getElementById('status-period-panel');
+    const input   = document.getElementById('spp-input');
+    const todayBtn= document.getElementById('spp-today');
+    const clearBtn= document.getElementById('spp-clear');
+    const hint    = document.getElementById('spp-hint');
+    const valEl   = document.getElementById('sp-value');
+    if (!dateEl || !btn) return;
+    const KEY = 'summer_period_v1';
+    const WEEKDAY = ['日','一','二','三','四','五','六'];
+
+    function ymd(d){
+      return d.getFullYear() + '-' +
+        String(d.getMonth()+1).padStart(2,'0') + '-' +
+        String(d.getDate()).padStart(2,'0');
+    }
+    function renderDate(){
+      const now = new Date();
+      dateEl.textContent = ymd(now) + ' 周' + WEEKDAY[now.getDay()];
+      const dow = now.getDay();
+      badgeEl.classList.remove('is-overload', 'is-weekend');
+      if (dow === 4) {
+        badgeEl.hidden = false;
+        badgeEl.classList.add('is-overload');
+        badgeEl.textContent = '🌙 满载日';
+      } else if (dow === 0 || dow === 6) {
+        badgeEl.hidden = false;
+        badgeEl.classList.add('is-weekend');
+        badgeEl.textContent = '🎉 周末';
+      } else {
+        badgeEl.hidden = true;
+      }
+    }
+    function load(){
+      try { return JSON.parse(localStorage.getItem(KEY) || 'null'); }
+      catch(e){ return null; }
+    }
+    function save(start){
+      try { localStorage.setItem(KEY, JSON.stringify({ start })); } catch(e){}
+    }
+    function diffDays(startStr){
+      const a = new Date(startStr + 'T00:00:00').setHours(0,0,0,0);
+      const b = new Date().setHours(0,0,0,0);
+      return Math.round((b - a) / 86400000);
+    }
+    function renderPeriod(){
+      const data = load();
+      btn.classList.remove('is-active');
+      if (!data || !data.start) {
+        valEl.textContent = '未设置';
+        hint.textContent = '点开右上「经期」按钮设个开始日，之后状态条会自动跟。';
+        input.value = '';
+        return;
+      }
+      input.value = data.start;
+      const day = diffDays(data.start) + 1;
+      if (day < 1) {
+        valEl.textContent = '预设 D1: ' + data.start;
+        hint.textContent = '已预设开始日，' + (1 - day) + ' 天后开始。';
+      } else if (day <= 2) {
+        btn.classList.add('is-active');
+        valEl.textContent = 'D' + day + ' · 量大';
+        hint.textContent = '量大期：以休息和情绪安抚为主（详见「经期护理」卡）。';
+      } else if (day <= 7) {
+        btn.classList.add('is-active');
+        valEl.textContent = 'D' + day + ' · 后半段';
+        hint.textContent = '后半段：可做温和拉伸 / 低冲击运动。';
+      } else if (day <= 27) {
+        valEl.textContent = '周期 D' + day;
+        hint.textContent = '距下次预估约 ' + (28 - day) + ' 天。';
+      } else {
+        valEl.textContent = 'D' + day + ' · 已超 28 天';
+        hint.textContent = '超出常规周期，本次开始日记得更新。';
+      }
+    }
+
+    btn.addEventListener('click', () => {
+      const hidden = panel.hidden;
+      panel.hidden = !hidden;
+      btn.setAttribute('aria-expanded', hidden ? 'true' : 'false');
+    });
+    todayBtn.addEventListener('click', () => {
+      save(ymd(new Date()));
+      renderPeriod();
+    });
+    clearBtn.addEventListener('click', () => {
+      try { localStorage.removeItem(KEY); } catch(e){}
+      renderPeriod();
+      panel.hidden = true;
+      btn.setAttribute('aria-expanded', 'false');
+    });
+    input.addEventListener('change', () => {
+      if (input.value) { save(input.value); renderPeriod(); }
+    });
+
+    renderDate();
+    renderPeriod();
+    setInterval(renderDate, 60000);   // 跨午夜自动更新
   })();
 
 </script>

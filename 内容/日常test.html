@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日常 test · Summer 的世界</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  html { scroll-padding-top: 80px; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* 12 标准变量 */
+    --bg: #F7F5F0;
+    --surface: #FDFBF5;
+    --border: #ECE7DC;
+    --border-dark: #D8D2C5;
+    --text-primary: #1A1814;
+    --text-secondary: #4A453E;
+    --text-hint: #8A8278;
+    --accent: #2D5A3D;
+    --accent-light: #EAF2EC;
+    --accent-mid: #4A8C60;
+    --gold: #7A5C2E;
+    --gold-light: #F5EDE0;
+    /* 扩展 */
+    --ochre: #B8804A;
+    --ochre-light: #FAF1E2;
+    --rust: #9C3B2C;
+    --rust-light: #F8E8E3;
+    --rose: #7A3A4A;
+    --rose-light: #FBEEF1;
+    --mist: #6B7B8C;
+    --mist-light: #E8EDF2;
+  }
+
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.7;
+    font-size: 14px;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(184, 128, 74, 0.045) 0%, transparent 38%),
+      radial-gradient(circle at 85% 75%, rgba(45, 90, 61, 0.028) 0%, transparent 40%);
+    background-attachment: fixed;
+  }
+
+  /* ============ Page Header ============ */
+  .page-header {
+    padding: 2.4rem 2rem 1.4rem;
+    max-width: 1080px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .page-header::after {
+    content: '';
+    position: absolute;
+    left: 2rem;
+    right: 2rem;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border-dark) 20%, var(--border-dark) 80%, transparent);
+  }
+  .eyebrow {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.82rem;
+    color: var(--ochre);
+    letter-spacing: 0.18em;
+    margin-bottom: 0.35rem;
+  }
+  .page-header h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 2.05rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.7rem;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.7rem;
+  }
+  .page-header h1 .badge {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--ochre);
+    background: var(--ochre-light);
+    padding: 2px 10px;
+    border-radius: 99px;
+    border: 1px solid var(--ochre);
+    letter-spacing: 0.08em;
+    font-weight: 400;
+    transform: translateY(-3px);
+  }
+  .time-stamp {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+    font-size: 0.78rem;
+    color: var(--text-hint);
+    flex-wrap: wrap;
+  }
+  .time-stamp .mono {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--accent);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .time-stamp .dot {
+    opacity: 0.4;
+    color: var(--text-hint);
+  }
+  .time-stamp .ital {
+    font-style: italic;
+    color: var(--text-hint);
+  }
+
+  /* ============ Layout ============ */
+  .layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2.5rem;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 1.75rem 2rem 5rem;
+    align-items: start;
+  }
+
+  /* ============ Side TOC ============ */
+  .side-toc {
+    position: sticky;
+    top: 1.5rem;
+    align-self: start;
+  }
+  .side-toc-title {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.74rem;
+    color: var(--ochre);
+    letter-spacing: 0.22em;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-dark);
+    text-transform: uppercase;
+  }
+  .side-toc ol {
+    list-style: none;
+    counter-reset: toc-num;
+  }
+  .side-toc li {
+    counter-increment: toc-num;
+  }
+  .side-toc a {
+    display: block;
+    padding: 7px 0 7px 14px;
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    margin-left: -2px;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+  .side-toc a::before {
+    content: counter(toc-num, lower-roman) ".";
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    color: var(--ochre);
+    font-size: 0.78rem;
+    margin-right: 0.5rem;
+    opacity: 0.7;
+  }
+  .side-toc a:hover {
+    color: var(--accent);
+    border-left-color: var(--border-dark);
+  }
+  .side-toc a.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    font-weight: 500;
+  }
+  .side-toc a.active::before { color: var(--accent); opacity: 1; }
+
+  /* ============ Main + Section ============ */
+  .main { min-width: 0; }
+  .section { margin-bottom: 3.5rem; }
+  .section:last-child { margin-bottom: 0; }
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    margin-bottom: 1.4rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--border-dark);
+  }
+  .section-header .num {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--ochre);
+    font-weight: 500;
+  }
+  .section-header h2 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.32rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: 0.03em;
+  }
+  .section-header .desc {
+    font-size: 0.76rem;
+    color: var(--text-hint);
+    margin-left: auto;
+    font-style: italic;
+    letter-spacing: 0.02em;
+  }
+  .toc-anchor { scroll-margin-top: 80px; }
+
+  /* ============ i. 今日动态 ============ */
+  .today-block {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 1.3rem;
+  }
+  @media (max-width: 720px) {
+    .today-block { grid-template-columns: 1fr; }
+  }
+
+  /* 明日待办 · 便签 */
+  .todo-note {
+    background: var(--surface);
+    border: 1px solid var(--border-dark);
+    border-radius: 3px;
+    padding: 1.5rem 1.6rem;
+    position: relative;
+    box-shadow:
+      2px 2px 0 var(--border),
+      4px 4px 0 var(--border-dark);
+  }
+  .todo-note::before {
+    content: '';
+    position: absolute;
+    top: 0.55rem;
+    left: 0.7rem;
+    right: 0.7rem;
+    height: 1px;
+    background-image: linear-gradient(to right, var(--ochre) 50%, transparent 50%);
+    background-size: 6px 1px;
+    background-repeat: repeat-x;
+    opacity: 0.5;
+  }
+  .todo-note-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+    padding-top: 0.15rem;
+  }
+  .todo-note h3 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.02rem;
+    font-weight: 600;
+  }
+  .todo-note .meta {
+    font-size: 0.7rem;
+    color: var(--text-hint);
+    margin-bottom: 0.6rem;
+    font-style: italic;
+  }
+  .reset-btn {
+    background: transparent;
+    border: 1px solid var(--border-dark);
+    color: var(--text-hint);
+    font-size: 0.68rem;
+    padding: 3px 9px;
+    border-radius: 99px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+    letter-spacing: 0.05em;
+  }
+  .reset-btn:hover {
+    background: var(--ochre-light);
+    border-color: var(--ochre);
+    color: var(--ochre);
+  }
+  .todo-note ul {
+    list-style: none;
+  }
+  .todo-note li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 0.86rem;
+    border-bottom: 1px dashed var(--border);
+    line-height: 1.5;
+  }
+  .todo-note li:last-child { border-bottom: none; }
+  .todo-note .num {
+    color: var(--ochre);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    width: 1.5rem;
+    flex-shrink: 0;
+    padding-top: 3px;
+    text-align: right;
+    opacity: 0.65;
+  }
+  .todo-note .check {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+    margin-top: 5px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .todo-note .text {
+    flex: 1;
+    outline: none;
+    min-height: 1.2rem;
+    padding: 1px 2px;
+    border-radius: 2px;
+    transition: background 0.15s;
+  }
+  .todo-note .text:focus { background: var(--ochre-light); }
+  .todo-note .text[contenteditable]:empty::before {
+    content: '＋';
+    color: var(--border-dark);
+    font-style: italic;
+  }
+  .todo-note li.done .text {
+    text-decoration: line-through;
+    text-decoration-color: var(--ochre);
+    color: var(--text-hint);
+  }
+
+  /* 当前时段 · NOW */
+  .now-card {
+    background: linear-gradient(135deg, var(--accent-light) 0%, var(--surface) 100%);
+    border: 1px solid var(--accent-mid);
+    border-radius: 3px;
+    padding: 1.5rem 1.6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .now-card::before {
+    content: 'NOW';
+    position: absolute;
+    top: 0.7rem;
+    right: 0.9rem;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.25em;
+    opacity: 0.55;
+    font-weight: 500;
+  }
+  .now-card::after {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(45, 90, 61, 0.08), transparent 70%);
+    pointer-events: none;
+  }
+  .now-time {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.74rem;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.05em;
+    opacity: 0.85;
+  }
+  .now-phase {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.32rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.55rem;
+    line-height: 1.3;
+  }
+  .now-tip {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 0.85rem;
+  }
+  .now-anchor {
+    display: inline-block;
+    padding: 5px 14px;
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 99px;
+    color: var(--accent);
+    font-size: 0.74rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .now-anchor:hover {
+    background: var(--accent);
+    color: var(--surface);
+  }
+
+  /* ============ ii. 今日节奏 时间线 ============ */
+  .timeline {
+    position: relative;
+    padding-left: 2.2rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0.46rem;
+    top: 0.65rem;
+    bottom: 0.65rem;
+    width: 1px;
+    background: linear-gradient(to bottom,
+      var(--ochre) 0%,
+      var(--ochre) 18%,
+      var(--accent) 35%,
+      var(--accent) 65%,
+      var(--mist) 90%,
+      var(--mist) 100%);
+    opacity: 0.4;
+  }
+  .timeline-node {
+    position: relative;
+    margin-bottom: 1.8rem;
+  }
+  .timeline-node:last-child { margin-bottom: 0; }
+  .timeline-node::before {
+    content: '';
+    position: absolute;
+    left: -2.2rem;
+    top: 0.5rem;
+    width: 13px;
+    height: 13px;
+    background: var(--bg);
+    border: 2px solid var(--ochre);
+    border-radius: 50%;
+    transition: all 0.35s ease;
+    z-index: 1;
+  }
+  .timeline-node.current::before {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 6px var(--accent-light), 0 0 0 7px var(--accent-mid);
+    transform: scale(1.08);
+  }
+  .node-time {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ochre);
+    letter-spacing: 0.08em;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+  }
+  .timeline-node h3 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.55rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .timeline-node h3 .sub {
+    font-size: 0.72rem;
+    color: var(--text-hint);
+    font-weight: 400;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-style: italic;
+  }
+  .timeline-node-body {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1.1rem 1.25rem;
+    transition: all 0.3s;
+  }
+  .timeline-node.current .timeline-node-body {
+    border-color: var(--accent-mid);
+    box-shadow: -3px 0 0 var(--accent), 0 2px 8px rgba(45, 90, 61, 0.08);
+  }
+  /* ========== core-list · 绿系实心卡片（要做的事） ========== */
+  .core-list {
+    list-style: none;
+    background: var(--accent-light);
+    border: 1px solid var(--accent-mid);
+    border-left: 3px solid var(--accent);
+    border-radius: 3px;
+    padding: 0.7rem 1rem 0.7rem 1.1rem;
+  }
+  .core-list li {
+    padding: 5px 0 5px 1.4rem;
+    position: relative;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    line-height: 1.8;
+    border-bottom: 1px dashed rgba(45, 90, 61, 0.18);
+  }
+  .core-list li:last-child { border-bottom: none; }
+  .core-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 5px;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  .core-list li strong {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ========== combo-links · 金系折页（可参考的） ========== */
+  .combo-links {
+    margin: 1.1rem -1.25rem -1.1rem;
+    padding: 1.1rem 1.25rem 1.1rem;
+    background: var(--gold-light);
+    border-top: 1px solid var(--gold);
+    border-radius: 0 0 3px 3px;
+    position: relative;
+  }
+  .combo-links::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 1.25rem;
+    right: 1.25rem;
+    height: 1px;
+    background-image: linear-gradient(to right, var(--gold) 50%, transparent 50%);
+    background-size: 6px 1px;
+    background-repeat: repeat-x;
+    opacity: 0.55;
+  }
+  .combo-links .label {
+    color: var(--gold);
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    margin-bottom: 0.7rem;
+    text-transform: uppercase;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .combo-links .label::before {
+    content: '✎';
+    font-style: normal;
+    font-size: 0.85rem;
+    opacity: 0.7;
+  }
+  .combo-group-label {
+    font-size: 0.78rem;
+    color: var(--gold);
+    margin: 0.85rem 0 0.4rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    font-family: 'Noto Serif SC', serif;
+  }
+  .combo-group-label::before {
+    content: '▹ ';
+    opacity: 0.7;
+  }
+  .combo-group-label:first-of-type { margin-top: 0; }
+  .combo-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    padding: 7px 11px;
+    border-radius: 3px;
+    background: var(--surface);
+    border: 1px solid var(--border-dark);
+    margin-bottom: 4px;
+    text-decoration: none;
+    transition: all 0.15s;
+    line-height: 1.55;
+  }
+  .combo-row:hover {
+    border-color: var(--gold);
+    background: #FFFCF6;
+    transform: translateX(2px);
+    box-shadow: 2px 2px 0 var(--gold-light);
+  }
+  .combo-row .cp-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.78rem;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .combo-row .cp-flow {
+    color: var(--text-hint);
+    font-size: 0.73rem;
+    flex: 1;
+    min-width: 0;
+  }
+  .combo-row .cp-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.78rem;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .combo-row .cp-flow {
+    color: var(--text-hint);
+    font-size: 0.73rem;
+    flex: 1;
+    min-width: 0;
+  }
+  @media (max-width: 600px) {
+    .combo-row { flex-direction: column; align-items: flex-start; gap: 0.15rem; }
+    .combo-row .cp-title { white-space: normal; }
+  }
+
+  .node-highlight {
+    background: var(--ochre-light);
+    border-left: 2px solid var(--ochre);
+    padding: 0.7rem 0.9rem;
+    margin-top: 0.7rem;
+    border-radius: 0 3px 3px 0;
+    font-size: 0.81rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .node-highlight strong { color: var(--ochre); }
+  .node-warn {
+    margin-top: 0.7rem;
+    font-size: 0.74rem;
+    color: var(--rust);
+    font-style: italic;
+  }
+  .node-warn a {
+    color: var(--rust);
+    text-decoration: underline;
+    text-decoration-style: dotted;
+  }
+
+  /* ============ iii. 情境库 网格 ============ */
+  .protocol-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 0.85rem;
+  }
+  .protocol-card {
+    background: var(--surface);
+    border: 1px solid var(--border-dark);
+    border-radius: 3px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .protocol-card[open] {
+    border-color: var(--accent-mid);
+  }
+  .protocol-card summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 0.9rem 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: background 0.2s;
+  }
+  .protocol-card summary::-webkit-details-marker { display: none; }
+  .protocol-card summary:hover { background: var(--bg); }
+  .protocol-card[open] summary { background: var(--accent-light); }
+  .protocol-card .icon {
+    font-size: 1.45rem;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .protocol-card .title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.94rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 0.1rem;
+  }
+  .protocol-card .hint {
+    font-size: 0.7rem;
+    color: var(--text-hint);
+    font-style: italic;
+  }
+  .protocol-card .arrow {
+    margin-left: auto;
+    color: var(--ochre);
+    font-family: 'EB Garamond', serif;
+    font-size: 1.2rem;
+    transition: transform 0.25s;
+  }
+  .protocol-card[open] .arrow { transform: rotate(90deg); color: var(--accent); }
+  .protocol-card-body {
+    padding: 0.9rem 1.1rem 1.1rem;
+    border-top: 1px dashed var(--border);
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    animation: slideDown 0.25s ease-out;
+  }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .protocol-card-body p { margin-bottom: 0.5rem; }
+  .protocol-card-body p:last-child { margin-bottom: 0; }
+  .protocol-card-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0 0.4rem;
+  }
+  .protocol-card-body th {
+    text-align: left;
+    font-weight: 500;
+    color: var(--text-hint);
+    font-size: 0.68rem;
+    padding: 5px 8px 5px 0;
+    border-bottom: 1px solid var(--border-dark);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .protocol-card-body td {
+    padding: 6px 10px 6px 0;
+    vertical-align: top;
+    font-size: 0.79rem;
+    border-bottom: 1px dashed var(--border);
+  }
+  .protocol-card-body td:first-child { width: 30%; }
+  .protocol-card-body td strong { color: var(--text-primary); }
+  .protocol-card-body .inner-highlight {
+    background: var(--ochre-light);
+    border-left: 2px solid var(--ochre);
+    padding: 0.65rem 0.85rem;
+    margin: 0.7rem 0 0.2rem;
+    border-radius: 0 3px 3px 0;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+  }
+  .protocol-card-body .inner-highlight strong { color: var(--ochre); }
+  .protocol-card-body .inner-warn {
+    background: var(--rose-light);
+    border-left: 2px solid var(--rose);
+    padding: 0.65rem 0.85rem;
+    margin: 0.7rem 0 0.2rem;
+    border-radius: 0 3px 3px 0;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+  }
+  .protocol-card-body .inner-warn strong { color: var(--rose); }
+
+  /* ============ iv. 身体追踪 · 链接卡 ============ */
+  .link-card {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.95rem 1.3rem;
+    border-radius: 3px;
+    text-decoration: none;
+    margin-bottom: 0.6rem;
+    transition: all 0.2s;
+    font-family: 'Noto Sans SC', sans-serif;
+  }
+  .link-card.accent {
+    background: var(--accent-light);
+    border: 1px dashed var(--accent);
+    color: var(--accent);
+  }
+  .link-card.gold {
+    background: var(--gold-light);
+    border: 1px dashed var(--gold);
+    color: var(--gold);
+  }
+  .link-card:hover { transform: translateX(3px); }
+  .link-card .ico { font-size: 1.2rem; line-height: 1; }
+  .link-card .title-row {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 600;
+    font-size: 0.92rem;
+  }
+  .link-card .sub-row {
+    font-size: 0.7rem;
+    opacity: 0.75;
+    margin-top: 0.1rem;
+  }
+  .link-card .arrow {
+    margin-left: auto;
+    font-size: 1.1rem;
+    font-family: 'EB Garamond', serif;
+  }
+
+  .section-note {
+    background: var(--ochre-light);
+    border-left: 2px solid var(--ochre);
+    padding: 0.75rem 1rem;
+    border-radius: 0 3px 3px 0;
+    font-size: 0.81rem;
+    color: var(--text-secondary);
+    margin-top: 1rem;
+  }
+  .section-note a { color: var(--ochre); text-decoration: none; border-bottom: 1px dotted var(--ochre); }
+
+  /* ============ v. 爱好 网格 ============ */
+  .hobby-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 0.55rem;
+  }
+  .hobby-item {
+    padding: 0.85rem 1.05rem;
+    background: var(--surface);
+    border-left: 2px solid var(--ochre);
+    border-radius: 0 3px 3px 0;
+    transition: all 0.2s;
+  }
+  .hobby-item:hover {
+    background: var(--ochre-light);
+    border-left-width: 3px;
+    padding-left: calc(1.05rem - 1px);
+  }
+  .hobby-item .name {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.92rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+  .hobby-item .why {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  /* ============ Footer ============ */
+  footer {
+    text-align: center;
+    padding: 1.5rem 2rem 3rem;
+    font-size: 0.7rem;
+    color: var(--text-hint);
+    max-width: 1080px;
+    margin: 0 auto;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    letter-spacing: 0.08em;
+  }
+
+  /* ============ 窄屏回退 ============ */
+  @media (max-width: 860px) {
+    .layout {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 1rem 1.2rem 3rem;
+    }
+    .side-toc {
+      position: static;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-dark);
+      margin-bottom: 0.5rem;
+    }
+    .side-toc ol { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .side-toc a { padding: 4px 10px; border-left: none; border: 1px solid var(--border-dark); border-radius: 99px; }
+    .side-toc a.active { border-color: var(--accent); background: var(--accent-light); }
+    .page-header { padding: 1.5rem 1.2rem 1rem; }
+    .page-header h1 { font-size: 1.6rem; }
+    .timeline { padding-left: 1.6rem; }
+    .timeline-node::before { left: -1.6rem; }
+    .timeline::before { left: 0.34rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="eyebrow">A day in the life · 日常</div>
+  <h1>今天 <span class="badge">test</span></h1>
+  <div class="time-stamp">
+    <span class="mono" id="ts-date">2026.05.26</span>
+    <span class="dot">·</span>
+    <span class="mono" id="ts-weekday">Mon</span>
+    <span class="dot">·</span>
+    <span class="ital">精简重构版 · 不喜欢可砍掉</span>
+  </div>
+</div>
+
+<div class="layout">
+
+  <aside class="side-toc">
+    <div class="side-toc-title">Contents</div>
+    <ol>
+      <li><a href="#sec-today" class="active">今日动态</a></li>
+      <li><a href="#sec-rhythm">今日节奏</a></li>
+      <li><a href="#sec-protocols">情境库</a></li>
+      <li><a href="#sec-body">身体追踪</a></li>
+    </ol>
+  </aside>
+
+  <main class="main">
+
+    <!-- ============ i. 今日动态 ============ -->
+    <section class="section toc-anchor" id="sec-today">
+      <div class="section-header">
+        <span class="num">i.</span>
+        <h2>今日动态</h2>
+        <span class="desc">每天看这里</span>
+      </div>
+
+      <div class="today-block">
+
+        <div class="todo-note">
+          <div class="todo-note-header">
+            <h3>📋 明日待办</h3>
+            <button class="reset-btn" id="tdo-reset">清空</button>
+          </div>
+          <div class="meta">点击文字可编辑 · 勾选画掉 · 数据与主页面共享</div>
+          <ul id="tdo-list"></ul>
+        </div>
+
+        <div class="now-card" id="now-card">
+          <div class="now-time" id="now-time">现在 --:--</div>
+          <div class="now-phase" id="now-phase">🌅 加载中</div>
+          <div class="now-tip" id="now-tip">…</div>
+          <a href="#node-postemma" class="now-anchor" id="now-anchor">查看详情 →</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ ii. 今日节奏 时间线 ============ -->
+    <section class="section toc-anchor" id="sec-rhythm">
+      <div class="section-header">
+        <span class="num">ii.</span>
+        <h2>今日节奏</h2>
+        <span class="desc">5 个时段 · 一天的弧线</span>
+      </div>
+
+      <div class="timeline">
+
+        <!-- 1. 晨起 -->
+        <div class="timeline-node" id="node-morning" data-phase="morning">
+          <div class="node-time">06:30 — 09:00</div>
+          <h3>🌅 晨起 90 分钟 <span class="sub">为精力充沛的一天定调</span></h3>
+          <div class="timeline-node-body">
+            <ul class="core-list">
+              <li><strong>核心 4 步：</strong>坐起 → 开窗帘（光启动昼夜节律）→ 下床换衣 → 烧水</li>
+              <li><strong>扩展流程：</strong>蒸早饭 → 洗漱化妆 → 早饭 + 喝水（⚠️ 浏览不回复）→ 通勤 30 分</li>
+              <li><strong>不上班日：</strong>散步送 Emma → 9 点到家 → 立刻进<strong>高强度黄金窗口</strong></li>
+            </ul>
+            <div class="combo-links">
+              <div class="label">推荐组合 · 点击跳转到详情</div>
+
+              <div class="combo-group-label">🌅 醒来温和唤醒 · 10–15 min 短组合</div>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🌿 轻唤醒 28min</span>
+                <span class="cp-flow">Nadi 呼吸（5min）→ Zoey 站立拉伸（10min）→ 真空腹（5min）→ 骨盆回正（8min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🌿 晨起排毒 20min</span>
+                <span class="cp-flow">清晨排毒瑜伽（10min）→ 仙人揉腹（10min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🔥 快速 9min</span>
+                <span class="cp-flow">一首歌热身（4min）→ 跳绳（5min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">💪 核心快速 25min</span>
+                <span class="cp-flow">真空腹（5min）→ 腹横肌激活（10min）→ 仙人揉腹（10min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">💪 晨起燃脂瑜伽 10min</span>
+                <span class="cp-flow">清晨燃脂瑜伽（10min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🔥 簿肌快练 9min</span>
+                <span class="cp-flow">一首歌热身（4min）→ 簿肌修炼·居家无器械（5min）</span>
+              </a>
+
+              <div class="combo-group-label">🔥 不上班日 9 点黄金窗口 · 高强度长组合</div>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">💪 哑铃力量 35min</span>
+                <span class="cp-flow">一副哑铃练全身（15min）→ 全身塑形哑铃跟练（20min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🔥 减脂操 19min</span>
+                <span class="cp-flow">一首歌热身（4min）→ 欧阳春晓有氧减脂操（15min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🌿 广播体操套餐 12min</span>
+                <span class="cp-flow">一首歌热身（4min）→ 第八套广播体操（4min）→ 第九套广播体操（4min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">💪 腿臀套餐 32min</span>
+                <span class="cp-flow">林芊妤瘦腿（10min）→ 坐姿练臀弹力带（5min）→ 韩小四膝超伸（10min）→ Bella 臀腿完整拉伸（7min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">💪 力量综合 35min</span>
+                <span class="cp-flow">真空腹（5min）→ 林芊妤瘦腿（10min）→ 坐姿练臀（5min）→ 一副哑铃练全身（15min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">💪 腹部扎实 30min</span>
+                <span class="cp-flow">真空腹（5min）→ 萨尔曼瘦肚子（5min）→ 腹横肌激活（10min）→ 古法内脏脂肪操（10min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">💪 美背修身 20min</span>
+                <span class="cp-flow">谁懂丝滑美背的杀伤力（15min）→ 居家哑铃背部跟练（5min）</span>
+              </a>
+            </div>
+            <div class="node-highlight">
+              早起后家里安静的空白时光是最重要的独处时间——<strong>有就很好，没有也不垮</strong>。
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. 白天 -->
+        <div class="timeline-node" id="node-day" data-phase="day">
+          <div class="node-time">09:00 — 12:00 · 黄金窗口</div>
+          <h3>☀️ 白天与间歇 <span class="sub">见缝插针 / 不上班日 6h 自主</span></h3>
+          <div class="timeline-node-body">
+            <ul class="core-list">
+              <li><strong>🪑 上班日：</strong>任务间隙 5–15 分 · 体态快练 · 鼻呼吸贯穿全天</li>
+              <li><strong>🏠 不上班日：</strong>9 点到家立刻进运动（意志力满+已热身=黄金窗口）· 12:30 困了就睡 30 分</li>
+            </ul>
+            <div class="combo-links">
+              <div class="label">推荐组合</div>
+
+              <div class="combo-group-label">🪑 工作时段微恢复 · 5–15 min 任务间隙</div>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🌿 体态快练 9min</span>
+                <span class="cp-flow">女明星仪态管理（3min）→ 骨科专家腰椎操（3min）→ 极度舒适拉伸（3min）</span>
+              </a>
+
+              <div class="combo-group-label">🏠 不上班日中段补给 · 午饭后 / CRP 后 / 收衣服间隙</div>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🌿 轻唤醒 28min</span>
+                <span class="cp-flow">Nadi 呼吸（5min）→ Zoey 站立拉伸（10min）→ 真空腹（5min）→ 骨盆回正（8min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">💪 核心快速 25min</span>
+                <span class="cp-flow">真空腹（5min）→ 腹横肌激活（10min）→ 仙人揉腹（10min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">💪 假胯宽专项 14min</span>
+                <span class="cp-flow">一首歌热身（4min）→ 根除小肚腩·告别假胯宽（10min）</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. 工作日饮食 -->
+        <div class="timeline-node" id="node-workday" data-phase="workday">
+          <div class="node-time">饮食与休息的节律</div>
+          <h3>🍱 工作日饮食与休息 <span class="sub">不让白天的吃喝变成晚上的负担</span></h3>
+          <div class="timeline-node-body">
+            <ul class="core-list">
+              <li><strong>🍳 早餐：</strong>1 个肉包子垫胃，不当正餐</li>
+              <li><strong>🍳 上午：</strong>1 个水煮蛋——这天主要的蛋白补</li>
+              <li><strong>🍳 午餐：</strong>水果 + 咖啡，胃留空让休息</li>
+              <li><strong>😌 午休：</strong>出门走 / 晒太阳 / 闭目 10–15 分（耳机+眼罩）</li>
+              <li><strong>🍳 下午：</strong>零食不主动戒——前面做好了，嘴馋会自己缩水</li>
+              <li><strong>😌 17–19 点：</strong>第二个修复期 · 闭目 10–15 分 / 谐振呼吸</li>
+              <li><strong>😌 全天：</strong>每 90 分钟微休息 5 分 · 鼻呼吸贯穿</li>
+            </ul>
+            <div class="node-highlight">
+              中午让胃留空、不凑三餐；早 1 包子 + 上午 1 蛋 + 中午 1 水果咖啡，晚饭一家人才是这天的能量重头戏。休息按 <strong>90 分钟周期</strong>主动还损耗——不必非睡够 8h。
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. 傍晚 -->
+        <div class="timeline-node" id="node-evening" data-phase="evening">
+          <div class="node-time">17:00 — 19:00</div>
+          <h3>🌇 傍晚修复期 <span class="sub">最累、但最该温和动一动</span></h3>
+          <div class="timeline-node-body">
+            <ul class="core-list">
+              <li><strong>🚇 通勤途中：</strong>肩颈拉伸 + 呼吸法 + 体态调整 + 冥想——把等待时间借来用</li>
+              <li><strong>🏠 到家零碎时间：</strong>等水开 / 等饭蒸熟做 5–10 分钟拉伸</li>
+            </ul>
+            <div class="combo-links">
+              <div class="label">推荐组合 · 修复性</div>
+
+              <div class="combo-group-label">🌿 通勤 / 到家修复 · 拉伸 + 呼吸 + 体态</div>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🌿 肩颈背修复 28min</span>
+                <span class="cp-flow">振谐呼吸（10min）→ 肩颈背动态拉伸（10min）→ 告别圆肩驼背 YTWL（8min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🌿 体态快练 9min</span>
+                <span class="cp-flow">女明星仪态管理（3min）→ 骨科专家腰椎操（3min）→ 极度舒适拉伸（3min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🌿 晨起排毒 20min</span>
+                <span class="cp-flow">清晨排毒瑜伽（10min）→ 仙人揉腹（10min）</span>
+              </a>
+
+              <div class="combo-group-label">💪 温和身体修整 · 瑜伽 / 体态矫正级</div>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">💪 晨起燃脂瑜伽 10min</span>
+                <span class="cp-flow">清晨燃脂瑜伽（10min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">💪 足弓训练 10min</span>
+                <span class="cp-flow">完善足弓训练·矫正腿型（10min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">💪 足弓深度 20min</span>
+                <span class="cp-flow">足弓弹性重建 4.0（20min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">💪 假胯宽专项 14min</span>
+                <span class="cp-flow">一首歌热身（4min）→ 根除小肚腩·告别假胯宽（10min）</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. 阅读 -->
+        <div class="timeline-node" id="node-reading" data-phase="reading">
+          <div class="node-time">20:30 — 20:40</div>
+          <h3>📖 阅读 10 分钟 <span class="sub">焊在 Emma 故事时间上 · 不靠自律靠习惯叠加</span></h3>
+          <div class="timeline-node-body">
+            <ul class="core-list">
+              <li><strong>⏰ 锚点：</strong>每晚 8:30 Eric 给 Emma 讲故事——他俩一坐下，就是你的闹钟</li>
+              <li><strong>📖 做法：</strong>同一个房间，读你<strong>自己的书</strong>；一家三口共享一段安静，也是给 Emma 的示范</li>
+              <li><strong>🎯 目标：</strong>翻开读一页就赢；10 分钟是上限不是任务</li>
+              <li><strong>🛋️ 小动作：</strong>在读的书固定放常坐位置旁；挑好读、想翻下一页的书，别一上来啃硬的</li>
+            </ul>
+            <div class="node-highlight">
+              这 10 分钟是 Eric 完整接手 Emma 的时间，<strong>正大光明属于你</strong>——物理家务可以等，不必愧疚。
+            </div>
+            <p style="font-size:.74rem;color:var(--text-hint);font-style:italic;margin-top:.7rem;">完整的打卡 + 历史记录暂留在主"日常"页（test 版未做交互态保留）。</p>
+          </div>
+        </div>
+
+        <!-- 6. Emma 睡后 -->
+        <div class="timeline-node" id="node-postemma" data-phase="postemma">
+          <div class="node-time">21:00 — 入睡</div>
+          <h3>🌙 Emma 睡后 → 入睡 <span class="sub">从独处到睡眠的一整段夜晚</span></h3>
+          <div class="timeline-node-body">
+            <ul class="core-list">
+              <li><strong>🛋️ 状态好 · 做爱好：</strong>🎵 听音乐 · 🧶 玩羊毛毡 · 📚 阅读 · 🎤 唱歌 · 🗂️ 整理 · 🍃 断舍离 · 🎨 画画</li>
+              <li><strong>🛋️ 状态不好 · 床上躺练：</strong>JJ 全身拉伸 · 全程躺练 · 颂钵冥想 · 精油按摩</li>
+              <li><strong>✍️ 睡前纸笔：</strong>① 幸福笔记（只记开心瞬间）② 下载你的一天 ③ 几个决定（明日 ootd / 菜单 / 待办）</li>
+              <li><strong>📵 电子产品：</strong>身体发"够了"信号就放下；睡前 90 分钟彻底关——蓝光抑制褪黑素</li>
+              <li><strong>🛏️ 睡眠环境：</strong>从明亮到昏暗 · 暖色光 · 16–18°C · 整晚鼻呼吸</li>
+            </ul>
+            <div class="node-highlight">
+              独处<strong>质量</strong>比独处<strong>时长</strong>更重要——累的时候独处质量很差。<strong>幸福感以自我为核心，不依附他人。</strong>
+            </div>
+            <div class="combo-links">
+              <div class="label">推荐组合 · 助眠</div>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🌿 肩颈背修复 28min</span>
+                <span class="cp-flow">振谐呼吸（10min）→ 肩颈背动态拉伸（10min）→ 告别圆肩驼背 YTWL（8min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🌿 体态快练 9min</span>
+                <span class="cp-flow">女明星仪态管理（3min）→ 骨科专家腰椎操（3min）→ 极度舒适拉伸（3min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🌿 睡前 30min</span>
+                <span class="cp-flow">全程躺练（10min）→ 掰正骨盆懒人版（5min）→ 仙人揉腹（10min）→ 自我肯定冥想（5min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🌿 深度放松 35min</span>
+                <span class="cp-flow">全身扫描（5min）→ JJ 老师全身拉伸（15min）→ 小腿精油按摩（5min）→ 360 度腿部拉伸（10min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🌿 颂钵助眠 20min</span>
+                <span class="cp-flow">颂钵冥想（10min）→ 自我疗愈和关爱冥想（10min）</span>
+              </a>
+            </div>
+            <p class="node-warn">⚠️ 周四满载日 → 别套这套，走专门的<a href="#protocol-shutdown">关机轨道</a>；度假/旅行后容易忘记重启这套程序，是状态变差的主要原因之一。</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ iii. 情境库 ============ -->
+    <section class="section toc-anchor" id="sec-protocols">
+      <div class="section-header">
+        <span class="num">iii.</span>
+        <h2>情境库</h2>
+        <span class="desc">不是每天看 · 点开查阅</span>
+      </div>
+
+      <div class="protocol-grid">
+
+        <details class="protocol-card" id="protocol-weekly">
+          <summary>
+            <span class="icon">📅</span>
+            <div>
+              <div class="title">周固定</div>
+              <div class="hint">一周锚点</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <table>
+              <tbody>
+                <tr><td><strong>每晚</strong></td><td>20 个 Anki 中文字 · Eric 带 Emma 指读故事</td></tr>
+                <tr><td><strong>周一晚</strong></td><td>Emma 游泳课，自己/Eric 同步游</td></tr>
+                <tr><td><strong>周二晚</strong></td><td>和 Eric 一起 JJ 老师瑜伽 1h</td></tr>
+                <tr><td><strong>周三晚</strong></td><td>🧹 清洁日（见下方抽屉）</td></tr>
+                <tr><td><strong>周四晚</strong></td><td>🌙 满载日 → 走<a href="#protocol-shutdown" style="color:var(--accent);">关机轨道</a></td></tr>
+                <tr><td><strong>周五晚</strong></td><td>🎬 电影之夜</td></tr>
+                <tr><td><strong>周六早</strong></td><td>Emma 攀岩，自己/Eric 在攀岩馆健身房</td></tr>
+                <tr><td><strong>周日下午</strong></td><td>羽毛球</td></tr>
+                <tr><td><strong>周末</strong></td><td>不定期国家公园 hiking</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <details class="protocol-card" id="protocol-shutdown">
+          <summary>
+            <span class="icon">🌙</span>
+            <div>
+              <div class="title">满载日关机轨道</div>
+              <div class="hint">周四专用 · 早躺＝赢</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <p>累却清醒、越熬越精神的那天——<strong>不靠自己撑，靠音轨带你睡着</strong>。</p>
+            <table>
+              <thead><tr><th>什么时候</th><th>顺手做掉</th></tr></thead>
+              <tbody>
+                <tr><td><strong>🗓️ 周三晚</strong></td><td>① 周五要做的事排好（周四不碰排程）<br>② 耳机充电 · 选好音轨（默认颂钵助眠 20min）</td></tr>
+                <tr><td><strong>🚪 周四出门前</strong></td><td>床头放一杯能温的牛奶 / 水</td></tr>
+              </tbody>
+            </table>
+            <p style="margin-top:.6rem;color:var(--text-primary);font-weight:500;">这天只做 4 步：</p>
+            <table>
+              <tbody>
+                <tr><td><strong>🧠 卸脑</strong></td><td>日记最多一句，可跳过</td></tr>
+                <tr><td><strong>📱 派活</strong></td><td>躺下戴耳机，手机只放音轨然后扣一边</td></tr>
+                <tr><td><strong>🎧 被带走</strong></td><td>跟着音轨躺着走、零出力</td></tr>
+                <tr><td><strong>🛁 加码</strong></td><td>热水澡 / 泡脚 + 温牛奶</td></tr>
+              </tbody>
+            </table>
+            <div class="inner-highlight">
+              <strong>成功标准</strong>：没刷手机硬熬、被音轨带睡着就赢（<strong>中段醒了想刷？叫老公一声</strong>）。日记没写、明天没排都不算输。<strong>早躺不是失败，是这天唯一正确的赢法。</strong>
+            </div>
+          </div>
+        </details>
+
+        <details class="protocol-card" id="protocol-cleaning">
+          <summary>
+            <span class="icon">🧹</span>
+            <div>
+              <div class="title">清洁日</div>
+              <div class="hint">每周一次 · 45–50 min</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <p>按顺序：<strong>整理 → 除尘 → 湿擦 → 拖地</strong>，不来回换工具。租房保洁，够用就行。</p>
+            <table>
+              <thead><tr><th>阶段</th><th>动作</th></tr></thead>
+              <tbody>
+                <tr><td><strong>1️⃣ 整理</strong> ≈10min</td><td>抱枕毯子 · 台面 · 拉 Emma 收玩具 · 衣物 · 鞋 · 杂物各回各位</td></tr>
+                <tr><td><strong>2️⃣ 擦灰</strong> ≈12min</td><td>玄关 → 书桌 → 玩具柜 → 床头柜 → 洗衣区 → 影视区 → 浴室</td></tr>
+                <tr><td><strong>3️⃣ 湿擦</strong> ≈18min</td><td>厨房（灶台/水槽/餐桌）· 卫生间（洗手台/马桶/淋浴）· 拖鞋刷晾</td></tr>
+                <tr><td><strong>4️⃣ 拖地</strong> ≈15min</td><td>厨房 → 卫生间 → 客厅 → 主卧+Emma 房（沙发缝隔周吸一次）</td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:.74rem;color:var(--text-hint);margin-top:.6rem;font-style:italic;">完整的打卡 checkbox 版本仍在主"日常"页（test 版只显示节奏）。</p>
+          </div>
+        </details>
+
+        <details class="protocol-card" id="protocol-period">
+          <summary>
+            <span class="icon">🌹</span>
+            <div>
+              <div class="title">经期护理</div>
+              <div class="hint">月度周期</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <table>
+              <tbody>
+                <tr><td><strong>饮食</strong></td><td>温水温食 · 多补铁（瘦牛肉/菠菜/黑芝麻）· 少盐糖咖啡 · 忌生冷</td></tr>
+                <tr><td><strong>身体</strong></td><td>腹腰脚踝保暖 · 暖宫贴 · 温水泡脚 15–20 分 · 2–4h 一换</td></tr>
+                <tr><td><strong>运动</strong></td><td>量大 1–2 天散步+轻拉伸 · 后半段恢复瑜伽/慢跑 · 忌跳跃倒立</td></tr>
+                <tr><td><strong>作息</strong></td><td>11 点前入睡 · 白天 20–30 分小睡补</td></tr>
+                <tr><td><strong>情绪</strong></td><td>接纳激素波动 · 泡澡/剧/音乐 · 记录周期与状态</td></tr>
+              </tbody>
+            </table>
+            <div class="inner-warn">
+              <strong>经期避免：</strong>跳绳 / HIIT / 哑铃负重 / 真空腹 / 腹横肌 / 萨尔曼瘦肚子 / 假胯宽 等高冲击或腹腔加压；揉腹可能增加经量也跳过
+            </div>
+          </div>
+        </details>
+
+        <details class="protocol-card" id="protocol-party">
+          <summary>
+            <span class="icon">🎉</span>
+            <div>
+              <div class="title">周末/假期/聚会</div>
+              <div class="hint">扰动期协议</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <table>
+              <thead><tr><th>阶段</th><th>要点</th></tr></thead>
+              <tbody>
+                <tr><td><strong>事前</strong></td><td>① 接邀 24h 缓冲，查前后 48h 撞车<strong>协商改期</strong><br>② 提前 2 天充能：早睡 + 严控糖 + 轻运动<br>③ 调暗雷：火锅清汤微辣 / 避油炸<br>④ 出门前喝大杯水<br>⑤ 当天总量分配：中午聚 → 早晚轻；晚上聚 → 中午跳、下午水果垫</td></tr>
+                <tr><td><strong>事中</strong></td><td>① 只吃想吃的，吃序：<strong>菜 → 蛋白 → 少量碳 → 少量甜</strong><br>② 手里端着热水、远离取餐区<br>③ 中途找独立空间躺 15–20 分；能量见底就走，不死撑</td></tr>
+                <tr><td><strong>事后</strong></td><td>① 留 <strong>24–48h 空白</strong>，不接第二场<br>② 胀气进 3–5 天恢复期：温和饮食（白粥/软面/蒸蛋）· 少量多餐 · 餐后散步 · 揉腹</td></tr>
+              </tbody>
+            </table>
+            <div class="inner-highlight">
+              📋 待办：① 找一段 <strong>2–3 周不踩雷的"主动清零"窗口</strong>让肠胃复位 ② <strong>看一次 GP</strong>（详见<a href="#protocol-psyllium" style="color:var(--ochre);border-bottom:1px dotted var(--ochre);">下一卡</a>）
+            </div>
+          </div>
+        </details>
+
+        <details class="protocol-card" id="protocol-psyllium">
+          <summary>
+            <span class="icon">🧪</span>
+            <div>
+              <div class="title">Psyllium 试用</div>
+              <div class="hint">2026-05-20 起 · 两周评估</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <p>睡前 1–2h：<strong>1 茶匙（约 5g）+ 250ml 水</strong>，喝完再补一杯水。</p>
+            <table>
+              <tbody>
+                <tr><td><strong>05-27</strong></td><td>评估第 1 周。顺利 → 加到早晚各 1 次；恶化 → 维持或停</td></tr>
+                <tr><td><strong>06-03</strong></td><td>评估第 2 周。决定继续 / 调整 / 停</td></tr>
+                <tr><td><strong>观察</strong></td><td>排便顺度 · 胀气走势（前几天可能加重，正常）· 晨起肚子清空感</td></tr>
+              </tbody>
+            </table>
+            <p style="font-size:.74rem;color:var(--text-hint);margin-top:.5rem;">采购：药店 Metamucil（含甜味剂）/ Go Vita unflavoured psyllium husk powder / 亚超原味车前子粉<br>跟药·补剂错开 2h · 水必须喝够，否则反向便秘</p>
+            <div class="inner-highlight">
+              📋 GP 排查重点 = <strong>胃排空 / 肠蠕动 / 功能性消化不良</strong>（动力问题）+ 顺带乳糜泻、幽门螺杆菌（抽血前别提前戒麸质）
+            </div>
+          </div>
+        </details>
+
+        <details class="protocol-card" id="protocol-gut">
+          <summary>
+            <span class="icon">🌿</span>
+            <div>
+              <div class="title">日常饮食与肠胃</div>
+              <div class="hint">家庭餐桌怎么吃</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <p>两顿是身体节奏。工作日中午跳过（见上方时段卡），聚餐前后分配（见聚会协议）。家庭餐桌不"特殊化"，三顿都吃——重点在<strong>怎么吃</strong>。</p>
+            <table>
+              <tbody>
+                <tr><td><strong>份量</strong></td><td>小一号的碗（视觉缩量）· 留几口在盘里、不强制光盘</td></tr>
+                <tr><td><strong>结构</strong></td><td>菜 → 肉 → 饭，饭压到 1/3 甚至更少</td></tr>
+                <tr><td><strong>节奏</strong></td><td>慢吃（胃→脑信号约 20 分钟才到）· 早餐"舒服吃"不"美美吃"</td></tr>
+              </tbody>
+            </table>
+            <p style="margin-top:.5rem;">
+              <strong>饭桌外：</strong>餐后散 10 分钟 · 饭中不大量喝水（饭前 30 分/饭后 60 分外补水）· Swisse probiotic gummy <strong>继续吃</strong>（停 2 周反而更胀，吃了通便顺）
+            </p>
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+    <!-- ============ iv. 身体追踪 ============ -->
+    <section class="section toc-anchor" id="sec-body">
+      <div class="section-header">
+        <span class="num">iv.</span>
+        <h2>身体追踪</h2>
+        <span class="desc">外部页面入口</span>
+      </div>
+
+      <a href="../运动周总结.html" target="_blank" class="link-card accent">
+        <span class="ico">📈</span>
+        <div>
+          <div class="title-row">运动 · 周总结＋参考库</div>
+          <div class="sub-row">周复盘 · 22 个组合 + 43 项动作详情</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+
+      <a href="../运动收集箱.html" target="_blank" class="link-card gold">
+        <span class="ico">📥</span>
+        <div>
+          <div class="title-row">运动收集箱</div>
+          <div class="sub-row">把小红书里收藏的运动加进来</div>
+        </div>
+        <span class="arrow">→</span>
+      </a>
+
+      <div class="section-note">
+        日常饮食与肠胃的两顿节奏、家庭餐桌"怎么吃"、Psyllium 试用 —— 都已沉到上方<a href="#protocol-gut">情境库</a>里，点开查阅。
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>— a test draft · revertible —</footer>
+
+<script>
+  // ==================== 时间与当前时段 ====================
+  const PHASES = [
+    { id: 'morning',  start: 5,  end: 9,  emoji: '🌅', name: '晨起 90 分钟',        tip: '为精力充沛的一天定调。坐起 → 开窗帘 → 下床 → 烧水，简单 4 步先动起来。', anchor: '#node-morning' },
+    { id: 'day',      start: 9,  end: 12, emoji: '☀️', name: '白天 · 黄金窗口',      tip: '不上班日 9 点到家立刻进运动——意志力满 + 已热身；上班日见缝插针做体态快练。', anchor: '#node-day' },
+    { id: 'workday',  start: 12, end: 17, emoji: '🍱', name: '工作日饮食 / 午休',    tip: '中午让胃留空；17 点前后是第二个修复期，闭目 10 分钟 / 谐振呼吸。', anchor: '#node-workday' },
+    { id: 'evening',  start: 17, end: 20, emoji: '🌇', name: '傍晚修复期',          tip: '最累但最该温和动一动。通勤途中拉伸 + 呼吸法 + 体态调整。', anchor: '#node-evening' },
+    { id: 'reading',  start: 20, end: 21, emoji: '📖', name: '阅读 10 分钟',         tip: '锚点：8:30 Eric 给 Emma 讲故事 = 你的闹钟。翻开读一页就赢。', anchor: '#node-reading' },
+    { id: 'postemma', start: 21, end: 29, emoji: '🌙', name: 'Emma 睡后 → 入睡',     tip: '独处时间到。状态好做爱好（音乐/羊毛毡/画画），状态不好走床上拉伸 + 颂钵冥想。', anchor: '#node-postemma' },
+  ];
+
+  function pickPhase(h) {
+    const hh = h < 5 ? h + 24 : h;
+    return PHASES.find(p => hh >= p.start && hh < p.end) || PHASES[PHASES.length - 1];
+  }
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+
+  function updateNow() {
+    const now = new Date();
+    const h = now.getHours(), m = now.getMinutes();
+    document.getElementById('now-time').textContent = `现在 ${pad(h)}:${pad(m)}`;
+    const phase = pickPhase(h);
+    document.getElementById('now-phase').textContent = `${phase.emoji} ${phase.name}`;
+    document.getElementById('now-tip').textContent = phase.tip;
+    document.getElementById('now-anchor').setAttribute('href', phase.anchor);
+
+    document.querySelectorAll('.timeline-node').forEach(n => {
+      n.classList.toggle('current', n.dataset.phase === phase.id);
+    });
+
+    const enWeek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    document.getElementById('ts-date').textContent =
+      `${now.getFullYear()}.${pad(now.getMonth()+1)}.${pad(now.getDate())}`;
+    document.getElementById('ts-weekday').textContent = enWeek[now.getDay()];
+  }
+  updateNow();
+  setInterval(updateNow, 60000);
+
+  // ==================== 明日待办 · 共用主页 storage key ====================
+  const TDO_KEY = 'tomorrow_todo_v1';
+  const DEFAULT_TODOS = [
+    '', '', '', '', '', '', '', '', '', ''
+  ];
+
+  function loadTdo() {
+    try {
+      const raw = localStorage.getItem(TDO_KEY);
+      if (!raw) return { items: DEFAULT_TODOS.slice(), done: new Array(10).fill(false) };
+      const data = JSON.parse(raw);
+      return {
+        items: (data.items || DEFAULT_TODOS.slice()).slice(0, 10),
+        done:  (data.done  || new Array(10).fill(false)).slice(0, 10),
+      };
+    } catch(e) { return { items: DEFAULT_TODOS.slice(), done: new Array(10).fill(false) }; }
+  }
+  function saveTdo(state) {
+    try { localStorage.setItem(TDO_KEY, JSON.stringify(state)); } catch(e) {}
+  }
+
+  function renderTdo() {
+    const state = loadTdo();
+    const ul = document.getElementById('tdo-list');
+    ul.innerHTML = '';
+    for (let i = 0; i < 10; i++) {
+      const li = document.createElement('li');
+      if (state.done[i]) li.classList.add('done');
+      li.innerHTML =
+        `<span class="num">${i+1}.</span>` +
+        `<input type="checkbox" class="check" ${state.done[i] ? 'checked' : ''}>` +
+        `<span class="text" contenteditable="true">${(state.items[i] || '').replace(/</g,'&lt;')}</span>`;
+
+      const check = li.querySelector('.check');
+      const text = li.querySelector('.text');
+      check.addEventListener('change', () => {
+        const s = loadTdo();
+        s.done[i] = check.checked;
+        saveTdo(s);
+        li.classList.toggle('done', check.checked);
+      });
+      text.addEventListener('blur', () => {
+        const s = loadTdo();
+        s.items[i] = text.textContent.trim();
+        saveTdo(s);
+      });
+      text.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); text.blur(); }
+      });
+      ul.appendChild(li);
+    }
+  }
+  renderTdo();
+  document.getElementById('tdo-reset').addEventListener('click', () => {
+    if (confirm('清空全部明日待办？（主页面同步清空）')) {
+      saveTdo({ items: new Array(10).fill(''), done: new Array(10).fill(false) });
+      renderTdo();
+    }
+  });
+
+  // ==================== 侧边目录 scroll-spy ====================
+  (function() {
+    const toc = document.querySelector('.side-toc');
+    if (!toc) return;
+    const links = Array.from(toc.querySelectorAll('a[href^="#"]'));
+    const map = new Map();
+    links.forEach(a => {
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (el) map.set(el, a);
+    });
+    if (map.size === 0) return;
+
+    const setActive = (linkEl) => {
+      links.forEach(l => l.classList.remove('active'));
+      if (linkEl) linkEl.classList.add('active');
+    };
+
+    const io = new IntersectionObserver((entries) => {
+      let candidate = null;
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          if (!candidate || e.boundingClientRect.top < candidate.boundingClientRect.top) {
+            candidate = e;
+          }
+        }
+      });
+      if (candidate) setActive(map.get(candidate.target));
+    }, { rootMargin: '-80px 0px -55% 0px', threshold: 0 });
+
+    map.forEach((_, el) => io.observe(el));
+  })();
+</script>
+
+</body>
+</html>

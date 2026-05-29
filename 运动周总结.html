@@ -489,6 +489,61 @@
     background: var(--bg); border: 1px dashed var(--border-dark); border-radius: 8px; cursor: pointer;
   }
   .archive-more:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ========== 浮动操作区：迷你进度 / 回到顶部 / 移动端目录 ========== */
+  .fab-wrap {
+    position: fixed; right: 1rem; bottom: 1rem; z-index: 80;
+    display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .fab-wrap.show { opacity: 1; pointer-events: auto; }
+  .mini-prog {
+    display: flex; gap: 11px; align-items: center;
+    background: var(--surface); border: 1px solid var(--border-dark);
+    border-radius: 99px; padding: 7px 15px; cursor: pointer;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.13);
+    font-family: 'Noto Serif SC', serif; font-weight: 600; font-size: 0.82rem;
+  }
+  .mini-prog:hover { border-color: var(--accent); }
+  .mini-prog .mp { display: inline-flex; align-items: center; gap: 3px; }
+  .mini-prog .mp.stamina { color: var(--gold); }
+  .mini-prog .mp.shape   { color: var(--shape); }
+  .mini-prog .mp.rest    { color: var(--info); }
+  .mini-prog .mp.met .mp-pct::after { content: ' ✓'; font-size: 0.85em; }
+  .fab-row { display: flex; gap: 8px; }
+  .fab-btn {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: var(--surface); border: 1px solid var(--border-dark);
+    color: var(--text-secondary); cursor: pointer; font-size: 1.15rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.13);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; font-family: inherit; line-height: 1;
+  }
+  .fab-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .fab-btn.toc-btn { display: none; }
+  @media (max-width: 1100px) { .fab-btn.toc-btn { display: flex; } }
+
+  /* 移动端目录抽屉 */
+  .toc-drawer-mask { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 90; display: none; }
+  .toc-drawer-mask.show { display: block; }
+  .toc-drawer {
+    position: fixed; right: 0; top: 0; bottom: 0; width: 260px; max-width: 82vw;
+    background: var(--surface); z-index: 91; padding: 1.1rem 1rem;
+    overflow-y: auto; transform: translateX(100%); transition: transform 0.22s;
+    box-shadow: -4px 0 22px rgba(0,0,0,0.16);
+  }
+  .toc-drawer.show { transform: translateX(0); }
+  .toc-drawer .dc-head {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'Noto Serif SC', serif; font-size: 0.8rem; color: var(--text-hint);
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.6rem;
+  }
+  .toc-drawer .dc-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-hint); line-height: 1; }
+  .toc-drawer ul { list-style: none; padding: 0; margin: 0; }
+  .toc-drawer a { display: block; padding: 7px 10px; font-size: 0.9rem; text-decoration: none; color: var(--text-secondary); border-radius: 6px; }
+  .toc-drawer a:hover { background: var(--bg); color: var(--text-primary); }
+  .toc-drawer .sub { padding-left: 14px; }
+  .toc-drawer .sub a { font-size: 0.82rem; color: var(--text-hint); }
 </style>
 </head>
 <body>
@@ -497,10 +552,12 @@
   <div class="head-inner">
     <div>
       <h1>运动 · 周总结＋参考库</h1>
-      <span class="sub">周日晚 9 点复盘 · 22 个组合 + 43 项动作详情 · 长期追踪</span>
+      <span class="sub" id="head-sub">周日晚 9 点复盘 · 22 个组合 + 43 项动作详情 · 长期追踪</span>
     </div>
     <div class="head-actions">
       <button class="head-btn" id="btn-export" type="button" title="导出全部运动数据为 JSON，用于备份 + 给 Claude 读取">⬇ 导出运动数据</button>
+      <button class="head-btn" id="btn-import" type="button" title="从 JSON 文件恢复运动数据（导入前会自动备份当前数据）">⬆ 导入</button>
+      <input type="file" id="import-file" accept=".json,application/json" style="display:none">
       <a class="back" href="Summer的世界.html">← 回到 Summer 的世界</a>
     </div>
   </div>
@@ -1013,6 +1070,25 @@
 </div><!-- /.layout -->
 </main>
 
+<!-- ==== 浮动操作区：迷你进度 / 回到顶部 / 移动端目录 ==== -->
+<div class="fab-wrap" id="fab-wrap">
+  <div class="mini-prog" id="mini-prog" title="本周进度 · 点击回到「完成数据」">
+    <span class="mp stamina" id="mini-stamina">🔥<span class="mp-pct">0%</span></span>
+    <span class="mp shape" id="mini-shape">💪<span class="mp-pct">0%</span></span>
+    <span class="mp rest" id="mini-rest">🌿<span class="mp-pct">0%</span></span>
+  </div>
+  <div class="fab-row">
+    <button class="fab-btn toc-btn" id="fab-toc" type="button" title="目录" aria-label="目录">☰</button>
+    <button class="fab-btn" id="fab-top" type="button" title="回到顶部" aria-label="回到顶部">↑</button>
+  </div>
+</div>
+
+<div class="toc-drawer-mask" id="toc-drawer-mask"></div>
+<aside class="toc-drawer" id="toc-drawer">
+  <div class="dc-head"><span>目录</span><button class="dc-close" id="dc-close" type="button" aria-label="关闭">✕</button></div>
+  <div id="toc-drawer-list"></div>
+</aside>
+
 <script>
   // ==================== 共享 localStorage Keys ====================
   const LOG_KEY = 'fitness_log_v1';
@@ -1234,6 +1310,19 @@
     document.getElementById('total-indoor').textContent = s.indoorMins;
     document.getElementById('total-extra').textContent = s.extraMins;
     document.getElementById('total-minutes').textContent = s.indoorMins + s.extraMins;
+    updateMiniBar(s);
+  }
+
+  // 浮动迷你进度条（镜像顶部「完成数据」的当前周）
+  function updateMiniBar(s) {
+    ['stamina','shape','rest'].forEach(g => {
+      const el = document.getElementById('mini-' + g);
+      if (!el) return;
+      const pct = Math.round(s.mins[g] / GOAL_TARGET[g] * 100);
+      const pctEl = el.querySelector('.mp-pct');
+      if (pctEl) pctEl.textContent = pct + '%';
+      el.classList.toggle('met', s.mins[g] >= GOAL_TARGET[g]);
+    });
   }
 
   function renderComboDetail() {
@@ -2181,6 +2270,111 @@
   document.getElementById('btn-export').addEventListener('click', exportFitnessData);
   updateExportBtnState();
 
+  // ==================== 导入运动数据（从 JSON 恢复）====================
+  async function importFitnessData(file) {
+    let parsed;
+    try { parsed = JSON.parse(await file.text()); }
+    catch (e) { showToast('文件不是有效的 JSON', 'warn'); return; }
+    if (!parsed || typeof parsed !== 'object') { showToast('文件内容无法识别', 'warn'); return; }
+    // 兼容本页导出格式：真正的数据在 parsed.data 里
+    const d = (parsed.data && typeof parsed.data === 'object') ? parsed.data : parsed;
+    if (parsed.schema !== 'summer-fitness-v1' &&
+        !confirm('这个文件不是本页导出的标准格式（缺少 schema 标记），仍要尝试导入吗？')) return;
+    if (!confirm('导入会用文件内容【覆盖】当前所有运动数据。\n\n点确定后会先自动下载一份当前数据的备份，再导入。继续？')) return;
+    // 覆盖前先自动备份当前数据（呼应「不可逆操作前先备份」）
+    downloadFallback(JSON.stringify(buildPayload(), null, 2));
+    const map = {
+      fitness_log_v1: LOG_KEY, fitness_combo_log_v1: COMBO_LOG_KEY,
+      extra_exercise_log_v1: EXTRA_LOG_KEY, weekly_review_v1: REVIEW_KEY,
+      fitness_custom_actions_v1: CUSTOM_ACTIONS_KEY, exercise_collection_v1: 'exercise_collection_v1',
+    };
+    let n = 0;
+    Object.entries(map).forEach(([k, storeKey]) => {
+      if (d[k] !== undefined && d[k] !== null) { writeJSON(storeKey, d[k]); n++; }
+    });
+    if (n === 0) { showToast('文件里没有可识别的运动数据字段', 'warn'); return; }
+    showToast('✅ 导入成功，正在刷新…');
+    setTimeout(() => location.reload(), 900);
+  }
+
+  // ==================== 动态数量（组合数 / 动作数随实际内容更新）====================
+  function updateCounts() {
+    const comboN  = document.querySelectorAll('.combo-card').length;
+    const actionN = document.querySelectorAll('.action-table tbody tr').length;
+    const sub = document.getElementById('head-sub');
+    if (sub) sub.textContent = `周日晚 9 点复盘 · ${comboN} 个组合 + ${actionN} 项动作详情 · 长期追踪`;
+    const ch = document.getElementById('sec-combos');
+    if (ch) ch.textContent = `📋 常用组合 · ${comboN} 个`;
+    const ah = document.getElementById('sec-actions');
+    if (ah) ah.textContent = `🎯 动作详情 · ${actionN} 项`;
+  }
+
+  // ==================== 侧栏 scroll-spy（高亮当前所在区块）====================
+  function initScrollSpy() {
+    const links = Array.from(document.querySelectorAll('.side-toc a[href^="#"]'));
+    const targets = links
+      .map(a => document.getElementById(a.getAttribute('href').slice(1)))
+      .filter(Boolean);
+    if (!targets.length || !('IntersectionObserver' in window)) return;
+    const visible = new Set();
+    let active = null;
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) visible.add(e.target.id); else visible.delete(e.target.id);
+      });
+      let chosen = null;
+      for (const t of targets) { if (visible.has(t.id)) { chosen = t.id; break; } }
+      if (!chosen || chosen === active) return;
+      active = chosen;
+      links.forEach(a => a.classList.toggle('active', a.getAttribute('href').slice(1) === chosen));
+    }, { rootMargin: '-25% 0px -65% 0px', threshold: 0 });
+    targets.forEach(t => obs.observe(t));
+  }
+
+  // ==================== 浮动控件：回到顶部 / 迷你进度 / 移动端目录抽屉 ====================
+  function initFloatingControls() {
+    const wrap = document.getElementById('fab-wrap');
+    const onScroll = () => { if (wrap) wrap.classList.toggle('show', window.scrollY > 300); };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    const top = document.getElementById('fab-top');
+    if (top) top.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    const mini = document.getElementById('mini-prog');
+    if (mini) mini.addEventListener('click', () => {
+      const t = document.getElementById('sec-data');
+      if (t) t.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // 移动端目录抽屉：复制侧栏目录内容
+    const src = document.querySelector('#side-toc ul');
+    const list = document.getElementById('toc-drawer-list');
+    if (src && list) list.innerHTML = src.outerHTML;
+    const drawer = document.getElementById('toc-drawer');
+    const mask = document.getElementById('toc-drawer-mask');
+    const open = () => { if (drawer) drawer.classList.add('show'); if (mask) mask.classList.add('show'); };
+    const close = () => { if (drawer) drawer.classList.remove('show'); if (mask) mask.classList.remove('show'); };
+    const tocBtn = document.getElementById('fab-toc');
+    if (tocBtn) tocBtn.addEventListener('click', open);
+    if (mask) mask.addEventListener('click', close);
+    const dcClose = document.getElementById('dc-close');
+    if (dcClose) dcClose.addEventListener('click', close);
+    if (list) list.addEventListener('click', (e) => { if (e.target.closest('a')) close(); });
+  }
+
+  // 导入按钮接线
+  (function wireImport() {
+    const importBtn = document.getElementById('btn-import');
+    const importInput = document.getElementById('import-file');
+    if (importBtn && importInput) {
+      importBtn.addEventListener('click', () => importInput.click());
+      importInput.addEventListener('change', () => {
+        if (importInput.files && importInput.files[0]) importFitnessData(importInput.files[0]);
+        importInput.value = '';
+      });
+    }
+  })();
+
   // ==================== 初始化 ====================
   renderCustomActions();   // 先把"我的新增"行写进表（按分类合并）
   populateGoalColumn();    // 主库行第 3 列：博主 → 方向图标
@@ -2189,6 +2383,9 @@
   renderAll();
   renderExtra();
   renderArchive();
+  updateCounts();          // 组合数 / 动作数随实际内容更新（须在 custom 行插入后）
+  initScrollSpy();         // 侧栏高亮当前区块
+  initFloatingControls();  // 回到顶部 / 迷你进度 / 移动端目录
 </script>
 
 </body>

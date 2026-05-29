@@ -208,9 +208,10 @@
   .promote-modal .field label .hint { color: var(--text-hint); font-weight: 400; font-size: 0.72rem; margin-left: 6px; }
   .promote-modal .field input[type=number] { width: 100%; font-family: inherit; font-size: 0.86rem; padding: 8px 11px; border: 1px solid var(--border-dark); border-radius: 7px; }
   .promote-name-display { font-family: 'Noto Serif SC', serif; font-size: 1rem; color: var(--text-primary); padding: 8px 11px; background: var(--bg); border-radius: 7px; }
-  .tag.goal-stamina { background: var(--gold-light); color: var(--gold); }
-  .tag.goal-shape { background: var(--accent-light); color: var(--accent); }
-  .tag.goal-rest { background: var(--info-light); color: var(--info); }
+  /* 分类标签配色与「运动周总结」保持一致（🔥橙 / 💪绿 / 🌿蓝），便于跨页一眼认分类 */
+  .tag.goal-stamina { background: #FBEAE0; color: #E8743B; }
+  .tag.goal-shape   { background: #E9F3ED; color: #57A773; }
+  .tag.goal-rest    { background: #E8F1FA; color: #5B9BD5; }
   .item-notes {
     font-size: 0.8rem;
     color: var(--text-secondary);
@@ -860,9 +861,21 @@
   });
 
   // ========== 全部清空 ==========
+  // 清空前先自动下载一份备份（不可逆操作前留后路）
+  function downloadCollectionBackup() {
+    const payload = { exported_at: new Date().toISOString(), schema: 'exercise-collection-v1', items };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = '运动收集箱备份.json';
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+  }
+
   document.getElementById('clear-btn').addEventListener('click', () => {
     if (items.length === 0) return;
-    if (!confirm(`确定清空全部 ${items.length} 条收集？此操作不可撤销。`)) return;
+    if (!confirm(`确定清空全部 ${items.length} 条收集？\n\n点确定后会先自动下载一份备份，再清空。此操作不可撤销。`)) return;
+    downloadCollectionBackup();
     items = [];
     cancelEdit();
     save();

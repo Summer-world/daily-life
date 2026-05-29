@@ -25,7 +25,7 @@
   header{background:var(--surface);border-bottom:1px solid var(--border);padding:1.25rem 2rem;display:flex;align-items:baseline;gap:1rem;}
   header h1{font-family:'Noto Serif SC',serif;font-size:1.25rem;font-weight:600;letter-spacing:.02em;}
   header .date{font-size:.78rem;color:var(--text-hint);font-weight:300;}
-  .main{max-width:820px;margin:0 auto;padding:1.75rem 1.5rem 3rem;}
+  .main{max-width:1080px;margin:0 auto;padding:1.75rem 1.5rem 3rem;}
   .sh{font-family:'Noto Serif SC',serif;font-size:.85rem;font-weight:600;color:var(--text-secondary);letter-spacing:.05em;margin-bottom:.75rem;display:flex;align-items:center;gap:8px;}
   .sh::after{content:'';flex:1;height:1px;background:var(--border);}
   .card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1rem;box-shadow:var(--shadow);}
@@ -73,6 +73,27 @@
   .btn{font-family:inherit;font-size:.78rem;padding:7px 16px;border-radius:99px;border:1px solid;cursor:pointer;transition:all .15s;background:transparent;color:var(--accent);border-color:var(--accent-mid);}
   .btn:hover{background:var(--accent-light);}
 
+  /* 两栏工作区:左=冰箱(我有什么) 右=能做的菜(宽屏 sticky 跟随) */
+  .workspace{display:grid;grid-template-columns:1fr;gap:1.75rem;}
+  @media(min-width:880px){
+    .workspace{grid-template-columns:minmax(0,1.02fr) minmax(0,1fr);align-items:start;}
+    .col-output{position:sticky;top:1rem;max-height:calc(100vh - 2rem);overflow-y:auto;overflow-x:hidden;padding-right:2px;}
+  }
+  .summary .cook-num{color:var(--info);}
+
+  /* 统一筛选条:菜系 + 做法 + 想用食材,一处显示 */
+  #filterBar{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-bottom:.85rem;}
+  #filterBar:empty{display:none;}
+  .fb-label{font-size:.68rem;font-weight:500;color:var(--text-hint);letter-spacing:.1em;text-transform:uppercase;}
+  .fb-chip{font-family:inherit;font-size:.78rem;padding:5px 12px;border-radius:99px;border:1px solid;cursor:pointer;transition:all .15s;line-height:1.2;}
+  .fb-chip.cuisine{background:var(--accent-light);border-color:var(--accent);color:var(--accent);}
+  .fb-chip.method{background:var(--cozy-light);border-color:var(--cozy);color:var(--cozy);}
+  .fb-chip.ingr{background:var(--info-light);border-color:var(--info);color:var(--info);}
+  .fb-chip.ingr.no-menu{background:var(--rotate-light);border-color:var(--rotate-mid);color:var(--rotate);}
+  .fb-chip:hover{filter:brightness(.97);text-decoration:line-through;}
+  .fb-clear{margin-left:auto;font-size:.72rem;color:var(--text-hint);background:none;border:none;cursor:pointer;font-family:inherit;text-decoration:underline;}
+  .fb-clear:hover{color:var(--text-primary);}
+
   /* 库存 */
   .summary{display:flex;align-items:center;gap:1.5rem;font-size:.82rem;}
   .summary .stat{display:flex;align-items:baseline;gap:6px;}
@@ -109,10 +130,6 @@
   .dep-x:hover{opacity:1;background:#FEE;color:#c0392b;}
   .del-x{margin-left:3px;color:var(--text-hint);font-size:.75rem;cursor:pointer;line-height:1;padding:0 2px;opacity:.5;}
   .del-x:hover{opacity:1;color:#c0392b;}
-  .anchor-bar{margin-bottom:.85rem;background:var(--info-light);border:1px solid var(--info);padding:.65rem .9rem;border-radius:8px;font-size:.8rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap;color:var(--info);}
-  .anchor-bar .at{background:#fff;padding:2px 10px;border-radius:99px;font-size:.75rem;color:var(--info);font-weight:600;}
-  .anchor-bar .at.no-menu{background:#FBF6E5;color:var(--rotate);}
-  .anchor-bar .ac{margin-left:auto;background:none;border:none;color:var(--info);cursor:pointer;font-size:.75rem;text-decoration:underline;font-family:inherit;}
   .stock-toggle{background:none;border:none;font-family:'Noto Serif SC',serif;color:var(--accent);cursor:pointer;display:flex;align-items:center;gap:6px;width:100%;font-size:.95rem;font-weight:600;padding:0;}
   .stock-body{display:none;margin-top:.6rem;}
   .stock-body.open{display:block;}
@@ -133,17 +150,10 @@
 
   /* 便当 */
   .bento-section{margin-top:2rem;}
+  .sh.bento-head{cursor:pointer;user-select:none;}
+  .sh.bento-head:hover{color:var(--text-primary);}
   .bento-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
-  .bento-top{padding:1.1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-bottom:1px solid var(--border);}
   .bento-top-label{font-size:.68rem;font-weight:500;color:var(--text-hint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px;}
-  .bento-top-title{font-family:'Noto Serif SC',serif;font-size:.95rem;font-weight:600;}
-  .bento-switch-row{display:flex;gap:8px;flex-wrap:wrap;}
-  .bento-btn{font-family:inherit;font-size:.76rem;padding:6px 14px;border-radius:99px;border:1px solid var(--border-dark);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:all .15s;white-space:nowrap;}
-  .bento-btn:hover{background:var(--bg);}
-  .bento-btn.active-s1{background:var(--amber);color:#fff;border-color:var(--amber);}
-  .bento-btn.active-s2{background:var(--warm);color:#fff;border-color:var(--warm);}
-  .bento-btn.active-baozi{background:var(--info);color:#fff;border-color:var(--info);}
-  .bento-btn.active-chicken{background:var(--accent);color:#fff;border-color:var(--accent);}
   .bento-body{padding:1.1rem 1.5rem;display:none;animation:slideIn .2s ease;}
   .bento-body.show{display:block;}
   .bento-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
@@ -186,30 +196,15 @@
 
 <div class="main">
 
-  <div class="sh">今晚吃什么</div>
+  <div class="workspace">
 
-  <div class="card">
-    <div class="fl">菜系</div>
-    <div class="tr" id="cuisine-row">
-      <span class="tag cuisine" data-val="chinese">中式家常</span>
-      <span class="tag cuisine" data-val="jpkr">日韩风</span>
-      <span class="tag cuisine" data-val="western">西式</span>
-      <span class="tag cuisine" data-val="hotpot">火锅/涮</span>
-    </div>
-    <div class="fl" style="margin-top:1rem">做法</div>
-    <div class="tr" id="method-row">
-      <span class="tag method" data-val="stirfry">炒</span>
-      <span class="tag method" data-val="stew">炖/煮</span>
-      <span class="tag method" data-val="steam">蒸</span>
-      <span class="tag method" data-val="grill">烤</span>
-      <span class="tag method" data-val="poach">涮</span>
-    </div>
-  </div>
+  <div class="col-input">
 
   <div class="sh">冰箱里有什么</div>
   <div class="card">
     <div class="help">💡 <b>点食材 = 今天想用它</b>，菜单会按你点的过滤（比如点牛排 → 只看牛肉菜）。再点取消。每个食材右边的小 <span style="color:#c0392b">✕</span> = 标为没了。库存变化时下方菜单实时刷新。</div>
     <div class="summary">
+      <div class="stat"><span class="stat-num cook-num" id="cCook">0</span><span style="color:var(--info)">能做</span></div>
       <div class="stat"><span class="stat-num short-num" id="cShort">0</span><span style="color:var(--short)">短保</span></div>
       <div class="stat"><span class="stat-num rotate-num" id="cRotate">0</span><span style="color:var(--rotate)">轮换</span></div>
       <div class="stat"><span class="stat-num stock-num" id="cStock">0</span><span style="color:var(--accent)">常备</span></div>
@@ -281,17 +276,34 @@
     </div>
   </div>
 
-  <div class="divider"></div>
-
-  <div class="rh">
-    <div class="rl">能做的菜</div>
-    <div style="display:flex;gap:12px;align-items:center;">
-      <span class="rc" id="count-label"></span>
-      <button class="rb" onclick="resetMood()">清除筛选</button>
+  <div class="sh" style="margin-top:1.75rem">想怎么做 · 可选</div>
+  <div class="card">
+    <div class="fl">菜系</div>
+    <div class="tr" id="cuisine-row">
+      <span class="tag cuisine" data-val="chinese">中式家常</span>
+      <span class="tag cuisine" data-val="jpkr">日韩风</span>
+      <span class="tag cuisine" data-val="western">西式</span>
+      <span class="tag cuisine" data-val="hotpot">火锅/涮</span>
+    </div>
+    <div class="fl" style="margin-top:1rem">做法</div>
+    <div class="tr" id="method-row">
+      <span class="tag method" data-val="stirfry">炒</span>
+      <span class="tag method" data-val="stew">炖/煮</span>
+      <span class="tag method" data-val="steam">蒸</span>
+      <span class="tag method" data-val="grill">烤</span>
+      <span class="tag method" data-val="poach">涮</span>
     </div>
   </div>
 
-  <div id="anchorBar"></div>
+  </div><!-- /col-input -->
+
+  <div class="col-output">
+
+  <div class="rh">
+    <div class="rl">能做的菜 <span class="rc" id="count-label"></span></div>
+  </div>
+
+  <div id="filterBar"></div>
   <div id="results-area">
     <div class="empty">从冰箱里读你有什么…</div>
   </div>
@@ -303,6 +315,9 @@
       <button class="btn" onclick="clearSel()">清空</button>
     </div>
   </div>
+
+  </div><!-- /col-output -->
+  </div><!-- /workspace -->
 
   <div class="dessert-section">
     <div class="sh">今天来点甜点？</div>
@@ -319,8 +334,8 @@
   </div>
 
   <div class="bento-section">
-    <div class="sh">Emma 便当</div>
-    <div class="bento-card">
+    <div class="sh bento-head" onclick="toggleBento()"><span id="bentoArr">▸</span> Emma 便当</div>
+    <div class="bento-card" id="bentoCard" style="display:none;">
       <div class="bento-body show">
         <div class="bento-top-label" style="margin-bottom:.5rem;">主食可选</div>
         <div class="bento-grid">
@@ -657,20 +672,44 @@ function canMake(meal,avail){
   return meaningful.some(i=>avail.has(i));
 }
 
-function renderAnchorBar(){
-  const bar=document.getElementById("anchorBar");
-  if(state.anchors.size===0){bar.innerHTML="";return;}
+const CUISINE_LABELS={chinese:"中式家常",jpkr:"日韩风",western:"西式",hotpot:"火锅/涮"};
+const METHOD_LABELS={stirfry:"炒",stew:"炖/煮",steam:"蒸",grill:"烤",poach:"涮"};
+
+// 统一筛选条:菜系 + 做法 + 想用食材合并一处,点 chip 即移除,一个"全部清除"
+function renderFilterBar(){
+  const bar=document.getElementById("filterBar");
+  const chips=[];
+  if(state.cuisine)chips.push(`<button class="fb-chip cuisine" onclick="clearCuisine()" title="点击移除">${CUISINE_LABELS[state.cuisine]||state.cuisine} ×</button>`);
+  if(state.method)chips.push(`<button class="fb-chip method" onclick="clearMethod()" title="点击移除">${METHOD_LABELS[state.method]||state.method} ×</button>`);
   const all=allFridgeItems();
-  const anchoredItems=[...state.anchors].map(id=>all.find(i=>i.id===id)).filter(Boolean);
-  const tags=anchoredItems.map(it=>{
+  [...state.anchors].forEach(id=>{
+    const it=all.find(i=>i.id===id);
+    if(!it)return;
     const noMenu=!it.menu||it.menu.length===0;
-    return`<span class="at${noMenu?' no-menu':''}" title="${noMenu?'没有菜谱标签，仅作提醒':'按这个过滤菜单'}">${it.name}</span>`;
-  }).join(" ");
-  bar.innerHTML=`<div>📌 今天想用：</div>${tags}<button class="ac" onclick="clearAnchors()">✕ 清除</button>`;
+    chips.push(`<button class="fb-chip ingr${noMenu?' no-menu':''}" onclick="toggleAnchor('${id}')" title="${noMenu?'无菜谱标签,仅作提醒':'点击移除'}">📌 ${it.name} ×</button>`);
+  });
+  if(!chips.length){bar.innerHTML="";return;}
+  bar.innerHTML=`<span class="fb-label">筛选中</span>${chips.join("")}<button class="fb-clear" onclick="clearAllFilters()">全部清除</button>`;
+}
+
+function clearCuisine(){
+  state.cuisine=null;
+  document.querySelectorAll("#cuisine-row .tag").forEach(t=>t.classList.remove("active"));
+  renderMeals();
+}
+function clearMethod(){
+  state.method=null;
+  document.querySelectorAll("#method-row .tag").forEach(t=>t.classList.remove("active"));
+  renderMeals();
+}
+function clearAllFilters(){
+  state.cuisine=null;state.method=null;state.anchors.clear();
+  document.querySelectorAll(".tag.cuisine,.tag.method").forEach(t=>t.classList.remove("active"));
+  renderFridge();renderMeals();
 }
 
 function renderMeals(){
-  renderAnchorBar();
+  renderFilterBar();
   const area=document.getElementById("results-area");
   const countEl=document.getElementById("count-label");
   const avail=availableCategories();
@@ -696,6 +735,7 @@ function renderMeals(){
     return true;
   });
   countEl.textContent=filtered.length>0?`${filtered.length} 道`:"";
+  const cookEl=document.getElementById("cCook");if(cookEl)cookEl.textContent=filtered.length;
   if(filtered.length===0){
     const msg=hasFilter?'<div class="empty">没找到含选中食材的菜<br>试试取消选中或加点别的</div>':'<div class="empty">冰箱里这些做不了什么 ☹️<br>试试换个心情或补点货</div>';
     area.innerHTML=msg;
@@ -886,6 +926,14 @@ function renderFridge(){
   document.getElementById("cStock").textContent=stt;
   document.getElementById("shortCount").textContent=`还剩 ${sa}/${st}`;
   document.getElementById("rotateCount").textContent=`还剩 ${ra}/${rt}`;
+}
+
+// ==================== 便当 ====================
+function toggleBento(){
+  const c=document.getElementById("bentoCard");
+  const open=c.style.display==="none";
+  c.style.display=open?"block":"none";
+  document.getElementById("bentoArr").textContent=open?"▾":"▸";
 }
 
 // ==================== 编辑菜单库 ====================

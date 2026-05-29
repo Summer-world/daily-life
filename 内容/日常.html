@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>日常 test · Summer 的世界</title>
+<title>日常 · Summer 的世界</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   html { scroll-padding-top: 80px; }
@@ -53,7 +53,12 @@
     max-width: 1080px;
     margin: 0 auto;
     position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 3rem;
   }
+  .page-header-left { flex: 0 1 auto; min-width: 0; }
   .page-header::after {
     content: '';
     position: absolute;
@@ -117,6 +122,69 @@
     font-style: italic;
     color: var(--text-hint);
   }
+
+  /* ============ 抬头右侧 · 今日与神对话 ============ */
+  .gt-aside {
+    flex: 1 1 auto;
+    min-width: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 12px;
+    padding: 1rem 1.15rem 0.9rem;
+    margin-top: 0.25rem;
+  }
+  .gt-head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; margin-bottom: 0.55rem;
+  }
+  .gt-label {
+    font-family: 'EB Garamond', serif; font-style: italic;
+    font-size: 0.74rem; font-weight: 500; letter-spacing: 0.1em;
+    color: var(--accent-mid);
+  }
+  .gt-shuffle {
+    font-family: 'Noto Sans SC', sans-serif; font-size: 0.7rem;
+    color: var(--text-hint); background: none;
+    border: 1px solid var(--border-dark); border-radius: 99px;
+    padding: 3px 12px; cursor: pointer; flex-shrink: 0;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .gt-shuffle:hover { color: var(--accent); border-color: var(--accent-mid); }
+  .gt-chapter {
+    font-size: 0.66rem; color: var(--text-hint);
+    letter-spacing: 0.06em; margin-bottom: 0.35rem;
+  }
+  .gt-q {
+    font-family: 'Noto Serif SC', serif; font-size: 0.92rem;
+    font-weight: 600; line-height: 1.7; color: var(--text-primary);
+    margin-bottom: 0.55rem;
+  }
+  .gt-q::before {
+    content: 'Q'; font-family: 'EB Garamond', serif; font-style: italic;
+    color: var(--accent-mid); margin-right: 0.4rem; font-weight: 500;
+  }
+  .gt-a-wrap {
+    position: relative; overflow: hidden;
+    max-height: 1400px; transition: max-height 0.35s ease;
+  }
+  .gt-a-wrap.collapsed { max-height: 4.9em; }
+  .gt-a-wrap.collapsed::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 0;
+    height: 2.4em; pointer-events: none;
+    background: linear-gradient(to bottom, transparent, var(--surface) 92%);
+  }
+  .gt-a {
+    font-family: 'Noto Serif SC', serif; font-weight: 400;
+    font-size: 0.84rem; line-height: 1.95; color: var(--text-secondary);
+    white-space: pre-wrap;
+  }
+  .gt-toggle {
+    margin-top: 0.45rem; font-family: 'Noto Sans SC', sans-serif;
+    font-size: 0.72rem; color: var(--accent); background: none;
+    border: none; cursor: pointer; padding: 2px 0; letter-spacing: 0.04em;
+  }
+  .gt-toggle:hover { text-decoration: underline; }
 
   /* ============ Layout ============ */
   .layout {
@@ -812,35 +880,282 @@
   }
   .section-note a { color: var(--ochre); text-decoration: none; border-bottom: 1px dotted var(--ochre); }
 
-  /* ============ v. 爱好 网格 ============ */
-  .hobby-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 0.55rem;
-  }
-  .hobby-item {
-    padding: 0.85rem 1.05rem;
+  /* ============ 清洁日打卡 ============ */
+  .ck-head { display: flex; align-items: flex-start; gap: 0.6rem; }
+  .ck-reset {
+    flex-shrink: 0;
+    font-family: inherit;
+    font-size: 0.68rem;
+    padding: 3px 10px;
+    border-radius: 99px;
+    border: 1px solid var(--border-dark);
     background: var(--surface);
-    border-left: 2px solid var(--ochre);
-    border-radius: 0 3px 3px 0;
-    transition: all 0.2s;
+    color: var(--text-hint);
+    cursor: pointer;
+    transition: all 0.15s;
   }
-  .hobby-item:hover {
-    background: var(--ochre-light);
-    border-left-width: 3px;
-    padding-left: calc(1.05rem - 1px);
+  .ck-reset:hover { background: var(--accent-light); color: var(--accent); border-color: var(--accent-mid); }
+  .ck-min { font-size: 0.68rem; color: var(--text-hint); font-weight: 400; }
+  .ck-legend-daily {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: var(--mist-light);
+    color: var(--mist);
   }
-  .hobby-item .name {
+  .ck-item {
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+    padding: 1px 4px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+  .ck-item:hover { background: var(--accent-light); color: var(--accent); }
+  .ck-item.done {
+    color: var(--text-hint);
+    text-decoration: line-through;
+    text-decoration-thickness: 1.5px;
+    opacity: 0.6;
+  }
+  .ck-item.done:hover { background: var(--bg); color: var(--text-secondary); }
+  .ck-item.daily { background: var(--mist-light); color: var(--mist); }
+  .ck-item.daily:hover { background: var(--mist); color: #fff; }
+  .ck-item.daily.done { background: transparent; color: var(--text-hint); text-decoration: line-through; }
+
+  /* ============ 阅读打卡 ============ */
+  .reading-checkin {
+    background: var(--gold-light);
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    padding: 1.1rem 1.3rem;
+    margin-top: 0.95rem;
+  }
+  .rc-top { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 0.9rem; }
+  .rc-streak { display: flex; align-items: baseline; gap: 5px; font-size: 0.8rem; color: var(--text-secondary); }
+  .rc-streak-num {
     font-family: 'Noto Serif SC', serif;
-    font-size: 0.92rem;
-    font-weight: 500;
-    margin-bottom: 0.25rem;
+    font-size: 1.85rem;
+    font-weight: 600;
+    color: var(--gold);
+    line-height: 1;
   }
-  .hobby-item .why {
+  .rc-stat { margin-left: auto; font-size: 0.8rem; color: var(--text-secondary); }
+  .rc-stat strong { color: var(--gold); font-size: 1rem; }
+  .rc-input {
+    width: 100%;
+    font-family: inherit;
+    font-size: 0.84rem;
+    color: var(--text-primary);
+    background: var(--surface);
+    border: 1px solid var(--border-dark);
+    border-radius: 6px;
+    padding: 8px 11px;
+    margin-bottom: 0.55rem;
+    resize: none;
+  }
+  .rc-input:focus { outline: none; border-color: var(--gold); }
+  .rc-note { line-height: 1.6; min-height: 2.7rem; }
+  .rc-btn {
+    width: 100%;
+    font-family: inherit;
+    font-size: 0.86rem;
+    font-weight: 500;
+    color: #fff;
+    background: var(--gold);
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    cursor: pointer;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+  }
+  .rc-btn:hover { opacity: 0.9; }
+  .rc-btn.done {
+    background: var(--surface);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    cursor: default;
+  }
+  .rc-btn.done:hover { opacity: 1; }
+  .rc-cancel {
+    display: none;
+    width: 100%;
+    text-align: center;
+    font-size: 0.74rem;
+    color: var(--text-hint);
+    margin-top: 0.5rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-family: inherit;
+  }
+  .rc-cancel:hover { color: var(--gold); text-decoration: underline; }
+  .rc-week { display: flex; gap: 6px; margin: 1rem 0 0.2rem; }
+  .rc-day { flex: 1; text-align: center; }
+  .rc-day-dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    margin: 0 auto 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.78rem;
+    background: var(--surface);
+    border: 1px solid var(--border-dark);
+    color: var(--text-hint);
+  }
+  .rc-day.filled .rc-day-dot { background: var(--gold); border-color: var(--gold); color: #fff; }
+  .rc-day.today .rc-day-dot { border-color: var(--gold); border-width: 2px; }
+  .rc-day.future .rc-day-dot { opacity: 0.4; }
+  .rc-day-label { font-size: 0.68rem; color: var(--text-hint); }
+  .rc-log-title {
     font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-hint);
+    letter-spacing: 0.1em;
+    margin: 1rem 0 0.3rem;
+  }
+  .rc-log-item {
+    font-size: 0.8rem;
     color: var(--text-secondary);
+    padding: 0.5rem 0;
+    border-top: 1px dashed var(--border);
     line-height: 1.65;
   }
+  .rc-log-date { color: var(--gold); font-weight: 500; margin-right: 8px; }
+  .rc-log-book { color: var(--text-primary); font-weight: 500; }
+  .rc-log-empty { font-size: 0.8rem; color: var(--text-hint); font-style: italic; padding: 0.4rem 0; }
+  .rc-log-toggle {
+    margin-top: 0.5rem; font-family: 'Noto Sans SC', sans-serif;
+    font-size: 0.74rem; color: var(--gold); background: none;
+    border: none; cursor: pointer; padding: 2px 0; letter-spacing: 0.03em;
+  }
+  .rc-log-toggle:hover { text-decoration: underline; }
+
+  /* 补卡：周条上可点的过去日子 + 补卡条 */
+  .rc-day.clickable { cursor: pointer; }
+  .rc-day.addable .rc-day-dot { border-style: dashed; }
+  .rc-day.clickable:hover .rc-day-dot { border-color: var(--gold); color: var(--gold); }
+  .rc-day.selected .rc-day-dot { box-shadow: 0 0 0 2px var(--gold); }
+  .rc-target {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-size: 0.8rem; color: var(--gold);
+    background: var(--gold-light); border: 1px solid var(--gold);
+    border-radius: 8px; padding: 0.45rem 0.75rem; margin-bottom: 0.7rem;
+  }
+  .rc-target strong { font-weight: 600; }
+  .rc-target-back {
+    margin-left: auto; font-family: 'Noto Sans SC', sans-serif;
+    font-size: 0.74rem; background: none; border: none;
+    color: var(--text-hint); cursor: pointer; text-decoration: underline;
+  }
+  .rc-target-back:hover { color: var(--gold); }
+  .rc-backfill { margin-top: 0.7rem; }
+  .rc-backfill-toggle {
+    font-family: 'Noto Sans SC', sans-serif; font-size: 0.74rem;
+    color: var(--text-hint); background: none; border: none;
+    cursor: pointer; padding: 0; letter-spacing: 0.03em;
+  }
+  .rc-backfill-toggle:hover { color: var(--gold); text-decoration: underline; }
+  .rc-date {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem;
+    border: 1px solid var(--border-dark); border-radius: 6px;
+    padding: 3px 8px; color: var(--text-secondary); margin-left: 0.6rem;
+  }
+
+  /* ============ 状态卡（情境库内 · 开关联动 NOW 卡：低电 / 经期 / 满载） ============ */
+  .state-card { border-left: 3px solid var(--rose); }
+  .state-card[open] { border-color: var(--rose); }
+  .state-card summary:hover,
+  .state-card[open] summary { background: var(--rose-light); }
+  /* 状态卡展开时表格强调色也走玫瑰，和 NOW 卡呼应 */
+  .state-card .protocol-card-body td strong,
+  .state-card .protocol-card-body .inner-highlight strong { color: var(--rose); }
+  .le-switch {
+    margin-left: auto;
+    flex-shrink: 0;
+    width: 46px;
+    height: 26px;
+    border-radius: 99px;
+    background: var(--border-dark);
+    position: relative;
+    transition: background 0.2s;
+  }
+  .le-switch[aria-checked="true"] { background: var(--rose); }
+  .le-knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #fff;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .le-switch[aria-checked="true"] .le-knob { transform: translateX(20px); }
+
+  .le-reframe {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.85;
+    padding-bottom: 0.9rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px dashed var(--rose);
+  }
+  .le-reframe strong { color: var(--rose); }
+  .le-group { margin-bottom: 1.05rem; }
+  .le-group:last-child { margin-bottom: 0; }
+  .le-group-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.87rem;
+    font-weight: 600;
+    color: var(--rose);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .le-list { list-style: none; }
+  .le-list li {
+    position: relative;
+    padding: 4px 0 4px 1.3rem;
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .le-list li::before {
+    content: '·';
+    position: absolute;
+    left: 0.45rem;
+    top: 3px;
+    color: var(--rose);
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .le-list li strong { color: var(--text-primary); font-weight: 600; }
+  .le-links { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.4rem; }
+  .le-link {
+    font-size: 0.74rem;
+    color: var(--rose);
+    text-decoration: none;
+    border: 1px solid var(--rose);
+    border-radius: 99px;
+    padding: 3px 12px;
+    transition: all 0.15s;
+  }
+  .le-link:hover { background: var(--rose); color: #fff; }
+  /* 低电开启时，NOW 卡换成休息色调 */
+  body.le-on .now-card {
+    background: linear-gradient(135deg, var(--rose-light) 0%, var(--surface) 100%);
+    border-color: var(--rose);
+  }
+  body.le-on .now-card::before { content: 'REST'; color: var(--rose); }
+  body.le-on .now-time,
+  body.le-on .now-phase { color: var(--rose); }
+  body.le-on .now-anchor { border-color: var(--rose); color: var(--rose); }
+  body.le-on .now-anchor:hover { background: var(--rose); color: var(--surface); }
 
   /* ============ Footer ============ */
   footer {
@@ -871,8 +1186,13 @@
     .side-toc ol { display: flex; flex-wrap: wrap; gap: 0.4rem; }
     .side-toc a { padding: 4px 10px; border-left: none; border: 1px solid var(--border-dark); border-radius: 99px; }
     .side-toc a.active { border-color: var(--accent); background: var(--accent-light); }
-    .page-header { padding: 1.5rem 1.2rem 1rem; }
+    .page-header {
+      padding: 1.5rem 1.2rem 1rem;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
     .page-header h1 { font-size: 1.6rem; }
+    .gt-aside { flex: 1 1 auto; max-width: none; width: 100%; }
     .timeline { padding-left: 1.6rem; }
     .timeline-node::before { left: -1.6rem; }
     .timeline::before { left: 0.34rem; }
@@ -882,15 +1202,30 @@
 <body>
 
 <div class="page-header">
-  <div class="eyebrow">A day in the life · 日常</div>
-  <h1>今天 <span class="badge">test</span></h1>
-  <div class="time-stamp">
-    <span class="mono" id="ts-date">2026.05.26</span>
-    <span class="dot">·</span>
-    <span class="mono" id="ts-weekday">Mon</span>
-    <span class="dot">·</span>
-    <span class="ital">精简重构版 · 不喜欢可砍掉</span>
+  <div class="page-header-left">
+    <div class="eyebrow">A day in the life · 日常</div>
+    <h1>今天</h1>
+    <div class="time-stamp">
+      <span class="mono" id="ts-date">2026.05.26</span>
+      <span class="dot">·</span>
+      <span class="mono" id="ts-weekday">Mon</span>
+      <span class="dot">·</span>
+      <span class="ital" id="ts-phase-hint">按一天的节奏走</span>
+    </div>
   </div>
+
+  <aside class="gt-aside" id="gt-aside">
+    <div class="gt-head">
+      <span class="gt-label">今日 · 与神对话</span>
+      <button class="gt-shuffle" id="gt-shuffle">换一条</button>
+    </div>
+    <div class="gt-chapter" id="gt-chapter"></div>
+    <div class="gt-q" id="gt-q"></div>
+    <div class="gt-a-wrap collapsed" id="gt-a-wrap">
+      <div class="gt-a" id="gt-a"></div>
+    </div>
+    <button class="gt-toggle" id="gt-toggle" hidden>展开 ▾</button>
+  </aside>
 </div>
 
 <div class="layout">
@@ -922,7 +1257,7 @@
             <h3>📋 明日待办</h3>
             <button class="reset-btn" id="tdo-reset">清空</button>
           </div>
-          <div class="meta">点击文字可编辑 · 勾选画掉 · 数据与主页面共享</div>
+          <div class="meta">点击文字可编辑 · 勾选画掉 · 自动保存</div>
           <ul id="tdo-list"></ul>
         </div>
 
@@ -934,6 +1269,7 @@
         </div>
 
       </div>
+
     </section>
 
     <!-- ============ ii. 今日节奏 时间线 ============ -->
@@ -1137,7 +1473,29 @@
             <div class="node-highlight">
               这 10 分钟是 Eric 完整接手 Emma 的时间，<strong>正大光明属于你</strong>——物理家务可以等，不必愧疚。
             </div>
-            <p style="font-size:.74rem;color:var(--text-hint);font-style:italic;margin-top:.7rem;">完整的打卡 + 历史记录暂留在主"日常"页（test 版未做交互态保留）。</p>
+            <div class="reading-checkin" id="reading-checkin">
+              <div class="rc-top">
+                <div class="rc-streak">已连续 <span class="rc-streak-num" id="rc-streak-num">0</span> 天</div>
+                <div class="rc-stat">本周已读 <strong id="rc-week-count">0</strong> / 7 天</div>
+              </div>
+              <div class="rc-target" id="rc-target" hidden>
+                正在补 <strong id="rc-target-label"></strong> 的卡
+                <button type="button" class="rc-target-back" id="rc-target-back">回到今天</button>
+              </div>
+              <input type="text" id="rc-book" class="rc-input" placeholder="在读的书（书名）" autocomplete="off">
+              <textarea id="rc-note" class="rc-input rc-note" placeholder="今天读到哪 / 一句话感受（可留空）"></textarea>
+              <button id="rc-btn" class="rc-btn">✓ 完成今天的 10 分钟</button>
+              <button id="rc-cancel" class="rc-cancel">取消今天的打卡</button>
+              <div class="rc-week" id="rc-week"></div>
+              <div class="rc-backfill">
+                <button type="button" class="rc-backfill-toggle" id="rc-backfill-toggle">＋ 补更早的日子</button>
+                <span hidden id="rc-backfill-row">
+                  <input type="date" id="rc-date" class="rc-date">
+                </span>
+              </div>
+              <div class="rc-log-title">最近记录</div>
+              <div class="rc-log" id="rc-log"></div>
+            </div>
           </div>
         </div>
 
@@ -1191,10 +1549,63 @@
       <div class="section-header">
         <span class="num">iii.</span>
         <h2>情境库</h2>
-        <span class="desc">不是每天看 · 点开查阅</span>
+        <span class="desc">🌹 玫瑰边＝今日状态开关，点开就生效 · 其余点开查阅</span>
       </div>
 
       <div class="protocol-grid">
+
+        <details class="protocol-card state-card" id="protocol-lowenergy">
+          <summary>
+            <span class="icon">🔋</span>
+            <div>
+              <div class="title">今天电量低？</div>
+              <div class="hint">点开＝进入降档 · 只管今天，明天自动归零</div>
+            </div>
+            <span class="le-switch" id="le-switch" role="switch" aria-checked="false" aria-label="低电模式"><span class="le-knob"></span></span>
+          </summary>
+          <div class="protocol-card-body le-card-body">
+            <div class="le-reframe">
+              低电<strong>不是你掉链子，是身体在如期工作</strong>。今天唯一的任务：降档、<strong>不追加"我怎么又没做到"的自我审判</strong>。退缩警戒线只有一条——「<strong>连独处、看剧都没意思了</strong>」；没到，你就稳稳在健康区间里。
+            </div>
+
+            <div class="le-group">
+              <div class="le-group-title">🤸 运动 · 做一个动作就赢</div>
+              <ul class="le-list">
+                <li>10 分钟是上限不是任务，0 分钟也不欠谁。</li>
+              </ul>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🌿 全程躺练 10min</span>
+                <span class="cp-flow">全程躺着、零出力，跟着做完就够</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🌿 睡前 30min</span>
+                <span class="cp-flow">全程躺练（10min）→ 掰正骨盆懒人版（5min）→ 仙人揉腹（10min）→ 自我肯定冥想（5min）</span>
+              </a>
+              <div class="le-links">
+                <a class="le-link" href="#protocol-period">🌹 经期：避免高冲击动作清单</a>
+              </div>
+            </div>
+
+            <div class="le-group">
+              <div class="le-group-title">🧸 陪 Emma · "在场"就够</div>
+              <ul class="le-list">
+                <li>窝沙发看一集 / 让她讲你只听、只抱着——<strong>不用讲解、不用引导</strong>。</li>
+                <li>睡前早点交给 Eric，不愧疚：空电的一晚 ≠ 对她的爱出问题。</li>
+              </ul>
+            </div>
+
+            <div class="le-group">
+              <div class="le-group-title">🍵 吃 & 家务 · 门槛压到地板</div>
+              <ul class="le-list">
+                <li><strong>吃：</strong>照常吃别克扣，低电更需要稳定供能。</li>
+                <li><strong>家务：</strong>只做"不做会拖累明天"的，其余顺延，<strong>不进明日待办</strong>。</li>
+              </ul>
+              <div class="le-links">
+                <a class="le-link" href="#protocol-shutdown">🌙 今天也熬不住？走关机轨道</a>
+              </div>
+            </div>
+          </div>
+        </details>
 
         <details class="protocol-card" id="protocol-weekly">
           <summary>
@@ -1222,14 +1633,14 @@
           </div>
         </details>
 
-        <details class="protocol-card" id="protocol-shutdown">
+        <details class="protocol-card state-card" id="protocol-shutdown">
           <summary>
             <span class="icon">🌙</span>
             <div>
               <div class="title">满载日关机轨道</div>
-              <div class="hint">周四专用 · 早躺＝赢</div>
+              <div class="hint">点开＝今天满载 · 晚上走关机 · 隔天归零</div>
             </div>
-            <span class="arrow">›</span>
+            <span class="le-switch" id="fl-switch" role="switch" aria-checked="false" aria-label="满载日状态"><span class="le-knob"></span></span>
           </summary>
           <div class="protocol-card-body">
             <p>累却清醒、越熬越精神的那天——<strong>不靠自己撑，靠音轨带你睡着</strong>。</p>
@@ -1260,33 +1671,48 @@
             <span class="icon">🧹</span>
             <div>
               <div class="title">清洁日</div>
-              <div class="hint">每周一次 · 45–50 min</div>
+              <div class="hint">每周一次 · 45–50 min · 可打卡</div>
             </div>
             <span class="arrow">›</span>
           </summary>
           <div class="protocol-card-body">
-            <p>按顺序：<strong>整理 → 除尘 → 湿擦 → 拖地</strong>，不来回换工具。租房保洁，够用就行。</p>
+            <div class="ck-head">
+              <p style="margin:0;flex:1;">按顺序：<strong>整理 → 除尘 → 湿擦 → 拖地</strong>，不来回换工具。租房保洁，够用就行。</p>
+              <button class="ck-reset" id="ck-reset" type="button">重置</button>
+            </div>
+            <p style="font-size:.72rem;color:var(--text-hint);margin:.35rem 0 .6rem;">💡 点一下动作就划掉，做完整周点「重置」清空。<span class="ck-legend-daily">蓝灰项</span> = 日常顺手就能维护，清洁日可能已不脏。</p>
             <table>
               <thead><tr><th>阶段</th><th>动作</th></tr></thead>
               <tbody>
-                <tr><td><strong>1️⃣ 整理</strong> ≈10min</td><td>抱枕毯子 · 台面 · 拉 Emma 收玩具 · 衣物 · 鞋 · 杂物各回各位</td></tr>
-                <tr><td><strong>2️⃣ 擦灰</strong> ≈12min</td><td>玄关 → 书桌 → 玩具柜 → 床头柜 → 洗衣区 → 影视区 → 浴室</td></tr>
-                <tr><td><strong>3️⃣ 湿擦</strong> ≈18min</td><td>厨房（灶台/水槽/餐桌）· 卫生间（洗手台/马桶/淋浴）· 拖鞋刷晾</td></tr>
-                <tr><td><strong>4️⃣ 拖地</strong> ≈15min</td><td>厨房 → 卫生间 → 客厅 → 主卧+Emma 房（沙发缝隔周吸一次）</td></tr>
+                <tr>
+                  <td><strong>1️⃣ 整理</strong><br><span class="ck-min">≈10 min</span></td>
+                  <td><span class="ck-item daily" data-id="c1-1">抱枕毯子归位</span> · <span class="ck-item daily" data-id="c1-2">台面餐桌清空</span> · <span class="ck-item" data-id="c1-3">拉 Emma 收玩具</span> · <span class="ck-item daily" data-id="c1-4">衣物归位</span> · <span class="ck-item" data-id="c1-5">鞋归位玄关</span> · <span class="ck-item" data-id="c1-6">杂物各回各位</span></td>
+                </tr>
+                <tr>
+                  <td><strong>2️⃣ 擦灰</strong><br><span class="ck-min">≈12 min</span></td>
+                  <td><span class="ck-item" data-id="c2-1">玄关</span> · <span class="ck-item" data-id="c2-2">书桌</span> · <span class="ck-item" data-id="c2-3">玩具柜</span> · <span class="ck-item" data-id="c2-4">床头柜</span> · <span class="ck-item" data-id="c2-5">洗衣区</span> · <span class="ck-item" data-id="c2-6">影视区</span> · <span class="ck-item" data-id="c2-7">浴室</span></td>
+                </tr>
+                <tr>
+                  <td><strong>3️⃣ 湿擦</strong><br><span class="ck-min">≈18 min</span></td>
+                  <td><strong>厨房：</strong><span class="ck-item daily" data-id="c3-1">灶台</span> · <span class="ck-item daily" data-id="c3-2">水槽+排水口</span> · <span class="ck-item daily" data-id="c3-3">餐桌椅</span><br><strong>卫生间：</strong><span class="ck-item" data-id="c3-4">洗手台</span> · <span class="ck-item" data-id="c3-5">马桶（内外）</span> · <span class="ck-item daily" data-id="c3-6">淋浴/浴缸</span><br><span class="ck-item" data-id="c3-7">拖鞋刷洗晾起</span></td>
+                </tr>
+                <tr>
+                  <td><strong>4️⃣ 拖地</strong><br><span class="ck-min">≈15 min</span></td>
+                  <td><span class="ck-item" data-id="c4-1">厨房（先扫再拖）</span> · <span class="ck-item" data-id="c4-2">卫生间+排水口</span> · <span class="ck-item" data-id="c4-3">客厅</span> · <span class="ck-item" data-id="c4-4">主卧+Emma 房</span> · <span class="ck-item" data-id="c4-5">沙发缝/地毯（隔周）</span></td>
+                </tr>
               </tbody>
             </table>
-            <p style="font-size:.74rem;color:var(--text-hint);margin-top:.6rem;font-style:italic;">完整的打卡 checkbox 版本仍在主"日常"页（test 版只显示节奏）。</p>
           </div>
         </details>
 
-        <details class="protocol-card" id="protocol-period">
+        <details class="protocol-card state-card" id="protocol-period">
           <summary>
             <span class="icon">🌹</span>
             <div>
               <div class="title">经期护理</div>
-              <div class="hint">月度周期</div>
+              <div class="hint">点开＝经期中 · 跨天保持 · 结束记得关</div>
             </div>
-            <span class="arrow">›</span>
+            <span class="le-switch" id="pe-switch" role="switch" aria-checked="false" aria-label="经期状态"><span class="le-knob"></span></span>
           </summary>
           <div class="protocol-card-body">
             <table>
@@ -1414,8 +1840,9 @@
   </main>
 </div>
 
-<footer>— a test draft · revertible —</footer>
+<footer>— Summer 的世界 · 日常 —</footer>
 
+<script src="../读书笔记/与神对话1content.js"></script>
 <script>
   // ==================== 时间与当前时段 ====================
   const PHASES = [
@@ -1426,6 +1853,12 @@
     { id: 'reading',  start: 20, end: 21, emoji: '📖', name: '阅读 10 分钟',         tip: '锚点：8:30 Eric 给 Emma 讲故事 = 你的闹钟。翻开读一页就赢。', anchor: '#node-reading' },
     { id: 'postemma', start: 21, end: 29, emoji: '🌙', name: 'Emma 睡后 → 入睡',     tip: '独处时间到。状态好做爱好（音乐/羊毛毡/画画），状态不好走床上拉伸 + 颂钵冥想。', anchor: '#node-postemma' },
   ];
+
+  // 状态卡开启时，NOW 卡换成对应的一句话（分领域细节见各卡面板）
+  const LOW_TIP      = '今天降档就好：做一个动作 / 一页书就赢，不做也不欠谁。困了就睡——这是身体在还债，不是偷懒。';
+  const PERIOD_TIP   = '经期照护优先：腹腰脚踝保暖、温食补铁、早睡。运动避开跳跃 / 负重 / 腹腔加压，量大就散步 + 轻拉伸。';
+  const FULLLOAD_TIP = '今天满载——晚上别再加任务，攒着电走关机轨道：躺下戴耳机、跟音轨睡着就赢。';
+  let lowEnergyOn = false, periodOn = false, fullloadOn = false;
 
   function pickPhase(h) {
     const hh = h < 5 ? h + 24 : h;
@@ -1438,9 +1871,20 @@
     const h = now.getHours(), m = now.getMinutes();
     document.getElementById('now-time').textContent = `现在 ${pad(h)}:${pad(m)}`;
     const phase = pickPhase(h);
-    document.getElementById('now-phase').textContent = `${phase.emoji} ${phase.name}`;
-    document.getElementById('now-tip').textContent = phase.tip;
-    document.getElementById('now-anchor').setAttribute('href', phase.anchor);
+    const tags = [];
+    if (lowEnergyOn) tags.push('🔋 低电');
+    if (periodOn)    tags.push('🌹 经期');
+    if (fullloadOn)  tags.push('🌙 满载');
+    document.getElementById('now-phase').textContent =
+      (tags.length ? tags.join(' · ') + ' · ' : '') + `${phase.emoji} ${phase.name}`;
+    document.getElementById('now-tip').textContent =
+      lowEnergyOn ? LOW_TIP : fullloadOn ? FULLLOAD_TIP : periodOn ? PERIOD_TIP : phase.tip;
+    // 有状态开启时，「查看详情」跳到对应状态卡（优先级同 tip）；否则跳当前时段
+    const stateAnchor = lowEnergyOn ? '#protocol-lowenergy'
+                      : fullloadOn  ? '#protocol-shutdown'
+                      : periodOn    ? '#protocol-period'
+                      : null;
+    document.getElementById('now-anchor').setAttribute('href', stateAnchor || phase.anchor);
 
     document.querySelectorAll('.timeline-node').forEach(n => {
       n.classList.toggle('current', n.dataset.phase === phase.id);
@@ -1454,22 +1898,59 @@
   updateNow();
   setInterval(updateNow, 60000);
 
+  // ==================== 状态卡：点开卡＝进入该状态，联动 NOW 卡 ====================
+  const todayStr = () => {
+    const n = new Date();
+    return n.getFullYear() + '-' + pad(n.getMonth()+1) + '-' + pad(n.getDate());
+  };
+  // daily=true：只管今天，隔天自动归零（低电 / 满载）
+  // daily=false：跨天保持，直到手动关（经期）
+  // bodyClass：开启时给 body 加的类（仅低电用它把 NOW 卡换成休息色调）
+  function setupStateCard({ cardId, swId, key, daily, bodyClass, setFlag }) {
+    const card = document.getElementById(cardId);
+    if (!card) return;
+    const sw = document.getElementById(swId);
+    function load(){
+      try {
+        const d = JSON.parse(localStorage.getItem(key) || 'null');
+        if (!d) return false;
+        return daily ? (d.date === todayStr() && !!d.on) : !!d.on;
+      } catch(e){ return false; }
+    }
+    function apply(on){
+      setFlag(on);
+      if (sw) sw.setAttribute('aria-checked', on ? 'true' : 'false');
+      if (bodyClass) document.body.classList.toggle(bodyClass, on);
+      if (card.open !== on) card.open = on;
+      updateNow();
+    }
+    // 原生 details 负责展开/收起，这里只镜像状态 + 落盘
+    card.addEventListener('toggle', () => {
+      try { localStorage.setItem(key, JSON.stringify(daily ? { on: card.open, date: todayStr() } : { on: card.open })); } catch(e){}
+      apply(card.open);
+    });
+    apply(load());
+  }
+
+  setupStateCard({ cardId:'protocol-lowenergy', swId:'le-switch', key:'low_energy_mode_v1', daily:true,  bodyClass:'le-on', setFlag:v => lowEnergyOn = v });
+  setupStateCard({ cardId:'protocol-shutdown',  swId:'fl-switch', key:'fullload_mode_v1',   daily:true,  setFlag:v => fullloadOn = v });
+  setupStateCard({ cardId:'protocol-period',    swId:'pe-switch', key:'period_mode_v1',     daily:false, setFlag:v => periodOn = v });
+
   // ==================== 明日待办 · 共用主页 storage key ====================
-  const TDO_KEY = 'tomorrow_todo_v1';
-  const DEFAULT_TODOS = [
-    '', '', '', '', '', '', '', '', '', ''
-  ];
+  const TDO_KEY = 'tomorrow_todo_v2';
+  const TDO_COUNT = 5;
+  const DEFAULT_TODOS = ['', '', '', '', ''];
 
   function loadTdo() {
     try {
       const raw = localStorage.getItem(TDO_KEY);
-      if (!raw) return { items: DEFAULT_TODOS.slice(), done: new Array(10).fill(false) };
+      if (!raw) return { items: DEFAULT_TODOS.slice(), done: new Array(TDO_COUNT).fill(false) };
       const data = JSON.parse(raw);
       return {
-        items: (data.items || DEFAULT_TODOS.slice()).slice(0, 10),
-        done:  (data.done  || new Array(10).fill(false)).slice(0, 10),
+        items: (Array.isArray(data.items) ? data.items : DEFAULT_TODOS.slice()).slice(0, TDO_COUNT),
+        done:  (Array.isArray(data.done)  ? data.done  : new Array(TDO_COUNT).fill(false)).slice(0, TDO_COUNT),
       };
-    } catch(e) { return { items: DEFAULT_TODOS.slice(), done: new Array(10).fill(false) }; }
+    } catch(e) { return { items: DEFAULT_TODOS.slice(), done: new Array(TDO_COUNT).fill(false) }; }
   }
   function saveTdo(state) {
     try { localStorage.setItem(TDO_KEY, JSON.stringify(state)); } catch(e) {}
@@ -1479,7 +1960,7 @@
     const state = loadTdo();
     const ul = document.getElementById('tdo-list');
     ul.innerHTML = '';
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < TDO_COUNT; i++) {
       const li = document.createElement('li');
       if (state.done[i]) li.classList.add('done');
       li.innerHTML =
@@ -1508,8 +1989,8 @@
   }
   renderTdo();
   document.getElementById('tdo-reset').addEventListener('click', () => {
-    if (confirm('清空全部明日待办？（主页面同步清空）')) {
-      saveTdo({ items: new Array(10).fill(''), done: new Array(10).fill(false) });
+    if (confirm('清空全部明日待办？')) {
+      saveTdo({ items: new Array(TDO_COUNT).fill(''), done: new Array(TDO_COUNT).fill(false) });
       renderTdo();
     }
   });
@@ -1545,6 +2026,332 @@
     }, { rootMargin: '-80px 0px -55% 0px', threshold: 0 });
 
     map.forEach((_, el) => io.observe(el));
+  })();
+
+  // ==================== 清洁日打卡 ====================
+  (function setupCleaning() {
+    const KEY = 'cleaning_checked_v1';
+    let state;
+    try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { state = {}; }
+    if (!state.checked) state.checked = {};
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+
+    const items = document.querySelectorAll('#protocol-cleaning .ck-item');
+    items.forEach(el => {
+      const id = el.dataset.id;
+      if (state.checked[id]) el.classList.add('done');
+      el.addEventListener('click', () => {
+        const isDone = el.classList.toggle('done');
+        if (isDone) state.checked[id] = true; else delete state.checked[id];
+        save();
+      });
+    });
+
+    const resetBtn = document.getElementById('ck-reset');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        state.checked = {};
+        save();
+        items.forEach(el => el.classList.remove('done'));
+      });
+    }
+  })();
+
+  // ==================== 阅读 10 分钟打卡 ====================
+  (function setupReadingCheckin(){
+    const root = document.getElementById('reading-checkin');
+    if (!root) return;
+    const KEY = 'summer_reading_v1';
+
+    const $ = sel => root.querySelector(sel);
+    function esc(s){
+      return String(s).replace(/[&<>"]/g, c =>
+        ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+    }
+    function ymd(d){
+      return d.getFullYear() + '-' +
+        String(d.getMonth()+1).padStart(2,'0') + '-' +
+        String(d.getDate()).padStart(2,'0');
+    }
+    function load(){
+      try { return JSON.parse(localStorage.getItem(KEY) || '{}'); }
+      catch(e){ return {}; }
+    }
+    function persist(){
+      try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e){}
+    }
+
+    let data = load();
+    const todayKey = ymd(new Date());
+    let targetKey = todayKey;   // 当前正在填/补的日子，默认今天
+
+    function mdLabel(k){ return k.slice(5).replace('-','/'); }
+
+    function streak(){
+      let n = 0;
+      const d = new Date();
+      if (!data[ymd(d)]) d.setDate(d.getDate()-1);
+      while (data[ymd(d)]) { n++; d.setDate(d.getDate()-1); }
+      return n;
+    }
+    function weekCount(){
+      const now = new Date();
+      const dow = (now.getDay()+6)%7;
+      let c = 0;
+      for (let i=0;i<=dow;i++){
+        const t = new Date(); t.setDate(now.getDate()-i);
+        if (data[ymd(t)]) c++;
+      }
+      return c;
+    }
+    function lastBook(){
+      const keys = Object.keys(data).sort().reverse();
+      for (const k of keys){ if (data[k] && data[k].book) return data[k].book; }
+      return '';
+    }
+    function renderWeek(){
+      const names = ['一','二','三','四','五','六','日'];
+      const now = new Date();
+      const dow = (now.getDay()+6)%7;
+      const monday = new Date(); monday.setDate(now.getDate()-dow);
+      let html = '';
+      for (let i=0;i<7;i++){
+        const d = new Date(monday); d.setDate(monday.getDate()+i);
+        const k = ymd(d);
+        const filled = !!data[k];
+        const isToday = k === todayKey;
+        const isFuture = k > todayKey;
+        const clickable = !isFuture;            // 今天或更早都能点（补卡 / 改）
+        const addable = clickable && !filled;   // 过去没打卡的——虚线圈，提示可补
+        const selected = k === targetKey;
+        html += '<div class="rc-day' + (filled?' filled':'') +
+          (isToday?' today':'') + (isFuture?' future':'') +
+          (clickable?' clickable':'') + (addable?' addable':'') +
+          (selected?' selected':'') + '" data-key="' + k + '">' +
+          '<div class="rc-day-dot">' + (filled?'✓':'') + '</div>' +
+          '<div class="rc-day-label">' + names[i] + '</div></div>';
+      }
+      $('#rc-week').innerHTML = html;
+    }
+    const LOG_SHOW = 3;       // 平时只显示最近 3 条，其余折叠
+    let logExpanded = false;
+    function renderLog(){
+      const keys = Object.keys(data).sort().reverse();
+      if (!keys.length){
+        $('#rc-log').innerHTML =
+          '<div class="rc-log-empty">还没有记录——今晚开始第一笔。</div>';
+        return;
+      }
+      const shown = logExpanded ? keys : keys.slice(0, LOG_SHOW);
+      const itemsHtml = shown.map(k => {
+        const e = data[k] || {};
+        const md = mdLabel(k);
+        const book = e.book
+          ? '<span class="rc-log-book">' + esc(e.book) + '</span>'
+          : '<span class="rc-log-book" style="color:var(--text-hint)">（未填书名）</span>';
+        return '<div class="rc-log-item"><span class="rc-log-date">' + md + '</span>' +
+          book + (e.note ? '<br>' + esc(e.note) : '') + '</div>';
+      }).join('');
+      const toggle = keys.length > LOG_SHOW
+        ? '<button type="button" class="rc-log-toggle" id="rc-log-toggle">' +
+            (logExpanded ? '收起 ▴' : '展开全部 ' + keys.length + ' 条 ▾') + '</button>'
+        : '';
+      $('#rc-log').innerHTML = itemsHtml + toggle;
+      const t = $('#rc-log-toggle');
+      if (t) t.addEventListener('click', () => { logExpanded = !logExpanded; renderLog(); });
+    }
+    function setTarget(k){
+      if (k > todayKey) return;          // 不能补未来
+      targetKey = k;
+      render();
+      $('#rc-book').focus();
+    }
+
+    function render(){
+      const isToday = targetKey === todayKey;
+      const done = !!data[targetKey];
+      $('#rc-streak-num').textContent = streak();
+      $('#rc-week-count').textContent = weekCount();
+
+      // 补卡提示条
+      const target = $('#rc-target');
+      target.hidden = isToday;
+      if (!isToday) $('#rc-target-label').textContent = mdLabel(targetKey);
+
+      const bookEl = $('#rc-book'), noteEl = $('#rc-note');
+      const focused = document.activeElement === bookEl || document.activeElement === noteEl;
+      if (!focused){
+        bookEl.value = (data[targetKey] && data[targetKey].book) || lastBook();
+        noteEl.value = (data[targetKey] && data[targetKey].note) || '';
+      }
+      noteEl.placeholder = isToday
+        ? '今天读到哪 / 一句话感受（可留空）'
+        : '那天读到哪 / 一句话感受（可留空）';
+
+      const btn = $('#rc-btn');
+      btn.classList.toggle('done', done);
+      btn.textContent = isToday
+        ? (done ? '今天已完成 ✓' : '✓ 完成今天的 10 分钟')
+        : (done ? '已补 ' + mdLabel(targetKey) + ' ✓（可改）' : '✓ 补上 ' + mdLabel(targetKey) + ' 的 10 分钟');
+
+      const cancel = $('#rc-cancel');
+      cancel.style.display = done ? 'block' : 'none';
+      cancel.textContent = isToday ? '取消今天的打卡' : '删除 ' + mdLabel(targetKey) + ' 的打卡';
+
+      renderWeek();
+      renderLog();
+    }
+
+    $('#rc-btn').addEventListener('click', () => {
+      data[targetKey] = {
+        book: $('#rc-book').value.trim(),
+        note: $('#rc-note').value.trim()
+      };
+      persist();
+      render();
+    });
+    ['#rc-book','#rc-note'].forEach(sel => {
+      $(sel).addEventListener('input', () => {
+        if (!data[targetKey]) return;
+        data[targetKey] = {
+          book: $('#rc-book').value.trim(),
+          note: $('#rc-note').value.trim()
+        };
+        persist();
+        renderLog();
+      });
+    });
+    $('#rc-cancel').addEventListener('click', () => {
+      delete data[targetKey];
+      persist();
+      if (targetKey !== todayKey) targetKey = todayKey;   // 删完回到今天
+      render();
+    });
+
+    // 点周条上的某天 → 切到补/改那天
+    $('#rc-week').addEventListener('click', (e) => {
+      const day = e.target.closest('.rc-day');
+      if (!day || !day.classList.contains('clickable')) return;
+      setTarget(day.getAttribute('data-key'));
+    });
+
+    // 回到今天
+    $('#rc-target-back').addEventListener('click', () => { setTarget(todayKey); });
+
+    // 补更早的日子：展开日期选择器
+    $('#rc-backfill-toggle').addEventListener('click', () => {
+      const row = $('#rc-backfill-row');
+      row.hidden = !row.hidden;
+      if (!row.hidden){
+        const dateEl = $('#rc-date');
+        dateEl.max = todayKey;
+        if (!dateEl.value) dateEl.value = targetKey;
+        dateEl.focus();
+      }
+    });
+    $('#rc-date').addEventListener('change', (e) => {
+      if (e.target.value) setTarget(e.target.value);
+    });
+
+    render();
+  })();
+
+  // ==================== 抬头右侧 · 今日与神对话 ====================
+  (function setupGodtalkAside(){
+    const aside = document.getElementById('gt-aside');
+    if (!aside) return;
+    const chapterEl = document.getElementById('gt-chapter');
+    const qEl = document.getElementById('gt-q');
+    const aEl = document.getElementById('gt-a');
+    const aWrap = document.getElementById('gt-a-wrap');
+    const toggleBtn = document.getElementById('gt-toggle');
+    const shuffleBtn = document.getElementById('gt-shuffle');
+
+    // 数据来自 ../读书笔记/与神对话1content.js（CONTENT）—— 没加载到就友好降级
+    if (typeof CONTENT === 'undefined' || !CONTENT.chapters) {
+      chapterEl.textContent = '';
+      qEl.textContent = '内容未加载';
+      aEl.textContent = '与神对话1content.js 没读到，检查一下路径。';
+      if (shuffleBtn) shuffleBtn.style.display = 'none';
+      return;
+    }
+
+    // 只收有正文的条目，跳过纯小标题（与主页「今日一条」同口径）
+    const items = [];
+    CONTENT.chapters.forEach(c => {
+      (c.items || []).forEach(it => {
+        if (it && it.a && it.a.trim().length > 8) {
+          items.push({ chapter: c.label, q: (it.q || '').trim(), a: it.a.trim() });
+        }
+      });
+    });
+    if (!items.length) { aside.style.display = 'none'; return; }
+
+    function ymd(d){
+      return d.getFullYear() + '-' +
+        String(d.getMonth()+1).padStart(2,'0') + '-' +
+        String(d.getDate()).padStart(2,'0');
+    }
+    // 把日期串散列成稳定下标 —— 同一天固定同一条，隔天才换
+    function dateSeedIndex(s){
+      let h = 0;
+      for (let i=0;i<s.length;i++) h = (h*31 + s.charCodeAt(i)) >>> 0;
+      return h % items.length;
+    }
+
+    // 复用主页同一个 override key —— 日常页与主页今天显示同一条、换一条也同步
+    const OVERRIDE_KEY = 'godtalk_daily_override_v1';
+    function loadOverride(){
+      try { return JSON.parse(localStorage.getItem(OVERRIDE_KEY) || 'null'); }
+      catch(e){ return null; }
+    }
+    function saveOverride(date, idx){
+      try { localStorage.setItem(OVERRIDE_KEY, JSON.stringify({ date, idx })); } catch(e){}
+    }
+
+    function syncToggle(){
+      // 折叠态下，若正文被截断才显示「展开」按钮
+      aWrap.classList.add('collapsed');
+      toggleBtn.textContent = '展开 ▾';
+      const overflowing = aEl.scrollHeight > aWrap.clientHeight + 4;
+      toggleBtn.hidden = !overflowing;
+      if (!overflowing) aWrap.classList.remove('collapsed');
+    }
+
+    function render(idx){
+      const it = items[idx];
+      chapterEl.textContent = it.chapter || '';
+      qEl.textContent = it.q || '';
+      qEl.style.display = it.q ? '' : 'none';
+      aEl.textContent = it.a || '';
+      syncToggle();
+    }
+
+    function todaysIndex(){
+      const today = ymd(new Date());
+      const ov = loadOverride();
+      if (ov && ov.date === today && Number.isInteger(ov.idx) && ov.idx < items.length) return ov.idx;
+      return dateSeedIndex(today);
+    }
+
+    let current = todaysIndex();
+    render(current);
+
+    toggleBtn.addEventListener('click', () => {
+      const collapsed = aWrap.classList.toggle('collapsed');
+      toggleBtn.textContent = collapsed ? '展开 ▾' : '收起 ▴';
+    });
+
+    if (shuffleBtn) {
+      shuffleBtn.addEventListener('click', () => {
+        if (items.length < 2) return;
+        let next = current;
+        while (next === current) next = Math.floor(Math.random() * items.length);
+        current = next;
+        render(current);
+        saveOverride(ymd(new Date()), current);   // 手动换的，今天就停在这条
+      });
+    }
   })();
 </script>
 

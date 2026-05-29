@@ -297,6 +297,28 @@
     gap: 8px;
   }
   .card-title .icon { font-size: 1.05rem; }
+
+  /* 今日一条 · 与神对话 */
+  .godtalk-card { border-left: 3px solid var(--accent); }
+  .gt-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 0.65rem; }
+  .gt-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; color: var(--accent-mid); text-transform: uppercase; }
+  .gt-shuffle {
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 0.72rem;
+    color: var(--text-hint);
+    background: none;
+    border: 1px solid var(--border-dark);
+    border-radius: 99px;
+    padding: 3px 13px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .gt-shuffle:hover { color: var(--accent); border-color: var(--accent-mid); }
+  .gt-chapter { font-size: 0.68rem; color: var(--text-hint); letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+  .gt-q { font-family: 'Noto Serif SC', serif; font-size: 1.02rem; font-weight: 600; line-height: 1.75; color: var(--text-primary); margin-bottom: 0.7rem; }
+  .gt-a { font-family: 'Noto Serif SC', serif; font-weight: 400; font-size: 0.9rem; line-height: 2; color: var(--text-secondary); white-space: pre-wrap; }
+
   .group-title {
     font-size: 0.72rem;
     font-weight: 500;
@@ -894,7 +916,6 @@
   <div class="sub-nav show" id="sub-nav-today">
     <div class="sub-nav-inner">
       <button class="sub-tab active" data-sub="daily">日常</button>
-      <button class="sub-tab" data-sub="daily-test">日常 test</button>
       <button class="sub-tab" data-sub="wardrobe">穿搭</button>
       <button class="sub-tab" data-sub="menu">菜单</button>
     </div>
@@ -917,560 +938,16 @@
   </div>
 </div>
 
-<!-- ============ 今天 / 日常 test（精简重构版） ============ -->
-<div class="panel" id="panel-daily-test">
-  <div class="iframe-wrap">
-    <iframe data-src="内容/日常test.html" title="日常 test"></iframe>
-  </div>
-</div>
-
 <!-- ============ 今天 / 日常 ============ -->
-<div class="panel active" id="panel-daily">
-
-  <aside class="side-toc" id="side-toc">
-    <div class="side-toc-title">目录</div>
-    <ul>
-      <li><a href="#toc-tomorrow">📋 明日待办</a></li>
-      <li>
-        <a href="#toc-rhythm" class="active">今日的节奏</a>
-        <ul class="side-toc-sub">
-          <li><a href="#toc-morning">🌅 晨起</a></li>
-          <li><a href="#toc-day">☀️ 白天与间歇</a></li>
-          <li><a href="#toc-workday">🍱 工作日饮食与休息</a></li>
-          <li><a href="#toc-evening">🌇 傍晚修复</a></li>
-          <li><a href="#toc-reading">📖 阅读 10 分钟</a></li>
-          <li><a href="#toc-postemma">🌙 Emma 睡后 → 入睡</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#toc-cycle">周期与扰动</a>
-        <ul class="side-toc-sub">
-          <li><a href="#toc-weekly">📅 周固定</a></li>
-          <li><a href="#toc-overload">🌙 满载日关机轨道</a></li>
-          <li><a href="#toc-cleaning">🧹 清洁日</a></li>
-          <li><a href="#toc-period">🌹 经期护理</a></li>
-          <li><a href="#toc-disrupt">🎉 周末/假期/聚会</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#toc-body">身体与健康</a>
-        <ul class="side-toc-sub">
-          <li><a href="#toc-gut">🌿 日常饮食与肠胃</a></li>
-          <li><a href="#toc-weekly-review">📈 运动 · 周总结</a></li>
-        </ul>
-      </li>
-      <li><a href="#toc-hobby">🌷 日常兴趣爱好</a></li>
-    </ul>
-  </aside>
-
-  <div class="inline-content">
-
-    <div class="card toc-anchor" id="toc-tomorrow" style="border-left:3px solid var(--accent);">
-      <div class="card-title"><span class="icon">📋</span>明日待办</div>
-      <p class="para" style="font-size:.78rem;color:var(--text-hint);font-style:italic;margin:-.4rem 0 .8rem;">2026-05-25 周一 · 上次更新 2026-05-24</p>
-
-      <div style="display:flex;align-items:center;margin:.4rem 0 .6rem;">
-        <span style="font-size:.78rem;color:var(--text-hint);font-style:italic;flex:1;">点击文字可直接编辑 · 勾选画掉 · 右侧清空按钮一键重置</span>
-        <button class="ck-reset" id="tdo-reset" title="清空全部明日待办">清空</button>
-      </div>
-      <ul class="tdo-list" id="tdo-list">
-        <li><span class="tdo-num">1.</span><input type="checkbox" class="tdo-check"><span class="tdo-text" contenteditable="true">🧘 晨间运动：清晨排毒瑜伽</span></li>
-        <li><span class="tdo-num">2.</span><input type="checkbox" class="tdo-check"><span class="tdo-text" contenteditable="true">🧈 9 点起自由时间，做黄油白葡萄酒酱汁</span></li>
-        <li><span class="tdo-num">3.</span><input type="checkbox" class="tdo-check"><span class="tdo-text" contenteditable="true">📺 电视剧《背着善在跑》</span></li>
-        <li><span class="tdo-num">4.</span><input type="checkbox" class="tdo-check"><span class="tdo-text" contenteditable="true">📚 风变练习</span></li>
-        <li><span class="tdo-num">5.</span><input type="checkbox" class="tdo-check"><span class="tdo-text" contenteditable="true">🍚 做晚饭:卤肉饭</span></li>
-        <li><span class="tdo-num">6.</span><input type="checkbox" class="tdo-check"><span class="tdo-text" contenteditable="true">🏊 6 点去游泳</span></li>
-        <li><span class="tdo-num">7.</span><input type="checkbox" class="tdo-check"><span class="tdo-text" contenteditable="true"></span></li>
-        <li><span class="tdo-num">8.</span><input type="checkbox" class="tdo-check"><span class="tdo-text" contenteditable="true"></span></li>
-        <li><span class="tdo-num">9.</span><input type="checkbox" class="tdo-check"><span class="tdo-text" contenteditable="true"></span></li>
-        <li><span class="tdo-num">10.</span><input type="checkbox" class="tdo-check"><span class="tdo-text" contenteditable="true"></span></li>
-      </ul>
-    </div>
-
-    <div class="section-heading toc-anchor" id="toc-rhythm">今日的节奏</div>
-
-    <div class="card toc-anchor" id="toc-morning">
-      <div class="card-title"><span class="icon">🌅</span>晨起 90 分钟</div>
-      <div class="group-title">基于《睡眠革命》R90 仪式带 · 为精力充沛的一天定调</div>
-
-      <table>
-        <thead><tr><th style="width:24%;">环节</th><th>内容</th></tr></thead>
-        <tbody>
-          <tr><td><strong>核心 4 步</strong></td><td>坐起 → 开窗帘（光启动昼夜节律）→ 下床换衣 → 烧水</td></tr>
-          <tr><td><strong>扩展流程</strong></td><td>蒸早饭 → 洗漱化妆 → 早饭 + 喝水（⚠️ 浏览不回复）→ 通勤 30 分钟</td></tr>
-          <tr><td><strong>不上班日替代</strong></td><td>散步送 Emma → 9 点到家 → 立刻进<strong>高强度黄金窗口</strong></td></tr>
-          <tr><td><strong>可选轻锻炼</strong></td><td style="line-height:2.2;"><button class="action-link" data-num="43">八段锦 #43</button> <button class="action-link" data-num="11">Nadi 呼吸 #11</button> <button class="action-link" data-num="22">Zoey 站立拉伸 #22</button> <button class="action-link" data-num="49">第八套广播 #49</button> <button class="action-link" data-num="48">第九套广播 #48</button></td></tr>
-        </tbody>
-      </table>
-
-      <p class="para" style="font-size:.78rem;color:var(--text-hint);font-style:italic;">早起后家里安静的空白时光是最重要的独处时间——有就很好，没有也不垮。</p>
-      <div class="combo-suggest">
-        <span class="label">推荐组合</span>
-
-        <p style="font-size:.76rem;color:var(--text-hint);margin:.6rem 0 .4rem;font-weight:500;">🌅 醒来温和唤醒 · 10–15 min 短组合</p>
-        <div class="combo-preview rest" data-combo-id="combo-rest-morning">
-          <div class="cp-main"><span class="cp-title">🌿 轻唤醒 28min</span><span class="cp-flow">Nadi 呼吸（5min）→ Zoey 站立拉伸（10min）→ 真空腹（5min）→ 骨盆回正（8min）</span></div>
-        </div>
-        <div class="combo-preview rest" data-combo-id="combo-rest-detox">
-          <div class="cp-main"><span class="cp-title">🌿 晨起排毒 20min</span><span class="cp-flow">清晨排毒瑜伽（10min）→ 仙人揉腹（10min）</span></div>
-        </div>
-        <div class="combo-preview stamina" data-combo-id="combo-stamina-fast">
-          <div class="cp-main"><span class="cp-title">🔥 快速 9min</span><span class="cp-flow">一首歌热身（4min）→ 跳绳（5min）</span></div>
-        </div>
-        <div class="combo-preview shape" data-combo-id="combo-shape-core">
-          <div class="cp-main"><span class="cp-title">💪 核心快速 25min</span><span class="cp-flow">真空腹（5min）→ 腹横肌激活（10min）→ 仙人揉腹（10min）</span></div>
-        </div>
-        <div class="combo-preview shape" data-combo-id="combo-shape-yoga">
-          <div class="cp-main"><span class="cp-title">💪 晨起燃脂瑜伽 10min</span><span class="cp-flow">清晨燃脂瑜伽（10min）</span></div>
-        </div>
-        <div class="combo-preview stamina" data-combo-id="combo-stamina-quick">
-          <div class="cp-main"><span class="cp-title">🔥 簿肌快练 9min</span><span class="cp-flow">一首歌热身（4min）→ 簿肌修炼·居家无器械（5min）</span></div>
-        </div>
-
-        <p style="font-size:.76rem;color:var(--text-hint);margin:1rem 0 .4rem;font-weight:500;">🔥 不上班日 9 点黄金窗口 · 高强度长组合（意志力满 + 已热身）</p>
-        <div class="combo-preview shape" data-combo-id="combo-stamina-power">
-          <div class="cp-main"><span class="cp-title">💪 哑铃力量 35min</span><span class="cp-flow">一副哑铃练全身（15min）→ 全身塑形哑铃跟练（20min）</span></div>
-        </div>
-        <div class="combo-preview stamina" data-combo-id="combo-stamina-burn">
-          <div class="cp-main"><span class="cp-title">🔥 减脂操 19min</span><span class="cp-flow">一首歌热身（4min）→ 欧阳春晓有氧减脂操（15min）</span></div>
-        </div>
-        <div class="combo-preview rest" data-combo-id="combo-stamina-radio">
-          <div class="cp-main"><span class="cp-title">🌿 广播体操套餐 12min</span><span class="cp-flow">一首歌热身（4min）→ 第八套广播体操（4min）→ 第九套广播体操（4min）</span></div>
-        </div>
-        <div class="combo-preview shape" data-combo-id="combo-shape-leghip">
-          <div class="cp-main"><span class="cp-title">💪 腿臀套餐 32min</span><span class="cp-flow">林芊妤瘦腿（10min）→ 坐姿练臀弹力带（5min）→ 韩小四膝超伸（10min）→ Bella 臀腿完整拉伸（7min）</span></div>
-        </div>
-        <div class="combo-preview shape" data-combo-id="combo-shape-power">
-          <div class="cp-main"><span class="cp-title">💪 力量综合 35min</span><span class="cp-flow">真空腹（5min）→ 林芊妤瘦腿（10min）→ 坐姿练臀（5min）→ 一副哑铃练全身（15min）</span></div>
-        </div>
-        <div class="combo-preview shape" data-combo-id="combo-shape-belly">
-          <div class="cp-main"><span class="cp-title">💪 腹部扎实 30min</span><span class="cp-flow">真空腹（5min）→ 萨尔曼瘦肚子（5min）→ 腹横肌激活（10min）→ 古法内脏脂肪操（10min）</span></div>
-        </div>
-        <div class="combo-preview shape" data-combo-id="combo-shape-back">
-          <div class="cp-main"><span class="cp-title">💪 美背修身 20min</span><span class="cp-flow">谁懂丝滑美背的杀伤力（15min）→ 居家哑铃背部跟练（5min）</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card toc-anchor" id="toc-day">
-      <div class="card-title"><span class="icon">☀️</span>白天与间歇</div>
-      <div class="group-title">B 型工作微恢复 · 不上班日 6h 自主窗口</div>
-
-      <table>
-        <thead><tr><th style="width:26%;">场景</th><th>怎么做</th></tr></thead>
-        <tbody>
-          <tr><td><strong>🪑 上班日</strong><br><span style="font-size:.74rem;color:var(--text-hint);">工作时段见缝插针</span></td><td>① 任务间隙 5–15 分：转脖子、走两步、做组体态快练<br>② 工位微动作：<button class="action-link" data-num="2">女明星仪态 #2</button> <button class="action-link" data-num="5">骨科腰椎操 #5</button> <button class="action-link" data-num="62">腹横肌激活 #62</button> <button class="action-link" data-num="63">真空腹 #63</button> <button class="action-link" data-num="29">极度舒适拉伸 #29</button> <button class="action-link" data-num="16">谐振呼吸 #16</button><br>③ 鼻呼吸贯穿全天</td></tr>
-          <tr><td><strong>🏠 不上班日</strong><br><span style="font-size:.74rem;color:var(--text-hint);">6h 自主窗口 9:00–15:00</span></td><td>① 9 点到家立刻进运动——意志力满、散步已热身，是<strong>高强度黄金窗口</strong><br>② 12:30 困了就睡 30 分，醒来清空疲劳<br>③ 状态好，下午 1–2 点可补一次温和组合</td></tr>
-        </tbody>
-      </table>
-
-      <div class="combo-suggest">
-        <span class="label">推荐组合</span>
-
-        <p style="font-size:.76rem;color:var(--text-hint);margin:.6rem 0 .4rem;font-weight:500;">🪑 工作时段微恢复（5–15 min · 任务间隙）</p>
-        <div class="combo-preview rest" data-combo-id="combo-rest-posture">
-          <div class="cp-main"><span class="cp-title">🌿 体态快练 9min</span><span class="cp-flow">女明星仪态管理（3min）→ 骨科专家腰椎操（3min）→ 极度舒适拉伸（3min）</span></div>
-        </div>
-
-        <p style="font-size:.76rem;color:var(--text-hint);margin:1rem 0 .4rem;font-weight:500;">🏠 不上班日中段补给（午饭后 / CRP 后 / 收衣服间隙）</p>
-        <div class="combo-preview rest" data-combo-id="combo-rest-morning">
-          <div class="cp-main"><span class="cp-title">🌿 轻唤醒 28min · 午后小睡后做</span><span class="cp-flow">Nadi 呼吸（5min）→ Zoey 站立拉伸（10min）→ 真空腹（5min）→ 骨盆回正（8min）</span></div>
-        </div>
-        <div class="combo-preview shape" data-combo-id="combo-shape-core">
-          <div class="cp-main"><span class="cp-title">💪 核心快速 25min</span><span class="cp-flow">真空腹（5min）→ 腹横肌激活（10min）→ 仙人揉腹（10min）</span></div>
-        </div>
-        <div class="combo-preview shape" data-combo-id="combo-shape-hip">
-          <div class="cp-main"><span class="cp-title">💪 假胯宽专项 14min</span><span class="cp-flow">一首歌热身（4min）→ 根除小肚腩·告别假胯宽（10min）</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card toc-anchor" id="toc-workday">
-      <div class="card-title"><span class="icon">🍱</span>工作日饮食与休息</div>
-      <div class="group-title">能量管理 · 不让白天的吃喝变成晚上的负担</div>
-
-      <p class="para" style="font-size:.78rem;color:var(--text-hint);font-style:italic;margin:.55rem 0 .7rem;">
-        按一天的时段走 · 🍳 = 饮食，😌 = 休息
-      </p>
-      <table>
-        <thead><tr><th style="width:20%;">时段</th><th>要做的</th></tr></thead>
-        <tbody>
-          <tr><td><strong>🍳 早餐</strong></td><td>1 个肉包子，当"垫胃"不当正餐；胃口跟不上别硬塞</td></tr>
-          <tr><td><strong>🍳 上午</strong></td><td>1 个水煮蛋——这天主要的蛋白质补充</td></tr>
-          <tr><td><strong>🍳 午餐</strong></td><td>1 个水果 + 1 杯咖啡，不吃正餐——中午本来就不饿，留空让胃休息（详见 <a href="#toc-gut">日常饮食与肠胃</a>）</td></tr>
-          <tr><td><strong>😌 午休</strong></td><td>半小时换个用法：出门走、晒太阳、闭目养神 10–15 分（戴耳机 / 眼罩）</td></tr>
-          <tr><td><strong>🍳 下午</strong></td><td>零食不主动戒——前面做好了，嘴馋会自己缩水</td></tr>
-          <tr><td><strong>😌 17–19 点</strong></td><td>第二个修复黄金期：闭目 10–15 分，或在工位做一次振谐呼吸</td></tr>
-          <tr><td><strong>😌 全天</strong></td><td>每 90 分钟微休息 5 分（离屏幕、转脖子、深呼吸）；鼻呼吸贯穿全天</td></tr>
-        </tbody>
-      </table>
-
-      <div class="highlight">
-        <div class="highlight-text">💡 中午让胃留空、不凑满三餐：早 1 个包子垫底、上午 1 个鸡蛋补蛋白、中午 1 水果 + 1 咖啡过渡、晚饭一家人才是这天的能量重头戏。休息按 <strong>90 分钟周期</strong>主动还损耗——不必非睡够 8 小时。</div>
-      </div>
-    </div>
-
-    <div class="card toc-anchor" id="toc-evening">
-      <div class="card-title"><span class="icon">🌇</span>傍晚修复期（下班 → 接娃前）</div>
-      <div class="group-title">最累、但最该温和动一动的时段</div>
-
-      <table>
-        <thead><tr><th style="width:26%;">时机</th><th>做什么</th></tr></thead>
-        <tbody>
-          <tr><td><strong>🚇 通勤途中</strong></td><td>肩颈拉伸 + 呼吸法 + 体态调整 + 冥想——把等待时间借来用</td></tr>
-          <tr><td><strong>🏠 到家零碎时间</strong></td><td>等水开 / 等饭蒸熟时做 5–10 分钟拉伸，比什么都不做强</td></tr>
-        </tbody>
-      </table>
-
-      <div class="combo-suggest">
-        <span class="label">推荐组合（修复性）</span>
-
-        <p style="font-size:.76rem;color:var(--text-hint);margin:.6rem 0 .4rem;font-weight:500;">🌿 通勤 / 到家修复（拉伸 + 呼吸 + 体态）</p>
-        <div class="combo-preview rest" data-combo-id="combo-rest-shoulder">
-          <div class="cp-main"><span class="cp-title">🌿 肩颈背修复 28min</span><span class="cp-flow">振谐呼吸（10min）→ 肩颈背动态拉伸（10min）→ 告别圆肩驼背 YTWL（8min）</span></div>
-        </div>
-        <div class="combo-preview rest" data-combo-id="combo-rest-posture">
-          <div class="cp-main"><span class="cp-title">🌿 体态快练 9min</span><span class="cp-flow">女明星仪态管理（3min）→ 骨科专家腰椎操（3min）→ 极度舒适拉伸（3min）</span></div>
-        </div>
-        <div class="combo-preview rest" data-combo-id="combo-rest-detox">
-          <div class="cp-main"><span class="cp-title">🌿 晨起排毒 20min</span><span class="cp-flow">清晨排毒瑜伽（10min）→ 仙人揉腹（10min）</span></div>
-        </div>
-
-        <p style="font-size:.76rem;color:var(--text-hint);margin:1rem 0 .4rem;font-weight:500;">💪 温和身体修整（瑜伽 / 体态矫正级别）</p>
-        <div class="combo-preview shape" data-combo-id="combo-shape-yoga">
-          <div class="cp-main"><span class="cp-title">💪 晨起燃脂瑜伽 10min</span><span class="cp-flow">清晨燃脂瑜伽（10min）</span></div>
-        </div>
-        <div class="combo-preview shape" data-combo-id="combo-shape-arch">
-          <div class="cp-main"><span class="cp-title">💪 足弓训练 10min</span><span class="cp-flow">完善足弓训练·矫正腿型（10min）</span></div>
-        </div>
-        <div class="combo-preview shape" data-combo-id="combo-shape-archdeep">
-          <div class="cp-main"><span class="cp-title">💪 足弓深度 20min</span><span class="cp-flow">足弓弹性重建 4.0（20min）</span></div>
-        </div>
-        <div class="combo-preview shape" data-combo-id="combo-shape-hip">
-          <div class="cp-main"><span class="cp-title">💪 假胯宽专项 14min</span><span class="cp-flow">一首歌热身（4min）→ 根除小肚腩·告别假胯宽（10min）</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card toc-anchor" id="toc-reading">
-      <div class="card-title"><span class="icon">📖</span>阅读 10 分钟（Emma 故事时间）</div>
-      <div class="group-title">把阅读焊在已有的锚点上 · 不靠自律，靠习惯叠加</div>
-
-      <table>
-        <thead><tr><th style="width:22%;">环节</th><th>怎么做</th></tr></thead>
-        <tbody>
-          <tr><td><strong>⏰ 锚点</strong></td><td>每晚 <strong>8:30</strong> Eric 给 Emma 讲故事——他俩一坐下，就是你的闹钟，不用自己记</td></tr>
-          <tr><td><strong>📖 怎么做</strong></td><td>在同一个房间，读你<strong>自己的书</strong>；一家三个人、同一段安静时间，也是给 Emma 的示范</td></tr>
-          <tr><td><strong>🎯 目标</strong></td><td>只是"翻开，读一页"。10 分钟是上限不是任务，读 2 分钟也算赢——先保住每天都碰到书</td></tr>
-          <tr><td><strong>🛋️ 小动作</strong></td><td>把在读的书固定放在你常坐的位置旁；先挑好读、想翻下一页的书，别一上来啃硬的</td></tr>
-        </tbody>
-      </table>
-
-      <p class="para" style="font-size:.78rem;color:var(--text-hint);font-style:italic;">这 10 分钟是 Eric 完整接手 Emma 的时间，正大光明属于你——物理家务可以等，不必愧疚。</p>
-
-      <div class="reading-checkin" id="reading-checkin">
-        <div class="rc-top">
-          <div class="rc-streak">已连续 <span class="rc-streak-num" id="rc-streak-num">0</span> 天</div>
-          <div class="rc-stat">本周已读 <strong id="rc-week-count">0</strong> / 7 天</div>
-        </div>
-
-        <input type="text" id="rc-book" class="rc-input" placeholder="在读的书（书名）" autocomplete="off">
-        <textarea id="rc-note" class="rc-input rc-note" placeholder="今天读到哪 / 一句话感受（可留空）"></textarea>
-        <button id="rc-btn" class="rc-btn">✓ 完成今天的 10 分钟</button>
-        <button id="rc-cancel" class="rc-cancel">取消今天的打卡</button>
-
-        <div class="rc-week" id="rc-week"></div>
-
-        <div class="rc-log-title">最近记录</div>
-        <div class="rc-log" id="rc-log"></div>
-      </div>
-    </div>
-
-    <div class="card toc-anchor" id="toc-postemma">
-      <div class="card-title"><span class="icon">🌙</span>Emma 睡后 → 入睡</div>
-      <div class="group-title">从独处到进入睡眠 · 一整段夜晚</div>
-      <p class="para" style="font-size:.78rem;color:var(--text-hint);font-style:italic;margin:.4rem 0 .2rem;">⚠️ 满载日（周四 9–10h 含加班）别套这套——那天神经下不来，自选 routine 反而做不到，走专门的 <a href="#toc-overload" style="color:var(--accent);">🌙 关机轨道</a>。</p>
-      <table>
-        <thead><tr><th style="width:26%;">环节</th><th>怎么做</th></tr></thead>
-        <tbody>
-          <tr><td><strong>🛋️ 独处 · 状态好</strong></td><td>做日常兴趣爱好：🎵 听音乐、🧶 玩羊毛毡、📚 阅读、🎤 学唱歌、🗂️ 整理收纳、🍃 断舍离、🎨 画画</td></tr>
-          <tr><td><strong>🛋️ 独处 · 状态不好</strong></td><td>床上拉伸、精油按摩、<button class="action-link" data-num="21">JJ 全身拉伸 #21</button> <button class="action-link" data-num="23">全程躺练 #23</button> <button class="action-link" data-num="15">颂钵冥想 #15</button></td></tr>
-          <tr><td><strong>✍️ 睡前纸笔</strong></td><td>
-            <strong>① 幸福笔记</strong>：只记开心幸福的瞬间<br>
-            <strong>② 下载你的一天</strong>：今日总结，清空大脑<br>
-            <strong>③ 几个决定</strong>：明天的 ootd · 明日菜单 · 明日待办
-          </td></tr>
-          <tr><td><strong>📵 电子产品</strong></td><td>独处时身体发出"够了"信号（眼睛累 / 头不舒服）就放下；睡前 90 分钟彻底关闭——蓝光会抑制褪黑素</td></tr>
-          <tr><td><strong>🛏️ 睡眠环境</strong></td><td>从明亮到昏暗、用暖色光源 · 简单整理让一切各得其所 · 卧室 16–18°C · 整晚用鼻子呼吸</td></tr>
-        </tbody>
-      </table>
-      <div class="highlight">
-        <div class="highlight-text">独处<strong>质量</strong>比独处<strong>时长</strong>更重要——累的时候独处质量很差。<strong>幸福感以自我为核心，不依附他人。</strong></div>
-      </div>
-      <div class="warn">⚠️ 度假或旅行后容易忘记重启这套睡前程序，是状态变差的主要原因之一。</div>
-      <div class="combo-suggest">
-        <span class="label">推荐组合</span>
-        <div class="combo-preview rest" data-combo-id="combo-rest-shoulder">
-          <div class="cp-main"><span class="cp-title">🌿 肩颈背修复 28min</span><span class="cp-flow">振谐呼吸（10min）→ 肩颈背动态拉伸（10min）→ 告别圆肩驼背 YTWL（8min）</span></div>
-        </div>
-        <div class="combo-preview rest" data-combo-id="combo-rest-posture">
-          <div class="cp-main"><span class="cp-title">🌿 体态快练 9min</span><span class="cp-flow">女明星仪态管理（3min）→ 骨科专家腰椎操（3min）→ 极度舒适拉伸（3min）</span></div>
-        </div>
-        <div class="combo-preview rest" data-combo-id="combo-rest-bedtime">
-          <div class="cp-main"><span class="cp-title">🌿 睡前 30min</span><span class="cp-flow">全程躺练（10min）→ 掰正骨盆懒人版（5min）→ 仙人揉腹（10min）→ 自我肯定冥想（5min）</span></div>
-        </div>
-        <div class="combo-preview rest" data-combo-id="combo-rest-deep">
-          <div class="cp-main"><span class="cp-title">🌿 深度放松 35min</span><span class="cp-flow">全身扫描（5min）→ JJ 老师全身拉伸（15min）→ 小腿精油按摩（5min）→ 360 度腿部拉伸（10min）</span></div>
-        </div>
-        <div class="combo-preview rest" data-combo-id="combo-rest-bowl">
-          <div class="cp-main"><span class="cp-title">🌿 颂钵助眠 20min</span><span class="cp-flow">颂钵冥想（10min）→ 自我疗愈和关爱冥想（10min）</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section-heading toc-anchor" id="toc-cycle">周期与扰动</div>
-
-    <div class="card toc-anchor" id="toc-weekly">
-      <div class="card-title"><span class="icon">📅</span>周固定</div>
-      <table>
-        <thead><tr><th>时间</th><th>内容</th></tr></thead>
-        <tbody>
-          <tr><td>每晚</td><td>每周 20 个 Anki 中文字 · 爸爸带 Emma 指读故事</td></tr>
-          <tr><td>周一晚</td><td>Emma 游泳课，自己 / 丈夫同步游泳</td></tr>
-          <tr><td>周二晚</td><td>和丈夫一起做 JJ 老师瑜伽 1 小时</td></tr>
-          <tr><td>周三晚</td><td>清洁日，约 45–50 分钟（详情见下方 <a href="#toc-cleaning" style="color:var(--accent);">🧹 清洁日</a> 卡片）</td></tr>
-          <tr><td>周四晚</td><td>满载日（9–10h 含加班）——睡前走专门的<a href="#toc-overload" style="color:var(--accent);">🌙 关机轨道</a>，不套用平日 routine</td></tr>
-          <tr><td>周五晚</td><td>🎬 电影之夜</td></tr>
-          <tr><td>周六早</td><td>Emma 攀岩课，自己 / 丈夫在攀岩馆健身房锻炼</td></tr>
-          <tr><td>周日下午</td><td>羽毛球</td></tr>
-          <tr><td>周末</td><td>不定期国家公园 hiking</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="card toc-anchor" id="toc-overload" style="border-left:3px solid var(--mist);">
-      <div class="card-title"><span class="icon">🌙</span>满载日（周四）· 睡前关机轨道</div>
-      <div class="group-title">累却清醒、越熬越精神的那天——不靠自己撑，靠音轨带你睡着，早躺＝赢</div>
-
-      <div class="group-title" style="margin-top:1.2rem;">📌 提前准备 · 让"周四的你"不用做任何决定</div>
-      <table>
-        <thead><tr><th style="width:30%;">什么时候</th><th>顺手做掉</th></tr></thead>
-        <tbody>
-          <tr><td><strong>🗓️ 周三晚</strong></td><td>① 把<strong>周五要做的事</strong>排好（周四就不碰排程）<br>② 给耳机<strong>充好电</strong>、<strong>选好音轨</strong>（默认「颂钵助眠 20min」，最不需要配合）</td></tr>
-          <tr><td><strong>🚪 周四出门前</strong></td><td>床头放好一杯<strong>能温的牛奶 / 水</strong></td></tr>
-        </tbody>
-      </table>
-
-      <table>
-        <thead><tr><th style="width:24%;">这天只做 4 步</th><th></th></tr></thead>
-        <tbody>
-          <tr><td><strong>🧠 卸脑</strong></td><td>周三晚就把周五的事排好，周四不碰排程；日记最多一句，可跳过</td></tr>
-          <tr><td><strong>📱 手机派活</strong></td><td>躺下、戴耳机，手机<strong>只放音轨然后扣在一边</strong>，不刷</td></tr>
-          <tr><td><strong>🎧 被带着走</strong></td><td>跟着下方音轨躺着走、零出力，让它带你睡着</td></tr>
-          <tr><td><strong>🛁 可选加码</strong></td><td>先洗个热水澡 / 泡脚、备杯温牛奶——纯被动带困意</td></tr>
-        </tbody>
-      </table>
-
-      <div class="highlight is-ref">
-        <div class="highlight-text">💡 <strong>成功标准</strong>：没刷手机硬熬、被音轨带睡着就赢（<strong>中段醒了想刷？叫老公一声</strong>）；日记没写、明天没排都不算输。<strong>早躺不是失败，是这天唯一正确的赢法。</strong></div>
-      </div>
-
-      <div class="combo-suggest">
-        <span class="label">推荐音轨（全程躺 · 零出力）</span>
-        <div class="combo-preview rest" data-combo-id="combo-rest-bowl">
-          <div class="cp-main"><span class="cp-title">🌿 颂钵助眠 20min</span><span class="cp-flow">颂钵冥想（10min）→ 自我疗愈和关爱冥想（10min）</span></div>
-        </div>
-        <div class="combo-preview rest" data-combo-id="combo-rest-deep">
-          <div class="cp-main"><span class="cp-title">🌿 深度放松 35min</span><span class="cp-flow">全身扫描（5min）→ JJ 老师全身拉伸（15min）→ 小腿精油按摩（5min）→ 360 度腿部拉伸（10min）</span></div>
-        </div>
-        <div class="combo-preview rest" data-combo-id="combo-rest-bedtime">
-          <div class="cp-main"><span class="cp-title">🌿 睡前 30min</span><span class="cp-flow">全程躺练（10min）→ 掰正骨盆懒人版（5min）→ 仙人揉腹（10min）→ 自我肯定冥想（5min）</span></div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="card toc-anchor" id="toc-cleaning">
-      <div class="card-title" style="display:flex;align-items:center;gap:8px;">
-        <span class="icon">🧹</span><span>清洁日 · 每周一次</span>
-        <button class="ck-reset" id="ck-reset" title="清空所有划线">重置</button>
-      </div>
-      <p class="para" style="font-size:.82rem;color:var(--text-secondary);margin-bottom:.85rem;">
-        每周挑一天，约 <strong>45–50 分钟</strong> 走完。按顺序做：整理 → 除尘 → 湿擦 → 拖地，不用来回换工具。租房保洁，够用就行。<br>
-        <span style="color:var(--text-hint);font-size:.78rem;">💡 点一下动作就划掉，做到哪儿都记得;做完整周点右上「重置」清空。<span style="display:inline-block;padding:1px 6px;border-radius:4px;background:var(--mist-light);color:var(--mist);margin:0 2px;">蓝灰项</span> = 日常顺手就能维护，清洁日可能已经不脏。</span>
-      </p>
-      <table>
-        <thead><tr><th style="width:22%;">阶段</th><th>动作</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><strong>1️⃣ 整理归位</strong><br><span style="font-size:.72rem;color:var(--text-hint);font-weight:400;">≈ 10 min</span></td>
-            <td><span class="ck-item daily" data-id="c1-1">抱枕毯子归位</span> · <span class="ck-item daily" data-id="c1-2">台面餐桌清空</span> · <span class="ck-item" data-id="c1-3">拉 Emma 一起收玩具</span> · <span class="ck-item daily" data-id="c1-4">衣物归位</span> · <span class="ck-item" data-id="c1-5">鞋归位玄关</span> · <span class="ck-item" data-id="c1-6">"暂时放着"的杂物各回各位</span></td>
-          </tr>
-          <tr>
-            <td><strong>2️⃣ 擦灰除尘</strong><br><span style="font-size:.72rem;color:var(--text-hint);font-weight:400;">≈ 12 min · 按动线走</span></td>
-            <td><span class="ck-item" data-id="c2-1">玄关</span> · <span class="ck-item" data-id="c2-2">书桌</span> · <span class="ck-item" data-id="c2-3">玩具柜</span> · <span class="ck-item" data-id="c2-4">床头柜</span> · <span class="ck-item" data-id="c2-5">洗衣区</span> · <span class="ck-item" data-id="c2-6">影视区</span> · <span class="ck-item" data-id="c2-7">浴室</span></td>
-          </tr>
-          <tr>
-            <td><strong>3️⃣ 去油去污湿擦</strong><br><span style="font-size:.72rem;color:var(--text-hint);font-weight:400;">≈ 18 min</span></td>
-            <td><strong>厨房：</strong><span class="ck-item daily" data-id="c3-1">灶台</span> · <span class="ck-item daily" data-id="c3-2">水槽 + 排水口</span> · <span class="ck-item daily" data-id="c3-3">餐桌椅</span><br><strong>卫生间：</strong><span class="ck-item" data-id="c3-4">洗手台</span> · <span class="ck-item" data-id="c3-5">马桶（内外）</span> · <span class="ck-item daily" data-id="c3-6">淋浴间 / 浴缸</span><br><strong>拖鞋：</strong><span class="ck-item" data-id="c3-7">刷洗晾起来（接着拖地，地干拖鞋也干）</span></td>
-          </tr>
-          <tr>
-            <td><strong>4️⃣ 吸尘拖地</strong><br><span style="font-size:.72rem;color:var(--text-hint);font-weight:400;">≈ 15 min</span></td>
-            <td><span class="ck-item" data-id="c4-1">厨房（油渍区先扫再拖）</span> · <span class="ck-item" data-id="c4-2">卫生间 + 排水口</span> · <span class="ck-item" data-id="c4-3">客厅</span> · <span class="ck-item" data-id="c4-4">主卧 + Emma 房</span> · <span class="ck-item" data-id="c4-5">沙发缝 / 地毯吸尘（<strong>隔周一次</strong>）</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="card toc-anchor" id="toc-period">
-      <div class="card-title"><span class="icon">🌹</span>经期护理</div>
-      <table>
-        <thead><tr><th>类别</th><th>要点</th></tr></thead>
-        <tbody>
-          <tr><td>饮食</td><td>温水温食，多补铁（瘦牛肉、菠菜、黑芝麻），少盐少糖少咖啡因，忌生冷</td></tr>
-          <tr><td>身体护理</td><td>腹腰脚踝保暖，暖宫贴或热水袋；温水泡脚 15–20 min；卫生用品 2–4 小时一换，温水清洁外阴，不盆浴不游泳</td></tr>
-          <tr><td>运动</td><td>量大的 1–2 天以休息和散步、轻柔拉伸为主；后半段恢复瑜伽、慢跑，避免剧烈跳跃和倒立</td></tr>
-          <tr><td>作息</td><td>11 点前入睡，免疫力低不熬夜；白天可加 20–30 min 小睡补充精力</td></tr>
-          <tr><td>情绪</td><td>接纳激素波动带来的烦躁低落，安排泡澡 / 看剧 / 听音乐等舒缓活动，记录周期与状态</td></tr>
-        </tbody>
-      </table>
-
-      <div class="group-title" style="margin-top:1.5rem">推荐运动</div>
-      <div class="warn">⚠️ 经期避免：跳绳 / HIIT / 哑铃负重 / 真空腹 / 腹横肌 / 萨尔曼瘦肚子 / 假胯宽 等高冲击或腹腔加压动作；揉腹可能增加经量也建议跳过</div>
-
-      <div class="group-title" style="font-size:.7rem;margin-top:1rem;color:var(--rose)">量大的 1–2 天 · 休息为主 + 情绪安抚</div>
-      <p class="para" style="margin-bottom:.5rem;">
-        <button class="action-link" data-num="16">谐振呼吸 #16</button>
-        <button class="action-link" data-num="12">全身扫描 #12</button>
-        <button class="action-link" data-num="14">自我疗愈冥想 #14</button>
-        <button class="action-link" data-num="15">颂钵冥想 #15</button>
-        <button class="action-link" data-num="31">小腿精油按摩 #31</button>
-      </p>
-      <div class="combo-preview rest" data-combo-id="combo-rest-bowl">
-        <div class="cp-main"><span class="cp-title">🌿 颂钵助眠 20min</span><span class="cp-flow">颂钵冥想（10min）→ 自我疗愈和关爱冥想（10min）</span></div>
-      </div>
-
-      <div class="group-title" style="font-size:.7rem;margin-top:1.25rem;color:var(--accent)">后半段恢复 · 温和拉伸 + 低冲击</div>
-      <p class="para" style="margin-bottom:.5rem;">
-        <button class="action-link" data-num="43">八段锦 #43</button>
-        <button class="action-link" data-num="26">肩颈背拉伸 #26</button>
-        <button class="action-link" data-num="29">极度舒适拉伸 #29</button>
-        <button class="action-link" data-num="25">臀腿完整拉伸 #25</button>
-        <button class="action-link" data-num="28">360 度腿部拉伸 #28</button>
-      </p>
-      <div class="combo-preview rest" data-combo-id="combo-rest-deep">
-        <div class="cp-main"><span class="cp-title">🌿 深度放松 35min</span><span class="cp-flow">全身扫描（5min）→ JJ 老师全身拉伸（15min）→ 小腿精油按摩（5min）→ 360 度腿部拉伸（10min）</span></div>
-      </div>
-      <div class="combo-preview rest" data-combo-id="combo-rest-shoulder">
-        <div class="cp-main"><span class="cp-title">🌿 肩颈背修复 28min</span><span class="cp-flow">振谐呼吸（10min）→ 肩颈背动态拉伸（10min）→ 告别圆肩驼背 YTWL（8min）</span></div>
-      </div>
-    </div>
-
-    <div class="card toc-anchor" id="toc-disrupt">
-      <div class="card-title"><span class="icon">🎉</span>周末/假期/聚会</div>
-      <p class="para" style="font-size:.78rem;color:var(--text-hint);font-style:italic;margin-bottom:.85rem;">
-        扰动期应对协议 · 一次聚会按 事前 / 事中 / 事后 走
-      </p>
-      <table>
-        <thead><tr><th style="width:16%;">阶段</th><th>要点</th></tr></thead>
-        <tbody>
-          <tr><td><strong>事前</strong></td><td>① 接到邀请先给自己 24 小时缓冲，查前后 48 小时密度，撞车就<strong>协商改期</strong><br>② 高消耗活动提前 2 天充能：早睡 + 严格控糖 + 轻运动<br>③ 调暗雷：在家火锅清汤微辣、外食避开油炸高油<br>④ 出门前喝一大杯水<br>⑤ <strong>调整当天总量分配</strong>：中午聚 → 早晚轻；晚上聚 → 中午跳、下午水果垫</td></tr>
-          <tr><td><strong>事中</strong></td><td>① 只吃想吃的，吃序 <strong>大量蔬菜 → 蛋白质 → 少量碳水 → 少量甜品</strong><br>② 手里端着热水，远离取餐区<br>③ 中途找独立空间躺 / 坐 15–20 分钟；能量见底就走，不死撑</td></tr>
-          <tr><td><strong>事后</strong></td><td>① 留 <strong>24–48 小时空白档</strong>，绝不紧接第二场（恢复期长是正常生理反应，不是没调整好）<br>② 若胀气，进 <strong>3–5 天肠胃恢复期</strong>：温和饮食（白粥 / 软面条 / 蒸蛋）、少量多餐、餐后散步、揉腹、不叠加咖啡和生冷</td></tr>
-        </tbody>
-      </table>
-
-      <div class="highlight">
-        <div class="highlight-text">📋 待办：① 找一段 <strong>2–3 周不踩雷的"主动清零"窗口</strong>让肠胃复位 ② <strong>看一次全科医生</strong>——完整就诊清单见下方「日常饮食与肠胃」。</div>
-      </div>
-    </div>
-
-    <div class="section-heading toc-anchor" id="toc-body">身体与健康</div>
-
-    <div class="card toc-anchor" id="toc-gut">
-      <div class="card-title"><span class="icon">🌿</span>日常饮食与肠胃</div>
-      <p class="para" style="margin-bottom:.85rem;">
-        两顿是身体节奏。工作日中午跳过（见<a href="#toc-workday">工作日饮食与休息</a>），聚餐前后分配（见<a href="#toc-disrupt">周末/假期/聚会</a>）。
-        家庭餐桌不"特殊化"，三顿都吃——重点在<strong>怎么吃</strong>。
-      </p>
-      <table>
-        <thead><tr><th style="width:22%;">家庭餐桌</th><th>怎么吃</th></tr></thead>
-        <tbody>
-          <tr><td><strong>份量</strong></td><td>用小一号的碗（视觉缩量）· 留几口在盘里、不强制光盘</td></tr>
-          <tr><td><strong>结构</strong></td><td>菜 → 肉 → 饭，饭压到 1/3 甚至更少</td></tr>
-          <tr><td><strong>节奏</strong></td><td>慢吃（胃→脑饱腹信号约 20 分钟才到）· 早餐"舒服吃"不"美美吃"，给胃留余地</td></tr>
-        </tbody>
-      </table>
-      <p class="para" style="margin-top:.7rem;font-size:.82rem;">
-        <strong>饭桌外：</strong>餐后散 10 分钟 · 饭中不大量喝水（饭前 30 分 / 饭后 60 分外补水）· Swisse probiotic gummy <strong>继续吃</strong>（停 2 周反而更胀，吃了通便顺——属于动力型胀气，FOS 在帮我而不是害我）
-      </p>
-    </div>
-
-    <div class="card">
-      <div class="card-title"><span class="icon">🧪</span>Psyllium husk 试用 · 2026-05-20 起</div>
-      <p class="para" style="margin-bottom:.7rem;">
-        睡前 1-2 小时：<strong>1 茶匙（约 5g）+ 250ml 水</strong>，喝完再补一杯水。
-      </p>
-      <table>
-        <thead><tr><th style="width:22%;">节点</th><th>动作</th></tr></thead>
-        <tbody>
-          <tr><td><strong>05-27</strong></td><td>评估第 1 周。顺利 → 加到早晚各 1 次；恶化 → 维持或停</td></tr>
-          <tr><td><strong>06-03</strong></td><td>评估第 2 周。决定继续 / 调整 / 停</td></tr>
-          <tr><td><strong>观察</strong></td><td>排便顺度 · 胀气走势（前几天可能加重，正常）· 晨起肚子清空感</td></tr>
-        </tbody>
-      </table>
-      <p class="para" style="font-size:.78rem;color:var(--text-hint);margin-top:.7rem;">
-        采购：药店 Metamucil（含甜味剂）/ Go Vita 的 unflavoured psyllium husk powder / 亚超原味车前子粉<br>
-        跟药 · 补剂错开 2 小时 · 水必须喝够，否则反向便秘
-      </p>
-      <div class="highlight">
-        <div class="highlight-text">📋 待办：05-27 / 06-03 评估 psyllium · 约 GP 排查重点 = <strong>胃排空 / 肠蠕动 / 功能性消化不良</strong>（动力问题）+ 顺带查乳糜泻、幽门螺杆菌（抽血前别提前戒麸质）</div>
-      </div>
-    </div>
-
-    <a href="运动周总结.html" target="_blank" id="toc-weekly-review" class="toc-anchor" style="display:flex;align-items:center;gap:8px;background:var(--accent-light);border:1px dashed var(--accent);color:var(--accent);border-radius:12px;padding:0.85rem 1.3rem;margin:0 0 1rem;text-decoration:none;font-size:0.85rem;">
-      <span>📈</span>
-      <span>运动 · 周总结＋参考库</span>
-      <span style="margin-left:auto;font-size:0.74rem;color:var(--text-hint);">周复盘 · 22 个组合 + 43 项动作详情 →</span>
-    </a>
-
-    <a href="运动收集箱.html" target="_blank" style="display:flex;align-items:center;gap:8px;background:var(--gold-light);border:1px dashed var(--gold);color:var(--gold);border-radius:12px;padding:0.85rem 1.3rem;margin:0 0 1rem;text-decoration:none;font-size:0.85rem;">
-      <span>📥</span>
-      <span>运动收集箱</span>
-      <span style="margin-left:auto;font-size:0.74rem;color:var(--text-hint);">把小红书里收藏的运动加进来 →</span>
-    </a>
-
-    <div class="highlight">
-      <div class="highlight-text">
-        <strong>运动设计逻辑：</strong>每天按"今日的节奏"5 个时段走，固定锚点 + 自由项；每个时段下挂着对应组合作为参考。打卡、周复盘、全部组合与动作详情都在「运动周总结」页。
-      </div>
-    </div>
-
-    <div class="section-heading toc-anchor" id="toc-hobby">日常兴趣爱好</div>
-
-    <div class="card">
-      <div class="card-title"><span class="icon">🌷</span>8 项日常爱好 · 附生理性好处</div>
-      <div class="group-title">知道为什么做，没动力时也更容易坚持</div>
-      <table>
-        <thead><tr><th style="width:30%;">爱好</th><th>生理性好处</th></tr></thead>
-        <tbody>
-          <tr><td><strong>📝 写幸福日记</strong></td><td>↓ 皮质醇 · ↑ 血清素 · 强化迷走神经张力 · 改善睡眠质量 · 巩固积极情绪神经回路</td></tr>
-          <tr><td><strong>🎵 听音乐</strong></td><td>激活伏隔核释放多巴胺 · 降低血压与静息心率 · 减少皮质醇 · 同步呼吸节律带来放松</td></tr>
-          <tr><td><strong>🧶 玩羊毛毡</strong></td><td>重复手工进入心流 · 副交感神经主导 · 触觉输入缓解焦虑 · 训练手部精细动作与专注</td></tr>
-          <tr><td><strong>📚 阅读</strong></td><td>6 分钟阅读可降压 68%（Sussex 大学研究）· 减缓心率 · 维持大脑灰质连接 · 延缓认知衰退</td></tr>
-          <tr><td><strong>🎤 学习唱歌</strong></td><td>释放内啡肽与催产素 · 深呼吸提升肺活量 · 声带振动按摩内脏 · 激活迷走神经</td></tr>
-          <tr><td><strong>🗂️ 整理收纳</strong></td><td>视觉秩序降低皮质醇 · 完成感释放多巴胺 · 减少决策疲劳 · 改善睡眠</td></tr>
-          <tr><td><strong>🍃 断舍离</strong></td><td>减少环境刺激降低背景焦虑 · 提升前额叶执行能力 · 节省心智带宽 · 增强自我效能感</td></tr>
-          <tr><td><strong>🎨 画画</strong></td><td>45 分钟艺术创作显著降低皮质醇（Drexel 大学研究）· 激活前额叶奖赏区 · 心流副交感主导</td></tr>
-        </tbody>
-      </table>
-    </div>
-
+<div class="panel" id="panel-daily">
+  <div class="iframe-wrap">
+    <iframe data-src="内容/日常.html" title="日常"></iframe>
   </div>
 </div>
 
 <footer>Summer 的世界 · 2026</footer>
 
+<script src="读书笔记/与神对话1content.js"></script>
 <script>
   const TAB_MAP = {
     today: { sub: 'today', defaultPanel: 'daily' },
@@ -1553,272 +1030,6 @@
   });
 
   restoreNav();
-
-  // 初始化：日常面板为内联内容，无需加载 iframe
-
-  // ==================== 侧边目录 scroll-spy ====================
-  (function setupSideToc() {
-    const toc = document.getElementById('side-toc');
-    if (!toc) return;
-    const links = Array.from(toc.querySelectorAll('a[href^="#"]'));
-    const map = new Map();
-    links.forEach(a => {
-      const id = a.getAttribute('href').slice(1);
-      const el = document.getElementById(id);
-      if (el) map.set(el, a);
-    });
-    if (map.size === 0) return;
-
-    function setActive(linkEl) {
-      links.forEach(a => a.classList.toggle('active', a === linkEl));
-    }
-
-    const io = new IntersectionObserver((entries) => {
-      // 选最靠上的可见 anchor
-      const visible = entries
-        .filter(e => e.isIntersecting)
-        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-      if (visible[0]) {
-        const link = map.get(visible[0].target);
-        if (link) setActive(link);
-      }
-    }, { rootMargin: '-200px 0px -65% 0px', threshold: 0 });
-
-    map.forEach((_, el) => io.observe(el));
-
-    // 点击立即高亮（避免观察器延迟）
-    links.forEach(a => a.addEventListener('click', () => setActive(a)));
-  })();
-
-  // ==================== 阅读打卡 ====================
-  (function setupReadingCheckin(){
-    const root = document.getElementById('reading-checkin');
-    if (!root) return;
-    const KEY = 'summer_reading_v1';
-
-    const $ = sel => root.querySelector(sel);
-    function esc(s){
-      return String(s).replace(/[&<>"]/g, c =>
-        ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
-    }
-    function ymd(d){
-      return d.getFullYear() + '-' +
-        String(d.getMonth()+1).padStart(2,'0') + '-' +
-        String(d.getDate()).padStart(2,'0');
-    }
-    function load(){
-      try { return JSON.parse(localStorage.getItem(KEY) || '{}'); }
-      catch(e){ return {}; }
-    }
-    function persist(){
-      try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e){}
-    }
-
-    let data = load();                 // { 'YYYY-MM-DD': { book, note } }
-    const todayKey = ymd(new Date());
-
-    function streak(){
-      let n = 0;
-      const d = new Date();
-      if (!data[ymd(d)]) d.setDate(d.getDate()-1);   // 今天没打卡则从昨天算起
-      while (data[ymd(d)]) { n++; d.setDate(d.getDate()-1); }
-      return n;
-    }
-    function weekCount(){
-      const now = new Date();
-      const dow = (now.getDay()+6)%7;                // 周一=0
-      let c = 0;
-      for (let i=0;i<=dow;i++){
-        const t = new Date(); t.setDate(now.getDate()-i);
-        if (data[ymd(t)]) c++;
-      }
-      return c;
-    }
-    function lastBook(){
-      const keys = Object.keys(data).sort().reverse();
-      for (const k of keys){ if (data[k] && data[k].book) return data[k].book; }
-      return '';
-    }
-
-    function renderWeek(){
-      const names = ['一','二','三','四','五','六','日'];
-      const now = new Date();
-      const dow = (now.getDay()+6)%7;
-      const monday = new Date(); monday.setDate(now.getDate()-dow);
-      let html = '';
-      for (let i=0;i<7;i++){
-        const d = new Date(monday); d.setDate(monday.getDate()+i);
-        const k = ymd(d);
-        const filled = !!data[k];
-        const isToday = k === todayKey;
-        const isFuture = k > todayKey;
-        html += '<div class="rc-day' + (filled?' filled':'') +
-          (isToday?' today':'') + (isFuture?' future':'') + '">' +
-          '<div class="rc-day-dot">' + (filled?'✓':'') + '</div>' +
-          '<div class="rc-day-label">' + names[i] + '</div></div>';
-      }
-      $('#rc-week').innerHTML = html;
-    }
-    function renderLog(){
-      const keys = Object.keys(data).sort().reverse().slice(0,7);
-      if (!keys.length){
-        $('#rc-log').innerHTML =
-          '<div class="rc-log-empty">还没有记录——今晚开始第一笔。</div>';
-        return;
-      }
-      $('#rc-log').innerHTML = keys.map(k => {
-        const e = data[k] || {};
-        const md = k.slice(5).replace('-','/');
-        const book = e.book
-          ? '<span class="rc-log-book">' + esc(e.book) + '</span>'
-          : '<span class="rc-log-book" style="color:var(--text-hint)">（未填书名）</span>';
-        return '<div class="rc-log-item"><span class="rc-log-date">' + md + '</span>' +
-          book + (e.note ? '<br>' + esc(e.note) : '') + '</div>';
-      }).join('');
-    }
-    function render(){
-      const done = !!data[todayKey];
-      $('#rc-streak-num').textContent = streak();
-      $('#rc-week-count').textContent = weekCount();
-
-      const bookEl = $('#rc-book'), noteEl = $('#rc-note');
-      const focused = document.activeElement === bookEl || document.activeElement === noteEl;
-      if (!focused){
-        bookEl.value = (data[todayKey] && data[todayKey].book) || lastBook();
-        noteEl.value = (data[todayKey] && data[todayKey].note) || '';
-      }
-      const btn = $('#rc-btn');
-      btn.classList.toggle('done', done);
-      btn.textContent = done ? '今天已完成 ✓' : '✓ 完成今天的 10 分钟';
-      $('#rc-cancel').style.display = done ? 'block' : 'none';
-
-      renderWeek();
-      renderLog();
-    }
-
-    $('#rc-btn').addEventListener('click', () => {
-      data[todayKey] = {
-        book: $('#rc-book').value.trim(),
-        note: $('#rc-note').value.trim()
-      };
-      persist();
-      render();
-    });
-    // 已打卡后，修改书名 / 感受即时存档
-    ['#rc-book','#rc-note'].forEach(sel => {
-      $(sel).addEventListener('input', () => {
-        if (!data[todayKey]) return;
-        data[todayKey] = {
-          book: $('#rc-book').value.trim(),
-          note: $('#rc-note').value.trim()
-        };
-        persist();
-        renderLog();
-      });
-    });
-    $('#rc-cancel').addEventListener('click', () => {
-      delete data[todayKey];
-      persist();
-      render();
-    });
-
-    render();
-  })();
-
-  // ==================== 清洁日 · 点击划线 + localStorage ====================
-  (function setupCleaningChecklist() {
-    const KEY = 'cleaning_checked_v1';
-    let state;
-    try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { state = {}; }
-    if (!state.checked) state.checked = {};
-    const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
-
-    const items = document.querySelectorAll('#toc-cleaning .ck-item');
-    items.forEach(el => {
-      const id = el.dataset.id;
-      if (state.checked[id]) el.classList.add('done');
-      el.addEventListener('click', () => {
-        const isDone = el.classList.toggle('done');
-        if (isDone) state.checked[id] = true; else delete state.checked[id];
-        save();
-      });
-    });
-
-    const resetBtn = document.getElementById('ck-reset');
-    if (resetBtn) {
-      resetBtn.addEventListener('click', () => {
-        state.checked = {};
-        save();
-        items.forEach(el => el.classList.remove('done'));
-      });
-    }
-  })();
-
-  // ==================== 明日待办 · 可编辑清单 + 划掉 + localStorage ====================
-  (function setupTomorrowTodo() {
-    const KEY = 'tomorrow_todo_v1';
-    const list = document.getElementById('tdo-list');
-    if (!list) return;
-
-    let state = { items: {} };
-    try {
-      const raw = localStorage.getItem(KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw);
-        if (parsed && typeof parsed === 'object' && parsed.items) {
-          if (Array.isArray(parsed.items)) {
-            const obj = {};
-            parsed.items.forEach((v, i) => { if (v) obj[i] = v; });
-            state.items = obj;
-          } else if (typeof parsed.items === 'object') {
-            state.items = parsed.items;
-          }
-        }
-      }
-    } catch (e) {}
-
-    const save = () => {
-      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
-    };
-
-    const lis = list.querySelectorAll('li');
-    lis.forEach((li, idx) => {
-      const text = li.querySelector('.tdo-text');
-      const check = li.querySelector('.tdo-check');
-      const data = state.items[idx];
-      if (data) {
-        if (typeof data.text === 'string') text.innerText = data.text;
-        if (data.done) { check.checked = true; li.classList.add('done'); }
-      }
-      const persist = () => {
-        if (!state.items[idx]) state.items[idx] = {};
-        state.items[idx].text = text.innerText;
-        state.items[idx].done = check.checked;
-        save();
-      };
-      text.addEventListener('input', persist);
-      text.addEventListener('blur', persist);
-      text.addEventListener('paste', () => setTimeout(persist, 0));
-      check.addEventListener('change', () => {
-        li.classList.toggle('done', check.checked);
-        persist();
-      });
-    });
-
-    const resetBtn = document.getElementById('tdo-reset');
-    if (resetBtn) {
-      resetBtn.addEventListener('click', () => {
-        if (!confirm('清空全部明日待办?')) return;
-        state.items = {};
-        save();
-        lis.forEach(li => {
-          li.querySelector('.tdo-text').innerText = '';
-          li.querySelector('.tdo-check').checked = false;
-          li.classList.remove('done');
-        });
-      });
-    }
-  })();
 
   // ==================== 状态条（日期 + 周四满载 / 周末 + 经期） ====================
   (function statusStrip(){
@@ -1922,6 +1133,85 @@
     renderDate();
     renderPeriod();
     setInterval(renderDate, 60000);   // 跨午夜自动更新
+  })();
+
+  // ==================== 今日一条 · 与神对话 ====================
+  (function setupGodtalkDaily(){
+    const card = document.getElementById('toc-godtalk');
+    if (!card) return;
+    const chapterEl = document.getElementById('gt-chapter');
+    const qEl = document.getElementById('gt-q');
+    const aEl = document.getElementById('gt-a');
+    const shuffleBtn = document.getElementById('gt-shuffle');
+
+    // 数据来自 读书笔记/与神对话1content.js（CONTENT）——没加载到就友好降级
+    if (typeof CONTENT === 'undefined' || !CONTENT.chapters) {
+      qEl.textContent = '内容未加载';
+      aEl.textContent = '与神对话1content.js 没读到，检查一下路径。';
+      if (shuffleBtn) shuffleBtn.style.display = 'none';
+      return;
+    }
+
+    // 只收有正文的条目，跳过纯小标题
+    const items = [];
+    CONTENT.chapters.forEach(c => {
+      (c.items || []).forEach(it => {
+        if (it && it.a && it.a.trim().length > 8) {
+          items.push({ chapter: c.label, q: (it.q || '').trim(), a: it.a.trim() });
+        }
+      });
+    });
+    if (!items.length) { card.style.display = 'none'; return; }
+
+    function ymd(d){
+      return d.getFullYear() + '-' +
+        String(d.getMonth()+1).padStart(2,'0') + '-' +
+        String(d.getDate()).padStart(2,'0');
+    }
+    // 把日期串散列成稳定下标——同一天固定同一条，隔天才换
+    function dateSeedIndex(s){
+      let h = 0;
+      for (let i=0;i<s.length;i++) h = (h*31 + s.charCodeAt(i)) >>> 0;
+      return h % items.length;
+    }
+
+    const OVERRIDE_KEY = 'godtalk_daily_override_v1';
+    function loadOverride(){
+      try { return JSON.parse(localStorage.getItem(OVERRIDE_KEY) || 'null'); }
+      catch(e){ return null; }
+    }
+    function saveOverride(date, idx){
+      try { localStorage.setItem(OVERRIDE_KEY, JSON.stringify({ date, idx })); } catch(e){}
+    }
+
+    function render(idx){
+      const it = items[idx];
+      chapterEl.textContent = it.chapter || '';
+      qEl.textContent = it.q || '';
+      qEl.style.display = it.q ? '' : 'none';
+      aEl.textContent = it.a || '';
+    }
+
+    function todaysIndex(){
+      const today = ymd(new Date());
+      const ov = loadOverride();
+      if (ov && ov.date === today && Number.isInteger(ov.idx) && ov.idx < items.length) return ov.idx;
+      return dateSeedIndex(today);
+    }
+
+    let current = todaysIndex();
+    render(current);
+
+    if (shuffleBtn) {
+      shuffleBtn.addEventListener('click', () => {
+        if (items.length < 2) return;
+        let next = current;
+        while (next === current) next = Math.floor(Math.random() * items.length);
+        current = next;
+        render(current);
+        saveOverride(ymd(new Date()), current);   // 手动换的，今天就停在这条
+      });
+    }
   })();
 
 </script>

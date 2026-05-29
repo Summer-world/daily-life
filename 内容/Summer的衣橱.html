@@ -37,6 +37,13 @@
   .s-casual{background:#F0F0F7;color:#3D3D7A;border-color:#9A9AC8;}
   .s-college{background:#F0F5FF;color:#1A3A7A;border-color:#7A9ADF;}
   .s-sporty{background:#F0F7F5;color:#1A5A4A;border-color:#7AC8B8;}
+  .oh .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+  .dot.s-fairy{background:#C2547F;}
+  .dot.s-retro{background:#9A7438;}
+  .dot.s-fresh{background:#2E8540;}
+  .dot.s-casual{background:#5A5A9C;}
+  .dot.s-college{background:#3A5AAA;}
+  .dot.s-sporty{background:#2A7A66;}
   .oi{display:flex;flex-wrap:wrap;gap:12px;}
   .item{display:flex;flex-direction:column;align-items:center;gap:5px;width:95px;}
   .iw{width:85px;height:85px;border-radius:10px;border:1px solid var(--border);background:#fafafa;overflow:hidden;display:flex;align-items:center;justify-content:center;}
@@ -96,9 +103,9 @@
     <div class="fl">今天的天气</div>
     <div class="tr">
       <span class="tag weather" data-val="hot">热（30°C+）</span>
-      <span class="tag weather" data-val="warm">暖（25–30°C）</span>
-      <span class="tag weather" data-val="mild">珀斯秋天（10–23°C）</span>
-      <span class="tag weather" data-val="cool">凉（20°C以下）</span>
+      <span class="tag weather" data-val="warm">暖（23–30°C）</span>
+      <span class="tag weather" data-val="mild">珀斯秋天（16–23°C）</span>
+      <span class="tag weather" data-val="cool">凉（16°C以下）</span>
     </div>
   </div>
   <div class="card">
@@ -118,7 +125,7 @@
   <div class="card">
     <div class="fl">心情偏好（不选 = 随机风格）</div>
     <div class="tr" id="moodChips"></div>
-    <div class="fl" style="margin-top:1rem">必穿单品（可选）</div>
+    <div class="fl" style="margin-top:1rem">必穿单品（可选 · 跟随上面的天气）</div>
     <select id="anchorSelect" class="anchor-select" onchange="setAnchor(this.value)"></select>
     <div id="anchorInfo" class="anchor-info"></div>
     <button class="gen-btn" id="genBtn" onclick="generateAndShow()">🎲 抽一套搭配</button>
@@ -237,6 +244,8 @@ const O={
   ],
   "warm-outdoor":[
     {title:"保暖实用",style:"保暖实用",items:["grey_uv","black_tee","black_shorts","white_adidas"],tip:"有拉链防晒衣，随时穿脱"},
+    {title:"清新活力",style:"清新活力",items:["blue_uv","superdry","floral_pants","white_adidas"],tip:"防晒衣+浅绿T恤+碎花裤，户外活动清爽好拍照"},
+    {title:"仙气温柔",style:"仙气温柔",items:["grey_uv","white_dress","white_adidas"],tip:"白裙外搭防晒衣，户外也能温柔又挡太阳"},
   ],
   "mild-home":[
     {title:"慵懒居家",style:"慵懒居家",items:["purple_hoodie","black_sweatpants"],tip:"CK卫衣超软，温差大在家最舒服"},
@@ -321,7 +330,9 @@ document.querySelectorAll(".tag.weather").forEach(el=>{
     document.querySelectorAll(".tag.weather").forEach(t=>t.classList.remove("active"));
     state.weather=state.weather===el.dataset.val?null:el.dataset.val;
     if(state.weather)el.classList.add("active");
+    if(state.anchor){const a=gi(state.anchor);if(a&&state.weather&&!itemMatchesWeather(a,state.weather))state.anchor=null;}
     render();
+    renderAnchor();
   });
 });
 document.querySelectorAll(".tag.scene").forEach(el=>{
@@ -366,8 +377,8 @@ function render(){
   const outfitsHtml=valid.map(o=>`
     <div class="oc">
       <div class="oh">
+        <span class="dot ${SC[o.style]||'s-casual'}"></span>
         <div class="ot">${o.title}</div>
-        <span class="sb ${SC[o.style]||''}">${o.style}</span>
       </div>
       <div class="oi">
         ${o.items.map(id=>{const item=gi(id);return`<div class="item">${imgEl(item)}<span class="ir">${item?role(item.cat):""}</span><span class="in">${item?item.name:id}</span></div>`;}).join("")}
@@ -508,8 +519,8 @@ function outfitCard(items,opts){
   </div>`:"";
   return`<div class="oc ${cls}">
     <div class="oh">
+      <span class="dot ${SC[styleCn]||'s-casual'}"></span>
       <div class="ot">${titleCn}</div>
-      <span class="sb ${SC[styleCn]||'s-casual'}">${styleCn}</span>
     </div>
     <div class="oi">
       ${items.map(item=>`<div class="item${anchorId&&item.id===anchorId?' anchor':''}">${imgEl(item)}<span class="ir">${role(item.cat)}</span><span class="in">${item.name}</span></div>`).join("")}
@@ -522,7 +533,7 @@ function renderAnchor(){
   const sel=document.getElementById("anchorSelect");
   const cats=[...new Set(W.map(w=>w.cat))];
   const groups=cats.map(cat=>{
-    const items=W.filter(w=>w.cat===cat&&!isDel(w.id));
+    const items=W.filter(w=>w.cat===cat&&!isDel(w.id)&&(!state.weather||itemMatchesWeather(w,state.weather)));
     if(!items.length)return"";
     return`<optgroup label="${cat}">`+items.map(w=>`<option value="${w.id}">${w.name}</option>`).join("")+`</optgroup>`;
   }).filter(Boolean).join("");

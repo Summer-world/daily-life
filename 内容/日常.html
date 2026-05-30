@@ -559,6 +559,31 @@
     border-color: var(--accent-mid);
     box-shadow: -3px 0 0 var(--accent), 0 2px 8px rgba(45, 90, 61, 0.08);
   }
+  /* 今日节奏 · 折叠（与情境库一致的 details/summary：点标题展开，箭头旋转） */
+  details.timeline-node > summary.node-head {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  details.timeline-node > summary.node-head::-webkit-details-marker { display: none; }
+  details.timeline-node > summary.node-head::marker { content: ''; }
+  .node-headings { flex: 1; min-width: 0; }
+  .node-headings h3 { margin-bottom: 0; }
+  details.timeline-node[open] > summary.node-head { margin-bottom: 0.55rem; }
+  details.timeline-node > summary.node-head:hover h3 { color: var(--accent); }
+  .node-arrow {
+    margin-left: auto;
+    flex-shrink: 0;
+    color: var(--ochre);
+    font-family: 'EB Garamond', serif;
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: transform 0.25s ease;
+  }
+  details.timeline-node[open] .node-arrow { transform: rotate(90deg); color: var(--accent); }
+  details.timeline-node[open] .timeline-node-body { animation: slideDown 0.25s ease-out; }
   /* ========== core-list · 绿系实心卡片（要做的事） ========== */
   .core-list {
     list-style: none;
@@ -1277,15 +1302,20 @@
       <div class="section-header">
         <span class="num">ii.</span>
         <h2>今日节奏</h2>
-        <span class="desc">5 个时段 · 一天的弧线</span>
+        <span class="desc">6 个时段 · 一天的弧线 · 点标题展开/收起</span>
       </div>
 
       <div class="timeline">
 
         <!-- 1. 晨起 -->
-        <div class="timeline-node" id="node-morning" data-phase="morning">
-          <div class="node-time">06:30 — 09:00</div>
-          <h3>🌅 晨起 90 分钟 <span class="sub">为精力充沛的一天定调</span></h3>
+        <details class="timeline-node" id="node-morning" data-phase="morning">
+          <summary class="node-head">
+            <div class="node-headings">
+              <div class="node-time">06:30 — 09:00</div>
+              <h3>🌅 晨起 90 分钟 <span class="sub">为精力充沛的一天定调</span></h3>
+            </div>
+            <span class="node-arrow">▸</span>
+          </summary>
           <div class="timeline-node-body">
             <ul class="core-list">
               <li><strong>核心 4 步：</strong>坐起 → 开窗帘（光启动昼夜节律）→ 下床换衣 → 烧水</li>
@@ -1295,7 +1325,7 @@
             <div class="combo-links">
               <div class="label">推荐组合 · 点击跳转到详情</div>
 
-              <div class="combo-group-label">🌅 醒来温和唤醒 · 10–15 min 短组合</div>
+              <div class="combo-group-label">🌅 醒来唤醒 · 温和 → 中强</div>
               <a class="combo-row" href="../运动周总结.html" target="_blank">
                 <span class="cp-title">🌿 轻唤醒 28min</span>
                 <span class="cp-flow">Nadi 呼吸（5min）→ Zoey 站立拉伸（10min）→ 真空腹（5min）→ 骨盆回正（8min）</span>
@@ -1305,62 +1335,79 @@
                 <span class="cp-flow">清晨排毒瑜伽（10min）→ 仙人揉腹（10min）</span>
               </a>
               <a class="combo-row" href="../运动周总结.html" target="_blank">
-                <span class="cp-title">🔥 快速 9min</span>
-                <span class="cp-flow">一首歌热身（4min）→ 跳绳（5min）</span>
-              </a>
-              <a class="combo-row" href="../运动周总结.html" target="_blank">
-                <span class="cp-title">💪 核心快速 25min</span>
-                <span class="cp-flow">真空腹（5min）→ 腹横肌激活（10min）→ 仙人揉腹（10min）</span>
+                <span class="cp-title">🌿 广播体操套餐 12min</span>
+                <span class="cp-flow">一首歌热身（4min）→ 第八套广播体操（4min）→ 第九套广播体操（4min）</span>
               </a>
               <a class="combo-row" href="../运动周总结.html" target="_blank">
                 <span class="cp-title">💪 晨起燃脂瑜伽 10min</span>
                 <span class="cp-flow">清晨燃脂瑜伽（10min）</span>
               </a>
               <a class="combo-row" href="../运动周总结.html" target="_blank">
-                <span class="cp-title">🔥 簿肌快练 9min</span>
-                <span class="cp-flow">一首歌热身（4min）→ 簿肌修炼·居家无器械（5min）</span>
+                <span class="cp-title">💪 核心快速 25min</span>
+                <span class="cp-flow">真空腹（5min）→ 腹横肌激活（10min）→ 仙人揉腹（10min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🔥 踏步有氧 14min</span>
+                <span class="cp-flow">一首歌热身（4min）→ 欧阳春晓·无蹲跳踏步有氧（10min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🔥 内脏脂肪操 14min</span>
+                <span class="cp-flow">一首歌热身（4min）→ 古法内脏脂肪操（10min）</span>
               </a>
 
-              <div class="combo-group-label">🔥 不上班日 9 点黄金窗口 · 高强度长组合</div>
+              <div class="combo-group-label">🔥 不上班日 9 点黄金窗口 · 中强 → 高强</div>
               <a class="combo-row" href="../运动周总结.html" target="_blank">
-                <span class="cp-title">💪 哑铃力量 35min</span>
-                <span class="cp-flow">一副哑铃练全身（15min）→ 全身塑形哑铃跟练（20min）</span>
-              </a>
-              <a class="combo-row" href="../运动周总结.html" target="_blank">
-                <span class="cp-title">🔥 减脂操 19min</span>
-                <span class="cp-flow">一首歌热身（4min）→ 欧阳春晓有氧减脂操（15min）</span>
-              </a>
-              <a class="combo-row" href="../运动周总结.html" target="_blank">
-                <span class="cp-title">🌿 广播体操套餐 12min</span>
-                <span class="cp-flow">一首歌热身（4min）→ 第八套广播体操（4min）→ 第九套广播体操（4min）</span>
-              </a>
-              <a class="combo-row" href="../运动周总结.html" target="_blank">
-                <span class="cp-title">💪 腿臀套餐 32min</span>
-                <span class="cp-flow">林芊妤瘦腿（10min）→ 坐姿练臀弹力带（5min）→ 韩小四膝超伸（10min）→ Bella 臀腿完整拉伸（7min）</span>
-              </a>
-              <a class="combo-row" href="../运动周总结.html" target="_blank">
-                <span class="cp-title">💪 力量综合 35min</span>
-                <span class="cp-flow">真空腹（5min）→ 林芊妤瘦腿（10min）→ 坐姿练臀（5min）→ 一副哑铃练全身（15min）</span>
+                <span class="cp-title">💪 美背修身 20min</span>
+                <span class="cp-flow">谁懂丝滑美背的杀伤力（15min）→ 居家哑铃背部跟练（5min）</span>
               </a>
               <a class="combo-row" href="../运动周总结.html" target="_blank">
                 <span class="cp-title">💪 腹部扎实 30min</span>
                 <span class="cp-flow">真空腹（5min）→ 萨尔曼瘦肚子（5min）→ 腹横肌激活（10min）→ 古法内脏脂肪操（10min）</span>
               </a>
               <a class="combo-row" href="../运动周总结.html" target="_blank">
-                <span class="cp-title">💪 美背修身 20min</span>
-                <span class="cp-flow">谁懂丝滑美背的杀伤力（15min）→ 居家哑铃背部跟练（5min）</span>
+                <span class="cp-title">💪 腿臀套餐 32min</span>
+                <span class="cp-flow">林芊妤瘦腿（10min）→ 坐姿练臀弹力带（5min）→ 韩小四膝超伸（10min）→ Bella 臀腿完整拉伸（7min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">💪 哑铃力量 35min</span>
+                <span class="cp-flow">一副哑铃练全身（15min）→ 全身塑形哑铃跟练（20min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">💪 力量综合 35min</span>
+                <span class="cp-flow">真空腹（5min）→ 林芊妤瘦腿（10min）→ 坐姿练臀（5min）→ 一副哑铃练全身（15min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🔥 减脂操 19min</span>
+                <span class="cp-flow">一首歌热身（4min）→ 欧阳春晓有氧减脂操（15min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🔥 欢乐踏步 20min</span>
+                <span class="cp-flow">Zoey·欢乐踏步燃脂有氧（20min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🔥 无跑跳有氧 30min</span>
+                <span class="cp-flow">费教练·无跑跳全程站立有氧（30min）</span>
+              </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">🔥 搏击燃脂 30min</span>
+                <span class="cp-flow">Jo姐·搏击燃脂训练·无器械全程站立（30min）</span>
               </a>
             </div>
             <div class="node-highlight">
               早起后家里安静的空白时光是最重要的独处时间——<strong>有就很好，没有也不垮</strong>。
             </div>
           </div>
-        </div>
+        </details>
 
         <!-- 2. 白天 -->
-        <div class="timeline-node" id="node-day" data-phase="day">
-          <div class="node-time">09:00 — 12:00 · 黄金窗口</div>
-          <h3>☀️ 白天与间歇 <span class="sub">见缝插针 / 不上班日 6h 自主</span></h3>
+        <details class="timeline-node" id="node-day" data-phase="day">
+          <summary class="node-head">
+            <div class="node-headings">
+              <div class="node-time">09:00 — 12:00 · 黄金窗口</div>
+              <h3>☀️ 白天与间歇 <span class="sub">见缝插针 / 不上班日 6h 自主</span></h3>
+            </div>
+            <span class="node-arrow">▸</span>
+          </summary>
           <div class="timeline-node-body">
             <ul class="core-list">
               <li><strong>🪑 上班日：</strong>任务间隙 5–15 分 · 体态快练 · 鼻呼吸贯穿全天</li>
@@ -1381,21 +1428,26 @@
                 <span class="cp-flow">Nadi 呼吸（5min）→ Zoey 站立拉伸（10min）→ 真空腹（5min）→ 骨盆回正（8min）</span>
               </a>
               <a class="combo-row" href="../运动周总结.html" target="_blank">
-                <span class="cp-title">💪 核心快速 25min</span>
-                <span class="cp-flow">真空腹（5min）→ 腹横肌激活（10min）→ 仙人揉腹（10min）</span>
-              </a>
-              <a class="combo-row" href="../运动周总结.html" target="_blank">
                 <span class="cp-title">💪 假胯宽专项 14min</span>
                 <span class="cp-flow">一首歌热身（4min）→ 根除小肚腩·告别假胯宽（10min）</span>
               </a>
+              <a class="combo-row" href="../运动周总结.html" target="_blank">
+                <span class="cp-title">💪 核心快速 25min</span>
+                <span class="cp-flow">真空腹（5min）→ 腹横肌激活（10min）→ 仙人揉腹（10min）</span>
+              </a>
             </div>
           </div>
-        </div>
+        </details>
 
         <!-- 3. 工作日饮食 -->
-        <div class="timeline-node" id="node-workday" data-phase="workday">
-          <div class="node-time">饮食与休息的节律</div>
-          <h3>🍱 工作日饮食与休息 <span class="sub">不让白天的吃喝变成晚上的负担</span></h3>
+        <details class="timeline-node" id="node-workday" data-phase="workday">
+          <summary class="node-head">
+            <div class="node-headings">
+              <div class="node-time">饮食与休息的节律</div>
+              <h3>🍱 工作日饮食与休息 <span class="sub">不让白天的吃喝变成晚上的负担</span></h3>
+            </div>
+            <span class="node-arrow">▸</span>
+          </summary>
           <div class="timeline-node-body">
             <ul class="core-list">
               <li><strong>🍳 早餐：</strong>1 个肉包子垫胃，不当正餐</li>
@@ -1410,12 +1462,17 @@
               中午让胃留空、不凑三餐；早 1 包子 + 上午 1 蛋 + 中午 1 水果咖啡，晚饭一家人才是这天的能量重头戏。休息按 <strong>90 分钟周期</strong>主动还损耗——不必非睡够 8h。
             </div>
           </div>
-        </div>
+        </details>
 
         <!-- 4. 傍晚 -->
-        <div class="timeline-node" id="node-evening" data-phase="evening">
-          <div class="node-time">17:00 — 19:00</div>
-          <h3>🌇 傍晚修复期 <span class="sub">最累、但最该温和动一动</span></h3>
+        <details class="timeline-node" id="node-evening" data-phase="evening">
+          <summary class="node-head">
+            <div class="node-headings">
+              <div class="node-time">17:00 — 19:00</div>
+              <h3>🌇 傍晚修复期 <span class="sub">最累、但最该温和动一动</span></h3>
+            </div>
+            <span class="node-arrow">▸</span>
+          </summary>
           <div class="timeline-node-body">
             <ul class="core-list">
               <li><strong>🚇 通勤途中：</strong>肩颈拉伸 + 呼吸法 + 体态调整 + 冥想——把等待时间借来用</li>
@@ -1457,12 +1514,17 @@
               </a>
             </div>
           </div>
-        </div>
+        </details>
 
         <!-- 5. 阅读 -->
-        <div class="timeline-node" id="node-reading" data-phase="reading">
-          <div class="node-time">20:30 — 20:40</div>
-          <h3>📖 阅读 10 分钟 <span class="sub">焊在 Emma 故事时间上 · 不靠自律靠习惯叠加</span></h3>
+        <details class="timeline-node" id="node-reading" data-phase="reading">
+          <summary class="node-head">
+            <div class="node-headings">
+              <div class="node-time">20:30 — 20:40</div>
+              <h3>📖 阅读 10 分钟 <span class="sub">焊在 Emma 故事时间上 · 不靠自律靠习惯叠加</span></h3>
+            </div>
+            <span class="node-arrow">▸</span>
+          </summary>
           <div class="timeline-node-body">
             <ul class="core-list">
               <li><strong>⏰ 锚点：</strong>每晚 8:30 Eric 给 Emma 讲故事——他俩一坐下，就是你的闹钟</li>
@@ -1497,12 +1559,17 @@
               <div class="rc-log" id="rc-log"></div>
             </div>
           </div>
-        </div>
+        </details>
 
         <!-- 6. Emma 睡后 -->
-        <div class="timeline-node" id="node-postemma" data-phase="postemma">
-          <div class="node-time">21:00 — 入睡</div>
-          <h3>🌙 Emma 睡后 → 入睡 <span class="sub">从独处到睡眠的一整段夜晚</span></h3>
+        <details class="timeline-node" id="node-postemma" data-phase="postemma">
+          <summary class="node-head">
+            <div class="node-headings">
+              <div class="node-time">21:00 — 入睡</div>
+              <h3>🌙 Emma 睡后 → 入睡 <span class="sub">从独处到睡眠的一整段夜晚</span></h3>
+            </div>
+            <span class="node-arrow">▸</span>
+          </summary>
           <div class="timeline-node-body">
             <ul class="core-list">
               <li><strong>🛋️ 状态好 · 做爱好：</strong>🎵 听音乐 · 🧶 玩羊毛毡 · 📚 阅读 · 🎤 唱歌 · 🗂️ 整理 · 🍃 断舍离 · 🎨 画画</li>
@@ -1539,7 +1606,7 @@
             </div>
             <p class="node-warn">⚠️ 周四满载日 → 别套这套，走专门的<a href="#protocol-shutdown">关机轨道</a>；度假/旅行后容易忘记重启这套程序，是状态变差的主要原因之一。</p>
           </div>
-        </div>
+        </details>
 
       </div>
     </section>
@@ -1759,20 +1826,20 @@
             <span class="icon">🧪</span>
             <div>
               <div class="title">Psyllium 试用</div>
-              <div class="hint">2026-05-20 起 · 两周评估</div>
+              <div class="hint">2026-05-30 买回 · 今晚起 · 两周评估</div>
             </div>
             <span class="arrow">›</span>
           </summary>
           <div class="protocol-card-body">
-            <p>睡前 1–2h：<strong>1 茶匙（约 5g）+ 250ml 水</strong>，喝完再补一杯水。</p>
+            <p><strong>晚餐前</strong>（或早餐随餐，<strong>离睡觉≥2h</strong>，别贴睡前喝免得起夜）：<strong>1 茶匙（约 5g）+ 250ml 水</strong>，搅匀立刻喝，喝完再补一杯水。饭前喝还顺带让那顿慢一点、容易饱。</p>
             <table>
               <tbody>
-                <tr><td><strong>05-27</strong></td><td>评估第 1 周。顺利 → 加到早晚各 1 次；恶化 → 维持或停</td></tr>
-                <tr><td><strong>06-03</strong></td><td>评估第 2 周。决定继续 / 调整 / 停</td></tr>
+                <tr><td><strong>06-06</strong></td><td>评估第 1 周。顺利 → 加到早晚各 1 次；恶化 → 维持或停</td></tr>
+                <tr><td><strong>06-13</strong></td><td>评估第 2 周。决定继续 / 调整 / 停</td></tr>
                 <tr><td><strong>观察</strong></td><td>排便顺度 · 胀气走势（前几天可能加重，正常）· 晨起肚子清空感</td></tr>
               </tbody>
             </table>
-            <p style="font-size:.74rem;color:var(--text-hint);margin-top:.5rem;">采购：药店 Metamucil（含甜味剂）/ Go Vita unflavoured psyllium husk powder / 亚超原味车前子粉<br>跟药·补剂错开 2h · 水必须喝够，否则反向便秘</p>
+            <p style="font-size:.74rem;color:var(--text-hint);margin-top:.5rem;">在用：<strong>Macro Organic Psyllium Husk</strong>（整粒外壳·无添加）<br>整粒 husk 遇水几分钟就结胶 → <strong>搅匀立刻喝、别泡</strong><br>跟药·补剂（含 Swisse gummy）错开 2h · 水全天喝够，否则反向便秘</p>
             <div class="inner-highlight">
               📋 GP 排查重点 = <strong>胃排空 / 肠蠕动 / 功能性消化不良</strong>（动力问题）+ 顺带乳糜泻、幽门螺杆菌（抽血前别提前戒麸质）
             </div>
@@ -1795,6 +1862,7 @@
                 <tr><td><strong>份量</strong></td><td>小一号的碗（视觉缩量）· 留几口在盘里、不强制光盘</td></tr>
                 <tr><td><strong>结构</strong></td><td>菜 → 肉 → 饭，饭压到 1/3 甚至更少</td></tr>
                 <tr><td><strong>节奏</strong></td><td>慢吃（胃→脑信号约 20 分钟才到）· 早餐"舒服吃"不"美美吃"</td></tr>
+                <tr><td><strong>信号</strong></td><td>胃满着却"饿"，先分两种：<br>· <strong>一阵就退</strong> → 杂讯，温水、放它过去，别上秤<br>· <strong>攒几天不退</strong> → 真信号，别硬压（会反弹成胀），<strong>早点喂密度</strong>（蛋/坚果/肉）不喂体积</td></tr>
               </tbody>
             </table>
             <p style="margin-top:.5rem;">
@@ -1819,15 +1887,6 @@
         <div>
           <div class="title-row">运动 · 周总结＋参考库</div>
           <div class="sub-row">周复盘 · 22 个组合 + 43 项动作详情</div>
-        </div>
-        <span class="arrow">→</span>
-      </a>
-
-      <a href="../运动收集箱.html" target="_blank" class="link-card gold">
-        <span class="ico">📥</span>
-        <div>
-          <div class="title-row">运动收集箱</div>
-          <div class="sub-row">把小红书里收藏的运动加进来</div>
         </div>
         <span class="arrow">→</span>
       </a>
@@ -1897,6 +1956,20 @@
   }
   updateNow();
   setInterval(updateNow, 60000);
+
+  // ==================== 今日节奏折叠：默认收起，自动展开当前时段 ====================
+  (function initTimelineFold(){
+    const cur = document.querySelector('details.timeline-node.current');
+    if (cur) cur.open = true;
+    // 通过锚点跳转（如 NOW 卡「查看详情」指向某时段）时，自动展开那个节点
+    function openHashNode(){
+      const id = location.hash.slice(1);
+      const el = id && document.getElementById(id);
+      if (el && el.matches && el.matches('details.timeline-node')) el.open = true;
+    }
+    openHashNode();
+    window.addEventListener('hashchange', openHashNode);
+  })();
 
   // ==================== 状态卡：点开卡＝进入该状态，联动 NOW 卡 ====================
   const todayStr = () => {

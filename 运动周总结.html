@@ -784,12 +784,20 @@
 
   <div class="combo-group-label stamina-label toc-anchor" id="combo-stamina-group">🔥 体能向（本周目标 100 分钟）</div>
 
-  <div class="combo-card combo-stamina" data-combo-id="combo-stamina-fast">
+  <!-- 2026-05-30 体能向重排：退掉「跳绳」(高冲击伤膝)，全部换成膝盖友好的低冲击/站立有氧。按时长升序排。 -->
+  <div class="combo-card combo-stamina" data-combo-id="combo-stamina-step">
     <div class="cc-main">
-      <div class="combo-title">快速 9min</div>
-      <div class="combo-flow">一首歌热身（4min）→ 跳绳（5min）</div>
+      <div class="combo-title">踏步有氧 14min</div>
+      <div class="combo-flow">一首歌热身（4min）→ 欧阳春晓·无蹲跳踏步有氧（10min）</div>
     </div>
-    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-fast')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-fast')">+</button></div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-step')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-step')">+</button></div>
+  </div>
+  <div class="combo-card combo-stamina" data-combo-id="combo-stamina-organ">
+    <div class="cc-main">
+      <div class="combo-title">内脏脂肪操 14min</div>
+      <div class="combo-flow">一首歌热身（4min）→ 古法内脏脂肪操（10min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-organ')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-organ')">+</button></div>
   </div>
   <div class="combo-card combo-stamina" data-combo-id="combo-stamina-burn">
     <div class="cc-main">
@@ -797,13 +805,6 @@
       <div class="combo-flow">一首歌热身（4min）→ 欧阳春晓有氧减脂操（15min）</div>
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-burn')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-burn')">+</button></div>
-  </div>
-  <div class="combo-card combo-stamina" data-combo-id="combo-stamina-quick">
-    <div class="cc-main">
-      <div class="combo-title">簿肌快练 9min</div>
-      <div class="combo-flow">一首歌热身（4min）→ 簿肌修炼·居家无器械（5min）</div>
-    </div>
-    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-quick')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-quick')">+</button></div>
   </div>
 
   <div class="combo-group-label shape-label toc-anchor" id="combo-shape-group">💪 身材向（本周目标 100 分钟）</div>
@@ -1010,7 +1011,7 @@
   </div>
 
   <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-cardio"><span>🔥</span>有氧与力量 <span class="count-hint" data-base-text="· 12 项 · #41–59">· 12 项 · #41–59</span></div>
+    <div class="cat-card-title toc-anchor" id="act-cardio"><span>🔥</span>有氧与力量 <span class="count-hint" data-base-text="· 16 项 · #41–59">· 16 项 · #41–59</span></div>
     <table class="action-table">
       <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
       <tbody data-cat="有氧与力量">
@@ -1026,6 +1027,10 @@
         <tr><td class="num">51</td><td>簿肌修炼·居家无器械全身</td><td>房子</td><td>5min</td><td>地板</td></tr>
         <tr><td class="num">52</td><td>居家哑铃背部跟练</td><td>ting</td><td>5min</td><td>站姿</td></tr>
         <tr><td class="num">53</td><td>全身塑形哑铃跟练</td><td>冰冰教练</td><td>20min</td><td>站姿</td></tr>
+        <tr><td class="num">54</td><td>无蹲跳踏步有氧·瘦全身</td><td>欧阳春晓</td><td>10min</td><td>站姿</td></tr>
+        <tr><td class="num">55</td><td>欢乐踏步燃脂有氧</td><td>Zoey</td><td>20min</td><td>站姿</td></tr>
+        <tr><td class="num">56</td><td>搏击燃脂训练·无器械站立</td><td>Jo姐</td><td>30min</td><td>站姿</td></tr>
+        <tr><td class="num">57</td><td>无跑跳全程站立有氧</td><td>费教练</td><td>30min</td><td>站姿</td></tr>
       </tbody>
     </table>
   </div>
@@ -1059,7 +1064,7 @@
   <!-- 我的新增 · 未归类兜底（其余有 category 的会按分类合并进上面 7 个卡）-->
   <div class="card" id="custom-actions-card" style="display:none">
     <div class="cat-card-title toc-anchor" id="act-custom"><span>🌱</span>我的新增 · 未归类 <span class="count-hint" id="custom-count-hint">· 0 项</span></div>
-    <div style="font-size:0.78rem;color:var(--text-hint);margin:-0.3rem 0 0.7rem;padding-left:2px;">收集箱里 category 选了"其他/暂未分类"或留空的动作；归到具体类型的会出现在上面对应的卡里（带 🌱 标记）</div>
+    <div style="font-size:0.78rem;color:var(--text-hint);margin:-0.3rem 0 0.7rem;padding-left:2px;">没填具体类型的「我的新增」动作归到这里；有类型的会出现在上面对应的卡里（带 🌱 标记）</div>
     <table class="action-table" id="custom-actions-table">
       <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
       <tbody id="custom-actions-tbody"></tbody>
@@ -1099,9 +1104,15 @@
 
   // ==================== 组合元数据（与 Summer的世界.html 同步）====================
   const COMBO_META = {
-    'combo-stamina-fast':    { name: '快速', mins: 9,  goal: 'stamina' },
+    // combo-stamina-fast 已退役（跳绳高冲击伤膝，2026-05-30 移除卡片）；保留 meta 供历史打卡解析
+    'combo-stamina-fast':    { name: '快速·跳绳(已退役)', mins: 9,  goal: 'stamina' },
+    // 2026-05-30 新增膝盖友好低冲击体能组合
+    'combo-stamina-step':    { name: '踏步有氧', mins: 14, goal: 'stamina' },
+    'combo-stamina-organ':   { name: '内脏脂肪操', mins: 14, goal: 'stamina' },
     'combo-stamina-burn':    { name: '减脂操', mins: 19, goal: 'stamina' },
-    'combo-stamina-quick':   { name: '簿肌快练', mins: 9, goal: 'stamina' },
+    // 欢乐踏步/搏击/无跑跳 改为动作详情 #55–57（单视频，不再做组合）
+    // combo-stamina-quick 已退役（簿肌修炼不是跟练、不适合她，2026-05-30 移除卡片）；保留 meta 供历史打卡解析
+    'combo-stamina-quick':   { name: '簿肌快练(已退役)', mins: 9, goal: 'stamina' },
     // combo-stamina-power 移到身材向，goal 改为 shape，时长 35（重构为 哑铃#42 + 全身塑形哑铃#53）
     'combo-stamina-power':   { name: '哑铃力量', mins: 35, goal: 'shape' },
     // combo-stamina-radio 移到养护向，goal 改为 rest（八段锦/广播体操降级后整体偏养护）
@@ -1132,8 +1143,9 @@
     21:['rest'], 22:['rest'], 23:['rest'], 24:['rest'], 25:['rest'], 26:['rest'], 27:['rest'], 28:['rest'], 29:['rest'],
     31:['rest'],
     41:['stamina','shape'], 42:['shape'], 43:['rest'],
-    45:['shape'], 46:['stamina'], 47:['shape','rest'], 48:['rest'], 49:['rest'],
+    45:['stamina','shape'], 46:['stamina'], 47:['shape','rest'], 48:['rest'], 49:['rest'],
     50:['stamina','shape'], 51:['stamina','shape'], 52:['shape'], 53:['shape'],
+    54:['stamina','shape'], 55:['stamina','shape'], 56:['stamina','shape'], 57:['stamina'],
     61:['shape'], 62:['shape','rest'], 63:['shape'],
     71:['shape'], 72:['shape'], 73:['shape','rest'], 74:['shape','rest'], 75:['shape','rest'],
   };
@@ -1143,6 +1155,7 @@
     21:15, 22:10, 23:10, 24:10, 25:7, 26:10, 27:10, 28:10, 29:3,
     31:5,
     41:5, 42:15, 43:12, 45:10, 46:4, 47:10, 48:4, 49:4, 50:15, 51:5, 52:5, 53:20,
+    54:10, 55:20, 56:30, 57:30,
     61:5, 62:10, 63:5,
     71:10, 72:5, 73:10, 74:10, 75:20,
   };
@@ -1372,7 +1385,7 @@
         <div class="suggest-title">🎉 本周三个目标全部达成</div>
         <ul class="suggest-list">
           <li>下周可以保持当前节奏，把"够了"沉淀成肌肉记忆</li>
-          <li>有余力可以尝试新组合（运动收集箱里有没整理的存货？）</li>
+          <li>有余力可以尝试还没做过的组合，换换花样</li>
           ${totalExtra > 0 ? `<li>额外运动 ${totalExtra}min 是 bonus，记住身体喜欢的强度</li>` : ''}
         </ul>
       </div>`;
@@ -1392,9 +1405,10 @@
 
   function goalSuggestion(goal, remain) {
     if (goal === 'stamina') {
-      if (remain >= 60) return '安排一次 hiking 或两次哑铃力量（37min）';
-      if (remain >= 30) return '一次哑铃力量（37min）或减脂操（19min）+ 跳绳';
-      return '跳绳 / 簿肌快练（9min）补一次即可';
+      // 2026-05-30 起全部用膝盖友好的低冲击有氧（不再推荐跳绳/高冲击）
+      if (remain >= 60) return '一次游泳 + 一次搏击燃脂（30min），或两次 30min 站立有氧';
+      if (remain >= 30) return '搏击燃脂（30min）或无跑跳有氧（30min）/ 欢乐踏步（20min）补一次';
+      return '踏步有氧（14min）或内脏脂肪操（14min）补一次即可';
     }
     if (goal === 'shape') {
       if (remain >= 90) return '需要 3 次身材组合，可以选腿臀套餐 + 核心快速 + 力量综合';

@@ -351,6 +351,39 @@
   .save-status.shown { animation: fadeOut 3s forwards; }
   @keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; } }
 
+  /* ==== 这周的话 · 回看过去几周 ==== */
+  .pastwords { margin-top: 1.1rem; border-top: 1px dashed var(--border); padding-top: 0.9rem; }
+  .pastwords-head {
+    display: flex; align-items: center; gap: 8px; cursor: pointer;
+    font-size: 0.86rem; color: var(--text-secondary); user-select: none;
+  }
+  .pastwords-head:hover { color: var(--text-primary); }
+  .pastwords-title { font-family: 'Noto Serif SC', serif; font-weight: 600; }
+  .pastwords-count { font-size: 0.76rem; color: var(--text-hint); }
+  .pastwords-toggle { margin-left: auto; color: var(--text-hint); font-size: 0.82rem; }
+  .pastwords-body { display: none; margin-top: 0.8rem; }
+  .pastwords-body.open { display: block; }
+  .pastwords-item {
+    border-left: 3px solid var(--border-dark);
+    padding: 0 0 0 0.85rem; margin-bottom: 0.95rem;
+  }
+  .pastwords-item:last-of-type { margin-bottom: 0.2rem; }
+  .pastwords-week {
+    font-family: 'Noto Serif SC', serif; font-weight: 600; font-size: 0.84rem;
+    color: var(--text-primary); margin-bottom: 0.3rem;
+    display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+  }
+  .pastwords-tag { font-size: 0.72rem; color: var(--text-hint); font-weight: 400; }
+  .pastwords-text {
+    white-space: pre-wrap; font-size: 0.85rem; line-height: 1.7; color: var(--text-secondary);
+  }
+  .pastwords-more {
+    display: block; width: 100%; margin-top: 0.4rem; padding: 6px;
+    font-family: inherit; font-size: 0.78rem; color: var(--text-secondary);
+    background: var(--bg); border: 1px dashed var(--border-dark); border-radius: 8px; cursor: pointer;
+  }
+  .pastwords-more:hover { color: var(--accent); border-color: var(--accent); }
+
   /* ==== 历史归档 ==== */
   .archive-item {
     border: 1px solid var(--border);
@@ -436,6 +469,7 @@
   .extra-row .del { background: none; border: none; color: var(--text-hint); cursor: pointer; font-size: 1rem; padding: 0 4px; line-height: 1; }
   .extra-row .del:hover { color: var(--rose); }
   .extra-empty { font-size: 0.78rem; color: var(--text-hint); font-style: italic; padding: 4px 10px; }
+  .extra-all-head { font-size: 0.76rem; color: var(--accent); font-weight: 600; padding: 2px 2px 5px; }
   .extra-note {
     width: 100%; font-family: inherit; font-size: 0.82rem; line-height: 1.6;
     padding: 7px 10px; margin: 4px 0 8px; border: 1px solid var(--border-dark);
@@ -670,6 +704,16 @@
       <button class="save-btn" onclick="saveReview()">💾 保存这周的复盘</button>
       <span class="save-status" id="save-status"></span>
     </div>
+
+    <!-- 回看过去几周写的话（默认折叠） -->
+    <div class="pastwords" id="pastwords-block" style="display:none">
+      <div class="pastwords-head" onclick="togglePastWords()">
+        <span class="pastwords-title">📖 过去几周的话</span>
+        <span class="pastwords-count" id="pastwords-count"></span>
+        <span class="pastwords-toggle" id="pastwords-toggle">▼</span>
+      </div>
+      <div class="pastwords-body" id="pastwords-body"></div>
+    </div>
   </div>
 
   <!-- ==== 运动趋势 ==== -->
@@ -707,7 +751,8 @@
     <div style="font-family:'Noto Serif SC',serif;font-weight:600;color:var(--accent);font-size:0.96rem;margin-bottom:0.25rem;">🏃 额外运动 · 加减时间</div>
     <p class="para" style="font-size:.78rem;color:var(--text-hint);font-style:italic;margin-bottom:.85rem;">
       周固定之外、或固定项目的额外记录。填日期和分钟数，自动汇入上面的「完成数据」。<br>
-      🏊 游泳 / 🏃 跑步 / 🏸 羽毛球 这三项可以再写一句复盘（遇到的问题、下次怎么改），下次记录时会在顶部提醒你。
+      每一项都可以再写一句复盘（遇到的问题、下次怎么改），下次记录时会在顶部提醒你。<br>
+      每项列表默认只显示本周，点最下方「▾ 查看全部记录」可展开这一项的全部历史。
     </p>
 
     <div class="extra-block">
@@ -730,11 +775,13 @@
         <span class="extra-title">⛰️ Hiking</span>
         <span class="extra-week" id="extra-hike-summary">本周 0 次 · 0 min</span>
       </div>
+      <div class="extra-lastnote" id="extra-hike-lastnote" style="display:none"></div>
       <div class="extra-input">
         <input type="date" id="hike-date">
         <input type="number" id="hike-min" placeholder="分钟" min="1" max="600">
-        <button class="extra-add" onclick="extraAdd('hike')">+ 添加</button>
       </div>
+      <textarea class="extra-note" id="hike-note" rows="2" placeholder="这次去了哪、路况和体力、下次想注意的点……（可留空）"></textarea>
+      <button class="extra-add" onclick="extraAdd('hike')">+ 添加这次记录</button>
       <div class="extra-list" id="extra-hike-list"></div>
     </div>
 
@@ -758,11 +805,13 @@
         <span class="extra-title">🧘 JJ 老师瑜伽 <span style="font-size:.74rem;color:var(--text-hint);font-weight:400;">· 周二晚和丈夫</span></span>
         <span class="extra-week" id="extra-yoga-summary">本周 0 次 · 0 min</span>
       </div>
+      <div class="extra-lastnote" id="extra-yoga-lastnote" style="display:none"></div>
       <div class="extra-input">
         <input type="date" id="yoga-date">
         <input type="number" id="yoga-min" placeholder="分钟" min="1" max="600" value="60">
-        <button class="extra-add" onclick="extraAdd('yoga')">+ 添加</button>
       </div>
+      <textarea class="extra-note" id="yoga-note" rows="2" placeholder="这次的感受、身体哪里紧 / 松了、和丈夫一起的状态……（可留空）"></textarea>
+      <button class="extra-add" onclick="extraAdd('yoga')">+ 添加这次记录</button>
       <div class="extra-list" id="extra-yoga-list"></div>
     </div>
 
@@ -784,27 +833,58 @@
 
   <div class="combo-group-label stamina-label toc-anchor" id="combo-stamina-group">🔥 体能向（本周目标 100 分钟）</div>
 
-  <!-- 2026-05-30 体能向重排：退掉「跳绳」(高冲击伤膝)，全部换成膝盖友好的低冲击/站立有氧。按时长升序排。 -->
+  <!-- 2026-05-30 体能向重排：退掉「跳绳」(高冲击伤膝)，全部换成膝盖友好的低冲击/站立有氧。
+       2026-06-17 扩成「从简单到难」阶梯：原 3 个短组合(14–19min)做入门档，新增 4 个中/难档(24–34min)，
+       把没进过组合的 #55 欢乐踏步 / #57 无跑跳站立有氧 / #56 搏击 都用上。全程低冲击，按 入门→强度 升序排。 -->
   <div class="combo-card combo-stamina" data-combo-id="combo-stamina-step">
     <div class="cc-main">
-      <div class="combo-title">踏步有氧 14min</div>
+      <div class="combo-title">踏步有氧 14min <span style="font-size:.72rem;color:var(--text-hint);font-weight:400;">· 入门</span></div>
       <div class="combo-flow">一首歌热身（4min）→ 欧阳春晓·无蹲跳踏步有氧（10min）</div>
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-step')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-step')">+</button></div>
   </div>
   <div class="combo-card combo-stamina" data-combo-id="combo-stamina-organ">
     <div class="cc-main">
-      <div class="combo-title">内脏脂肪操 14min</div>
+      <div class="combo-title">内脏脂肪操 14min <span style="font-size:.72rem;color:var(--text-hint);font-weight:400;">· 轻量</span></div>
       <div class="combo-flow">一首歌热身（4min）→ 古法内脏脂肪操（10min）</div>
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-organ')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-organ')">+</button></div>
   </div>
   <div class="combo-card combo-stamina" data-combo-id="combo-stamina-burn">
     <div class="cc-main">
-      <div class="combo-title">减脂操 19min</div>
+      <div class="combo-title">减脂操 19min <span style="font-size:.72rem;color:var(--text-hint);font-weight:400;">· 进阶</span></div>
       <div class="combo-flow">一首歌热身（4min）→ 欧阳春晓有氧减脂操（15min）</div>
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-burn')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-burn')">+</button></div>
+  </div>
+  <!-- 2026-06-17 新增：中/难档，全部低冲击站立有氧，膝盖友好 -->
+  <div class="combo-card combo-stamina" data-combo-id="combo-stamina-happystep">
+    <div class="cc-main">
+      <div class="combo-title">欢乐踏步 24min <span style="font-size:.72rem;color:var(--text-hint);font-weight:400;">· 持续</span></div>
+      <div class="combo-flow">一首歌热身（4min）→ Zoey·欢乐踏步燃脂有氧（20min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-happystep')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-happystep')">+</button></div>
+  </div>
+  <div class="combo-card combo-stamina" data-combo-id="combo-stamina-mix">
+    <div class="cc-main">
+      <div class="combo-title">燃脂连击 34min <span style="font-size:.72rem;color:var(--text-hint);font-weight:400;">· 强化</span></div>
+      <div class="combo-flow">一首歌热身（4min）→ 古法内脏脂肪操（10min）→ Zoey·欢乐踏步燃脂（20min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-mix')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-mix')">+</button></div>
+  </div>
+  <div class="combo-card combo-stamina" data-combo-id="combo-stamina-standing">
+    <div class="cc-main">
+      <div class="combo-title">站立有氧 34min <span style="font-size:.72rem;color:var(--text-hint);font-weight:400;">· 耐力</span></div>
+      <div class="combo-flow">一首歌热身（4min）→ 费教练·无跑跳全程站立有氧（30min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-standing')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-standing')">+</button></div>
+  </div>
+  <div class="combo-card combo-stamina" data-combo-id="combo-stamina-boxing">
+    <div class="cc-main">
+      <div class="combo-title">搏击燃脂 34min <span style="font-size:.72rem;color:var(--text-hint);font-weight:400;">· 强度</span></div>
+      <div class="combo-flow">一首歌热身（4min）→ Jo姐·搏击燃脂训练·无器械站立（30min）</div>
+    </div>
+    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-boxing')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-boxing')">+</button></div>
   </div>
 
   <div class="combo-group-label shape-label toc-anchor" id="combo-shape-group">💪 身材向（本周目标 100 分钟）</div>
@@ -1036,13 +1116,14 @@
   </div>
 
   <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-core"><span>💪</span>核心与腹部 <span class="count-hint" data-base-text="· 3 项 · #61–69">· 3 项 · #61–69</span></div>
+    <div class="cat-card-title toc-anchor" id="act-core"><span>💪</span>核心与腹部 <span class="count-hint" data-base-text="· 4 项 · #61–69">· 4 项 · #61–69</span></div>
     <table class="action-table">
       <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
       <tbody data-cat="核心与腹部">
         <tr><td class="num">61</td><td>萨尔曼瘦肚子·平坦小腹</td><td>叫我瓜瓜</td><td>5min</td><td>躺姿</td></tr>
         <tr><td class="num">62</td><td>激活腹横肌·细腰又护腰</td><td>钳钳妈阿曼达</td><td>10min</td><td>坐+躺</td></tr>
         <tr><td class="num">63</td><td>真空腹训练</td><td>欧阳春晓</td><td>5min</td><td>站/坐/躺</td></tr>
+        <tr><td class="num">64</td><td>胸腹式联动呼吸</td><td>—</td><td>10min</td><td>站姿</td></tr>
       </tbody>
     </table>
   </div>
@@ -1107,10 +1188,14 @@
     // combo-stamina-fast 已退役（跳绳高冲击伤膝，2026-05-30 移除卡片）；保留 meta 供历史打卡解析
     'combo-stamina-fast':    { name: '快速·跳绳(已退役)', mins: 9,  goal: 'stamina' },
     // 2026-05-30 新增膝盖友好低冲击体能组合
-    'combo-stamina-step':    { name: '踏步有氧', mins: 14, goal: 'stamina' },
-    'combo-stamina-organ':   { name: '内脏脂肪操', mins: 14, goal: 'stamina' },
-    'combo-stamina-burn':    { name: '减脂操', mins: 19, goal: 'stamina' },
-    // 欢乐踏步/搏击/无跑跳 改为动作详情 #55–57（单视频，不再做组合）
+    'combo-stamina-step':    { name: '踏步有氧', mins: 14, goal: 'stamina' },   // 入门
+    'combo-stamina-organ':   { name: '内脏脂肪操', mins: 14, goal: 'stamina' }, // 轻量
+    'combo-stamina-burn':    { name: '减脂操', mins: 19, goal: 'stamina' },     // 进阶
+    // 2026-06-17 扩成 入门→强度 阶梯，新增 4 个中/难档（#55 欢乐踏步 / #57 站立有氧 / #56 搏击 进组合）
+    'combo-stamina-happystep':{ name: '欢乐踏步', mins: 24, goal: 'stamina' },  // 持续
+    'combo-stamina-mix':     { name: '燃脂连击', mins: 34, goal: 'stamina' },   // 强化（内脏脂肪操+欢乐踏步）
+    'combo-stamina-standing':{ name: '站立有氧', mins: 34, goal: 'stamina' },   // 耐力
+    'combo-stamina-boxing':  { name: '搏击燃脂', mins: 34, goal: 'stamina' },   // 强度
     // combo-stamina-quick 已退役（簿肌修炼不是跟练、不适合她，2026-05-30 移除卡片）；保留 meta 供历史打卡解析
     'combo-stamina-quick':   { name: '簿肌快练(已退役)', mins: 9, goal: 'stamina' },
     // combo-stamina-power 移到身材向，goal 改为 shape，时长 35（重构为 哑铃#42 + 全身塑形哑铃#53）
@@ -1146,7 +1231,7 @@
     45:['stamina','shape'], 46:['stamina'], 47:['shape','rest'], 48:['rest'], 49:['rest'],
     50:['stamina','shape'], 51:['stamina','shape'], 52:['shape'], 53:['shape'],
     54:['stamina','shape'], 55:['stamina','shape'], 56:['stamina','shape'], 57:['stamina'],
-    61:['shape'], 62:['shape','rest'], 63:['shape'],
+    61:['shape'], 62:['shape','rest'], 63:['shape'], 64:['shape'],
     71:['shape'], 72:['shape'], 73:['shape','rest'], 74:['shape','rest'], 75:['shape','rest'],
   };
   const ACTION_DURATIONS = {
@@ -1156,7 +1241,7 @@
     31:5,
     41:5, 42:15, 43:12, 45:10, 46:4, 47:10, 48:4, 49:4, 50:15, 51:5, 52:5, 53:20,
     54:10, 55:20, 56:30, 57:30,
-    61:5, 62:10, 63:5,
+    61:5, 62:10, 63:5, 64:10,
     71:10, 72:5, 73:10, 74:10, 75:20,
   };
   const GOAL_TARGET = { stamina: 100, shape: 100, rest: 150 };
@@ -1507,7 +1592,65 @@
     delete reviews[key];
     writeJSON(REVIEW_KEY, reviews);
     renderArchive();
+    renderPastWords();
     if (weekKey(currentWeekStart) === key) loadCurrentReview();
+  }
+
+  // ==================== 这周的话 · 回看过去几周 ====================
+  // 在「这周的话」卡片里就近折叠展示：当前查看周之前、写过话的那几周，
+  // 只读、只显示文字（完整数据/删除仍在下方「历史归档」）。
+  let pastWordsOpen = false;
+  let pastWordsExpanded = false;
+  const PASTWORDS_VISIBLE = 4;
+
+  function togglePastWords() {
+    pastWordsOpen = !pastWordsOpen;
+    document.getElementById('pastwords-body').classList.toggle('open', pastWordsOpen);
+    document.getElementById('pastwords-toggle').textContent = pastWordsOpen ? '▲' : '▼';
+  }
+  function togglePastWordsMore() { pastWordsExpanded = !pastWordsExpanded; renderPastWords(); }
+
+  // 当前查看周之前、且「这周的话」非空的周，按时间倒序
+  function pastWordsKeys() {
+    return Object.keys(reviews)
+      .filter(k => {
+        const startMs = new Date(k + 'T00:00:00').getTime();
+        return startMs < currentWeekStart && reviewText(reviews[k]).trim();
+      })
+      .sort().reverse();
+  }
+
+  function renderPastWords() {
+    const block = document.getElementById('pastwords-block');
+    if (!block) return;
+    const keys = pastWordsKeys();
+    // 之前没有写过话 → 整块隐藏，保持写作区清爽
+    block.style.display = keys.length ? '' : 'none';
+    document.getElementById('pastwords-count').textContent = keys.length ? `· ${keys.length} 周` : '';
+
+    const shown = pastWordsExpanded ? keys : keys.slice(0, PASTWORDS_VISIBLE);
+    const today = weekStartFor(new Date());
+    const itemsHtml = shown.map(k => {
+      const startMs = new Date(k + 'T00:00:00').getTime();
+      const endMs = weekEndFor(startMs) - 1;
+      const diff = Math.round((today - startMs) / (7*24*60*60*1000));
+      const tag = diff === 1 ? '上周' : (diff > 1 ? `${diff} 周前` : '');
+      return `
+        <div class="pastwords-item">
+          <div class="pastwords-week">
+            <span>${fmtDate(startMs)} – ${fmtDate(endMs)}</span>
+            ${tag ? `<span class="pastwords-tag">${tag}</span>` : ''}
+          </div>
+          <p class="pastwords-text">${escapeHtml(reviewText(reviews[k]))}</p>
+        </div>`;
+    }).join('');
+    let moreHtml = '';
+    if (keys.length > PASTWORDS_VISIBLE) {
+      moreHtml = pastWordsExpanded
+        ? `<button class="pastwords-more" onclick="togglePastWordsMore()">收起 ▲</button>`
+        : `<button class="pastwords-more" onclick="togglePastWordsMore()">看更早的（共 ${keys.length} 周）▼</button>`;
+    }
+    document.getElementById('pastwords-body').innerHTML = itemsHtml + moreHtml;
   }
 
   // ==================== 文字复盘加载/保存 ====================
@@ -1539,6 +1682,7 @@
     void status.offsetWidth; // restart animation
     status.classList.add('shown');
     renderArchive();
+    renderPastWords();
   }
 
   // ==================== 周导航 ====================
@@ -1559,6 +1703,7 @@
     renderComboDetail();
     renderSuggestions();
     loadCurrentReview();
+    renderPastWords();
     updateComboCounters();
     updateActionCounters();
     renderTrend();
@@ -1676,9 +1821,9 @@
   // ==================== 额外运动 · 加减时间 ====================
   const EXTRA_META = {
     swim:      { listId: 'extra-swim-list',      summaryId: 'extra-swim-summary',      dateId: 'swim-date',      minId: 'swim-min',      defaultMin: '',   noteId: 'swim-note',      lastNoteId: 'extra-swim-lastnote' },
-    hike:      { listId: 'extra-hike-list',      summaryId: 'extra-hike-summary',      dateId: 'hike-date',      minId: 'hike-min',      defaultMin: '' },
+    hike:      { listId: 'extra-hike-list',      summaryId: 'extra-hike-summary',      dateId: 'hike-date',      minId: 'hike-min',      defaultMin: '',   noteId: 'hike-note',      lastNoteId: 'extra-hike-lastnote' },
     run:       { listId: 'extra-run-list',       summaryId: 'extra-run-summary',       dateId: 'run-date',       minId: 'run-min',       defaultMin: '',   noteId: 'run-note',       lastNoteId: 'extra-run-lastnote' },
-    yoga:      { listId: 'extra-yoga-list',      summaryId: 'extra-yoga-summary',      dateId: 'yoga-date',      minId: 'yoga-min',      defaultMin: '60' },
+    yoga:      { listId: 'extra-yoga-list',      summaryId: 'extra-yoga-summary',      dateId: 'yoga-date',      minId: 'yoga-min',      defaultMin: '60', noteId: 'yoga-note',      lastNoteId: 'extra-yoga-lastnote' },
     badminton: { listId: 'extra-badminton-list', summaryId: 'extra-badminton-summary', dateId: 'badminton-date', minId: 'badminton-min', defaultMin: '',   noteId: 'badminton-note', lastNoteId: 'extra-badminton-lastnote' },
   };
 
@@ -1712,8 +1857,15 @@
     renderTrend();
   }
 
-  // 复盘的事后编辑（跑步 / 游泳 / 羽毛球）
+  // 复盘的事后编辑（所有额外运动均支持）
   let editingExtraId = null;
+
+  // 每一项的列表是「只看本周」还是「看全部历史」，默认只看本周
+  let extraShowAll = {};
+  function extraToggleAll(type) {
+    extraShowAll[type] = !extraShowAll[type];
+    renderExtra();
+  }
 
   function extraEditNote(id) {
     editingExtraId = id;
@@ -1753,65 +1905,88 @@
       const weekItems = extraLog
         .filter(e => e.type === type && e.ts >= start && e.ts < end)
         .sort((a,b) => b.ts - a.ts);
+      const allItems = extraLog
+        .filter(e => e.type === type)
+        .sort((a,b) => b.ts - a.ts);
       const totalMin = weekItems.reduce((s,e) => s + e.minutes, 0);
       summary.textContent = `本周 ${weekItems.length} 次 · ${totalMin} min`;
-      list.innerHTML = weekItems.length === 0
-        ? '<div class="extra-empty">本周还没有记录</div>'
-        : weekItems.map(e => {
-            const d = new Date(e.ts);
-            const md = `${d.getMonth()+1}/${d.getDate()}`;
-            const wd = ['日','一','二','三','四','五','六'][d.getDay()];
-            const editable = !!meta.noteId;
-            const editing = editable && e.id === editingExtraId;
-            let noteArea;
-            if (editing) {
-              noteArea = `<textarea class="extra-note" id="edit-note-${e.id}">${escapeHtml(e.note || '')}</textarea>`
-                + `<div class="extra-edit-btns">`
-                + `<button class="extra-add" onclick="extraSaveNote(${e.id})">保存</button>`
-                + `<button class="extra-cancel" onclick="extraCancelEdit()">取消</button>`
-                + `</div>`;
-            } else {
-              noteArea = e.note ? `<div class="extra-row-note">${escapeHtml(e.note)}</div>` : '';
-            }
-            const editBtn = (editable && !editing)
-              ? `<button class="ed" onclick="extraEditNote(${e.id})" title="${e.note ? '编辑复盘' : '补写复盘'}">✎</button>`
-              : '';
-            return `<div class="extra-row"><div class="extra-row-head"><span>${md} 周${wd} · ${e.minutes} min</span>`
-              + `<span class="extra-row-btns">${editBtn}<button class="del" onclick="extraDel(${e.id})" title="删除整条记录">×</button></span>`
-              + `</div>${noteArea}</div>`;
-          }).join('');
 
-      // 上次提醒（跑步/游泳/羽毛球）：取该项最近一条带复盘的记录
+      const showAll = !!extraShowAll[type];
+      const items = showAll ? allItems : weekItems;
+      const nowYear = new Date().getFullYear();
+      const renderRow = (e) => {
+        const d = new Date(e.ts);
+        const ymd = (d.getFullYear() === nowYear ? '' : d.getFullYear() + '/')
+          + `${d.getMonth()+1}/${d.getDate()}`;
+        const wd = ['日','一','二','三','四','五','六'][d.getDay()];
+        const editable = !!meta.noteId;
+        const editing = editable && e.id === editingExtraId;
+        let noteArea;
+        if (editing) {
+          noteArea = `<textarea class="extra-note" id="edit-note-${e.id}">${escapeHtml(e.note || '')}</textarea>`
+            + `<div class="extra-edit-btns">`
+            + `<button class="extra-add" onclick="extraSaveNote(${e.id})">保存</button>`
+            + `<button class="extra-cancel" onclick="extraCancelEdit()">取消</button>`
+            + `</div>`;
+        } else {
+          noteArea = e.note ? `<div class="extra-row-note">${escapeHtml(e.note)}</div>` : '';
+        }
+        const editBtn = (editable && !editing)
+          ? `<button class="ed" onclick="extraEditNote(${e.id})" title="${e.note ? '编辑复盘' : '补写复盘'}">✎</button>`
+          : '';
+        return `<div class="extra-row"><div class="extra-row-head"><span>${ymd} 周${wd} · ${e.minutes} min</span>`
+          + `<span class="extra-row-btns">${editBtn}<button class="del" onclick="extraDel(${e.id})" title="删除整条记录">×</button></span>`
+          + `</div>${noteArea}</div>`;
+      };
+
+      let listHtml = '';
+      if (showAll) {
+        const allMin = allItems.reduce((s,e) => s + e.minutes, 0);
+        const notedCount = allItems.filter(e => e.note && e.note.trim()).length;
+        listHtml += `<div class="extra-all-head">📒 全部 ${allItems.length} 次 · 共 ${allMin} min`
+          + (notedCount ? ` · ${notedCount} 条有复盘` : '')
+          + `（按时间倒序）</div>`;
+      }
+      listHtml += items.length === 0
+        ? `<div class="extra-empty">${showAll ? '还没有任何记录' : '本周还没有记录'}</div>`
+        : items.map(renderRow).join('');
+      // 有跨周历史时才给出「查看全部 / 收起」开关
+      if (showAll || allItems.length > weekItems.length) {
+        listHtml += `<button class="archive-more" onclick="extraToggleAll('${type}')">`
+          + (showAll ? '▴ 收起，只看本周' : `▾ 查看全部记录（共 ${allItems.length} 条）`)
+          + `</button>`;
+      }
+      list.innerHTML = listHtml;
+
+      // 上次提醒：只把"最近一条带复盘、但当前列表里看不到"的记录顶上来，
+      // 作为下次开练前的回顾。一旦这条已经显示在下方列表里（本周有，或展开了「全部」），
+      // 就自动隐藏，避免和记录重复。
       if (meta.lastNoteId) {
         const ln = document.getElementById(meta.lastNoteId);
         if (ln) {
-          const noted = extraLog
+          const last = extraLog
             .filter(e => e.type === type && e.note && e.note.trim())
-            .sort((a,b) => b.ts - a.ts);
-          if (noted.length) {
-            const last = noted[0];
+            .sort((a,b) => b.ts - a.ts)[0];
+          const inList = !last || showAll || (last.ts >= start && last.ts < end);
+          if (inList) {
+            // 没有带复盘的记录，或这条已在下方列表里 → 提醒栏不重复显示
+            ln.style.display = 'none';
+          } else {
             const ld = new Date(last.ts);
             const dstr = `${ld.getMonth()+1}/${ld.getDate()}`;
-            // 这条是否就在下方「本周记录」列表里？在的话用列表里的 ✎ 编辑，避免重复
-            const inList = last.ts >= start && last.ts < end;
-            if (editingExtraId === last.id && !inList) {
+            if (editingExtraId === last.id) {
               ln.innerHTML = `<div class="ln-head"><span class="ln-label">📌 上次提醒</span><span class="ln-date">${dstr}</span></div>`
                 + `<textarea class="extra-note" id="edit-note-${last.id}">${escapeHtml(last.note)}</textarea>`
                 + `<div class="extra-edit-btns">`
                 + `<button class="extra-add" onclick="extraSaveNote(${last.id})">保存</button>`
                 + `<button class="extra-cancel" onclick="extraCancelEdit()">取消</button></div>`;
             } else {
-              // 不在本周列表里的记录，在提醒栏直接给出编辑/删除按钮
-              const btns = !inList
-                ? `<span class="ln-btns"><button class="ed" onclick="extraEditNote(${last.id})" title="编辑这条复盘">✎</button>`
-                  + `<button class="del" onclick="extraDel(${last.id})" title="删除这条记录">×</button></span>`
-                : '';
-              ln.innerHTML = `<div class="ln-head"><span class="ln-label">📌 上次提醒</span><span class="ln-date">${dstr}</span>${btns}</div>`
+              ln.innerHTML = `<div class="ln-head"><span class="ln-label">📌 上次提醒</span><span class="ln-date">${dstr}</span>`
+                + `<span class="ln-btns"><button class="ed" onclick="extraEditNote(${last.id})" title="编辑这条复盘">✎</button>`
+                + `<button class="del" onclick="extraDel(${last.id})" title="删除这条记录">×</button></span></div>`
                 + `<div class="ln-text">${escapeHtml(last.note)}</div>`;
             }
             ln.style.display = '';
-          } else {
-            ln.style.display = 'none';
           }
         }
       }

@@ -202,6 +202,8 @@
     position: sticky;
     top: 1.5rem;
     align-self: start;
+    max-height: calc(100vh - 3rem);
+    overflow-y: auto;
   }
   .side-toc-title {
     font-family: 'EB Garamond', serif;
@@ -218,7 +220,7 @@
     list-style: none;
     counter-reset: toc-num;
   }
-  .side-toc li {
+  .side-toc > ol > li {
     counter-increment: toc-num;
   }
   .side-toc a {
@@ -232,7 +234,7 @@
     transition: all 0.2s ease;
     position: relative;
   }
-  .side-toc a::before {
+  .side-toc > ol > li > a::before {
     content: counter(toc-num, lower-roman) ".";
     font-family: 'EB Garamond', serif;
     font-style: italic;
@@ -250,7 +252,44 @@
     border-left-color: var(--accent);
     font-weight: 500;
   }
-  .side-toc a.active::before { color: var(--accent); opacity: 1; }
+  .side-toc > ol > li > a.active::before { color: var(--accent); opacity: 1; }
+
+  /* 二级目录（今日节奏时段 / 情境库卡片） */
+  .toc-sub { list-style: none; margin: 0.1rem 0 0.45rem; }
+  .toc-sub a {
+    padding: 4px 0 4px 20px;
+    font-size: 0.76rem;
+    color: var(--text-hint);
+  }
+  .toc-sub a::before {
+    content: "·";
+    color: var(--ochre);
+    opacity: 0.6;
+    margin-right: 0.4rem;
+  }
+  .toc-sub a:hover { color: var(--accent); border-left-color: var(--border-dark); }
+  .toc-sub a.active { color: var(--accent); border-left-color: var(--accent); font-weight: 500; }
+  .toc-sub a.active::before { color: var(--accent); opacity: 1; }
+
+  /* 二级目录的展开/收起 */
+  .toc-group { display: flex; flex-wrap: wrap; align-items: center; }
+  .toc-group > a { flex: 1 1 auto; }
+  .toc-group > .toc-sub { flex-basis: 100%; }
+  .toc-group:not(.open) > .toc-sub { display: none; }
+  .toc-toggle {
+    flex: 0 0 auto;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--ochre);
+    opacity: 0.65;
+    font-size: 0.68rem;
+    line-height: 1;
+    padding: 5px 7px;
+    transition: transform 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+  }
+  .toc-toggle:hover { opacity: 1; color: var(--accent); }
+  .toc-group.open > .toc-toggle { transform: rotate(90deg); }
 
   /* ============ Main + Section ============ */
   .main { min-width: 0; }
@@ -1211,6 +1250,10 @@
     .side-toc ol { display: flex; flex-wrap: wrap; gap: 0.4rem; }
     .side-toc a { padding: 4px 10px; border-left: none; border: 1px solid var(--border-dark); border-radius: 99px; }
     .side-toc a.active { border-color: var(--accent); background: var(--accent-light); }
+    .side-toc .toc-sub { display: none; }
+    .side-toc .toc-toggle { display: none; }
+    .side-toc .toc-group { display: block; }
+    .side-toc { max-height: none; overflow: visible; }
     .page-header {
       padding: 1.5rem 1.2rem 1rem;
       flex-direction: column;
@@ -1259,8 +1302,29 @@
     <div class="side-toc-title">Contents</div>
     <ol>
       <li><a href="#sec-today" class="active">今日动态</a></li>
-      <li><a href="#sec-rhythm">今日节奏</a></li>
-      <li><a href="#sec-protocols">情境库</a></li>
+      <li class="toc-group" data-toc-group="rhythm"><a href="#sec-rhythm">今日节奏</a><button class="toc-toggle" type="button" aria-expanded="false" aria-label="展开或收起今日节奏的时段">▸</button>
+        <ul class="toc-sub">
+          <li><a href="#node-morning">🌅 晨起</a></li>
+          <li><a href="#node-day">☀️ 白天与间歇</a></li>
+          <li><a href="#node-workday">🍱 工作日饮食</a></li>
+          <li><a href="#node-evening">🌇 傍晚修复</a></li>
+          <li><a href="#node-reading">📖 阅读 10 分钟</a></li>
+          <li><a href="#node-postemma">🌙 Emma 睡后</a></li>
+        </ul>
+      </li>
+      <li class="toc-group" data-toc-group="protocols"><a href="#sec-protocols">情境库</a><button class="toc-toggle" type="button" aria-expanded="false" aria-label="展开或收起情境库的卡片">▸</button>
+        <ul class="toc-sub">
+          <li><a href="#protocol-presence">🪷 专注当下</a></li>
+          <li><a href="#protocol-lowenergy">🔋 低电模式</a></li>
+          <li><a href="#protocol-weekly">📅 周固定</a></li>
+          <li><a href="#protocol-shutdown">🌙 满载日关机</a></li>
+          <li><a href="#protocol-cleaning">🧹 清洁日</a></li>
+          <li><a href="#protocol-period">🌹 经期护理</a></li>
+          <li><a href="#protocol-party">🎉 聚会扰动</a></li>
+          <li><a href="#protocol-psyllium">🧪 Psyllium</a></li>
+          <li><a href="#protocol-gut">🌿 饮食与肠胃</a></li>
+        </ul>
+      </li>
       <li><a href="#sec-body">身体追踪</a></li>
     </ol>
   </aside>
@@ -1621,6 +1685,35 @@
 
       <div class="protocol-grid">
 
+        <details class="protocol-card" id="protocol-presence">
+          <summary>
+            <span class="icon">🪷</span>
+            <div>
+              <div class="title">专注当下</div>
+              <div class="hint">手上只留两件事 · 又赶又散时翻开</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <p>把"做任务、一件件划掉"换成"<strong>在场地做眼前这件</strong>"。不用全做，<strong>哪句戳中就用哪招</strong>——按"什么时候"找。</p>
+            <table>
+              <tbody>
+                <tr><td><strong>开始前<br>断点记录</strong></td><td>眼前只摆<strong>"此刻这件 + 做完的下一件"</strong>，其余扣回后台，手上永远只有两件事。</td></tr>
+                <tr><td><strong>太大进不去<br>缩到一步</strong></td><td>不想整件，<strong>只做接下来五分钟、只迈第一步</strong>，尺度一缩就进得去了。</td></tr>
+                <tr><td><strong>觉得勉强<br>应该→选择</strong></td><td>把心里的"我应该做"换成<strong>"我选择现在做"</strong>，任务感立刻松一扣。</td></tr>
+                <tr><td><strong>做的时候<br>单线程</strong></td><td>抓到自己同时干两件（边做边刷 / 边想下一件）就<strong>掐掉一件</strong>，只做手上这件。</td></tr>
+                <tr><td><strong>做的时候<br>命名当下</strong></td><td>心里轻轻说一句<strong>"我现在在洗碗"</strong>，一句话把你和动作缝在一起。</td></tr>
+                <tr><td><strong>走神了<br>落回身体</strong></td><td>别自责，用<strong>脚踏实地 / 三口呼吸 / 摸一摸手里东西的质感</strong>把自己捞回来。</td></tr>
+                <tr><td><strong>冒杂念<br>记一笔放回</strong></td><td>蹦出"还要做 X"别追，<strong>记一笔</strong>（便签 / 一句话）就放回后台，前台才敢空。</td></tr>
+                <tr><td><strong>做完了<br>画句号</strong></td><td>一件好了，给个<strong>"嗯，好了"＋一口气</strong>，别急着冲下一件。</td></tr>
+              </tbody>
+            </table>
+            <div class="inner-highlight">
+              💡 <strong>关于"总是忘"</strong>：专注当下不留痕迹——没打卡、没连胜，记忆抓不住它，你才会一次次重新发现。这<strong>不是你不行，是这类练习的天性</strong>。这张卡的用处就是<strong>被你重新看到</strong>：哪天又赶又散、把事当任务在划，就是它该被翻开的信号。忘了不要紧，有个地方能想起来，就够了。
+            </div>
+          </div>
+        </details>
+
         <details class="protocol-card state-card" id="protocol-lowenergy">
           <summary>
             <span class="icon">🔋</span>
@@ -1827,14 +1920,15 @@
             <span class="icon">🧪</span>
             <div>
               <div class="title">Psyllium 试用</div>
-              <div class="hint">早上一杯 · 第1周隔天顺 · 目标每天</div>
+              <div class="hint">白天分两次 · 更顺口 · 06-20 这周状态好</div>
             </div>
             <span class="arrow">›</span>
           </summary>
           <div class="protocol-card-body">
-            <p><strong>现在的吃法：早上一杯</strong>（1 茶匙≈5g + 250ml 水，搅匀立刻喝，喝完再补一杯）。<span style="color:var(--text-hint);">原计划睡前已弃——晚上为吃药已灌一大堆水，再加 husk 的水 → 夜尿 → 毁睡眠。这个判断对，别往回走。</span></p>
+            <p><strong>现在的吃法：白天分两次喝</strong>（把原来一次的量拆成两份，<strong>每次更顺口</strong>；1 茶匙 husk + 250ml 水，搅匀立刻喝、别泡，喝完再补一杯）。<span style="color:var(--text-hint);">原计划睡前已弃——晚上为吃药已灌一大堆水，再加 husk 的水 → 夜尿 → 毁睡眠。这个判断对，别往回走。</span></p>
             <div class="inner-highlight">
-              <strong>第 1 周（06-10 评）：</strong>有效，但<strong>隔天</strong>才顺畅通便一次——想做到每天。隔天且每次都顺，本在正常范围，这是<strong>优化不是补课</strong>。
+              <strong>第 1 周（06-10 评）：</strong>有效，但<strong>隔天</strong>才顺畅通便一次——想做到每天。隔天且每次都顺，本在正常范围，这是<strong>优化不是补课</strong>。<br>
+              <strong>第 2 周（06-20 评）：</strong>这周<strong>胀气几乎消失、无腹胀不适</strong>，便次仍偏少（约两天一次）但<strong>每次顺畅干净</strong>、晚体重稳 51。<strong>便量少 ≠ 没排干净</strong>——大半食物已在小肠被吸收，便量只反映残渣，判据看<strong>舒不舒服 / 干不干净 / 体重稳不稳，不看量</strong>。
             </div>
             <p style="margin-top:.6rem;font-weight:600;">往"每天"挪 —— 按省力排，先试 ①②，多半不用加东西：</p>
             <table>
@@ -1879,7 +1973,7 @@
                 <tr><td><strong>⑤ psyllium</strong></td><td>推到<strong>每天一次</strong>（转快→发酵短→气少），不是为"排更净"（本就排得净）· Swisse gummy 继续吃（停 2 周反更胀）</td></tr>
               </tbody>
             </table>
-            <p style="font-size:.78rem;color:var(--text-hint);margin-top:.5rem;">跑两三周，看<strong>傍晚那个鼓</strong>有没有小一档。</p>
+            <p style="font-size:.78rem;color:var(--text-hint);margin-top:.5rem;">跑两三周，看<strong>傍晚那个鼓</strong>有没有小一档。<strong style="color:var(--ochre);">06-20：这周傍晚的鼓基本消失、几乎无腹胀——五条在起效。</strong></p>
             <div class="inner-highlight">
               🚩 已决定<strong>不专门看 GP</strong>（年初常规血检正常 + 无报警症状）。仅当出现下列任一才就医：便血/黑便 · 没刻意却掉秤 · 夜里被肚子痛醒 · 新发吞咽困难/持续呕吐 · 认真管几周反而加重 · 莫名疲乏脸色白（贫血）
             </div>
@@ -2083,37 +2177,81 @@
     }
   });
 
-  // ==================== 侧边目录 scroll-spy ====================
+  // ==================== 侧边目录 scroll-spy + 二级目录收缩 ====================
   (function() {
     const toc = document.querySelector('.side-toc');
     if (!toc) return;
     const links = Array.from(toc.querySelectorAll('a[href^="#"]'));
-    const map = new Map();
+    // 按文档顺序建立 目标元素 → 链接 的列表
+    const entries = [];
     links.forEach(a => {
-      const id = a.getAttribute('href').slice(1);
-      const el = document.getElementById(id);
-      if (el) map.set(el, a);
+      const el = document.getElementById(a.getAttribute('href').slice(1));
+      if (el) entries.push({ el, a });
     });
-    if (map.size === 0) return;
+    if (!entries.length) return;
 
-    const setActive = (linkEl) => {
+    // ---- 二级目录展开/收起（记忆状态）----
+    const OPEN_KEY = 'toc_open_v1';
+    let openState;
+    try { openState = JSON.parse(localStorage.getItem(OPEN_KEY) || '{}'); } catch (e) { openState = {}; }
+    const saveOpen = () => { try { localStorage.setItem(OPEN_KEY, JSON.stringify(openState)); } catch (e) {} };
+
+    const ACTIVATION = 90; // 与 html scroll-padding-top 对齐
+    const setActive = (a) => {
       links.forEach(l => l.classList.remove('active'));
-      if (linkEl) linkEl.classList.add('active');
+      if (a) a.classList.add('active');
+    };
+    // 所属分组收起时，子项高亮冒泡到父级标题
+    const resolveVisible = (a) => {
+      const sub = a.closest('.toc-sub');
+      if (sub) {
+        const group = sub.closest('.toc-group');
+        if (group && !group.classList.contains('open')) {
+          const parentLink = group.querySelector(':scope > a');
+          if (parentLink) return parentLink;
+        }
+      }
+      return a;
     };
 
-    const io = new IntersectionObserver((entries) => {
-      let candidate = null;
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          if (!candidate || e.boundingClientRect.top < candidate.boundingClientRect.top) {
-            candidate = e;
-          }
-        }
-      });
-      if (candidate) setActive(map.get(candidate.target));
-    }, { rootMargin: '-80px 0px -55% 0px', threshold: 0 });
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      // 取"顶部已越过激活线"的最后一个（文档序在后＝更具体的子项，优先）
+      let current = entries[0].a;
+      for (const { el, a } of entries) {
+        if (el.getBoundingClientRect().top - ACTIVATION <= 0) current = a;
+      }
+      setActive(resolveVisible(current));
+    };
+    const onScroll = () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    };
 
-    map.forEach((_, el) => io.observe(el));
+    // 应用初始展开状态 + 绑定卡尺按钮（默认收起）
+    toc.querySelectorAll('.toc-group').forEach(group => {
+      const key = group.dataset.tocGroup;
+      const toggle = group.querySelector('.toc-toggle');
+      const apply = (open) => {
+        group.classList.toggle('open', open);
+        if (toggle) toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      };
+      apply(!!(key && openState[key]));
+      if (toggle) {
+        toggle.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const nowOpen = !group.classList.contains('open');
+          apply(nowOpen);
+          if (key) { openState[key] = nowOpen; saveOpen(); }
+          update();
+        });
+      }
+    });
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    update();
   })();
 
   // ==================== 清洁日打卡 ====================

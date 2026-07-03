@@ -788,6 +788,38 @@
     grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
     gap: 0.85rem;
   }
+  /* 情境库分组标题：横跨整行 + 右侧延伸细线 */
+  .protocol-cat {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0.75rem 0 -0.05rem;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-hint);
+    letter-spacing: 0.04em;
+  }
+  .protocol-cat:first-child { margin-top: 0; }
+  .protocol-cat::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  /* 侧边目录里的分组小标（非链接） */
+  .toc-cat {
+    list-style: none;
+    margin: 0.5rem 0 0.1rem;
+    font-size: 0.66rem;
+    font-weight: 600;
+    color: var(--text-hint);
+    letter-spacing: 0.05em;
+    opacity: 0.85;
+    cursor: default;
+  }
+  .toc-cat:first-child { margin-top: 0; }
   .protocol-card {
     background: var(--surface);
     border: 1px solid var(--border-dark);
@@ -1314,14 +1346,19 @@
       </li>
       <li class="toc-group" data-toc-group="protocols"><a href="#sec-protocols">情境库</a><button class="toc-toggle" type="button" aria-expanded="false" aria-label="展开或收起情境库的卡片">▸</button>
         <ul class="toc-sub">
+          <li class="toc-cat">🫧 情绪心理</li>
           <li><a href="#protocol-presence">🪷 专注当下</a></li>
           <li><a href="#protocol-loved">🤍 被白白爱着</a></li>
+          <li class="toc-cat">🌹 今日状态</li>
           <li><a href="#protocol-lowenergy">🔋 低电模式</a></li>
-          <li><a href="#protocol-weekly">📅 周固定</a></li>
           <li><a href="#protocol-shutdown">🌙 满载日关机</a></li>
-          <li><a href="#protocol-cleaning">🧹 清洁日</a></li>
+          <li><a href="#protocol-preperiod">🐢 经期前减速</a></li>
           <li><a href="#protocol-period">🌹 经期护理</a></li>
+          <li class="toc-cat">🗓️ 日常节律</li>
+          <li><a href="#protocol-weekly">📅 周固定</a></li>
+          <li><a href="#protocol-cleaning">🧹 清洁日</a></li>
           <li><a href="#protocol-party">🎉 聚会扰动</a></li>
+          <li class="toc-cat">🌿 身体养护</li>
           <li><a href="#protocol-psyllium">🧪 Psyllium</a></li>
           <li><a href="#protocol-gut">🌿 饮食与肠胃</a></li>
           <li><a href="#protocol-corebreath">🌬️ 收腹呼吸</a></li>
@@ -1687,6 +1724,7 @@
 
       <div class="protocol-grid">
 
+        <div class="protocol-cat">🫧 情绪心理</div>
         <details class="protocol-card" id="protocol-presence">
           <summary>
             <span class="icon">🪷</span>
@@ -1741,6 +1779,7 @@
           </div>
         </details>
 
+        <div class="protocol-cat">🌹 今日状态 · 点开就生效</div>
         <details class="protocol-card state-card" id="protocol-lowenergy">
           <summary>
             <span class="icon">🔋</span>
@@ -1794,32 +1833,6 @@
           </div>
         </details>
 
-        <details class="protocol-card" id="protocol-weekly">
-          <summary>
-            <span class="icon">📅</span>
-            <div>
-              <div class="title">周固定</div>
-              <div class="hint">一周锚点</div>
-            </div>
-            <span class="arrow">›</span>
-          </summary>
-          <div class="protocol-card-body">
-            <table>
-              <tbody>
-                <tr><td><strong>每晚</strong></td><td>20 个 Anki 中文字 · Eric 带 Emma 指读故事</td></tr>
-                <tr><td><strong>周一晚</strong></td><td>Emma 游泳课，自己/Eric 同步游</td></tr>
-                <tr><td><strong>周二晚</strong></td><td>和 Eric 一起 JJ 老师瑜伽 1h</td></tr>
-                <tr><td><strong>周三晚</strong></td><td>🧹 清洁日（见下方抽屉）</td></tr>
-                <tr><td><strong>周四晚</strong></td><td>🌙 满载日 → 走<a href="#protocol-shutdown" style="color:var(--accent);">关机轨道</a></td></tr>
-                <tr><td><strong>周五晚</strong></td><td>🎬 电影之夜</td></tr>
-                <tr><td><strong>周六早</strong></td><td>Emma 攀岩，自己/Eric 在攀岩馆健身房</td></tr>
-                <tr><td><strong>周日下午</strong></td><td>羽毛球</td></tr>
-                <tr><td><strong>周末</strong></td><td>不定期国家公园 hiking</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </details>
-
         <details class="protocol-card state-card" id="protocol-shutdown">
           <summary>
             <span class="icon">🌙</span>
@@ -1850,6 +1863,85 @@
             <div class="inner-highlight">
               <strong>成功标准</strong>：没刷手机硬熬、被音轨带睡着就赢（<strong>中段醒了想刷？叫老公一声</strong>）。日记没写、明天没排都不算输。<strong>早躺不是失败，是这天唯一正确的赢法。</strong>
             </div>
+          </div>
+        </details>
+
+        <details class="protocol-card state-card" id="protocol-preperiod">
+          <summary>
+            <span class="icon">🐢</span>
+            <div>
+              <div class="title">经期前 · 提前减速</div>
+              <div class="hint">点开＝进入减速周 · 跨天保持 · 来例假就关（转经期护理）</div>
+            </div>
+            <span class="le-switch" id="pp-switch" role="switch" aria-checked="false" aria-label="经期前减速状态"><span class="le-knob"></span></span>
+          </summary>
+          <div class="protocol-card-body">
+            <p>上轮例假你<strong>满油门冲进去</strong>，前三周连续高载攒的电量债在例假一起结账，才那么乏力、经血又少又短。这周不是停练，是<strong>提前减一档，把电留给例假</strong>。判断法：练完当下该是<strong>松快、微累</strong>；一旦"累到要反复歇"就是超了。</p>
+            <p>🗓️ 别把它读成"一个月只剩两周能练"：你<strong>本来就只有约两周的满格窗</strong>（例假后的卵泡期——那两周恢复快、最能长东西，该冲就冲）。这张卡只管月末这一周，把它从"硬撑→崩成 0"改成"有计划地轻"。<strong>你没少掉两周，只是让它们从塌方变成缓坡。</strong></p>
+            <table>
+              <tbody>
+                <tr><td><strong>🔥 体能向</strong><br><span style="font-size:.72rem;color:var(--text-hint);">内脏脂肪操 / 有氧操 / 跑步 / 快游</span></td><td><strong>砍最多。</strong>强度降一档：跑步从 180 步频慢跑/快跑 → <strong>130 快步走</strong>（心率 100–110，你验证过最舒服那种）；游泳别冲距离、不追力竭，匀速 300m 就收。单次 ≤20–30min，一周 ≤2 次。</td></tr>
+                <tr><td><strong>💪 身材向</strong><br><span style="font-size:.72rem;color:var(--text-hint);">哑铃 / 腿臀 / 塑形</span></td><td><strong>减半。</strong>哑铃 15–20min 全身 → <strong>10min 或减组数</strong>，练到"有点感觉"就停、不到酸胀力竭；一周 3–4 次 → <strong>1–2 次</strong>。腹腔加压的（真空腹 / 腹横肌 / 卷腹）提前收。</td></tr>
+                <tr><td><strong>🍃 养护向</strong><br><span style="font-size:.72rem;color:var(--text-hint);">拉伸 / 揉腹 / 呼吸 / 恢复瑜伽</span></td><td><strong>不减，反而顶上。</strong>体能身材腾出的空档用它填：睡前拉伸、腹式呼吸、揉腹（还没来、正好顺胀气）、颂钵冥想、恢复类瑜伽（清晨排毒 / 全程躺练，别选燃脂那种）。这一档这周是主角。</td></tr>
+                <tr><td><strong>🏞️ 户外</strong><br><span style="font-size:.72rem;color:var(--text-hint);">hike / 羽毛球</span></td><td><strong>降当天负荷。</strong>hike 走短程平路，避长距离 / 大上下坡 / 负重（别再来抬担架那种）；羽毛球打娱乐局，别打到大汗对抗。</td></tr>
+              </tbody>
+            </table>
+            <div class="inner-highlight">
+              💡 <strong>什么时候开这张</strong>：cycle app 提示离下次例假还剩约<strong>一周</strong>，就翻开、开开关，让上方 NOW 卡整周提醒你在减速。<strong>来例假当天关掉它、转 🌹 经期护理。</strong>上次那么难受，就差这一步——没人提醒你踩刹车。
+            </div>
+          </div>
+        </details>
+
+        <details class="protocol-card state-card" id="protocol-period">
+          <summary>
+            <span class="icon">🌹</span>
+            <div>
+              <div class="title">经期护理</div>
+              <div class="hint">点开＝经期中 · 跨天保持 · 结束记得关</div>
+            </div>
+            <span class="le-switch" id="pe-switch" role="switch" aria-checked="false" aria-label="经期状态"><span class="le-knob"></span></span>
+          </summary>
+          <div class="protocol-card-body">
+            <table>
+              <tbody>
+                <tr><td><strong>饮食</strong></td><td>温水温食 · 多补铁（瘦牛肉/菠菜/黑芝麻）· 少盐糖咖啡 · 忌生冷</td></tr>
+                <tr><td><strong>饱足</strong></td><td>经期能量需求<strong>真的高</strong>，别压饭。早 / 午先把<strong>密度</strong>喂够（肉蛋坚果、补铁那几样），下午就不会一路追主食→坚果→零食→巧克力。真馋巧克力，<strong>正餐后吃一块好的</strong>——那是选择，不是失守。追到鼓鼓才停＝白天没喂够，不是意志力差。</td></tr>
+                <tr><td><strong>身体</strong></td><td>腹腰脚踝保暖 · 暖宫贴 · 温水泡脚 15–20 分 · 2–4h 一换</td></tr>
+                <tr><td><strong>运动</strong></td><td>量大 1–2 天散步+轻拉伸 · 后半段恢复瑜伽/慢跑 · 忌跳跃倒立</td></tr>
+                <tr><td><strong>作息</strong></td><td>11 点前入睡 · 白天 20–30 分小睡补</td></tr>
+                <tr><td><strong>情绪</strong></td><td>接纳激素波动 · 泡澡/剧/音乐 · 记录周期与状态</td></tr>
+              </tbody>
+            </table>
+            <div class="inner-warn">
+              <strong>经期避免：</strong>跳绳 / HIIT / 哑铃负重 / 真空腹 / 腹横肌 / 萨尔曼瘦肚子 / 假胯宽 等高冲击或腹腔加压；揉腹可能增加经量也跳过
+            </div>
+          </div>
+        </details>
+
+        <div class="protocol-cat">🗓️ 日常节律</div>
+        <details class="protocol-card" id="protocol-weekly">
+          <summary>
+            <span class="icon">📅</span>
+            <div>
+              <div class="title">周固定</div>
+              <div class="hint">一周锚点</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <table>
+              <tbody>
+                <tr><td><strong>每晚</strong></td><td>20 个 Anki 中文字 · Eric 带 Emma 指读故事</td></tr>
+                <tr><td><strong>周一晚</strong></td><td>Emma 游泳课，自己/Eric 同步游</td></tr>
+                <tr><td><strong>周二晚</strong></td><td>和 Eric 一起 JJ 老师瑜伽 1h</td></tr>
+                <tr><td><strong>周三晚</strong></td><td>🧹 清洁日（见下方抽屉）</td></tr>
+                <tr><td><strong>周四晚</strong></td><td>🌙 满载日 → 走<a href="#protocol-shutdown" style="color:var(--accent);">关机轨道</a></td></tr>
+                <tr><td><strong>周五晚</strong></td><td>🎬 电影之夜</td></tr>
+                <tr><td><strong>周六早</strong></td><td>Emma 攀岩，自己/Eric 在攀岩馆健身房</td></tr>
+                <tr><td><strong>周日下午</strong></td><td>羽毛球</td></tr>
+                <tr><td><strong>周末</strong></td><td>不定期国家公园 hiking</td></tr>
+              </tbody>
+            </table>
           </div>
         </details>
 
@@ -1892,32 +1984,6 @@
           </div>
         </details>
 
-        <details class="protocol-card state-card" id="protocol-period">
-          <summary>
-            <span class="icon">🌹</span>
-            <div>
-              <div class="title">经期护理</div>
-              <div class="hint">点开＝经期中 · 跨天保持 · 结束记得关</div>
-            </div>
-            <span class="le-switch" id="pe-switch" role="switch" aria-checked="false" aria-label="经期状态"><span class="le-knob"></span></span>
-          </summary>
-          <div class="protocol-card-body">
-            <table>
-              <tbody>
-                <tr><td><strong>饮食</strong></td><td>温水温食 · 多补铁（瘦牛肉/菠菜/黑芝麻）· 少盐糖咖啡 · 忌生冷</td></tr>
-                <tr><td><strong>饱足</strong></td><td>经期能量需求<strong>真的高</strong>，别压饭。早 / 午先把<strong>密度</strong>喂够（肉蛋坚果、补铁那几样），下午就不会一路追主食→坚果→零食→巧克力。真馋巧克力，<strong>正餐后吃一块好的</strong>——那是选择，不是失守。追到鼓鼓才停＝白天没喂够，不是意志力差。</td></tr>
-                <tr><td><strong>身体</strong></td><td>腹腰脚踝保暖 · 暖宫贴 · 温水泡脚 15–20 分 · 2–4h 一换</td></tr>
-                <tr><td><strong>运动</strong></td><td>量大 1–2 天散步+轻拉伸 · 后半段恢复瑜伽/慢跑 · 忌跳跃倒立</td></tr>
-                <tr><td><strong>作息</strong></td><td>11 点前入睡 · 白天 20–30 分小睡补</td></tr>
-                <tr><td><strong>情绪</strong></td><td>接纳激素波动 · 泡澡/剧/音乐 · 记录周期与状态</td></tr>
-              </tbody>
-            </table>
-            <div class="inner-warn">
-              <strong>经期避免：</strong>跳绳 / HIIT / 哑铃负重 / 真空腹 / 腹横肌 / 萨尔曼瘦肚子 / 假胯宽 等高冲击或腹腔加压；揉腹可能增加经量也跳过
-            </div>
-          </div>
-        </details>
-
         <details class="protocol-card" id="protocol-party">
           <summary>
             <span class="icon">🎉</span>
@@ -1942,6 +2008,7 @@
           </div>
         </details>
 
+        <div class="protocol-cat">🌿 身体养护</div>
         <details class="protocol-card" id="protocol-psyllium">
           <summary>
             <span class="icon">🧪</span>
@@ -2080,7 +2147,8 @@
   const LOW_TIP      = '今天降档就好：做一个动作 / 一页书就赢，不做也不欠谁。困了就睡——这是身体在还债，不是偷懒。';
   const PERIOD_TIP   = '经期照护优先：腹腰脚踝保暖、温食补铁、早睡。运动避开跳跃 / 负重 / 腹腔加压，量大就散步 + 轻拉伸。';
   const FULLLOAD_TIP = '今天满载——晚上别再加任务，攒着电走关机轨道：躺下戴耳机、跟音轨睡着就赢。';
-  let lowEnergyOn = false, periodOn = false, fullloadOn = false;
+  const PREPERIOD_TIP = '经期快到了——这周提前给运动减速：体能砍到快走、身材减半、养护顶上。先欠一点，把电留给例假，别满油门冲进去。';
+  let lowEnergyOn = false, periodOn = false, fullloadOn = false, preperiodOn = false;
 
   function pickPhase(h) {
     const hh = h < 5 ? h + 24 : h;
@@ -2096,15 +2164,17 @@
     const tags = [];
     if (lowEnergyOn) tags.push('🔋 低电');
     if (periodOn)    tags.push('🌹 经期');
+    if (preperiodOn) tags.push('🐢 减速');
     if (fullloadOn)  tags.push('🌙 满载');
     document.getElementById('now-phase').textContent =
       (tags.length ? tags.join(' · ') + ' · ' : '') + `${phase.emoji} ${phase.name}`;
     document.getElementById('now-tip').textContent =
-      lowEnergyOn ? LOW_TIP : fullloadOn ? FULLLOAD_TIP : periodOn ? PERIOD_TIP : phase.tip;
+      lowEnergyOn ? LOW_TIP : fullloadOn ? FULLLOAD_TIP : periodOn ? PERIOD_TIP : preperiodOn ? PREPERIOD_TIP : phase.tip;
     // 有状态开启时，「查看详情」跳到对应状态卡（优先级同 tip）；否则跳当前时段
     const stateAnchor = lowEnergyOn ? '#protocol-lowenergy'
                       : fullloadOn  ? '#protocol-shutdown'
                       : periodOn    ? '#protocol-period'
+                      : preperiodOn ? '#protocol-preperiod'
                       : null;
     document.getElementById('now-anchor').setAttribute('href', stateAnchor || phase.anchor);
 
@@ -2171,6 +2241,7 @@
   setupStateCard({ cardId:'protocol-lowenergy', swId:'le-switch', key:'low_energy_mode_v1', daily:true,  bodyClass:'le-on', setFlag:v => lowEnergyOn = v });
   setupStateCard({ cardId:'protocol-shutdown',  swId:'fl-switch', key:'fullload_mode_v1',   daily:true,  setFlag:v => fullloadOn = v });
   setupStateCard({ cardId:'protocol-period',    swId:'pe-switch', key:'period_mode_v1',     daily:false, setFlag:v => periodOn = v });
+  setupStateCard({ cardId:'protocol-preperiod', swId:'pp-switch', key:'preperiod_mode_v1',  daily:false, setFlag:v => preperiodOn = v });
 
   // ==================== 明日待办 · 共用主页 storage key ====================
   const TDO_KEY = 'tomorrow_todo_v2';

@@ -185,6 +185,23 @@
   .add-form button{grid-column:1 / -1;font-family:inherit;font-size:.8rem;padding:9px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:500;transition:background .15s;}
   .add-form button:hover{background:#1e3f2b;}
   footer{text-align:center;padding:2rem;font-size:.7rem;color:var(--text-hint);}
+
+  /* ═══ 一周晚饭系统 ═══ */
+  .week-card{padding:1.1rem 1.3rem;}
+  .week-intro{font-size:.8rem;color:var(--text-secondary);line-height:1.65;margin-bottom:.9rem;padding:.6rem .85rem;background:var(--bg);border-radius:8px;}
+  .week-intro b{color:var(--text-primary);}
+  .week-grid{display:flex;flex-direction:column;gap:7px;}
+  .week-row{display:grid;grid-template-columns:48px 1fr 1fr 1fr;gap:8px;align-items:center;padding:8px 11px;background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent-light);border-radius:9px;}
+  .wd{font-family:'Noto Serif SC',serif;font-weight:600;font-size:.85rem;color:var(--text-primary);}
+  .wc-slot{font-family:inherit;font-size:.76rem;padding:5px 9px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text-primary);outline:none;min-width:0;width:100%;}
+  .wc-slot:focus{border-color:var(--accent-mid);background:var(--surface);}
+  .week-foot{display:flex;justify-content:flex-end;margin-top:.7rem;}
+  .week-reset{margin-left:auto;font-size:.72rem;color:var(--text-hint);background:none;border:none;cursor:pointer;font-family:inherit;text-decoration:underline;}
+  .week-reset:hover{color:var(--text-primary);}
+  @media(max-width:560px){
+    .week-row{grid-template-columns:1fr 1fr 1fr;}
+    .week-row .wd{grid-column:1 / 4;margin-bottom:2px;}
+  }
 </style>
 </head>
 <body>
@@ -195,6 +212,14 @@
 </header>
 
 <div class="main">
+
+  <!-- ═══ 一周晚饭系统 ═══ -->
+  <div class="sh">🗓️ 一周晚饭菜单 <span style="font-weight:400;color:var(--text-hint);font-size:.72rem;margin-left:6px;letter-spacing:0;text-transform:none;">周日排一次，之后照着走</span></div>
+  <div class="card week-card">
+    <div class="week-intro">一周七晚，每晚填 <b>🥬 蔬菜 / 🍗 蛋白质 / 🍚 主食</b> 三样。周日排一次、之后照着买照着做，不用每天在最累的晚上现想。真做饭的留两三晚就够，其余靠 一锅多顿 / 剩菜 / 面点 / 外卖——先把总量减下来。</div>
+    <div class="week-grid" id="weekGrid"></div>
+    <div class="week-foot"><button class="week-reset" onclick="resetWeek()">清空重填</button></div>
+  </div>
 
   <div class="workspace">
 
@@ -974,7 +999,47 @@ function addMeal(){
   renderEditList();renderMeals();
 }
 
+// ==================== 一周晚饭系统 ====================
+const WEEK_KEY="summer_dinner_week_v1";
+const DAYS=["周一","周二","周三","周四","周五","周六","周日"];
+// 每晚三个菜位:veg 蔬菜 / protein 蛋白质 / staple 主食(默认留空,周日排时填)
+const DEFAULT_WEEK=[
+  {veg:"",protein:"",staple:""},{veg:"",protein:"",staple:""},{veg:"",protein:"",staple:""},
+  {veg:"",protein:"",staple:""},{veg:"",protein:"",staple:""},{veg:"",protein:"",staple:""},
+  {veg:"",protein:"",staple:""},
+];
+function loadWeek(){
+  try{const s=localStorage.getItem(WEEK_KEY);if(s){const d=JSON.parse(s);if(Array.isArray(d)&&d.length===7){
+    // 迁移:保留三个菜位,清掉已去掉的排班字段(主厨/档位/收拾)和更早的单格 note
+    d.forEach(n=>{n.veg=n.veg||"";n.protein=n.protein||"";n.staple=n.staple||"";delete n.note;delete n.cook;delete n.load;delete n.clean;});
+    return d;
+  }}}catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT_WEEK));
+}
+let week=loadWeek();
+function saveWeek(){try{localStorage.setItem(WEEK_KEY,JSON.stringify(week));}catch(e){}}
+function esc(s){return(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");}
+function renderWeek(){
+  const g=document.getElementById("weekGrid");
+  if(!g)return;
+  g.innerHTML=week.map((n,i)=>{
+    return `<div class="week-row">
+      <div class="wd">${DAYS[i]}</div>
+      <input class="wc-slot" value="${esc(n.veg)}" placeholder="🥬 蔬菜" onchange="slotWeek(${i},'veg',this.value)" />
+      <input class="wc-slot" value="${esc(n.protein)}" placeholder="🍗 蛋白质" onchange="slotWeek(${i},'protein',this.value)" />
+      <input class="wc-slot" value="${esc(n.staple)}" placeholder="🍚 主食" onchange="slotWeek(${i},'staple',this.value)" />
+    </div>`;
+  }).join("");
+}
+function slotWeek(i,field,val){week[i][field]=val;saveWeek();}
+function resetWeek(){
+  if(!confirm("清空整张菜单重填？你填的会清掉。"))return;
+  week=JSON.parse(JSON.stringify(DEFAULT_WEEK));
+  saveWeek();renderWeek();
+}
+
 // ==================== 启动 ====================
+renderWeek();
 loadFridge();
 if(fridgeState.stockOpen){
   document.getElementById("stockBody").classList.add("open");

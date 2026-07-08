@@ -787,6 +787,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
     gap: 0.85rem;
+    align-items: start; /* 展开某张卡时，不把同排的邻卡拉伸成空盒子 */
   }
   /* 情境库分组标题：横跨整行 + 右侧延伸细线 */
   .protocol-cat {
@@ -830,6 +831,14 @@
   .protocol-card[open] {
     border-color: var(--accent-mid);
   }
+  /* 从目录点进来时，目标卡闪一圈高亮，明确标出"点中的是这张"（尤其状态卡不展开时）*/
+  @keyframes tocFocusFlash {
+    0%   { box-shadow: 0 0 0 3px var(--accent); }
+    70%  { box-shadow: 0 0 0 3px var(--accent); }
+    100% { box-shadow: 0 0 0 3px transparent; }
+  }
+  .protocol-card.toc-focus,
+  details.timeline-node.toc-focus { animation: tocFocusFlash 1.2s ease-out; }
   .protocol-card summary {
     list-style: none;
     cursor: pointer;
@@ -924,6 +933,89 @@
     color: var(--text-secondary);
   }
   .protocol-card-body .inner-warn strong { color: var(--rose); }
+
+  /* ============ 精力罗盘 · 四格（先认出哪一格空了） ============ */
+  .pw-card { border-left: 3px solid var(--accent); }
+  .pw-lead {
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 0.9rem;
+  }
+  .pw-lead strong { color: var(--text-primary); }
+  .pw-quad {
+    border-left: 3px solid var(--q);
+    background: var(--qbg);
+    border-radius: 0 3px 3px 0;
+    padding: 0.7rem 0.9rem 0.75rem;
+    margin-bottom: 0.7rem;
+  }
+  .pw-quad.q-body { --q: var(--ochre); --qbg: var(--ochre-light); }
+  .pw-quad.q-emo  { --q: var(--rose);  --qbg: var(--rose-light); }
+  .pw-quad.q-mind { --q: var(--mist);  --qbg: var(--mist-light); }
+  .pw-quad.q-will { --q: var(--gold);  --qbg: var(--gold-light); }
+  .pw-qhead {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+  }
+  .pw-qhead .pw-ico { font-size: 1.05rem; line-height: 1; }
+  .pw-qhead .pw-name {
+    font-family: 'Noto Serif SC', serif;
+    font-weight: 700;
+    font-size: 0.92rem;
+    color: var(--q);
+    letter-spacing: 0.02em;
+  }
+  .pw-qhead .pw-sub { font-size: 0.72rem; color: var(--text-hint); font-style: italic; }
+  .pw-row {
+    display: flex;
+    gap: 0.55rem;
+    font-size: 0.8rem;
+    line-height: 1.65;
+    padding: 2px 0;
+  }
+  .pw-row .pw-k {
+    flex: 0 0 3.1rem;
+    font-size: 0.7rem;
+    color: var(--q);
+    font-weight: 700;
+    padding-top: 0.15rem;
+    text-align: right;
+    letter-spacing: 0.02em;
+  }
+  .pw-row .pw-v { flex: 1; min-width: 0; color: var(--text-secondary); }
+  .pw-row .pw-v strong { color: var(--text-primary); }
+  .pw-row .pw-v a,
+  .pw-link {
+    color: var(--q);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--q);
+    white-space: nowrap;
+  }
+  .pw-row .pw-v a:hover, .pw-link:hover { border-bottom-style: solid; }
+  .pw-spine {
+    background: var(--accent-light);
+    border-left: 2px solid var(--accent);
+    padding: 0.7rem 0.9rem;
+    margin: 0.85rem 0 0.5rem;
+    border-radius: 0 3px 3px 0;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .pw-spine strong { color: var(--accent); }
+  .pw-demine {
+    font-size: 0.76rem;
+    color: var(--text-hint);
+    line-height: 1.65;
+    font-style: italic;
+    border-top: 1px dashed var(--border-dark);
+    padding-top: 0.65rem;
+  }
+  .pw-demine strong { color: var(--rose); font-style: normal; }
 
   /* ============ iv. 身体追踪 · 链接卡 ============ */
   .link-card {
@@ -1346,8 +1438,11 @@
       </li>
       <li class="toc-group" data-toc-group="protocols"><a href="#sec-protocols">情境库</a><button class="toc-toggle" type="button" aria-expanded="false" aria-label="展开或收起情境库的卡片">▸</button>
         <ul class="toc-sub">
+          <li class="toc-cat">🧭 精力总览</li>
+          <li><a href="#protocol-compass">🧭 精力罗盘</a></li>
           <li class="toc-cat">🫧 情绪心理</li>
           <li><a href="#protocol-presence">🪷 专注当下</a></li>
+          <li><a href="#protocol-being">🌊 存在练习</a></li>
           <li><a href="#protocol-loved">🤍 被白白爱着</a></li>
           <li class="toc-cat">🌹 今日状态</li>
           <li><a href="#protocol-lowenergy">🔋 低电模式</a></li>
@@ -1362,6 +1457,8 @@
           <li><a href="#protocol-psyllium">🧪 Psyllium</a></li>
           <li><a href="#protocol-gut">🌿 饮食与肠胃</a></li>
           <li><a href="#protocol-corebreath">🌬️ 收腹呼吸</a></li>
+          <li><a href="#protocol-breath">🫁 呼吸革命</a></li>
+          <li><a href="#protocol-sleep">😴 睡眠革命</a></li>
         </ul>
       </li>
       <li><a href="#sec-body">身体追踪</a></li>
@@ -1724,6 +1821,54 @@
 
       <div class="protocol-grid">
 
+        <div class="protocol-cat">🧭 精力总览 · 先认哪格空了</div>
+        <details class="protocol-card pw-card" id="protocol-compass" style="grid-column: 1 / -1;">
+          <summary>
+            <span class="icon">🧭</span>
+            <div>
+              <div class="title">精力罗盘</div>
+              <div class="hint">累/烦/散/迷茫，四种不一样的缺口 · 点开看该充哪格</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <p class="pw-lead">精力分<strong>四种，是四个独立的电池</strong>——一个空了，别的补不上。不对劲时先别笼统说"我状态差"，<strong>认出哪格空了，再对症充</strong>。每格三行：怎么看出空了 · 你已经在做的充电 · 你当年写给自己的一句。</p>
+
+            <div class="pw-quad q-body">
+              <div class="pw-qhead"><span class="pw-ico">⚡</span><span class="pw-name">体能</span><span class="pw-sub">身体的柴火</span></div>
+              <div class="pw-row"><span class="pw-k">空了</span><span class="pw-v">睡不解乏 · 一动就喘 · 胀气 · 经期特别乏</span></div>
+              <div class="pw-row"><span class="pw-k">充电</span><span class="pw-v">动起来（<a href="../运动周总结.html" target="_blank">运动周总结</a>）· 饭<a class="pw-link" href="#protocol-gut">吃够</a> · <a class="pw-link" href="#protocol-corebreath">收腹呼吸</a>顺气 · <a class="pw-link" href="#protocol-sleep">睡够</a> · 经期前<a class="pw-link" href="#protocol-preperiod">减速</a></span></div>
+              <div class="pw-row"><span class="pw-k">你写的</span><span class="pw-v">每坐一个半小时就起来动一下；吃到刚好满足，别吃到撑</span></div>
+            </div>
+
+            <div class="pw-quad q-emo">
+              <div class="pw-qhead"><span class="pw-ico">💗</span><span class="pw-name">情感</span><span class="pw-sub">把烦变顺</span></div>
+              <div class="pw-row"><span class="pw-k">空了</span><span class="pw-v">烦躁、一点就炸 · 对 Emma、对人没耐心 · 不想搭理人、只想躲起来</span></div>
+              <div class="pw-row"><span class="pw-k">充电</span><span class="pw-v"><strong>换个频道</strong>：做一件让你享受的事就回血（<a href="精神花园.html" target="_blank">精神花园</a>）· 要炸先走开 · 觉得"这都是交易"就翻<a class="pw-link" href="#protocol-loved">被白白爱着</a></span></div>
+              <div class="pw-row"><span class="pw-k">你写的</span><span class="pw-v">让你享受的事，别第一个砍；上火先深呼吸，再开口</span></div>
+            </div>
+
+            <div class="pw-quad q-mind">
+              <div class="pw-qhead"><span class="pw-ico">🧠</span><span class="pw-name">思维</span><span class="pw-sub">专注、别钻牛角尖</span></div>
+              <div class="pw-row"><span class="pw-k">空了</span><span class="pw-v">分心、进不去、又赶又散 · 拖着不动 · 悲观打转</span></div>
+              <div class="pw-row"><span class="pw-k">充电</span><span class="pw-v">又赶又散→<a class="pw-link" href="#protocol-presence">专注当下</a> · 越熬越精神→<a class="pw-link" href="#protocol-shutdown">满载日关机</a> · 转不动就<strong>先去动动身体</strong></span></div>
+              <div class="pw-row"><span class="pw-k">你写的</span><span class="pw-v">钻牛角尖就写下来，把"坏事"翻成"那能怎么办"；每隔一阵换件事做</span></div>
+            </div>
+
+            <div class="pw-quad q-will">
+              <div class="pw-qhead"><span class="pw-ico">🕯️</span><span class="pw-name">意志</span><span class="pw-sub">记得为什么</span></div>
+              <div class="pw-row"><span class="pw-k">空了</span><span class="pw-v">迷茫、不知道为了啥 · 觉得做什么都没意义 · 被"必须有收获"逼得喘</span></div>
+              <div class="pw-row"><span class="pw-k">充电</span><span class="pw-v">翻回你<a href="../读书笔记/精力管理.html" target="_blank">最看重的五样</a>（健康/感恩/平衡/关怀/知识），认一认眼前这事为的哪样 · 晨读<a href="../读书笔记/与神对话1.html" target="_blank">《与神对话》</a> · 陪 Emma、冥想这种付出<strong>本身就回血</strong></span></div>
+              <div class="pw-row"><span class="pw-k">你写的</span><span class="pw-v">每天记一句感恩；别追问"这有什么意义"，改问"现在该做什么"</span></div>
+            </div>
+
+            <div class="pw-spine">
+              🪢 <strong>就一句话</strong>：精力靠<strong>固定习惯</strong>撑，不靠<strong>硬扛</strong>——硬扛越用越少。你的<strong>"激活坡道"</strong>就是这句话，你其实已经在用这本书了。
+            </div>
+            <p class="pw-demine">书里那张"每天打分"的表我没做——对你会变成又一笔要还的债。这张只在你不对劲时翻：<strong>不打卡、不欠账</strong>。忘了也没关系，有地方能想起来就够。</p>
+          </div>
+        </details>
+
         <div class="protocol-cat">🫧 情绪心理</div>
         <details class="protocol-card" id="protocol-presence">
           <summary>
@@ -1750,6 +1895,32 @@
             </table>
             <div class="inner-highlight">
               💡 <strong>关于"总是忘"</strong>：专注当下不留痕迹——没打卡、没连胜，记忆抓不住它，你才会一次次重新发现。这<strong>不是你不行，是这类练习的天性</strong>。这张卡的用处就是<strong>被你重新看到</strong>：哪天又赶又散、把事当任务在划，就是它该被翻开的信号。忘了不要紧，有个地方能想起来，就够了。
+            </div>
+          </div>
+        </details>
+
+        <details class="protocol-card" id="protocol-being">
+          <summary>
+            <span class="icon">🌊</span>
+            <div>
+              <div class="title">存在练习</div>
+              <div class="hint">停下来就发慌、又想抓个新引擎时翻开 · 给"不产出"脱敏</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <p>这不是"学会享受空白"，是给一个<strong>警报</strong>脱敏。你身体里有个反射：<strong>一停止产出，就像掉进虚空</strong>，于是喊"快去做点什么"——所以你"待不住"，不是不会享受，是<strong>警报不许你待</strong>。要练的，是让它学会：<strong>不产出，也没事</strong>。</p>
+            <p>而这件事<strong>做完没有产出、没有收获，指不出"我得到了什么"——这不是缺陷，这就是它的定义</strong>。"意义 = 做本身"会让你膈应（"那不就等于没意义吗？"）——<strong>那一下膈应，正是被阉割的地方在响</strong>。让"做本身"就够了、不再追问它换来什么，就是你要练的那块肌肉。</p>
+            <table>
+              <tbody>
+                <tr><td><strong>挑一小口<br>小到不值得做</strong></td><td><strong>两分钟</strong>：端杯东西、看着窗外，什么都不做、不产出。"不值得做"正是重点。</td></tr>
+                <tr><td><strong>警报会来<br>认出它、别逃别辩</strong></td><td>身体会喊"没意义、浪费时间、我该去…"——认一句"警报来了"，不冲去做事、也不跟它较劲，就待在那股不舒服里看着它。</td></tr>
+                <tr><td><strong>等它自己落<br>就成了一次</strong></td><td>那股劲会升起、顶头、<strong>自己</strong>松下去。松一点点，身体就收到证据：<strong>我停了，虚空没吞掉我。</strong></td></tr>
+                <tr><td><strong>到此打住<br>别兑现</strong></td><td>别加长、别追问"刚才那下算好吗"。<strong>想打分的冲动，是警报换了身衣服</strong>，放掉。</td></tr>
+              </tbody>
+            </table>
+            <div class="inner-highlight">
+              💡 <strong>三个说好的</strong>：① <strong>不记、不数、不攒连胜</strong>——那又是引擎，这练的本来就是"不留痕"。② <strong>深的那几口——不适特别重、往"没意义 / 想消失"那儿沉的时候——别一个人练</strong>，让 Eric 在边上（一个人对着虚空没底，有人在场就有了底；你 2011 就是靠一个稳的人 + 一套方法爬出来的，不是硬扛）。③ 怕忘不要紧，<strong>这张卡替你记着</strong>；也别忘了你<strong>已有反例</strong>：去年做减法、少做了，反而是最幸福的一年。
             </div>
           </div>
         </details>
@@ -2101,6 +2272,59 @@
           </div>
         </details>
 
+        <details class="protocol-card" id="protocol-breath">
+          <summary>
+            <span class="icon">🫁</span>
+            <div>
+              <div class="title">呼吸革命</div>
+              <div class="hint">鼻子 · 慢 · 少 · 闭嘴睡 · Nestor《Breath》</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <p>结论——呼吸的<strong>方式</strong>比次数重要。全书跑出三条铁律：<strong>用鼻子、放慢、别过量</strong>。挑一两条挂到现成动作上就够，不用记打卡。</p>
+            <table>
+              <tbody>
+                <tr><td><strong>🐽 只用鼻子</strong></td><td>鼻子会<strong>过滤、加温加湿</strong>空气，还生成一氧化氮（NO）提升血氧；用嘴呼吸让气道更干、更易打鼾 / 口干 / 蛀牙。白天有意识闭嘴，走路、轻运动都尽量<strong>鼻吸鼻呼</strong>。</td></tr>
+                <tr><td><strong>🐌 放慢到 5.5</strong></td><td>最放松的节奏≈每分钟 <strong>5–6 次</strong>：吸约 5.5 秒、呼约 5.5 秒（谐振呼吸）。堵车、午休、睡前各来几分钟，心率血压跟着降。</td></tr>
+                <tr><td><strong>🎈 呼气拉长</strong></td><td>呼比吸长（如吸 4、呼 6）＝踩下<strong>副交感</strong>的刹车。焦虑、失眠、胀气顶上来时，专做"长呼气"最快平复。</td></tr>
+                <tr><td><strong>🍃 少即是多</strong></td><td>别大口猛喘（过度换气反而发慌、缺氧感）。轻、慢、匀，鼻息小到几乎察觉不到才对——练的是对 <strong>CO₂ 的耐受</strong>。</td></tr>
+                <tr><td><strong>🌙 闭嘴睡</strong></td><td>起床口干、打鼾＝夜里在张嘴呼吸。先<strong>侧睡、别仰躺</strong>；书里进阶法是睡前贴一小条口贴，但先从白天鼻呼吸练起，别一上来就贴。</td></tr>
+              </tbody>
+            </table>
+            <div class="inner-highlight">
+              💡 跟隔壁<a href="#protocol-corebreath" style="color:var(--ochre);">收腹呼吸</a>分工：那张练<strong>腹肌张力</strong>（用力、收平），这张换的是<strong>呼吸方式</strong>（鼻子、慢、副交感）——两件事，别混。最省力落地：把 5.5 慢呼吸<strong>挂到已有时段</strong>上——午休闭目那 10 分钟、傍晚通勤、睡前躺平各来几组，想起来就做。
+            </div>
+          </div>
+        </details>
+
+        <details class="protocol-card" id="protocol-sleep">
+          <summary>
+            <span class="icon">😴</span>
+            <div>
+              <div class="title">睡眠革命</div>
+              <div class="hint">按周期算 · 固定起床 · 睡前缓冲 · Littlehales《Sleep》</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <p>结论——别盯"今晚睡够 8 小时"。睡眠按 <strong>90 分钟一个周期</strong>走，看<strong>一周</strong>攒够几个周期，比纠结单晚稳得多。</p>
+            <table>
+              <tbody>
+                <tr><td><strong>⏱️ 90 分钟周期</strong></td><td>睡眠一轮≈90 分钟，一晚 4–5 轮。目标按"<strong>周期数</strong>"定：理想一晚 5 轮、一周 35 轮。哪晚少一轮，白天或隔天补回来就行，别为"没睡够"加压。</td></tr>
+                <tr><td><strong>⏰ 固定起床点</strong></td><td>真正的锚是"<strong>几点起</strong>"，不是"几点睡"。选一个每天（含周末）都守得住的起床时间往回倒推——起床稳了，生物钟才稳。（正好接你的晨起 90 分钟）</td></tr>
+                <tr><td><strong>🌆 睡前缓冲 90 分</strong></td><td>睡前留 90 分钟降档：收强光 / 屏幕、调暗、别再接任务。你周四的<a href="#protocol-shutdown" style="color:var(--ochre);">关机轨道</a>就是这个——躺下戴耳机跟音轨睡。</td></tr>
+                <tr><td><strong>🌅 醒后缓冲 90 分</strong></td><td>醒来别猛冲进任务：见光、喝水、慢慢启动那 90 分钟，接上晨起流程。</td></tr>
+                <tr><td><strong>😴 睡姿 · 卧室</strong></td><td>侧睡（胎儿式、偏非惯用手一侧）最省力；卧室要<strong>凉、黑、静</strong>，手机放远、别当闹钟。</td></tr>
+                <tr><td><strong>🔋 白天补</strong></td><td>缺觉别硬扛着等晚上补——午后一个 20–30 分钟小睡（半个周期）或傍晚闭目片刻，就能把周期补回来。</td></tr>
+              </tbody>
+            </table>
+            <div class="inner-highlight">
+              💡 你其实已经在做：晨起 90 分钟锚点、周四关机轨道、Emma 睡后的降档独处——都正好是 R90 的"固定起床＋睡前缓冲"。这张卡<strong>不加新任务</strong>，只是给这些习惯一个说法。
+            </div>
+          </div>
+        </details>
+
       </div>
     </section>
 
@@ -2374,9 +2598,76 @@
       }
     });
 
+    // ---- 点击目录项：滚动到目标 + 展开目标卡片 + 高亮闪一下 ----
+    // 情境库卡片是两列网格、目录是单列竖排，光靠原生锚点会落在"同一排的另一张卡"上，
+    // 看不出点中了哪张。这里点一下就：①普通卡片展开以聚焦；②给目标卡闪一圈高亮（状态卡
+    // 不展开也能一眼看到点中的是哪张）；③滚到它，顶部留 80px。
+    // 状态卡（低电/满载/经期/经期前）除外，不自动展开：展开＝进入该状态，点目录只是查看。
+    //
+    // 落点为什么不用 scrollIntoView：本页是嵌在主页 iframe 里的，scrollIntoView 会顺带滚动
+    // 父页面、把 iframe 顶部塞到主页吸顶栏底下 → header 被遮。改用 window.scrollTo 只滚本
+    // iframe。另外字体/布局可能迟到重排导致过冲，滚完后再校验一次落点、必要时补正。
+    const TOP_GAP = 80;
+    const alignTop = (el) => el.getBoundingClientRect().top + window.scrollY - TOP_GAP;
+    links.forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if (!el) return; // 不认识的锚点，交回浏览器默认行为
+        e.preventDefault();
+        if (el.tagName === 'DETAILS' && !el.classList.contains('state-card')) {
+          el.open = true; // 普通卡片 / 时段节点：展开以聚焦
+        }
+        if (history.replaceState) history.replaceState(null, '', '#' + id);
+        setActive(resolveVisible(a));
+        // 闪一圈高亮（重启动画：先移除、强制重排、再加上）
+        el.classList.remove('toc-focus');
+        void el.offsetWidth;
+        el.classList.add('toc-focus');
+        // 双 rAF：等展开后的布局稳定，再滚到目标顶部
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          window.scrollTo({ top: Math.max(0, alignTop(el)), behavior: 'smooth' });
+          // 平滑滚动跑完 + 迟到重排结束后再对一次，消除过冲/字体重排造成的偏移
+          setTimeout(() => {
+            const off = el.getBoundingClientRect().top - TOP_GAP;
+            if (Math.abs(off) > 4) window.scrollBy({ top: off, behavior: 'instant' });
+          }, 420);
+        }));
+      });
+    });
+
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
     update();
+  })();
+
+  // ==================== 精力罗盘 · 卡内路由链接 ====================
+  // 罗盘卡里指向其它情境卡的 #锚点：借用目录那套 iframe 安全滚动 + 展开目标卡。
+  // 关键：状态卡（低电/满载/经期/经期前）不展开——它们的 open 绑定了状态，
+  // 展开＝进入该状态并落盘，只查看不该触发。所以照抄目录的 !state-card 守卫。
+  (function setupCompassLinks(){
+    const TOP_GAP = 80;
+    const alignTop = (el) => el.getBoundingClientRect().top + window.scrollY - TOP_GAP;
+    document.querySelectorAll('a.pw-link[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if (!el) return;
+        e.preventDefault();
+        if (el.tagName === 'DETAILS' && !el.classList.contains('state-card')) el.open = true;
+        if (history.replaceState) history.replaceState(null, '', '#' + id);
+        el.classList.remove('toc-focus');
+        void el.offsetWidth;
+        el.classList.add('toc-focus');
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          window.scrollTo({ top: Math.max(0, alignTop(el)), behavior: 'smooth' });
+          setTimeout(() => {
+            const off = el.getBoundingClientRect().top - TOP_GAP;
+            if (Math.abs(off) > 4) window.scrollBy({ top: off, behavior: 'instant' });
+          }, 420);
+        }));
+      });
+    });
   })();
 
   // ==================== 清洁日打卡 ====================

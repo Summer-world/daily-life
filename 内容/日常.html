@@ -1111,6 +1111,19 @@
   .ck-item.daily:hover { background: var(--mist); color: #fff; }
   .ck-item.daily.done { background: transparent; color: var(--text-hint); text-decoration: line-through; }
 
+  /* ============ 断舍离五类打卡 ============ */
+  .dc-item {
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+    padding: 1px 5px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+  .dc-item:hover { background: var(--accent-light); color: var(--accent); }
+  .dc-item.done { color: var(--text-hint); text-decoration: line-through; text-decoration-thickness: 1.5px; opacity: 0.55; }
+  .dc-item.done:hover { background: var(--bg); color: var(--text-secondary); }
+
   /* ============ 阅读打卡 ============ */
   .reading-checkin {
     background: var(--gold-light);
@@ -1450,8 +1463,10 @@
           <li><a href="#protocol-preperiod">🐢 经期前减速</a></li>
           <li><a href="#protocol-period">🌹 经期护理</a></li>
           <li class="toc-cat">🗓️ 日常节律</li>
+          <li><a href="#protocol-hitch">🚌 搭车目录</a></li>
           <li><a href="#protocol-weekly">📅 周固定</a></li>
           <li><a href="#protocol-cleaning">🧹 清洁日</a></li>
+          <li><a href="#protocol-declutter">🧺 断舍离</a></li>
           <li><a href="#protocol-party">🎉 聚会扰动</a></li>
           <li class="toc-cat">🌿 身体养护</li>
           <li><a href="#protocol-psyllium">🧪 Psyllium</a></li>
@@ -2047,8 +2062,9 @@
             <span class="le-switch" id="pp-switch" role="switch" aria-checked="false" aria-label="经期前减速状态"><span class="le-knob"></span></span>
           </summary>
           <div class="protocol-card-body">
-            <p>上轮例假你<strong>满油门冲进去</strong>，前三周连续高载攒的电量债在例假一起结账，才那么乏力、经血又少又短。这周不是停练，是<strong>提前减一档，把电留给例假</strong>。判断法：练完当下该是<strong>松快、微累</strong>；一旦"累到要反复歇"就是超了。</p>
-            <p>🗓️ 别把它读成"一个月只剩两周能练"：你<strong>本来就只有约两周的满格窗</strong>（例假后的卵泡期——那两周恢复快、最能长东西，该冲就冲）。这张卡只管月末这一周，把它从"硬撑→崩成 0"改成"有计划地轻"。<strong>你没少掉两周，只是让它们从塌方变成缓坡。</strong></p>
+            <div class="inner-highlight">
+              💡 <strong>cycle app 提示离例假还剩约一周 → 开开关</strong>，上方 NOW 卡整周提醒你减速。不是停练，是<strong>减一档、把电留给例假</strong>——练完该是<strong>松快、微累</strong>，一旦"累到要反复歇"就是超了。
+            </div>
             <table>
               <tbody>
                 <tr><td><strong>🔥 体能向</strong><br><span style="font-size:.72rem;color:var(--text-hint);">内脏脂肪操 / 有氧操 / 跑步 / 快游</span></td><td><strong>砍最多。</strong>强度降一档：跑步从 180 步频慢跑/快跑 → <strong>130 快步走</strong>（心率 100–110，你验证过最舒服那种）；游泳别冲距离、不追力竭，匀速 300m 就收。单次 ≤20–30min，一周 ≤2 次。</td></tr>
@@ -2057,9 +2073,7 @@
                 <tr><td><strong>🏞️ 户外</strong><br><span style="font-size:.72rem;color:var(--text-hint);">hike / 羽毛球</span></td><td><strong>降当天负荷。</strong>hike 走短程平路，避长距离 / 大上下坡 / 负重（别再来抬担架那种）；羽毛球打娱乐局，别打到大汗对抗。</td></tr>
               </tbody>
             </table>
-            <div class="inner-highlight">
-              💡 <strong>什么时候开这张</strong>：cycle app 提示离下次例假还剩约<strong>一周</strong>，就翻开、开开关，让上方 NOW 卡整周提醒你在减速。<strong>来例假当天关掉它、转 🌹 经期护理。</strong>上次那么难受，就差这一步——没人提醒你踩刹车。
-            </div>
+            <p style="font-size:.8rem;color:var(--text-hint);">🗓️ 你的满格窗本来就是例假后那两周（该冲就冲）；这张卡只管月末这周，把"硬撑→崩成 0"改成缓坡。</p>
           </div>
         </details>
 
@@ -2090,6 +2104,42 @@
         </details>
 
         <div class="protocol-cat">🗓️ 日常节律</div>
+        <details class="protocol-card" id="protocol-hitch" style="grid-column: 1 / -1;">
+          <summary>
+            <span class="icon">🚌</span>
+            <div>
+              <div class="title">搭车目录</div>
+              <div class="hint">想做却做不起来的事，挂到已经在动的时刻上 · 按空着的频道查</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <p class="pw-lead">找一件<strong>反正会发生</strong>的事（不是"想做的时候"——心情不会自己来），它占住你一部分、正好空出另一部分，把<strong>只用那格</strong>的东西挂进去。载体已经因为别的理由合法了，挂上去的事<strong>不用自证"这有什么用"</strong>——这就是阅读那么轻、而单独排一段的"睡前冥想"总是死的原因。</p>
+
+            <table>
+              <tbody>
+                <tr><td><strong>🎧 耳朵空<br>手眼被占</strong></td><td>开车 · 走路送 Emma · 洗碗 · 做饭等锅 · 叠衣 · 吹头发 · 拖地<br><strong>挂：</strong>冥想音频 · 呼吸引导 · 播客 · 有声书 · 音乐<br>✅ 上班路（新闻）· 下班路（冥想）<br>🆕 <strong>不上班日送完 Emma 走回家那段 → 呼吸冥想</strong>（下班路的孪生兄弟；去程有 Emma 归颜色寻宝）</td></tr>
+                <tr><td><strong>🤲 手空<br>眼睛被占</strong></td><td>看剧 · 刷手机 · 陪奇林打游戏 · 听线上会<br><strong>挂：</strong>揉腹，或下面小动作库里挑一个 👇</td></tr>
+                <tr><td><strong>📖 眼手都空<br>但人被钉住</strong></td><td>Eric 给 Emma 讲故事 · 飞机火车 · 候诊 · 在外面等 Emma<br><strong>挂：</strong>阅读 · 写 · 发呆<br>✅ 20:30 阅读 10 分钟</td></tr>
+                <tr><td><strong>🧠 脑子空<br>身体在做机械活</strong></td><td>洗澡 · 走路 · 折衣服 · 剪指甲<br><strong>挂：</strong>唱歌 ·「下载你的一天」· 想事情 · 什么都不想<br>🆕 <strong>一个人洗澡 → 唱歌</strong>（水声盖着，没人听得见）<br>✅ 跟奇林一起洗 → 聊天，那格有主了</td></tr>
+              </tbody>
+            </table>
+
+            <p><strong>📺 看剧 / 刷手机时</strong>——眼睛被占着，手和脚是白给的。</p>
+            <table>
+              <tbody>
+                <tr><td><strong>换个姿势看<br>零成本</strong></td><td>趴着看（反驼背、胸椎伸展）· 盘腿 / 蝴蝶坐（开髋）· 腿靠墙躺着看（消水肿）· 靠墙站着看（体态）· 跪坐（脚踝）</td></tr>
+                <tr><td><strong>手上加一件<br>库里现成</strong></td><td><a href="../运动周总结.html" target="_blank">运动库</a>里能坐着躺着做的：仙人揉腹（10min）· 小腿精油按摩（5min）· 弹力带坐姿练臀（5min）· 真空腹（隐形，没人看得出来）</td></tr>
+                <tr><td><strong>手上加一件<br>不用跟练</strong></td><td>脚底滚球（不用眼睛，跟足弓训练一路）· 泡脚 · 头皮抓揉 · 脚踝绕圈、勾脚背伸 · 缩下巴 + 后缩肩胛</td></tr>
+              </tbody>
+            </table>
+
+            <div class="inner-highlight">
+              💡 <strong>两条规矩</strong>：① <strong>一个载体只挂一件事。</strong>20:30 归阅读、洗澡跟奇林时归聊天——再塞第二件，它就从"顺带"变成清单，那份毫无压力当场蒸发。② <strong>这张不打卡</strong>，是目录不是任务表。挑一个试试，试不成就换：<strong>是载体不合适，不是你不行。</strong>
+            </div>
+          </div>
+        </details>
+
         <details class="protocol-card" id="protocol-weekly">
           <summary>
             <span class="icon">📅</span>
@@ -2103,14 +2153,14 @@
             <table>
               <tbody>
                 <tr><td><strong>每晚</strong></td><td>20 个 Anki 中文字 · Eric 带 Emma 指读故事</td></tr>
-                <tr><td><strong>周一晚</strong></td><td>Emma 游泳课，自己/Eric 同步游</td></tr>
-                <tr><td><strong>周二晚</strong></td><td>和 Eric 一起 JJ 老师瑜伽 1h</td></tr>
-                <tr><td><strong>周三晚</strong></td><td>🧹 清洁日（见下方抽屉）</td></tr>
+                <tr><td><strong>周一</strong></td><td>通常不上班 · 晚上在家跟 Eric 练 JJ 老师瑜伽 1h</td></tr>
+                <tr><td><strong>周二晚</strong></td><td>Emma 游泳课，自己/Eric 同步游</td></tr>
+                <tr><td><strong>周三晚</strong></td><td>🛒 采购</td></tr>
                 <tr><td><strong>周四晚</strong></td><td>🌙 满载日 → 走<a href="#protocol-shutdown" style="color:var(--accent);">关机轨道</a></td></tr>
                 <tr><td><strong>周五晚</strong></td><td>🎬 电影之夜</td></tr>
-                <tr><td><strong>周六早</strong></td><td>Emma 攀岩，自己/Eric 在攀岩馆健身房</td></tr>
-                <tr><td><strong>周日下午</strong></td><td>羽毛球</td></tr>
-                <tr><td><strong>周末</strong></td><td>不定期国家公园 hiking</td></tr>
+                <tr><td><strong>周六早</strong></td><td>Emma 攀岩，自己/Eric 在攀岩馆健身房 → 全家 brunch 🥞<br><span style="font-size:.72rem;color:var(--text-hint);">全周最开心的时刻，不排家务、不排任务</span></td></tr>
+                <tr><td><strong>周日上午</strong></td><td>🧹 清洁日 · 全家一起（见下方抽屉）</td></tr>
+                <tr><td><strong>周末下午</strong></td><td>🏸 羽毛球 / ⛰️ hiking（国家公园）</td></tr>
               </tbody>
             </table>
           </div>
@@ -2121,7 +2171,7 @@
             <span class="icon">🧹</span>
             <div>
               <div class="title">清洁日</div>
-              <div class="hint">每周一次 · 45–50 min · 可打卡</div>
+              <div class="hint">周日上午全家一起 · 45–50 min · 可打卡</div>
             </div>
             <span class="arrow">›</span>
           </summary>
@@ -2152,6 +2202,72 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+        </details>
+
+        <details class="protocol-card" id="protocol-declutter">
+          <summary>
+            <span class="icon">🧺</span>
+            <div>
+              <div class="title">断舍离</div>
+              <div class="hint">一次性走完五类 · 走完就结束 · 不是每周家务</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <div class="inner-highlight">
+              💡 <strong>这是一场有终点的活动，不是新增的家务。</strong>近藤麻理惠的原话：整理是一次性的祭典，做完就不用再做。下面五类走完一轮就结束，之后只剩底部两条「维持」。<strong>在 2026 底回广州前走完</strong>——那时候你是在一堆已经筛过的东西里挑<a href="../回广州/搬迁物品.html" target="_blank" style="color:var(--accent);">带什么走</a>，而不是从头筛一遍。
+            </div>
+
+            <p style="font-weight:600;margin:.9rem 0 .3rem;">开工前三条（不遵守就会半途而废）</p>
+            <table>
+              <tbody>
+                <tr><td><strong>一类做完再停</strong></td><td>不"每天整十分钟"。同一类要一鼓作气做到底，才会有"家变了"的冲击——那个冲击才是不反弹的原因。做不完可以下次接着<strong>这一类</strong>，但绝不同时开第二类。</td></tr>
+                <tr><td><strong>全部堆到一处</strong></td><td>做衣服就把<strong>全屋</strong>衣服堆到地上：衣柜、洗衣篮、换季箱、车后备箱、玄关挂的。看见总量才判断得动——分散在各处时你永远觉得"也没多少"。</td></tr>
+                <tr><td><strong>先决定丢什么，再收纳</strong></td><td>不许边扔边归位。归位是最后一步，不然你会把该丢的东西整整齐齐地收起来。</td></tr>
+              </tbody>
+            </table>
+
+            <p style="font-weight:600;margin:1rem 0 .3rem;">五类顺序 · 点一下划掉</p>
+            <p style="font-size:.72rem;color:var(--text-hint);margin:0 0 .5rem;">💡 顺序不能跳：衣服最好判断，用来练判断力；纪念品最难，留到最后。上来就翻照片＝当场卡死。</p>
+            <table>
+              <tbody>
+                <tr><td><span class="dc-item" data-id="d1"><strong>1️⃣ 衣服</strong></span><br><span class="ck-min">最容易</span></td><td>按上衣 → 裤裙 → 外套 → 袜内衣 → 鞋 → 包分小堆。留下的立着放不叠压，抽屉里一眼看全。</td></tr>
+                <tr><td><span class="dc-item" data-id="d2"><strong>2️⃣ 书</strong></span><br><span class="ck-min"></span></td><td>全部下架、不翻开（翻开就走不了）。判断的是<strong>「未来的我会读它吗」</strong>，不是"我买了它"。<em>还没读完</em>不是留下的理由。</td></tr>
+                <tr><td><span class="dc-item" data-id="d3"><strong>3️⃣ 文件</strong></span><br><span class="ck-min">默认全扔</span></td><td>原则：<strong>文件的理想状态是零</strong>。只留三类——现在正在用的、有保存期限的（签证/税务/保修）、终身的（护照/出生证/PR/学历）。其余拍照存档就丢。</td></tr>
+                <tr><td><span class="dc-item" data-id="d4"><strong>4️⃣ 小东西</strong></span><br><span class="ck-min">量最大</span></td><td>分批：化妆护肤 → 药品 → 厨房 → 文具 → 数据线充电器 → 工具 → 纸袋盒子赠品。这类靠<strong>下面的 20/20 规则</strong>过，别一件件纠结。</td></tr>
+                <tr><td><span class="dc-item" data-id="d5"><strong>5️⃣ 纪念品</strong></span><br><span class="ck-min">最难 · 必须最后</span></td><td>照片、信、Emma 的画和作业、旅行纪念。前四类练出来的判断力就是为了这一关。<strong>Emma 的作品拍照做电子册，实物只留最有代表性的几件。</strong></td></tr>
+              </tbody>
+            </table>
+
+            <p style="font-weight:600;margin:1rem 0 .3rem;">卡住时怎么判断</p>
+            <table>
+              <tbody>
+                <tr><td><strong>私人物品</strong><br><span class="ck-min">衣服 / 装饰 / 纪念品</span></td><td>拿在手里，问：<strong>留着它我是高兴，还是松了口气？</strong>「留着才安心」＝那是负担不是喜欢。这就是「心动法」的实操版——判断标准是<strong>留下什么</strong>，不是扔掉什么。</td></tr>
+                <tr><td><strong>工具 / 耗材</strong><br><span class="ck-min">厨房 / 文具 / 数码</span></td><td>过去<strong>一年</strong>用过吗？坏了会立刻再买一个吗？两个都是否 → 出局。</td></tr>
+                <tr><td><strong>"以防万一"</strong><br><span class="ck-min">最大的滞留原因</span></td><td><strong>20/20 规则：</strong>如果它坏了/需要了，能在 <strong>20 分钟内、20 块钱以内</strong>重新弄到 → 放心丢。真正符合"万一"的东西极少，你会发现绝大多数都过不了这一关。</td></tr>
+                <tr><td><strong>不算理由的三个理由</strong></td><td>① 很贵（钱已经花了，留着不会退回来）② 别人送的（礼物的使命在收到那刻就完成了）③ 也许以后用得上（这是 20/20 规则要处理的）。</td></tr>
+              </tbody>
+            </table>
+
+            <div class="inner-highlight">
+              🚧 <strong>只碰自己的东西。</strong>Eric 和 Emma 的东西不替他们决定——这条是近藤原书里的硬规则，因为替家人扔是家庭冲突的头号来源，也会让你又多扛一层「替全家做决定」的活。Emma 的玩具只能<strong>陪她一起筛、决定权给她</strong>（她的房间她说了算，你只提供分类和问题）。你自己的东西也尽量别当着他们面丢。
+            </div>
+
+            <p style="font-weight:600;margin:1rem 0 .3rem;">丢出去的去向（珀斯）</p>
+            <p style="font-size:.8rem;margin:0 0 .3rem;">决定了留不留是一回事，东西真正离开家是另一回事——堆在门口一个月等于没做。当场分四袋：<strong>捐</strong>（Vinnies / Salvos / Good Sammy 门口捐物箱）· <strong>卖</strong>（Facebook Marketplace / Gumtree，只给值 $30 以上的，两周没卖掉就转捐）· <strong>扔</strong> · <strong>大件</strong>（等 council verge collection）。<strong>捐和扔的两袋当天就送出门。</strong></p>
+
+            <p style="font-weight:600;margin:1rem 0 .3rem;">走完之后 · 只维持这两条</p>
+            <table>
+              <tbody>
+                <tr><td><strong>平面清空</strong></td><td>台面、餐桌、床头、玄关不放东西。视觉上的乱八成来自平面——这条已经在<a href="#protocol-cleaning" style="color:var(--accent);">清洁日</a>的第一阶段里，不用另做。</td></tr>
+                <tr><td><strong>一进一出</strong></td><td>买一件，同类出一件。这一条就够挡住反弹，不需要再定期"复查"。</td></tr>
+              </tbody>
+            </table>
+
+            <div class="inner-highlight">
+              <strong>成功标准</strong>：五类划完就是完成，不用做第二轮。中途停在某一类不算输——<strong>只要没同时开第二类</strong>。这张卡不记录次数、不算连胜，划完了它就该安静躺着。
+            </div>
           </div>
         </details>
 
@@ -2697,6 +2813,26 @@
         items.forEach(el => el.classList.remove('done'));
       });
     }
+  })();
+
+  // ==================== 断舍离五类打卡 ====================
+  // 一次性活动：划完五类就结束，不重置、不算连胜（刻意不做次数统计）
+  (function setupDeclutter() {
+    const KEY = 'declutter_checked_v1';
+    let state;
+    try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { state = {}; }
+    if (!state.checked) state.checked = {};
+    const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+
+    document.querySelectorAll('#protocol-declutter .dc-item').forEach(el => {
+      const id = el.dataset.id;
+      if (state.checked[id]) el.classList.add('done');
+      el.addEventListener('click', () => {
+        const isDone = el.classList.toggle('done');
+        if (isDone) state.checked[id] = true; else delete state.checked[id];
+        save();
+      });
+    });
   })();
 
   // ==================== 阅读 10 分钟打卡 ====================

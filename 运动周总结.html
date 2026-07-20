@@ -757,7 +757,7 @@
 
     <div class="extra-block">
       <div class="extra-head">
-        <span class="extra-title">🏊 游泳</span>
+        <span class="extra-title">🏊 游泳 <span style="font-size:.74rem;color:var(--text-hint);font-weight:400;">· 周二晚陪 Emma 课</span></span>
         <span class="extra-week" id="extra-swim-summary">本周 0 次 · 0 min</span>
       </div>
       <div class="extra-lastnote" id="extra-swim-lastnote" style="display:none"></div>
@@ -802,7 +802,22 @@
 
     <div class="extra-block">
       <div class="extra-head">
-        <span class="extra-title">🧘 JJ 老师瑜伽 <span style="font-size:.74rem;color:var(--text-hint);font-weight:400;">· 周二晚和丈夫</span></span>
+        <span class="extra-title">🚣 划船 <span style="font-size:.74rem;color:var(--text-hint);font-weight:400;">· 低冲击体能</span></span>
+        <span class="extra-week" id="extra-rowing-summary">本周 0 次 · 0 min</span>
+      </div>
+      <div class="extra-lastnote" id="extra-rowing-lastnote" style="display:none"></div>
+      <div class="extra-input">
+        <input type="date" id="rowing-date">
+        <input type="number" id="rowing-min" placeholder="分钟" min="1" max="600">
+      </div>
+      <textarea class="extra-note" id="rowing-note" rows="2" placeholder="这次划了多久、水况和体力、肩背手臂的感觉……（可留空）"></textarea>
+      <button class="extra-add" onclick="extraAdd('rowing')">+ 添加这次记录</button>
+      <div class="extra-list" id="extra-rowing-list"></div>
+    </div>
+
+    <div class="extra-block">
+      <div class="extra-head">
+        <span class="extra-title">🧘 JJ 老师瑜伽 <span style="font-size:.74rem;color:var(--text-hint);font-weight:400;">· 周一晚和丈夫</span></span>
         <span class="extra-week" id="extra-yoga-summary">本周 0 次 · 0 min</span>
       </div>
       <div class="extra-lastnote" id="extra-yoga-lastnote" style="display:none"></div>
@@ -817,7 +832,7 @@
 
     <div class="extra-block">
       <div class="extra-head">
-        <span class="extra-title">🏸 羽毛球 <span style="font-size:.74rem;color:var(--text-hint);font-weight:400;">· 周日下午</span></span>
+        <span class="extra-title">🏸 羽毛球 <span style="font-size:.74rem;color:var(--text-hint);font-weight:400;">· 周末下午</span></span>
         <span class="extra-week" id="extra-badminton-summary">本周 0 次 · 0 min</span>
       </div>
       <div class="extra-lastnote" id="extra-badminton-lastnote" style="display:none"></div>
@@ -1249,7 +1264,7 @@
   const GOAL_ICON = { stamina: '🔥', shape: '💪', rest: '🌿' };
   const GOAL_PILL_CLASS = { stamina: 's', shape: 'h', rest: 'r' };
   // 额外运动计入哪个分类目标：游泳/Hiking/跑步/羽毛球 → 体能，JJ 瑜伽 → 养护
-  const EXTRA_GOALS = { swim: 'stamina', hike: 'stamina', run: 'stamina', badminton: 'stamina', yoga: 'rest' };
+  const EXTRA_GOALS = { swim: 'stamina', hike: 'stamina', run: 'stamina', badminton: 'stamina', rowing: 'stamina', yoga: 'rest' };
 
   // ==================== 读取 ====================
   function readJSON(key, fallback) {
@@ -1348,7 +1363,7 @@
     // 室内组合/动作小计（折算额外运动之前）
     const indoorMins = mins.stamina + mins.shape + mins.rest;
 
-    const extras = { swim: { count:0, mins:0 }, hike: { count:0, mins:0 }, run: { count:0, mins:0 }, yoga: { count:0, mins:0 }, badminton: { count:0, mins:0 } };
+    const extras = { swim: { count:0, mins:0 }, hike: { count:0, mins:0 }, run: { count:0, mins:0 }, yoga: { count:0, mins:0 }, badminton: { count:0, mins:0 }, rowing: { count:0, mins:0 } };
     extraLog.filter(inWeek).forEach(e => {
       if (extras[e.type]) {
         extras[e.type].count++;
@@ -1358,7 +1373,7 @@
         if (g) { mins[g] += e.minutes; counts[g]++; }
       }
     });
-    const extraMins = extras.swim.mins + extras.hike.mins + extras.run.mins + extras.yoga.mins + extras.badminton.mins;
+    const extraMins = extras.swim.mins + extras.hike.mins + extras.run.mins + extras.yoga.mins + extras.badminton.mins + extras.rowing.mins;
 
     return { mins, counts, comboDetail, extras, indoorMins, extraMins };
   }
@@ -1403,7 +1418,7 @@
     const ex = s.extras;
     document.getElementById('extra-line').innerHTML = s.extraMins === 0
       ? '额外运动：本周还没有记录'
-      : `额外运动 <strong>${s.extraMins}</strong> min　🏊 ${ex.swim.mins} · ⛰️ ${ex.hike.mins} · 🏃 ${ex.run.mins} · 🧘 ${ex.yoga.mins} · 🏸 ${ex.badminton.mins}`;
+      : `额外运动 <strong>${s.extraMins}</strong> min　🏊 ${ex.swim.mins} · ⛰️ ${ex.hike.mins} · 🏃 ${ex.run.mins} · 🚣 ${ex.rowing.mins} · 🧘 ${ex.yoga.mins} · 🏸 ${ex.badminton.mins}`;
 
     document.getElementById('total-indoor').textContent = s.indoorMins;
     document.getElementById('total-extra').textContent = s.extraMins;
@@ -1461,7 +1476,7 @@
       const remain = target - s.mins[g];
       if (remain > 0) gaps.push({ goal: g, remain });
     });
-    const totalExtra = s.extras.swim.mins + s.extras.hike.mins + s.extras.run.mins + s.extras.yoga.mins + s.extras.badminton.mins;
+    const totalExtra = s.extras.swim.mins + s.extras.hike.mins + s.extras.run.mins + s.extras.yoga.mins + s.extras.badminton.mins + (s.extras.rowing ? s.extras.rowing.mins : 0);
 
     let html = '';
 
@@ -1531,14 +1546,16 @@
       const runCount = s.extras && s.extras.run ? s.extras.run.count : 0;
       const badmintonMins = s.extras && s.extras.badminton ? s.extras.badminton.mins : 0;
       const badmintonCount = s.extras && s.extras.badminton ? s.extras.badminton.count : 0;
+      const rowingMins = s.extras && s.extras.rowing ? s.extras.rowing.mins : 0;
+      const rowingCount = s.extras && s.extras.rowing ? s.extras.rowing.count : 0;
       const indoorMins = (s.indoorMins != null) ? s.indoorMins
                        : (s.mins ? (s.mins.stamina + s.mins.shape + s.mins.rest) : 0);
       const totalMins = indoorMins
-                     + (s.extras ? (s.extras.swim.mins + s.extras.hike.mins + runMins + yogaMins + badmintonMins) : 0);
-      const extraCount = s.extras ? (s.extras.swim.count + s.extras.hike.count + runCount + yogaCount + badmintonCount) : 0;
+                     + (s.extras ? (s.extras.swim.mins + s.extras.hike.mins + runMins + yogaMins + badmintonMins + rowingMins) : 0);
+      const extraCount = s.extras ? (s.extras.swim.count + s.extras.hike.count + runCount + yogaCount + badmintonCount + rowingCount) : 0;
       const summary = [
         s.mins ? `🔥${s.mins.stamina} 💪${s.mins.shape} 🌿${s.mins.rest}min` : '',
-        s.extras && extraCount > 0 ? `🏊${s.extras.swim.mins} ⛰️${s.extras.hike.mins} 🏃${runMins} 🧘${yogaMins} 🏸${badmintonMins}` : '',
+        s.extras && extraCount > 0 ? `🏊${s.extras.swim.mins} ⛰️${s.extras.hike.mins} 🏃${runMins}${rowingMins ? ' 🚣'+rowingMins : ''} 🧘${yogaMins} 🏸${badmintonMins}` : '',
         `总 ${totalMins}min`,
       ].filter(Boolean).join(' · ');
       return `
@@ -1823,6 +1840,7 @@
     swim:      { listId: 'extra-swim-list',      summaryId: 'extra-swim-summary',      dateId: 'swim-date',      minId: 'swim-min',      defaultMin: '',   noteId: 'swim-note',      lastNoteId: 'extra-swim-lastnote' },
     hike:      { listId: 'extra-hike-list',      summaryId: 'extra-hike-summary',      dateId: 'hike-date',      minId: 'hike-min',      defaultMin: '',   noteId: 'hike-note',      lastNoteId: 'extra-hike-lastnote' },
     run:       { listId: 'extra-run-list',       summaryId: 'extra-run-summary',       dateId: 'run-date',       minId: 'run-min',       defaultMin: '',   noteId: 'run-note',       lastNoteId: 'extra-run-lastnote' },
+    rowing:    { listId: 'extra-rowing-list',    summaryId: 'extra-rowing-summary',    dateId: 'rowing-date',    minId: 'rowing-min',    defaultMin: '',   noteId: 'rowing-note',    lastNoteId: 'extra-rowing-lastnote' },
     yoga:      { listId: 'extra-yoga-list',      summaryId: 'extra-yoga-summary',      dateId: 'yoga-date',      minId: 'yoga-min',      defaultMin: '60', noteId: 'yoga-note',      lastNoteId: 'extra-yoga-lastnote' },
     badminton: { listId: 'extra-badminton-list', summaryId: 'extra-badminton-summary', dateId: 'badminton-date', minId: 'badminton-min', defaultMin: '',   noteId: 'badminton-note', lastNoteId: 'extra-badminton-lastnote' },
   };
@@ -1897,7 +1915,7 @@
   function renderExtra() {
     const start = liveWeekStart();
     const end = weekEndFor(start);
-    ['swim','hike','run','yoga','badminton'].forEach(type => {
+    ['swim','hike','run','rowing','yoga','badminton'].forEach(type => {
       const meta = EXTRA_META[type];
       const list = document.getElementById(meta.listId);
       const summary = document.getElementById(meta.summaryId);
@@ -1995,7 +2013,7 @@
 
   function initExtraDates() {
     const today = new Date().toISOString().slice(0,10);
-    ['swim-date','hike-date','run-date','yoga-date','badminton-date'].forEach(id => {
+    ['swim-date','hike-date','run-date','rowing-date','yoga-date','badminton-date'].forEach(id => {
       const el = document.getElementById(id); if (el && !el.value) el.value = today;
     });
   }

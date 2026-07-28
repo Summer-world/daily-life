@@ -928,27 +928,27 @@
 <!-- ============ 今天 / 穿搭 ============ -->
 <div class="panel" id="panel-wardrobe">
   <div class="iframe-wrap">
-    <iframe data-src="内容/Summer的衣橱.html" title="穿搭"></iframe>
+    <iframe data-src="1-今天/Summer的衣橱.html" title="穿搭"></iframe>
   </div>
 </div>
 
 <!-- ============ 今天 / 菜单 ============ -->
 <div class="panel" id="panel-menu">
   <div class="iframe-wrap">
-    <iframe data-src="内容/菜单灵感库.html" title="菜单"></iframe>
+    <iframe data-src="1-今天/菜单灵感库.html" title="菜单"></iframe>
   </div>
 </div>
 
 <!-- ============ 今天 / 日常 ============ -->
 <div class="panel" id="panel-daily">
   <div class="iframe-wrap">
-    <iframe data-src="内容/日常.html" title="日常"></iframe>
+    <iframe data-src="1-今天/日常.html" title="日常"></iframe>
   </div>
 </div>
 
 <footer>Summer 的世界 · 2026</footer>
 
-<script src="读书笔记/与神对话1content.js"></script>
+<script src="2-我的智慧/与神对话1content.js"></script>
 <script>
   const TAB_MAP = {
     today: { sub: 'today', defaultPanel: 'daily' },
@@ -1145,7 +1145,7 @@
     const aEl = document.getElementById('gt-a');
     const shuffleBtn = document.getElementById('gt-shuffle');
 
-    // 数据来自 读书笔记/与神对话1content.js（CONTENT）——没加载到就友好降级
+    // 数据来自 我的智慧/与神对话1content.js（CONTENT）——没加载到就友好降级
     if (typeof CONTENT === 'undefined' || !CONTENT.chapters) {
       qEl.textContent = '内容未加载';
       aEl.textContent = '与神对话1content.js 没读到，检查一下路径。';

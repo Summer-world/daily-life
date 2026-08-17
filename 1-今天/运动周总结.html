@@ -28,7 +28,7 @@
     --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
   body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; line-height: 1.7; }
 
   header {
@@ -592,7 +592,7 @@
       <button class="head-btn" id="btn-export" type="button" title="导出全部运动数据为 JSON，用于备份 + 给 Claude 读取">⬇ 导出运动数据</button>
       <button class="head-btn" id="btn-import" type="button" title="从 JSON 文件恢复运动数据（导入前会自动备份当前数据）">⬆ 导入</button>
       <input type="file" id="import-file" accept=".json,application/json" style="display:none">
-      <a class="back" href="../Summer的世界.html">← 回到 Summer 的世界</a>
+      <a class="back" id="back-link" href="../Summer的世界.html">← 回到 Summer 的世界</a>
     </div>
   </div>
 </header>
@@ -1174,6 +1174,15 @@
 </aside>
 
 <script>
+  // ==================== 嵌入检测 ====================
+  // 2026-08-10 本页成为「今天 · 运动」tab，在主页 iframe 里显示时不需要"回到 Summer 的世界"；
+  // 单独双击打开这个文件时（不在 iframe 里）仍保留返回链接。
+  const IN_FRAME = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
+  if (IN_FRAME) {
+    const bk = document.getElementById('back-link');
+    if (bk) bk.style.display = 'none';
+  }
+
   // ==================== 共享 localStorage Keys ====================
   const LOG_KEY = 'fitness_log_v1';
   const COMBO_LOG_KEY = 'fitness_combo_log_v1';
@@ -2401,6 +2410,9 @@
       } catch (err) {
         if (err && err.name === 'AbortError') return; // 用户取消
         console.warn('FSA 失败，回退到下载', err);
+        // 2026-08-10 本页进了主页 iframe：浏览器不允许 iframe 里弹"另存为"。
+        // 这时不闷头下载，给一个逃生门——新标签页单独打开本页就能选位置（数据同一份）。
+        if (IN_FRAME) { showOpenTabBtn(); showToast('iframe 里弹不出保存框 → 点「↗ 新标签页打开」，在新页面再点一次导出就能选位置', 'warn'); return; }
       }
     }
 
@@ -2408,6 +2420,20 @@
     downloadFallback(json);
     markExported();
     showToast('已下载到 Downloads，请移动到 ' + RECOMMENDED_PATH, 'info');
+  }
+
+  // 「↗ 新标签页打开」：只在 iframe 里弹不出保存框时才长出来
+  function showOpenTabBtn() {
+    if (document.getElementById('btn-open-tab')) return;
+    const btn = document.getElementById('btn-export');
+    if (!btn) return;
+    const t = document.createElement('button');
+    t.id = 'btn-open-tab'; t.type = 'button';
+    t.title = '浏览器不允许 iframe 里弹"另存为"。在新标签页单独打开本页就能选位置（数据是同一份）。';
+    t.style.cssText = 'font-size:0.7rem;background:none;border:none;color:var(--text-hint);cursor:pointer;padding:5px 4px;font-family:inherit;';
+    t.textContent = '↗ 新标签页打开';
+    t.addEventListener('click', function () { window.open(location.href, '_blank'); });
+    btn.insertAdjacentElement('afterend', t);
   }
 
   function markExported() {

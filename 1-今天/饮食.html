@@ -198,6 +198,12 @@
   table.food td.nm { color: var(--text-primary); font-weight: 500; width: 30%; }
   table.food td.nm .sub { display: block; font-weight: 400; color: var(--text-hint); font-size: 0.78rem; line-height: 1.55; margin-top: 1px; }
   table.food td.p { width: 60px; text-align: center; color: var(--accent); font-weight: 600; }
+  .star { color: var(--gold); font-size: 0.85rem; margin-right: 4px; }
+  .subhead { font-family: 'Noto Serif SC', serif; font-size: 1.0rem; font-weight: 500; color: var(--text-primary); margin: 1.5rem 0 0.5rem; padding-bottom: 0.3rem; border-bottom: 1px dashed var(--border-dark); }
+  .subhead span { font-family: 'Noto Sans SC', sans-serif; font-size: 0.76rem; font-weight: 400; color: var(--text-hint); margin-left: 0.5rem; }
+  .howto { background: var(--mist-light); border: 1px solid #D2DEE7; border-radius: 8px; padding: 0.7rem 1rem; font-size: 0.845rem; color: var(--text-secondary); line-height: 1.85; margin: 0.7rem 0 1rem; }
+  .howto b { color: var(--mist); font-weight: 600; }
+  table.food td.ex { color: var(--text-hint); font-size: 0.82rem; line-height: 1.6; }
   table.food td.mt { width: 62px; color: var(--text-hint); font-size: 0.8rem; white-space: nowrap; }
   table.food td.t { width: 62px; text-align: center; color: var(--mist); font-size: 0.78rem; }
   table.food tr.dim { opacity: 0.24; }
@@ -313,9 +319,8 @@
       <li><a href="#breakfast">早餐<span class="toc-hint">#1–9</span></a></li>
       <li><a href="#lunch">午餐 · 轻<span class="toc-hint">#11–16</span></a></li>
       <li><a href="#snack">加餐<span class="toc-hint">#21–26</span></a></li>
-      <li><a href="#dinner">晚饭配法<span class="toc-hint">#31–35</span></a></li>
-      <li><a href="#meat">这块肉怎么做<span class="toc-hint">#51–70</span></a></li>
-      <li><a href="#rescue">正在胀 / 踩雷<span class="toc-hint">#41–45</span></a></li>
+      <li><a href="#dinner">晚饭<span class="toc-hint">#31–59</span></a></li>
+      <li><a href="#rescue">正在胀 / 踩雷<span class="toc-hint">#61–65</span></a></li>
       <li><a href="#combo">整天组合<span class="toc-hint">whole-day flows</span></a></li>
       <li><a href="#ref">查阅<span class="toc-hint">zones &amp; shopping</span></a></li>
     </ol>
@@ -340,7 +345,7 @@
     <div class="target">
       <span class="t-main">一天 65–70 克蛋白</span>
       <span class="t-split">早 <b>20</b> · 午 <b>17</b> · 加餐 <b>8</b> · 晚 <b>25</b></span>
-      <span class="t-split" style="margin-left:auto;">维持用量 · 不用凑满，差一点没关系</span>
+      <span class="t-split" style="margin-left:auto;"><b style="color:var(--gold);">★</b> ＝ 不想选的时候就吃它</span>
     </div>
 
     <!-- ═════ 早餐 ═════ -->
@@ -348,7 +353,7 @@
     <table class="food">
       <thead><tr><th>#</th><th>吃什么</th><th style="text-align:center;">蛋白</th><th class="t-th" style="text-align:center;">时间</th></tr></thead>
       <tbody>
-        <tr data-tags="low period post rush"><td class="num">1</td><td class="nm">希腊酸奶碗<span class="sub">原味酸奶 170g + 猕猴桃/葡萄 + 一小把核桃</span></td><td class="p">21g</td><td class="t">0 分</td></tr>
+        <tr data-tags="low period post rush"><td class="num">1</td><td class="nm"><span class="star">★</span>希腊酸奶碗<span class="sub">原味酸奶 170g + 猕猴桃/葡萄 + 一小把核桃</span></td><td class="p">21g</td><td class="t">0 分</td></tr>
         <tr data-tags="post period"><td class="num">2</td><td class="nm">虾仁蛋炒饭<span class="sub">冻虾一把 + 1 蛋 + 隔夜饭，蒜油起锅</span></td><td class="p">25g</td><td class="t">6 分</td></tr>
         <tr data-tags="bloat period"><td class="num">3</td><td class="nm">蒸蛋羹拌 tuna<span class="sub">配小米粥（前晚电饭煲预约）· 最养胃的一份</span></td><td class="p">20g</td><td class="t">10 分</td></tr>
         <tr data-tags="low period"><td class="num">4</td><td class="nm">牛肉米粉汤<span class="sub">昨晚剩的炖牛肉切片 + 热汤米粉 + 葱绿 · 满载日就吃这个</span></td><td class="p">22g</td><td class="t">8 分</td></tr>
@@ -367,7 +372,7 @@
       <thead><tr><th>#</th><th>吃什么</th><th style="text-align:center;">蛋白</th><th class="t-th" style="text-align:center;">时间</th></tr></thead>
       <tbody>
         <tr data-tags="rush low period"><td class="num">11</td><td class="nm">希腊酸奶 + 咖啡<span class="sub">最省事的一份，冰箱拿了就走</span></td><td class="p">17g</td><td class="t">0 分</td></tr>
-        <tr data-tags="rush post"><td class="num">12</td><td class="nm">tuna 罐头 + 咖啡<span class="sub">办公室常备两罐</span></td><td class="p">22g</td><td class="t">1 分</td></tr>
+        <tr data-tags="rush post"><td class="num">12</td><td class="nm"><span class="star">★</span>tuna 罐头 + 咖啡<span class="sub">办公室常备两罐</span></td><td class="p">22g</td><td class="t">1 分</td></tr>
         <tr data-tags="post period"><td class="num">13</td><td class="nm">昨晚剩的一块牛排 / 羊肉<span class="sub">前一晚顺手多煎一块留着</span></td><td class="p">25g</td><td class="t">2 分</td></tr>
         <tr data-tags="rush bloat"><td class="num">14</td><td class="nm">水煮蛋 ×2 + 猕猴桃<span class="sub">最轻的一份</span></td><td class="p">12g</td><td class="t">0 分</td></tr>
         <tr data-tags="rush"><td class="num">15</td><td class="nm">芝士 + 火腿卷 + 葡萄<span class="sub"><span class="warn">火腿 salami 类看配料表，别有洋葱粉蒜粉</span></span></td><td class="p">15g</td><td class="t">2 分</td></tr>
@@ -381,7 +386,7 @@
     <table class="food">
       <thead><tr><th>#</th><th>吃什么</th><th style="text-align:center;">蛋白</th><th class="t-th" style="text-align:center;">时间</th></tr></thead>
       <tbody>
-        <tr data-tags="bloat low period post rush"><td class="num">21</td><td class="nm">抹茶牛奶<span class="sub">已经在喝的那杯，本来就够格</span></td><td class="p">8g</td><td class="t">2 分</td></tr>
+        <tr data-tags="bloat low period post rush"><td class="num">21</td><td class="nm"><span class="star">★</span>抹茶牛奶<span class="sub">已经在喝的那杯，本来就够格</span></td><td class="p">8g</td><td class="t">2 分</td></tr>
         <tr data-tags="post period low"><td class="num">22</td><td class="nm">希腊酸奶小盒<span class="sub">练完那口的第一选择</span></td><td class="p">15g</td><td class="t">0 分</td></tr>
         <tr data-tags="period"><td class="num">23</td><td class="nm">坚果一小把 + 芝士一片<span class="sub"><span class="warn">正在胀时只留坚果，芝士留给状态好的日子</span></span></td><td class="p">8g</td><td class="t">0 分</td></tr>
         <tr data-tags="post period rush"><td class="num">24</td><td class="nm">卤牛肉 / 牛肉干<span class="sub"><span class="warn">看配料表：洋葱粉蒜粉是常客</span></span></td><td class="p">15g</td><td class="t">0 分</td></tr>
@@ -391,59 +396,63 @@
     </table>
     <p class="foot-note">经期那周<strong>提前在下午 4 点用掉一格</strong>，比晚上被巧克力追着跑好。想吃巧克力就吃，那是密度缺口的信号不是失控。</p>
 
-    <!-- ═════ 晚饭 ═════ -->
-    <h2 class="sec toc-anchor" id="dinner">🍲 晚饭 · 配法 <span class="sec-note">菜是家里的菜，我只做这五件</span></h2>
-    <table class="food">
-      <thead><tr><th>#</th><th>做什么</th><th style="text-align:center;">蛋白</th><th class="t-th" style="text-align:center;">时机</th></tr></thead>
-      <tbody>
-        <tr data-tags="bloat low period post rush"><td class="num">31</td><td class="nm">一掌蛋白<span class="sub">肉或鱼至少一个手掌大小厚度，不用称</span></td><td class="p">25g</td><td class="t">盛饭</td></tr>
-        <tr data-tags="bloat low period post rush"><td class="num">32</td><td class="nm">主食挑米那边<span class="sub">家人吃面吃饺子，我配米饭或米粉，浇头是同一锅</span></td><td class="p">—</td><td class="t">盛饭</td></tr>
-        <tr data-tags="bloat low period post rush"><td class="num">33</td><td class="nm">下豆角 / 下面之前，先盛我那份<span class="sub">东北乱炖、腊肉炒豆角、番茄鸡蛋面都用这招</span></td><td class="p">—</td><td class="t">起锅前</td></tr>
-        <tr data-tags="bloat low period post rush"><td class="num">34</td><td class="nm">蒜油起锅，生蒜末最后单撒他们那半边<span class="sub">果聚糖不溶于油、香气溶于油 —— 全家吃到一样的味道</span></td><td class="p">—</td><td class="t">下锅时</td></tr>
-        <tr data-tags="bloat low period post rush"><td class="num">35</td><td class="nm">饭后走 10–15 分钟<span class="sub">清肠气证据最硬的一条，当药吃</span></td><td class="p">—</td><td class="t">饭后</td></tr>
-      </tbody>
-    </table>
-    <p class="foot-note">今晚做什么菜 → 去「<strong>今天 · 菜单</strong>」那页按冰箱筛。这页不列菜。</p>
-
-    <!-- ═════ 这块肉怎么做 ═════ -->
-    <h2 class="sec toc-anchor" id="meat">🍖 这块肉怎么做 <span class="sec-note">早上挑了肉，晚上挑做法 · 懒得想的时候看这里</span></h2>
+    <!-- ═════ 晚饭（做法 + 配什么，合成一节） ═════ -->
+    <h2 class="sec toc-anchor" id="dinner">🍲 晚饭 <span class="sec-note">早上看「肉」那列拿一块 · 晚上点状态看那块肉的行</span></h2>
+    <p class="howto"><b>早上</b>：从下面最左边那列挑一块肉，拿出来解冻。不用点状态。<br><b>晚上</b>：点一下现在的状态，翻到今天那块肉的两三行，挑一个。<b>没想法就吃 ★ 那个。</b></p>
     <table class="food">
       <thead><tr><th>#</th><th>肉</th><th>怎么做</th><th class="t-th" style="text-align:center;">时长</th></tr></thead>
       <tbody>
-        <tr data-tags="rush post"><td class="num">51</td><td class="mt">🐄 牛</td><td class="nm">小炒黄牛肉<span class="sub">大火爆炒，辣椒配嫩牛肉，下饭</span></td><td class="t">15 分</td></tr>
-        <tr data-tags="post period"><td class="num">52</td><td class="mt">🐄 牛</td><td class="nm">煎牛排<span class="sub">平底锅两面煎，配土豆饼或蔬菜</span></td><td class="t">20 分</td></tr>
-        <tr data-tags="period"><td class="num">53</td><td class="mt">🐄 牛</td><td class="nm">土豆炖牛肉 / 牛腩炖萝卜<span class="sub">丢锅里慢炖，中间不用管 · 经期周补密度首选</span></td><td class="t">60 分</td></tr>
-        <tr data-tags="rush post"><td class="num">54</td><td class="mt">🐑 羊</td><td class="nm">葱爆羊肉<span class="sub">羊肩肉切片大火爆炒 · <span class="warn">葱留绿弃白</span></span></td><td class="t">15 分</td></tr>
-        <tr data-tags="bloat period"><td class="num">55</td><td class="mt">🐑 羊</td><td class="nm">羊肉清汤<span class="sub">羊骨+羊肩肉慢炖，清汤暖胃 · 胀着也吃得下的那种</span></td><td class="t">60 分</td></tr>
-        <tr data-tags="rush post bloat"><td class="num">56</td><td class="mt">🦐 虾</td><td class="nm">虾仁炒蛋<span class="sub">嫩滑快手，配米饭刚刚好</span></td><td class="t">10 分</td></tr>
-        <tr data-tags="rush low post"><td class="num">57</td><td class="mt">🦐 虾</td><td class="nm">虾仁炒饭<span class="sub">冻虾+隔夜饭翻炒，满足感高、零思考</span></td><td class="t">15 分</td></tr>
-        <tr data-tags="bloat rush"><td class="num">58</td><td class="mt">🦐 虾</td><td class="nm">白灼虾<span class="sub">水开下锅，姜丝蘸料 · 最省事也最温和的一种</span></td><td class="t">10 分</td></tr>
-        <tr data-tags="rush post"><td class="num">59</td><td class="mt">🐟 鱼</td><td class="nm">香煎鱼片<span class="sub">蒜油煎至两面金黄</span></td><td class="t">15 分</td></tr>
-        <tr data-tags="bloat post period"><td class="num">60</td><td class="mt">🐟 鱼</td><td class="nm">清蒸 barramundi<span class="sub">整片蒸熟，葱姜+蒸鱼豉油，清爽不腻</span></td><td class="t">20 分</td></tr>
-        <tr data-tags="rush"><td class="num">61</td><td class="mt">🐖 猪</td><td class="nm">青椒炒肉丝<span class="sub">灯笼椒配猪肉丝，下饭</span></td><td class="t">15 分</td></tr>
-        <tr data-tags="rush post"><td class="num">62</td><td class="mt">🐖 猪</td><td class="nm">豆干炒肉丝<span class="sub">五香豆干切条配肉丝，咸香弹牙</span></td><td class="t">15 分</td></tr>
-        <tr data-tags="low rush"><td class="num">63</td><td class="mt">🐖 猪</td><td class="nm">卤肉饭<span class="sub">卤肉加热直接盖饭 · <strong>整页最省事的一道</strong></span></td><td class="t">10 分</td></tr>
-        <tr data-tags="low"><td class="num">64</td><td class="mt">🐖 猪</td><td class="nm">腊肉蒸饭<span class="sub">腊肉铺米饭上一起蒸，按下开关就不用管</span></td><td class="t">25 分</td></tr>
-        <tr data-tags="period post"><td class="num">65</td><td class="mt">🐔 鸡</td><td class="nm">鸡腿烤 / 炖<span class="sub">腌好扔进烤箱，中途不用管，5 人份刚好</span></td><td class="t">40 分</td></tr>
-        <tr data-tags="rush bloat low"><td class="num">66</td><td class="mt">🥚 蛋</td><td class="nm">番茄炒蛋<span class="sub">经典快手，配米饭</span></td><td class="t">10 分</td></tr>
-        <tr data-tags="bloat low rush"><td class="num">67</td><td class="mt">🥚 蛋</td><td class="nm">蒸蛋羹<span class="sub">打散加水蒸，入口即化 · 胀着的时候的默认项</span></td><td class="t">15 分</td></tr>
-        <tr data-tags="rush low"><td class="num">68</td><td class="mt">🧊 豆腐</td><td class="nm">香煎 / 红烧蛋豆腐<span class="sub">切厚片两面煎金黄，或生抽老抽糖烧</span></td><td class="t">10–15 分</td></tr>
-        <tr data-tags="rush"><td class="num">69</td><td class="mt">🧊 豆腐</td><td class="nm">麻婆蛋豆腐<span class="sub">肉末+豆瓣酱烧 · <span class="warn">豆瓣酱看一眼含不含蒜</span></span></td><td class="t">20 分</td></tr>
-        <tr data-tags="rush"><td class="num">70</td><td class="mt">🐌 螺</td><td class="nm">螺肉炒时蔬<span class="sub">爆炒青菜，鲜味突出</span></td><td class="t">15 分</td></tr>
+        <tr data-tags="rush post"><td class="num">31</td><td class="mt">🐄 牛</td><td class="nm"><span class="star">★</span>小炒黄牛肉<span class="sub">大火爆炒，辣椒配嫩牛肉，下饭</span></td><td class="t">15 分</td></tr>
+        <tr data-tags="post period"><td class="num">32</td><td class="mt">🐄 牛</td><td class="nm">煎牛排<span class="sub">平底锅两面煎，配土豆饼或蔬菜</span></td><td class="t">20 分</td></tr>
+        <tr data-tags="period"><td class="num">33</td><td class="mt">🐄 牛</td><td class="nm">土豆炖牛肉 / 牛腩炖萝卜<span class="sub">丢锅里慢炖，中间不用管 · 经期周补密度首选</span></td><td class="t">60 分</td></tr>
+        <tr data-tags="rush post"><td class="num">34</td><td class="mt">🐑 羊</td><td class="nm"><span class="star">★</span>葱爆羊肉<span class="sub">羊肩肉切片大火爆炒 · <span class="warn">葱留绿弃白</span></span></td><td class="t">15 分</td></tr>
+        <tr data-tags="bloat period"><td class="num">35</td><td class="mt">🐑 羊</td><td class="nm">羊肉清汤<span class="sub">羊骨+羊肩肉慢炖，清汤暖胃 · 胀着也吃得下的那种</span></td><td class="t">60 分</td></tr>
+        <tr data-tags="rush post bloat"><td class="num">36</td><td class="mt">🦐 虾</td><td class="nm"><span class="star">★</span>虾仁炒蛋<span class="sub">嫩滑快手，配米饭刚刚好</span></td><td class="t">10 分</td></tr>
+        <tr data-tags="rush low post"><td class="num">37</td><td class="mt">🦐 虾</td><td class="nm">虾仁炒饭<span class="sub">冻虾+隔夜饭翻炒，满足感高、零思考</span></td><td class="t">15 分</td></tr>
+        <tr data-tags="bloat rush"><td class="num">38</td><td class="mt">🦐 虾</td><td class="nm">白灼虾<span class="sub">水开下锅，姜丝蘸料 · 最省事也最温和的一种</span></td><td class="t">10 分</td></tr>
+        <tr data-tags="rush post"><td class="num">39</td><td class="mt">🐟 鱼</td><td class="nm">香煎鱼片<span class="sub">蒜油煎至两面金黄</span></td><td class="t">15 分</td></tr>
+        <tr data-tags="bloat post period"><td class="num">40</td><td class="mt">🐟 鱼</td><td class="nm"><span class="star">★</span>清蒸 barramundi<span class="sub">整片蒸熟，葱姜+蒸鱼豉油，清爽不腻</span></td><td class="t">20 分</td></tr>
+        <tr data-tags="rush"><td class="num">41</td><td class="mt">🐖 猪</td><td class="nm">青椒炒肉丝<span class="sub">灯笼椒配猪肉丝，下饭</span></td><td class="t">15 分</td></tr>
+        <tr data-tags="rush post"><td class="num">42</td><td class="mt">🐖 猪</td><td class="nm">豆干炒肉丝<span class="sub">五香豆干切条配肉丝，咸香弹牙</span></td><td class="t">15 分</td></tr>
+        <tr data-tags="low rush"><td class="num">43</td><td class="mt">🐖 猪</td><td class="nm"><span class="star">★</span>卤肉饭<span class="sub">卤肉加热直接盖饭 · <strong>整页最省事的一道</strong></span></td><td class="t">10 分</td></tr>
+        <tr data-tags="low"><td class="num">44</td><td class="mt">🐖 猪</td><td class="nm">腊肉蒸饭<span class="sub">腊肉铺米饭上一起蒸，按下开关就不用管</span></td><td class="t">25 分</td></tr>
+        <tr data-tags="period post"><td class="num">45</td><td class="mt">🐔 鸡</td><td class="nm"><span class="star">★</span>鸡腿烤 / 炖<span class="sub">腌好扔进烤箱，中途不用管，5 人份刚好</span></td><td class="t">40 分</td></tr>
+        <tr data-tags="rush bloat low"><td class="num">46</td><td class="mt">🥚 蛋</td><td class="nm"><span class="star">★</span>番茄炒蛋<span class="sub">经典快手，配米饭</span></td><td class="t">10 分</td></tr>
+        <tr data-tags="bloat low rush"><td class="num">47</td><td class="mt">🥚 蛋</td><td class="nm">蒸蛋羹<span class="sub">打散加水蒸，入口即化 · 胀着的时候的默认项</span></td><td class="t">15 分</td></tr>
+        <tr data-tags="rush low"><td class="num">48</td><td class="mt">🧊 豆腐</td><td class="nm"><span class="star">★</span>香煎 / 红烧蛋豆腐<span class="sub">切厚片两面煎金黄，或生抽老抽糖烧</span></td><td class="t">10–15 分</td></tr>
+        <tr data-tags="rush"><td class="num">49</td><td class="mt">🧊 豆腐</td><td class="nm">麻婆蛋豆腐<span class="sub">肉末+豆瓣酱烧 · <span class="warn">豆瓣酱看一眼含不含蒜</span></span></td><td class="t">20 分</td></tr>
+        <tr data-tags="rush"><td class="num">50</td><td class="mt">🐌 螺</td><td class="nm"><span class="star">★</span>螺肉炒时蔬<span class="sub">爆炒青菜，鲜味突出</span></td><td class="t">15 分</td></tr>
       </tbody>
     </table>
-    <p class="foot-note">家里这几道要<strong>改一下才能吃</strong>：洋葱炒牛肉（洋葱整块下、吃完挑掉，或换蒜油）· 腊肉炒豆角 / 东北乱炖（下豆角前先盛我那份）· 咖喱鸡 / 罗宋汤（咖喱块和现成汤底含蒜洋葱粉）· 意面拌面（浇头同一锅，我配米饭米粉）。做法见上面 <strong>#33 #34</strong>。</p>
+    <p class="foot-note">家里这几道要<strong>改一下才能吃</strong>：<strong>炒菜起锅用蒜油</strong>、生蒜末最后单撒 · <strong>洋葱炒牛肉</strong>（洋葱整块下、吃完挑掉）· <strong>腊肉炒豆角 / 东北乱炖</strong>（下豆角前先盛出我那份）· <strong>咖喱鸡 / 罗宋汤</strong>（现成咖喱块和汤底含蒜洋葱粉）· <strong>意面 / 拌面</strong>（浇头同一锅，我配米饭米粉）。</p>
+
+    <div class="subhead">配什么 <span>想不出来配菜和主食的时候，看一眼</span></div>
+    <table class="food">
+      <thead><tr><th>#</th><th>这顿饭长什么样</th><th>举个例子</th></tr></thead>
+      <tbody>
+        <tr data-tags="post period"><td class="num">51</td><td class="nm">一份米 + 一份肉 + 一份煮软的菜</td><td class="ex">清蒸 barramundi + 上汤小白菜 + 米饭</td></tr>
+        <tr data-tags="rush post"><td class="num">52</td><td class="nm">一份粉 + 一份肉 + 一份水果</td><td class="ex">河粉 + 小炒黄牛肉 + 猕猴桃</td></tr>
+        <tr data-tags="low period"><td class="num">53</td><td class="nm">一锅炖 + 一碗米<span class="sub">肉和菜都在锅里，中间不用管</span></td><td class="ex">牛腩炖萝卜 / 土豆炖牛肉 + 米饭</td></tr>
+        <tr data-tags="bloat low rush"><td class="num">54</td><td class="nm">一碗汤粉，全在里面<span class="sub">最好消化的一种</span></td><td class="ex">米粉 + 牛肉片 + 青菜 + 热汤</td></tr>
+        <tr data-tags="bloat low"><td class="num">55</td><td class="nm">一盘蒸的 + 一碗粥</td><td class="ex">蒸蛋羹 / 清蒸鱼 + 小米粥</td></tr>
+        <tr data-tags="post period"><td class="num">56</td><td class="nm">一块煎的 + 两样配菜</td><td class="ex">牛排 + 土豆 + baby 黄瓜</td></tr>
+        <tr data-tags="rush low"><td class="num">57</td><td class="nm">拌一碗 / 盖一碗<span class="sub">一个碗解决，洗得也少</span></td><td class="ex">韩式拌饭 · 卤肉饭 · 虾仁炒饭</td></tr>
+        <tr data-tags="period post"><td class="num">58</td><td class="nm">一锅涮<span class="sub">周末全家那顿</span></td><td class="ex">清汤锅 + 肉片 + 菜（避开油炸和重辣）</td></tr>
+        <tr data-tags="rush low bloat"><td class="num">59</td><td class="nm">剩菜再上一次<span class="sub">昨晚的肉热一热，配新煮的饭和一样青菜</span></td><td class="ex">这不是将就，是省下一整晚的决策</td></tr>
+      </tbody>
+    </table>
+    <p class="foot-note">肉那一份大约<strong>一个手掌的大小和厚度</strong>（≈ 25 克蛋白），不用称。这几种形状全家吃的是同一桌，没有一样要为我单独做。</p>
 
     <!-- ═════ 踩雷 ═════ -->
     <h2 class="sec toc-anchor" id="rescue">🚨 正在胀 / 踩雷了 <span class="sec-note">按顺序来</span></h2>
     <table class="food">
       <thead><tr><th>#</th><th>做什么</th><th style="text-align:center;">—</th><th class="t-th" style="text-align:center;">时机</th></tr></thead>
       <tbody>
-        <tr data-tags="bloat"><td class="num">41</td><td class="nm">先别吃<span class="sub">发作时再往里塞只会加料，等它过去</span></td><td class="p">—</td><td class="t">立刻</td></tr>
-        <tr data-tags="bloat"><td class="num">42</td><td class="nm">Degas（西甲硅油）<span class="sub">不吸收、可以重复补服 · <span class="warn">薄荷 Mintec 谨慎，可能加重反流</span></span></td><td class="p">—</td><td class="t">立刻</td></tr>
-        <tr data-tags="bloat"><td class="num">43</td><td class="nm">热敷 + 顺时针揉腹 + 抱膝或左侧躺<span class="sub">右下 → 上 → 横过 → 左下，手先搓热</span></td><td class="p">—</td><td class="t">10 分</td></tr>
-        <tr data-tags="bloat"><td class="num">44</td><td class="nm">主动把气排出来<span class="sub">不憋着，这是最直接的泄压</span></td><td class="p">—</td><td class="t">随时</td></tr>
-        <tr data-tags="bloat"><td class="num">45</td><td class="nm">缓过来之后两三天走温和档<span class="sub">早 #8 · 午 #14 · 晚 #31 清淡版；<span class="bad">别在这几天试新东西</span></span></td><td class="p">—</td><td class="t">之后</td></tr>
+        <tr data-tags="bloat"><td class="num">61</td><td class="nm">先别吃<span class="sub">发作时再往里塞只会加料，等它过去</span></td><td class="p">—</td><td class="t">立刻</td></tr>
+        <tr data-tags="bloat"><td class="num">62</td><td class="nm">Degas（西甲硅油）<span class="sub">不吸收、可以重复补服 · <span class="warn">薄荷 Mintec 谨慎，可能加重反流</span></span></td><td class="p">—</td><td class="t">立刻</td></tr>
+        <tr data-tags="bloat"><td class="num">63</td><td class="nm">热敷 + 顺时针揉腹 + 抱膝或左侧躺<span class="sub">右下 → 上 → 横过 → 左下，手先搓热</span></td><td class="p">—</td><td class="t">10 分</td></tr>
+        <tr data-tags="bloat"><td class="num">64</td><td class="nm">主动把气排出来<span class="sub">不憋着，这是最直接的泄压</span></td><td class="p">—</td><td class="t">随时</td></tr>
+        <tr data-tags="bloat"><td class="num">65</td><td class="nm">缓过来之后两三天走温和档<span class="sub">早 #8 · 午 #14 · 晚 #55（蒸的+粥）；<span class="bad">别在这几天试新东西</span></span></td><td class="p">—</td><td class="t">之后</td></tr>
       </tbody>
     </table>
 
@@ -452,35 +461,35 @@
 
     <div class="combo" data-tags="">
       <div class="cb-head"><span class="cb-title">平时的一天</span><span class="cb-sum">71 g</span><span class="cb-when">大多数日子</span></div>
-      <div class="cb-flow"><b>#1 希腊酸奶碗</b>（21）→ <b>#11 酸奶+咖啡</b>（17）→ <b>#21 抹茶牛奶</b>（8）→ <b>晚饭一掌蛋白</b>（25）</div>
+      <div class="cb-flow"><b>#1 希腊酸奶碗</b>（21）→ <b>#11 酸奶+咖啡</b>（17）→ <b>#21 抹茶牛奶</b>（8）→ <b>#51 米+肉+煮软的菜</b>（25）</div>
     </div>
 
     <div class="combo" data-tags="rush">
       <div class="cb-head"><span class="cb-title">赶时间的一天</span><span class="cb-sum">66 g</span><span class="cb-when">全程不开火</span></div>
-      <div class="cb-flow"><b>#7 抹茶牛奶+水煮蛋</b>（18）→ <b>#12 tuna+咖啡</b>（22）→ <b>#25 水煮蛋</b>（6）→ <b>晚饭一掌蛋白</b>（25）</div>
+      <div class="cb-flow"><b>#7 抹茶牛奶+水煮蛋</b>（18）→ <b>#12 tuna+咖啡</b>（22）→ <b>#25 水煮蛋</b>（6）→ <b>#52 粉+肉+水果</b>（25）</div>
     </div>
 
     <div class="combo" data-tags="low">
       <div class="cb-head"><span class="cb-title">低电的一天</span><span class="cb-sum">71 g</span><span class="cb-when">没力气做饭</span></div>
-      <div class="cb-flow"><b>#6 tuna 芝士盘</b>（26）→ <b>#11 酸奶+咖啡</b>（17）→ <b>#26 牛奶一杯</b>（8）→ <b>#9 剩菜肉+米饭</b>（20）</div>
+      <div class="cb-flow"><b>#6 tuna 芝士盘</b>（26）→ <b>#11 酸奶+咖啡</b>（17）→ <b>#26 牛奶一杯</b>（8）→ <b>#57 盖一碗</b>（20）</div>
       <div class="cb-note">低电周不靠意志力吃好，靠事先备好这几样：希腊酸奶、tuna 罐头、冻虾、隔夜饭、剩肉。</div>
     </div>
 
     <div class="combo" data-tags="period">
       <div class="cb-head"><span class="cb-title">经期周的一天</span><span class="cb-sum">78 g</span><span class="cb-when">提前加密度</span></div>
-      <div class="cb-flow"><b>#2 虾仁蛋炒饭</b>（25）→ <b>#13 剩的牛排</b>（25）→ <b>#23 坚果+芝士</b>（8）→ <b>晚饭一掌蛋白</b>（20）</div>
+      <div class="cb-flow"><b>#2 虾仁蛋炒饭</b>（25）→ <b>#13 剩的牛排</b>（25）→ <b>#23 坚果+芝士</b>（8）→ <b>#53 一锅炖+米</b>（20）</div>
       <div class="cb-note">这周<strong>不减量、不缩水</strong>。运动降档但蛋白别降——恢复需求反而更高。下午那格提前给足，晚上就不会失控。</div>
     </div>
 
     <div class="combo" data-tags="bloat">
       <div class="cb-head"><span class="cb-title">正在胀的一天</span><span class="cb-sum">54 g</span><span class="cb-when">低于目标是对的</span></div>
-      <div class="cb-flow"><b>#8 粥+蒸蛋+豆干</b>（16）→ <b>#14 水煮蛋+猕猴桃</b>（12）→ <b>#21 抹茶牛奶</b>（8）→ <b>晚饭清淡一掌</b>（18）</div>
+      <div class="cb-flow"><b>#8 粥+蒸蛋+豆干</b>（16）→ <b>#14 水煮蛋+猕猴桃</b>（12）→ <b>#21 抹茶牛奶</b>（8）→ <b>#55 蒸的+粥</b>（18）</div>
       <div class="cb-note">这天不用凑够 65 克。<strong>唯一别停的是车前子那杯</strong>——纤维一减，转运更慢、发酵更久，气一点没少还赔掉每天排空。</div>
     </div>
 
     <div class="combo" data-tags="post">
       <div class="cb-head"><span class="cb-title">练完那天</span><span class="cb-sum">79 g</span><span class="cb-when">练后 30–60 分钟内那口最关键</span></div>
-      <div class="cb-flow"><b>#5 香煎鱼片+米饭</b>（24）→ <b>#13 剩的牛排</b>（25）→ <b>#22 希腊酸奶</b>（15）→ <b>晚饭一掌蛋白</b>（25）以内</div>
+      <div class="cb-flow"><b>#5 香煎鱼片+米饭</b>（24）→ <b>#13 剩的牛排</b>（25）→ <b>#22 希腊酸奶</b>（15）→ <b>#56 煎一块+两样配菜</b>（25）</div>
     </div>
 
     <!-- ═════ 查阅 ═════ -->

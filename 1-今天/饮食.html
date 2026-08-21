@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>饮食 · Summer 的世界</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  html { scroll-padding-top: 80px; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FDFBF5;
+    --border: #ECE7DC;
+    --border-dark: #D8D2C5;
+    --text-primary: #1A1814;
+    --text-secondary: #4A453E;
+    --text-hint: #8A8278;
+    --accent: #2D5A3D;
+    --accent-light: #EAF2EC;
+    --accent-mid: #4A8C60;
+    --gold: #7A5C2E;
+    --gold-light: #F5EDE0;
+    --ochre: #B8804A;
+    --ochre-light: #FAF1E2;
+    --rust: #9C3B2C;
+    --rust-light: #F8E8E3;
+    --rose: #7A3A4A;
+    --rose-light: #FBEEF1;
+    --mist: #4E6273;
+    --mist-light: #E8EDF2;
+  }
+
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.7;
+    font-size: 14px;
+    min-height: 100vh;
+  }
+
+  /* ============ Header ============ */
+  .page-header {
+    padding: 2rem 2rem 1.1rem;
+    max-width: 1080px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .page-header::after {
+    content: '';
+    position: absolute;
+    left: 2rem; right: 2rem; bottom: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border-dark) 20%, var(--border-dark) 80%, transparent);
+  }
+  .eyebrow {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 0.18em;
+    margin-bottom: 0.3rem;
+  }
+  .page-header h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.9rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.4rem;
+  }
+  .page-header .lede { font-size: 0.87rem; color: var(--text-secondary); max-width: 42rem; line-height: 1.8; }
+  .page-header .lede strong { color: var(--accent); font-weight: 600; }
+
+  /* ============ Layout ============ */
+  .layout {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2.4rem;
+    max-width: 1080px;
+    margin: 1.4rem auto 3.5rem;
+    padding: 0 2rem;
+    align-items: start;
+  }
+  .side-toc { position: sticky; top: 88px; align-self: start; }
+  .side-toc-title {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.82rem;
+    color: var(--text-hint);
+    letter-spacing: 0.12em;
+    margin-bottom: 0.7rem;
+    padding-left: 0.9rem;
+  }
+  .side-toc ol { list-style: none; }
+  .side-toc a {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 6px 0 6px 0.9rem;
+    border-left: 2px solid var(--border);
+    transition: color 0.15s, border-color 0.15s;
+    line-height: 1.4;
+  }
+  .side-toc a .toc-hint {
+    display: block;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.72rem;
+    color: var(--text-hint);
+    margin-top: 1px;
+  }
+  .side-toc a:hover { color: var(--text-primary); border-left-color: var(--border-dark); }
+  .side-toc a.active { color: var(--accent); border-left-color: var(--accent); }
+
+  .main { min-width: 0; }
+  .toc-anchor { scroll-margin-top: 80px; }
+
+  /* ============ 状态选择条 ============ */
+  .state-bar {
+    background: var(--surface);
+    border: 1px solid var(--border-dark);
+    border-radius: 10px;
+    padding: 0.85rem 1rem 0.9rem;
+    margin-bottom: 1rem;
+  }
+  .state-label {
+    font-size: 0.75rem;
+    color: var(--text-hint);
+    letter-spacing: 0.06em;
+    margin-bottom: 0.55rem;
+  }
+  .state-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .chip {
+    font-family: inherit;
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+    background: var(--bg);
+    border: 1px solid var(--border-dark);
+    border-radius: 99px;
+    padding: 4px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    line-height: 1.5;
+  }
+  .chip:hover { border-color: var(--accent-mid); color: var(--text-primary); }
+  .chip.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .state-hint {
+    font-size: 0.79rem;
+    color: var(--text-hint);
+    line-height: 1.65;
+    margin-top: 0.6rem;
+    min-height: 1.1rem;
+  }
+  .state-hint b { color: var(--accent); font-weight: 600; }
+
+  /* ============ 蛋白目标条 ============ */
+  .target {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1.1rem;
+    background: var(--accent-light);
+    border: 1px solid #CFE3D5;
+    border-radius: 10px;
+    padding: 0.7rem 1.05rem 0.75rem;
+    margin-bottom: 1.4rem;
+    font-size: 0.83rem;
+    color: var(--text-secondary);
+  }
+  .target .t-main { font-family: 'Noto Serif SC', serif; font-size: 0.98rem; color: var(--accent); font-weight: 500; }
+  .target .t-split { color: var(--text-hint); }
+  .target .t-split b { color: var(--accent); font-weight: 600; }
+
+  /* ============ 分组 & 表 ============ */
+  h2.sec {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.16rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    margin: 1.8rem 0 0.5rem;
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--border-dark);
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+  }
+  h2.sec:first-of-type { margin-top: 0; }
+  h2.sec .sec-note { font-size: 0.76rem; color: var(--text-hint); font-family: 'Noto Sans SC', sans-serif; font-weight: 400; margin-left: auto; }
+
+  table.food { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+  table.food th, table.food td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  table.food th { background: var(--bg); color: var(--text-hint); font-weight: 500; font-size: 0.74rem; letter-spacing: 0.02em; }
+  table.food td { color: var(--text-secondary); line-height: 1.6; }
+  table.food td.num { color: var(--text-hint); width: 42px; text-align: center; font-size: 0.78rem; }
+  table.food td.nm { color: var(--text-primary); font-weight: 500; width: 30%; }
+  table.food td.nm .sub { display: block; font-weight: 400; color: var(--text-hint); font-size: 0.78rem; line-height: 1.55; margin-top: 1px; }
+  table.food td.p { width: 60px; text-align: center; color: var(--accent); font-weight: 600; }
+  table.food td.mt { width: 62px; color: var(--text-hint); font-size: 0.8rem; white-space: nowrap; }
+  table.food td.t { width: 62px; text-align: center; color: var(--mist); font-size: 0.78rem; }
+  table.food tr.dim { opacity: 0.24; }
+  table.food tr.hit td.nm { color: var(--accent); }
+  table.food tr.hit { background: rgba(74, 140, 96, 0.06); }
+  .warn { color: var(--ochre); }
+  .bad { color: var(--rust); }
+
+  /* ============ 组合 ============ */
+  .combo {
+    background: var(--surface);
+    border: 1px solid var(--border-dark);
+    border-left: 3px solid var(--mist);
+    border-radius: 8px;
+    padding: 0.8rem 1.1rem 0.85rem;
+    margin-bottom: 0.55rem;
+  }
+  .combo.dim { opacity: 0.24; }
+  .combo.hit { border-left-color: var(--accent); background: rgba(74, 140, 96, 0.05); }
+  .cb-head { display: flex; align-items: baseline; gap: 0.55rem; flex-wrap: wrap; }
+  .cb-title { font-family: 'Noto Serif SC', serif; font-size: 0.98rem; font-weight: 500; color: var(--text-primary); }
+  .cb-sum { font-size: 0.78rem; color: var(--accent); background: var(--accent-light); border: 1px solid #CFE3D5; border-radius: 99px; padding: 0 9px; }
+  .cb-when { font-size: 0.78rem; color: var(--text-hint); margin-left: auto; }
+  .cb-flow { font-size: 0.83rem; color: var(--text-secondary); line-height: 1.75; margin-top: 0.35rem; }
+  .cb-flow b { color: var(--text-primary); font-weight: 500; }
+  .cb-note { font-size: 0.78rem; color: var(--text-hint); margin-top: 0.3rem; line-height: 1.6; }
+
+  /* ============ 折叠查阅 ============ */
+  details.fold {
+    background: var(--surface);
+    border: 1px solid var(--border-dark);
+    border-radius: 8px;
+    padding: 0.7rem 1.1rem;
+    margin-bottom: 0.6rem;
+  }
+  details.fold > summary {
+    cursor: pointer;
+    list-style: none;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.96rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  details.fold > summary::-webkit-details-marker { display: none; }
+  details.fold > summary::before { content: '▸'; color: var(--text-hint); font-size: 0.8rem; }
+  details.fold[open] > summary::before { content: '▾'; }
+  details.fold > summary .s-sub { font-size: 0.77rem; color: var(--text-hint); font-family: 'Noto Sans SC', sans-serif; margin-left: auto; }
+  details.fold .fold-body { padding-top: 0.6rem; }
+
+  .zone { border-radius: 7px; padding: 0.75rem 1rem 0.8rem; margin-bottom: 0.5rem; border: 1px solid; font-size: 0.83rem; line-height: 1.75; }
+  .zone b { font-family: 'Noto Serif SC', serif; display: block; margin-bottom: 0.2rem; }
+  .zone-red { background: var(--rust-light); border-color: #EAC9C0; color: var(--text-secondary); }
+  .zone-red b { color: var(--rust); }
+  .zone-amber { background: var(--ochre-light); border-color: #E6D6B8; color: var(--text-secondary); }
+  .zone-amber b { color: var(--ochre); }
+  .zone-green { background: var(--accent-light); border-color: #CFE3D5; color: var(--text-secondary); }
+  .zone-green b { color: var(--accent); }
+
+  ul.plain { list-style: none; }
+  ul.plain li { font-size: 0.83rem; color: var(--text-secondary); line-height: 1.75; padding: 0.22rem 0 0.22rem 0.9rem; position: relative; }
+  ul.plain li::before { content: '·'; position: absolute; left: 0.2rem; color: var(--border-dark); font-weight: 700; }
+  ul.plain li strong { color: var(--text-primary); font-weight: 600; }
+
+  .foot-note {
+    font-size: 0.79rem;
+    color: var(--text-hint);
+    line-height: 1.7;
+    margin-top: 0.5rem;
+  }
+
+  footer {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 1.2rem 2rem 2.4rem;
+    font-size: 0.78rem;
+    color: var(--text-hint);
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    text-align: center;
+    line-height: 1.8;
+  }
+
+  /* ============ 窄屏回退 ============ */
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; gap: 1.2rem; }
+    .side-toc { position: static; }
+    .side-toc ol { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .side-toc a { border-left: none; border: 1px solid var(--border-dark); border-radius: 99px; padding: 4px 12px; }
+    .side-toc a .toc-hint { display: none; }
+    .side-toc a.active { border-color: var(--accent); background: var(--accent-light); }
+    .side-toc-title { padding-left: 0; }
+    .page-header, .layout { padding-left: 1.2rem; padding-right: 1.2rem; }
+    table.food td.nm { width: auto; }
+    table.food td.t { display: none; }
+    table.food td.mt { width: 40px; font-size: 0.75rem; }
+    table.food th.t-th { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="eyebrow">PICK ONE, EAT IT</div>
+  <h1>🍚 饮食</h1>
+  <p class="lede">跟运动列表一样用：<strong>先点一下现在什么状态，再从表里挑一个</strong>。不用读，不用记，不用打卡。</p>
+</header>
+
+<div class="layout">
+  <aside class="side-toc">
+    <div class="side-toc-title">Contents</div>
+    <ol>
+      <li><a href="#breakfast">早餐<span class="toc-hint">#1–9</span></a></li>
+      <li><a href="#lunch">午餐 · 轻<span class="toc-hint">#11–16</span></a></li>
+      <li><a href="#snack">加餐<span class="toc-hint">#21–26</span></a></li>
+      <li><a href="#dinner">晚饭配法<span class="toc-hint">#31–35</span></a></li>
+      <li><a href="#meat">这块肉怎么做<span class="toc-hint">#51–70</span></a></li>
+      <li><a href="#rescue">正在胀 / 踩雷<span class="toc-hint">#41–45</span></a></li>
+      <li><a href="#combo">整天组合<span class="toc-hint">whole-day flows</span></a></li>
+      <li><a href="#ref">查阅<span class="toc-hint">zones &amp; shopping</span></a></li>
+    </ol>
+  </aside>
+
+  <main class="main">
+
+    <!-- ═════ 状态选择 ═════ -->
+    <div class="state-bar">
+      <div class="state-label">现在什么状态？</div>
+      <div class="state-chips">
+        <button class="chip on" data-state="all">全部</button>
+        <button class="chip" data-state="bloat">🎈 正在胀</button>
+        <button class="chip" data-state="low">🔋 低电</button>
+        <button class="chip" data-state="period">🌙 经期周</button>
+        <button class="chip" data-state="post">💪 刚练完</button>
+        <button class="chip" data-state="rush">⏱️ 赶时间</button>
+      </div>
+      <div class="state-hint" id="stateHint"></div>
+    </div>
+
+    <div class="target">
+      <span class="t-main">一天 65–70 克蛋白</span>
+      <span class="t-split">早 <b>20</b> · 午 <b>17</b> · 加餐 <b>8</b> · 晚 <b>25</b></span>
+      <span class="t-split" style="margin-left:auto;">维持用量 · 不用凑满，差一点没关系</span>
+    </div>
+
+    <!-- ═════ 早餐 ═════ -->
+    <h2 class="sec toc-anchor" id="breakfast">☀️ 早餐 <span class="sec-note">目标 20 克 · 全部零小麦零蒜洋葱</span></h2>
+    <table class="food">
+      <thead><tr><th>#</th><th>吃什么</th><th style="text-align:center;">蛋白</th><th class="t-th" style="text-align:center;">时间</th></tr></thead>
+      <tbody>
+        <tr data-tags="low period post rush"><td class="num">1</td><td class="nm">希腊酸奶碗<span class="sub">原味酸奶 170g + 猕猴桃/葡萄 + 一小把核桃</span></td><td class="p">21g</td><td class="t">0 分</td></tr>
+        <tr data-tags="post period"><td class="num">2</td><td class="nm">虾仁蛋炒饭<span class="sub">冻虾一把 + 1 蛋 + 隔夜饭，蒜油起锅</span></td><td class="p">25g</td><td class="t">6 分</td></tr>
+        <tr data-tags="bloat period"><td class="num">3</td><td class="nm">蒸蛋羹拌 tuna<span class="sub">配小米粥（前晚电饭煲预约）· 最养胃的一份</span></td><td class="p">20g</td><td class="t">10 分</td></tr>
+        <tr data-tags="low period"><td class="num">4</td><td class="nm">牛肉米粉汤<span class="sub">昨晚剩的炖牛肉切片 + 热汤米粉 + 葱绿 · 满载日就吃这个</span></td><td class="p">22g</td><td class="t">8 分</td></tr>
+        <tr data-tags="post"><td class="num">5</td><td class="nm">香煎鱼片 + 米饭<span class="sub">barramundi / 三文鱼，蒜油煎两面</span></td><td class="p">24g</td><td class="t">8 分</td></tr>
+        <tr data-tags="low rush"><td class="num">6</td><td class="nm">tuna 芝士盘<span class="sub">橄榄油浸 tuna + 芝士 + baby 黄瓜 + 猕猴桃 · <span class="warn">正在胀时去掉芝士</span></span></td><td class="p">26g</td><td class="t">2 分</td></tr>
+        <tr data-tags="rush low"><td class="num">7</td><td class="nm">抹茶牛奶 + 水煮蛋 ×2<span class="sub">蛋前一晚一起煮好 · 最赶的那天</span></td><td class="p">18g</td><td class="t">1 分</td></tr>
+        <tr data-tags="bloat low"><td class="num">8</td><td class="nm">白粥 / 小米粥 + 蒸蛋 + 豆干<span class="sub">最温和的一份，胀着或刚缓过来时用</span></td><td class="p">16g</td><td class="t">10 分</td></tr>
+        <tr data-tags="rush post low"><td class="num">9</td><td class="nm">剩菜肉 + 米饭<span class="sub">昨晚的肉直接热一热，零思考</span></td><td class="p">25g</td><td class="t">3 分</td></tr>
+      </tbody>
+    </table>
+    <p class="foot-note">这一格从"一个肉包子"换过来是全天最大的一笔：<strong>7 克 → 20 克</strong>，同时躲掉每天一次的小麦。</p>
+
+    <!-- ═════ 午餐 ═════ -->
+    <h2 class="sec toc-anchor" id="lunch">🥗 午餐 · 轻 <span class="sec-note">目标 17 克 · 胃留空这条不变，只换内容</span></h2>
+    <table class="food">
+      <thead><tr><th>#</th><th>吃什么</th><th style="text-align:center;">蛋白</th><th class="t-th" style="text-align:center;">时间</th></tr></thead>
+      <tbody>
+        <tr data-tags="rush low period"><td class="num">11</td><td class="nm">希腊酸奶 + 咖啡<span class="sub">最省事的一份，冰箱拿了就走</span></td><td class="p">17g</td><td class="t">0 分</td></tr>
+        <tr data-tags="rush post"><td class="num">12</td><td class="nm">tuna 罐头 + 咖啡<span class="sub">办公室常备两罐</span></td><td class="p">22g</td><td class="t">1 分</td></tr>
+        <tr data-tags="post period"><td class="num">13</td><td class="nm">昨晚剩的一块牛排 / 羊肉<span class="sub">前一晚顺手多煎一块留着</span></td><td class="p">25g</td><td class="t">2 分</td></tr>
+        <tr data-tags="rush bloat"><td class="num">14</td><td class="nm">水煮蛋 ×2 + 猕猴桃<span class="sub">最轻的一份</span></td><td class="p">12g</td><td class="t">0 分</td></tr>
+        <tr data-tags="rush"><td class="num">15</td><td class="nm">芝士 + 火腿卷 + 葡萄<span class="sub"><span class="warn">火腿 salami 类看配料表，别有洋葱粉蒜粉</span></span></td><td class="p">15g</td><td class="t">2 分</td></tr>
+        <tr data-tags="low bloat rush"><td class="num">16</td><td class="nm">温牛奶 / 抹茶拿铁 + 一小把坚果<span class="sub">完全没胃口的那天，别硬塞</span></td><td class="p">10g</td><td class="t">2 分</td></tr>
+      </tbody>
+    </table>
+    <p class="foot-note">水果想吃就留一点，<strong>换成猕猴桃或葡萄</strong>——苹果和梨是山梨醇大户，值得挑一天单独试试是不是它。</p>
+
+    <!-- ═════ 加餐 ═════ -->
+    <h2 class="sec toc-anchor" id="snack">🥛 加餐 <span class="sec-note">下午 / 练完 30–60 分钟内</span></h2>
+    <table class="food">
+      <thead><tr><th>#</th><th>吃什么</th><th style="text-align:center;">蛋白</th><th class="t-th" style="text-align:center;">时间</th></tr></thead>
+      <tbody>
+        <tr data-tags="bloat low period post rush"><td class="num">21</td><td class="nm">抹茶牛奶<span class="sub">已经在喝的那杯，本来就够格</span></td><td class="p">8g</td><td class="t">2 分</td></tr>
+        <tr data-tags="post period low"><td class="num">22</td><td class="nm">希腊酸奶小盒<span class="sub">练完那口的第一选择</span></td><td class="p">15g</td><td class="t">0 分</td></tr>
+        <tr data-tags="period"><td class="num">23</td><td class="nm">坚果一小把 + 芝士一片<span class="sub"><span class="warn">正在胀时只留坚果，芝士留给状态好的日子</span></span></td><td class="p">8g</td><td class="t">0 分</td></tr>
+        <tr data-tags="post period rush"><td class="num">24</td><td class="nm">卤牛肉 / 牛肉干<span class="sub"><span class="warn">看配料表：洋葱粉蒜粉是常客</span></span></td><td class="p">15g</td><td class="t">0 分</td></tr>
+        <tr data-tags="rush bloat"><td class="num">25</td><td class="nm">水煮蛋一个<span class="sub">上午那个继续，不用改</span></td><td class="p">6g</td><td class="t">0 分</td></tr>
+        <tr data-tags="low bloat rush"><td class="num">26</td><td class="nm">A2 牛奶一杯<span class="sub">乳制品全绿，这是我比别人多出来的一整类</span></td><td class="p">8g</td><td class="t">0 分</td></tr>
+      </tbody>
+    </table>
+    <p class="foot-note">经期那周<strong>提前在下午 4 点用掉一格</strong>，比晚上被巧克力追着跑好。想吃巧克力就吃，那是密度缺口的信号不是失控。</p>
+
+    <!-- ═════ 晚饭 ═════ -->
+    <h2 class="sec toc-anchor" id="dinner">🍲 晚饭 · 配法 <span class="sec-note">菜是家里的菜，我只做这五件</span></h2>
+    <table class="food">
+      <thead><tr><th>#</th><th>做什么</th><th style="text-align:center;">蛋白</th><th class="t-th" style="text-align:center;">时机</th></tr></thead>
+      <tbody>
+        <tr data-tags="bloat low period post rush"><td class="num">31</td><td class="nm">一掌蛋白<span class="sub">肉或鱼至少一个手掌大小厚度，不用称</span></td><td class="p">25g</td><td class="t">盛饭</td></tr>
+        <tr data-tags="bloat low period post rush"><td class="num">32</td><td class="nm">主食挑米那边<span class="sub">家人吃面吃饺子，我配米饭或米粉，浇头是同一锅</span></td><td class="p">—</td><td class="t">盛饭</td></tr>
+        <tr data-tags="bloat low period post rush"><td class="num">33</td><td class="nm">下豆角 / 下面之前，先盛我那份<span class="sub">东北乱炖、腊肉炒豆角、番茄鸡蛋面都用这招</span></td><td class="p">—</td><td class="t">起锅前</td></tr>
+        <tr data-tags="bloat low period post rush"><td class="num">34</td><td class="nm">蒜油起锅，生蒜末最后单撒他们那半边<span class="sub">果聚糖不溶于油、香气溶于油 —— 全家吃到一样的味道</span></td><td class="p">—</td><td class="t">下锅时</td></tr>
+        <tr data-tags="bloat low period post rush"><td class="num">35</td><td class="nm">饭后走 10–15 分钟<span class="sub">清肠气证据最硬的一条，当药吃</span></td><td class="p">—</td><td class="t">饭后</td></tr>
+      </tbody>
+    </table>
+    <p class="foot-note">今晚做什么菜 → 去「<strong>今天 · 菜单</strong>」那页按冰箱筛。这页不列菜。</p>
+
+    <!-- ═════ 这块肉怎么做 ═════ -->
+    <h2 class="sec toc-anchor" id="meat">🍖 这块肉怎么做 <span class="sec-note">早上挑了肉，晚上挑做法 · 懒得想的时候看这里</span></h2>
+    <table class="food">
+      <thead><tr><th>#</th><th>肉</th><th>怎么做</th><th class="t-th" style="text-align:center;">时长</th></tr></thead>
+      <tbody>
+        <tr data-tags="rush post"><td class="num">51</td><td class="mt">🐄 牛</td><td class="nm">小炒黄牛肉<span class="sub">大火爆炒，辣椒配嫩牛肉，下饭</span></td><td class="t">15 分</td></tr>
+        <tr data-tags="post period"><td class="num">52</td><td class="mt">🐄 牛</td><td class="nm">煎牛排<span class="sub">平底锅两面煎，配土豆饼或蔬菜</span></td><td class="t">20 分</td></tr>
+        <tr data-tags="period"><td class="num">53</td><td class="mt">🐄 牛</td><td class="nm">土豆炖牛肉 / 牛腩炖萝卜<span class="sub">丢锅里慢炖，中间不用管 · 经期周补密度首选</span></td><td class="t">60 分</td></tr>
+        <tr data-tags="rush post"><td class="num">54</td><td class="mt">🐑 羊</td><td class="nm">葱爆羊肉<span class="sub">羊肩肉切片大火爆炒 · <span class="warn">葱留绿弃白</span></span></td><td class="t">15 分</td></tr>
+        <tr data-tags="bloat period"><td class="num">55</td><td class="mt">🐑 羊</td><td class="nm">羊肉清汤<span class="sub">羊骨+羊肩肉慢炖，清汤暖胃 · 胀着也吃得下的那种</span></td><td class="t">60 分</td></tr>
+        <tr data-tags="rush post bloat"><td class="num">56</td><td class="mt">🦐 虾</td><td class="nm">虾仁炒蛋<span class="sub">嫩滑快手，配米饭刚刚好</span></td><td class="t">10 分</td></tr>
+        <tr data-tags="rush low post"><td class="num">57</td><td class="mt">🦐 虾</td><td class="nm">虾仁炒饭<span class="sub">冻虾+隔夜饭翻炒，满足感高、零思考</span></td><td class="t">15 分</td></tr>
+        <tr data-tags="bloat rush"><td class="num">58</td><td class="mt">🦐 虾</td><td class="nm">白灼虾<span class="sub">水开下锅，姜丝蘸料 · 最省事也最温和的一种</span></td><td class="t">10 分</td></tr>
+        <tr data-tags="rush post"><td class="num">59</td><td class="mt">🐟 鱼</td><td class="nm">香煎鱼片<span class="sub">蒜油煎至两面金黄</span></td><td class="t">15 分</td></tr>
+        <tr data-tags="bloat post period"><td class="num">60</td><td class="mt">🐟 鱼</td><td class="nm">清蒸 barramundi<span class="sub">整片蒸熟，葱姜+蒸鱼豉油，清爽不腻</span></td><td class="t">20 分</td></tr>
+        <tr data-tags="rush"><td class="num">61</td><td class="mt">🐖 猪</td><td class="nm">青椒炒肉丝<span class="sub">灯笼椒配猪肉丝，下饭</span></td><td class="t">15 分</td></tr>
+        <tr data-tags="rush post"><td class="num">62</td><td class="mt">🐖 猪</td><td class="nm">豆干炒肉丝<span class="sub">五香豆干切条配肉丝，咸香弹牙</span></td><td class="t">15 分</td></tr>
+        <tr data-tags="low rush"><td class="num">63</td><td class="mt">🐖 猪</td><td class="nm">卤肉饭<span class="sub">卤肉加热直接盖饭 · <strong>整页最省事的一道</strong></span></td><td class="t">10 分</td></tr>
+        <tr data-tags="low"><td class="num">64</td><td class="mt">🐖 猪</td><td class="nm">腊肉蒸饭<span class="sub">腊肉铺米饭上一起蒸，按下开关就不用管</span></td><td class="t">25 分</td></tr>
+        <tr data-tags="period post"><td class="num">65</td><td class="mt">🐔 鸡</td><td class="nm">鸡腿烤 / 炖<span class="sub">腌好扔进烤箱，中途不用管，5 人份刚好</span></td><td class="t">40 分</td></tr>
+        <tr data-tags="rush bloat low"><td class="num">66</td><td class="mt">🥚 蛋</td><td class="nm">番茄炒蛋<span class="sub">经典快手，配米饭</span></td><td class="t">10 分</td></tr>
+        <tr data-tags="bloat low rush"><td class="num">67</td><td class="mt">🥚 蛋</td><td class="nm">蒸蛋羹<span class="sub">打散加水蒸，入口即化 · 胀着的时候的默认项</span></td><td class="t">15 分</td></tr>
+        <tr data-tags="rush low"><td class="num">68</td><td class="mt">🧊 豆腐</td><td class="nm">香煎 / 红烧蛋豆腐<span class="sub">切厚片两面煎金黄，或生抽老抽糖烧</span></td><td class="t">10–15 分</td></tr>
+        <tr data-tags="rush"><td class="num">69</td><td class="mt">🧊 豆腐</td><td class="nm">麻婆蛋豆腐<span class="sub">肉末+豆瓣酱烧 · <span class="warn">豆瓣酱看一眼含不含蒜</span></span></td><td class="t">20 分</td></tr>
+        <tr data-tags="rush"><td class="num">70</td><td class="mt">🐌 螺</td><td class="nm">螺肉炒时蔬<span class="sub">爆炒青菜，鲜味突出</span></td><td class="t">15 分</td></tr>
+      </tbody>
+    </table>
+    <p class="foot-note">家里这几道要<strong>改一下才能吃</strong>：洋葱炒牛肉（洋葱整块下、吃完挑掉，或换蒜油）· 腊肉炒豆角 / 东北乱炖（下豆角前先盛我那份）· 咖喱鸡 / 罗宋汤（咖喱块和现成汤底含蒜洋葱粉）· 意面拌面（浇头同一锅，我配米饭米粉）。做法见上面 <strong>#33 #34</strong>。</p>
+
+    <!-- ═════ 踩雷 ═════ -->
+    <h2 class="sec toc-anchor" id="rescue">🚨 正在胀 / 踩雷了 <span class="sec-note">按顺序来</span></h2>
+    <table class="food">
+      <thead><tr><th>#</th><th>做什么</th><th style="text-align:center;">—</th><th class="t-th" style="text-align:center;">时机</th></tr></thead>
+      <tbody>
+        <tr data-tags="bloat"><td class="num">41</td><td class="nm">先别吃<span class="sub">发作时再往里塞只会加料，等它过去</span></td><td class="p">—</td><td class="t">立刻</td></tr>
+        <tr data-tags="bloat"><td class="num">42</td><td class="nm">Degas（西甲硅油）<span class="sub">不吸收、可以重复补服 · <span class="warn">薄荷 Mintec 谨慎，可能加重反流</span></span></td><td class="p">—</td><td class="t">立刻</td></tr>
+        <tr data-tags="bloat"><td class="num">43</td><td class="nm">热敷 + 顺时针揉腹 + 抱膝或左侧躺<span class="sub">右下 → 上 → 横过 → 左下，手先搓热</span></td><td class="p">—</td><td class="t">10 分</td></tr>
+        <tr data-tags="bloat"><td class="num">44</td><td class="nm">主动把气排出来<span class="sub">不憋着，这是最直接的泄压</span></td><td class="p">—</td><td class="t">随时</td></tr>
+        <tr data-tags="bloat"><td class="num">45</td><td class="nm">缓过来之后两三天走温和档<span class="sub">早 #8 · 午 #14 · 晚 #31 清淡版；<span class="bad">别在这几天试新东西</span></span></td><td class="p">—</td><td class="t">之后</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ═════ 组合 ═════ -->
+    <h2 class="sec toc-anchor" id="combo">🍱 整天组合 <span class="sec-note">懒得挑就直接用一整套</span></h2>
+
+    <div class="combo" data-tags="">
+      <div class="cb-head"><span class="cb-title">平时的一天</span><span class="cb-sum">71 g</span><span class="cb-when">大多数日子</span></div>
+      <div class="cb-flow"><b>#1 希腊酸奶碗</b>（21）→ <b>#11 酸奶+咖啡</b>（17）→ <b>#21 抹茶牛奶</b>（8）→ <b>晚饭一掌蛋白</b>（25）</div>
+    </div>
+
+    <div class="combo" data-tags="rush">
+      <div class="cb-head"><span class="cb-title">赶时间的一天</span><span class="cb-sum">66 g</span><span class="cb-when">全程不开火</span></div>
+      <div class="cb-flow"><b>#7 抹茶牛奶+水煮蛋</b>（18）→ <b>#12 tuna+咖啡</b>（22）→ <b>#25 水煮蛋</b>（6）→ <b>晚饭一掌蛋白</b>（25）</div>
+    </div>
+
+    <div class="combo" data-tags="low">
+      <div class="cb-head"><span class="cb-title">低电的一天</span><span class="cb-sum">71 g</span><span class="cb-when">没力气做饭</span></div>
+      <div class="cb-flow"><b>#6 tuna 芝士盘</b>（26）→ <b>#11 酸奶+咖啡</b>（17）→ <b>#26 牛奶一杯</b>（8）→ <b>#9 剩菜肉+米饭</b>（20）</div>
+      <div class="cb-note">低电周不靠意志力吃好，靠事先备好这几样：希腊酸奶、tuna 罐头、冻虾、隔夜饭、剩肉。</div>
+    </div>
+
+    <div class="combo" data-tags="period">
+      <div class="cb-head"><span class="cb-title">经期周的一天</span><span class="cb-sum">78 g</span><span class="cb-when">提前加密度</span></div>
+      <div class="cb-flow"><b>#2 虾仁蛋炒饭</b>（25）→ <b>#13 剩的牛排</b>（25）→ <b>#23 坚果+芝士</b>（8）→ <b>晚饭一掌蛋白</b>（20）</div>
+      <div class="cb-note">这周<strong>不减量、不缩水</strong>。运动降档但蛋白别降——恢复需求反而更高。下午那格提前给足，晚上就不会失控。</div>
+    </div>
+
+    <div class="combo" data-tags="bloat">
+      <div class="cb-head"><span class="cb-title">正在胀的一天</span><span class="cb-sum">54 g</span><span class="cb-when">低于目标是对的</span></div>
+      <div class="cb-flow"><b>#8 粥+蒸蛋+豆干</b>（16）→ <b>#14 水煮蛋+猕猴桃</b>（12）→ <b>#21 抹茶牛奶</b>（8）→ <b>晚饭清淡一掌</b>（18）</div>
+      <div class="cb-note">这天不用凑够 65 克。<strong>唯一别停的是车前子那杯</strong>——纤维一减，转运更慢、发酵更久，气一点没少还赔掉每天排空。</div>
+    </div>
+
+    <div class="combo" data-tags="post">
+      <div class="cb-head"><span class="cb-title">练完那天</span><span class="cb-sum">79 g</span><span class="cb-when">练后 30–60 分钟内那口最关键</span></div>
+      <div class="cb-flow"><b>#5 香煎鱼片+米饭</b>（24）→ <b>#13 剩的牛排</b>（25）→ <b>#22 希腊酸奶</b>（15）→ <b>晚饭一掌蛋白</b>（25）以内</div>
+    </div>
+
+    <!-- ═════ 查阅 ═════ -->
+    <h2 class="sec toc-anchor" id="ref">📋 查阅 <span class="sec-note">不用每天看，需要时点开</span></h2>
+
+    <details class="fold">
+      <summary>🔴🟡🟢 触雷地图 <span class="s-sub">对着我家真实的菜</span></summary>
+      <div class="fold-body">
+        <div class="zone zone-red">
+          <b>红区 · 这顿不吃</b>
+          <strong>小麦</strong>（包子馒头面条意面拉面乌冬饺子皮面包馕，低筋面粉也算）· <strong>豆类</strong>（黄豆绿豆四季豆红豆芸豆豌豆，红豆泥也算）· <strong>蒜粒洋葱</strong>（含蒜粉洋葱粉、现成酱料咖喱块卤味 salami）· <strong>菊粉 inulin 与糖醇</strong>（山梨/木糖/麦芽糖醇）· <strong>椰子</strong>（量大就中）· <strong>芒果西瓜蜂蜜</strong> · <strong>油炸</strong><br>
+          <span style="color:var(--rust);">家里中招的菜：腊肉炒豆角 / 东北乱炖 / 洋葱炒牛肉 / 蒜蓉花菜 / 咖喱鸡 / 罗宋汤 / 意面 / 番茄鸡蛋面 / 葱油拌面 / 饺子包子 / 披萨</span>
+        </div>
+        <div class="zone zone-amber">
+          <b>黄区 · 小份，一顿只许出现一个</b>
+          <strong>苹果、梨</strong>（山梨醇大户，最该单独试的两个）· <strong>牛油果</strong>（1/4 个以内）· <strong>花菜西兰花</strong>（小份）· <strong>大葱白的那截</strong>（留绿弃白）· <strong>澄粉皮虾饺、长发酵 sourdough</strong>（比面粉温和但不是绿灯）· <strong>芝士</strong>（状态好随便吃，正在胀时别碰）
+        </div>
+        <div class="zone zone-green">
+          <b>绿区 · 平时的饭就在这儿</b>
+          <strong>主食</strong>：米饭、小米粥、米粉河粉、寿司米、土豆<br>
+          <strong>蛋白</strong>：虾、鱼、牛羊猪、鸡腿、螺肉、鸡蛋、tuna、老豆腐、蛋豆腐、豆干、豆芽<br>
+          <strong>蔬菜（煮软）</strong>：番茄、小白菜、菠菜、菜心、芥兰、白萝卜、金针菇、白蘑菇、南瓜、黄瓜、茄子<br>
+          <strong>调味</strong>：蒜油、姜、葱绿、tamari、醋、甜菊糖 ｜ <strong>乳制品全绿</strong> ｜ <strong>车前子每天</strong>
+        </div>
+        <ul class="plain" style="margin-top:0.5rem;">
+          <li><strong>小麦是滞后的</strong>——常拖三四小时甚至傍晚才发作。判断行不行看<strong>当天傍晚</strong>，不看当场。</li>
+          <li><strong>凡是"应该还行吧"，一律当小份先试，不当绿灯。</strong>清晰的雷我判得准，剂量判不准（açai 碗那次就是）。</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="fold">
+      <summary>🍽️ 怎么吃 <span class="s-sub">份量 · 结构 · 节奏 · 信号</span></summary>
+      <div class="fold-body">
+        <ul class="plain">
+          <li><strong>份量：</strong>用小一号的碗（视觉缩量）· 留几口在盘里，不强制光盘。</li>
+          <li><strong>结构：</strong><strong>菜 → 肉 → 饭</strong>，饭压到 1/3 甚至更少。<span style="color:var(--text-hint);">这是《控糖革命》那阵子的吃法，也是历史上状态最好的一段——排便顺、排空快。</span></li>
+          <li><strong>节奏：</strong>慢吃（胃到脑的饱信号要 20 分钟才到）· 早餐"舒服吃"不"美美吃"。</li>
+          <li><strong>信号 · 胃满着却"饿"：</strong>先分两种——<br>
+            · <strong>一阵就退</strong> → 杂讯，喝口温水放它过去，别上秤<br>
+            · <strong>攒几天不退</strong> → 真信号，别硬压（会反弹成胀），<strong>早点喂密度</strong>（蛋 / 坚果 / 肉）不喂体积</li>
+          <li><strong>家庭餐桌不"特殊化"：</strong>三顿都吃，重点在怎么吃，不在少吃。晚饭的做法看上面 <strong>#31–35</strong>。</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="fold">
+      <summary>🌿 肠胃五条 <span class="s-sub">每天在跑的那套 · 一条都别停</span></summary>
+      <div class="fold-body">
+        <ul class="plain">
+          <li><strong>① 饭后走 10–15 分钟</strong> —— 午晚饭后最管用，清肠道气体证据最硬的一招，当药用。</li>
+          <li><strong>② 揉腹</strong> —— 机制同散步（手动推气催蠕动），冷天/不出门的替代。<strong>顺时针</strong>绕脐（右下→上→横过→左下）· 冷天隔薄衣、被窝里、<strong>先热敷几分钟</strong>，不必光肚平躺 · 晨起赖被窝顺带做，还能催便。</li>
+          <li><strong>③ 腹式呼吸 + 别瘫坐</strong> —— 鼓起来时做几组（吸气肚子鼓、呼气慢慢收），对治"腹壁松出去"把鼓放大那一半。</li>
+          <li><strong>④ 喝水小口、别牛饮</strong>（大口灌带进气）· 饭中不大量喝水（饭前 30 分 / 饭后 60 分外补）· 全天水<strong>前置到上午和中午</strong>，傍晚收口。</li>
+          <li><strong>⑤ 车前子每天</strong> —— <strong>白天分两次喝</strong>（1 茶匙 husk + 250ml 水，<strong>搅匀立刻喝、别泡</strong>，喝完再补一杯）。在用 Macro Organic Psyllium Husk。<span style="color:var(--text-hint);">⚠️ 跟药和补剂（含 Swisse gummy）错开 2 小时；水必须喝够，否则反向便秘。睡前那一剂已经试过并否决——夜尿毁睡眠，别往回走。</span></li>
+        </ul>
+        <p class="foot-note"><strong>晨起抓胃结肠反射：</strong>结肠最活跃是刚起床 + 第一餐后。固定成 温水/咖啡 → 早餐 → <strong>不赶，坐马桶 10–15 分</strong>（脚下垫凳半蹲）→ 晨走 5–10 分。</p>
+        <p class="foot-note"><strong>别减纤维（会反咬）。</strong>纤维产气，但也维持转运和每天排便这个泄压阀，第二面更重——上次过度忌口→纤维不够→硬便刮伤出血就是这么来的。要<strong>会管纤维不是减</strong>：可溶的留着、煮熟胜生冷、分散别一顿一大盆。</p>
+      </div>
+    </details>
+
+    <details class="fold">
+      <summary>🛒 要补的采购 <span class="s-sub">Woolworths / Costco</span></summary>
+      <div class="fold-body">
+        <ul class="plain">
+          <li><strong>蒜油</strong> garlic infused olive oil — 橄榄油区（Cobram Estate）。<strong>最关键的一瓶。</strong></li>
+          <li><strong>原味希腊酸奶</strong> — 大桶分装。别买加菊粉/代糖的"高蛋白"款。</li>
+          <li><strong>tuna 罐头（橄榄油浸）</strong>、<strong>米粉河粉</strong>、<strong>猕猴桃葡萄</strong>（替掉苹果梨）</li>
+          <li><strong>车前子 psyllium husk</strong> — 别断货。</li>
+          <li>Costco：三文鱼/barramundi 分装冷冻、牛排、冻虾、<strong>原味非调味坚果</strong>（调味的常含洋葱蒜粉）</li>
+        </ul>
+        <p class="foot-note">配料表上认四个词就能挡掉大半：<strong>inulin / chicory root fibre</strong>、<strong>sorbitol · xylitol · maltitol</strong>、<strong>onion powder · garlic powder</strong>、<strong>wheat flour</strong>。</p>
+      </div>
+    </details>
+
+
+  </main>
+</div>
+
+<footer>
+  Summer 的饮食 · 2026 —— 挑一个，吃掉<br>
+  今晚做什么菜 → 「今天 · 菜单」<span style="opacity:.5;"> / </span>练了多少 → 「今天 · 运动」
+</footer>
+
+<script>
+// ==================== 状态筛选 ====================
+(function(){
+  const HINT = {
+    all:    '',
+    bloat:  '正在胀：先 <b>#41–45</b> 那一套，吃的走最温和档，<b>车前子别停</b>。这天低于 65 克是对的。',
+    low:    '低电：不开火的几样在上面亮着。<b>降档不硬撑，别自我审判。</b>',
+    period: '经期周：<b>提前加密度，不减量</b>。运动降档但蛋白别降；下午那格提前用掉。',
+    post:   '刚练完：<b>30–60 分钟内</b>有蛋白进去，肌肉才拿得到原料。',
+    rush:   '赶时间：亮着的都是 <b>0–3 分钟</b>能搞定的。'
+  };
+  const chips = Array.from(document.querySelectorAll('.chip'));
+  const rows  = Array.from(document.querySelectorAll('table.food tbody tr'));
+  const combos= Array.from(document.querySelectorAll('.combo'));
+  const hint  = document.getElementById('stateHint');
+
+  function apply(state){
+    chips.forEach(c => c.classList.toggle('on', c.dataset.state === state));
+    hint.innerHTML = HINT[state] || '';
+    const items = rows.concat(combos);
+    items.forEach(el => {
+      const tags = (el.dataset.tags || '').split(/\s+/);
+      const hit = state !== 'all' && tags.indexOf(state) !== -1;
+      el.classList.toggle('dim', state !== 'all' && !hit);
+      el.classList.toggle('hit', hit);
+    });
+  }
+  chips.forEach(c => c.addEventListener('click', () => apply(c.dataset.state)));
+  apply('all');
+})();
+
+// ==================== 侧边目录 scroll-spy（iframe 安全：只滚本页） ====================
+(function(){
+  const toc = document.querySelector('.side-toc');
+  if (!toc) return;
+  const links = Array.from(toc.querySelectorAll('a[href^="#"]'));
+  const entries = [];
+  links.forEach(a => { const id = a.getAttribute('href').slice(1); if (document.getElementById(id)) entries.push({id,a}); });
+  if (!entries.length) return;
+  const ACT = 90;
+  const setActive = a => { links.forEach(l => l.classList.remove('active')); if (a) a.classList.add('active'); };
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    let cur = entries[0].a;
+    for (const {id,a} of entries){ const el = document.getElementById(id); if (el && el.getBoundingClientRect().top - ACT <= 0) cur = a; }
+    setActive(cur);
+  };
+  window.addEventListener('scroll', () => { if (!ticking){ ticking = true; requestAnimationFrame(update); } }, {passive:true});
+  const TOP_GAP = 80;
+  links.forEach(a => {
+    a.addEventListener('click', e => {
+      const el = document.getElementById(a.getAttribute('href').slice(1));
+      if (!el) return;
+      e.preventDefault();
+      const y = el.getBoundingClientRect().top + window.scrollY - TOP_GAP;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    });
+  });
+  update();
+})();
+</script>
+</body>
+</html>

@@ -218,6 +218,53 @@
     margin-bottom: 1.25rem;
     display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between;
   }
+  /* ==== 补记条（旅行回来补以前的日子）==== */
+  .backfill-bar {
+    display: flex; flex-wrap: wrap; gap: 12px 18px;
+    align-items: center; justify-content: space-between;
+    border: 1px dashed var(--border-dark); border-radius: 10px;
+    background: var(--surface);
+    padding: 0.7rem 1.1rem; margin: -0.6rem 0 1.25rem;
+  }
+  .backfill-bar.active { border: 1px solid var(--gold); background: var(--gold-light); }
+  .bf-main { display: flex; gap: 10px; align-items: flex-start; min-width: 260px; flex: 1; }
+  .bf-icon { font-size: 1rem; line-height: 1.5; color: var(--text-hint); }
+  .backfill-bar.active .bf-icon { color: var(--gold); }
+  .bf-title { font-weight: 600; font-size: 0.86rem; color: var(--text-secondary); }
+  .backfill-bar.active .bf-title { color: var(--gold); }
+  .bf-hint { font-size: 0.78rem; line-height: 1.55; color: var(--text-hint); }
+  .backfill-bar.active .bf-hint { color: var(--text-secondary); }
+  .bf-ctl { display: flex; gap: 8px; align-items: center; }
+  .bf-ctl input[type="date"] {
+    font-family: inherit; font-size: 0.82rem; padding: 5px 9px;
+    border: 1px solid var(--border-dark); border-radius: 6px; background: var(--surface);
+    color: var(--text-primary);
+  }
+  .bf-ctl button {
+    font-family: inherit; font-size: 0.8rem; padding: 6px 12px; cursor: pointer;
+    border: 1px solid var(--border-dark); border-radius: 6px;
+    background: var(--surface); color: var(--text-secondary);
+  }
+  .backfill-bar.active .bf-ctl button {
+    border-color: var(--gold); background: var(--gold); color: #fff; font-weight: 600;
+  }
+  /* 补记进行中：+ 号变色 + 底部常驻提示，防止忘了关 */
+  body.backfilling .counter-btn.plus {
+    background: var(--gold) !important; border-color: var(--gold) !important; color: #fff !important;
+  }
+  .bf-float {
+    position: fixed; left: 50%; transform: translateX(-50%); bottom: 18px; z-index: 90;
+    background: var(--gold); color: #fff; border-radius: 999px;
+    padding: 9px 18px; font-size: 0.84rem; box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+    display: flex; gap: 12px; align-items: center;
+  }
+  .bf-float button {
+    font-family: inherit; font-size: 0.78rem; cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.6); background: rgba(255,255,255,0.15);
+    color: #fff; border-radius: 999px; padding: 3px 11px;
+  }
+  @media (max-width: 600px) { .bf-float { bottom: 10px; font-size: 0.78rem; } }
+
   .week-range-wrap { display: flex; flex-direction: column; gap: 2px; }
   .week-range {
     font-family: 'Noto Serif SC', serif;
@@ -650,6 +697,26 @@
     </div>
   </div>
 
+  <!-- ==== 补记条：旅行 / 出差回来补以前的日子 ==== -->
+  <div class="backfill-bar" id="backfill-bar">
+    <div class="bf-main">
+      <span class="bf-icon">✎</span>
+      <div>
+        <div class="bf-title">补记以前的日子</div>
+        <div class="bf-hint" id="bf-hint">选一个日期，下面动作和组合的 <b>+</b> 就记到那天 —— 旅行、出差回来补记用这个。额外运动本来就能选日期，不受这里影响。</div>
+      </div>
+    </div>
+    <div class="bf-ctl">
+      <input type="date" id="bf-date">
+      <button type="button" id="bf-clear">回到今天</button>
+    </div>
+  </div>
+
+  <div class="bf-float" id="bf-float" hidden>
+    <span>✎ 正在补记 <b id="bf-float-date"></b></span>
+    <button type="button" id="bf-float-exit">回到今天</button>
+  </div>
+
   <!-- ==== 数据汇总 ==== -->
   <div class="section-heading toc-anchor" id="sec-data">📊 完成数据</div>
   <div class="card">
@@ -744,7 +811,7 @@
   <div class="section-heading toc-anchor" id="sec-combos">📋 常用组合 · 22 个</div>
 
   <p class="para" style="font-size:.78rem;color:var(--text-hint);font-style:italic;margin-bottom:.85rem;">
-    所有运动打卡都在这里：额外运动填时间添加，组合点 + 打卡、点 − 撤销最近一次。全部计入本周完成数据。
+    所有运动打卡都在这里：额外运动填时间添加，组合点 + 打卡、点 − 撤销最近一次。默认全部计入本周；<b>要补以前的日子，用上面周选择器下方的「补记以前的日子」</b>。
   </p>
 
   <div class="card toc-anchor" id="sec-extra">
@@ -1729,19 +1796,66 @@
   // 计数永远显示"今天所在的本周"次数，不跟随周选择器
   function liveWeekStart() { return weekStartFor(new Date()); }
 
+  // ==================== 补记模式 ====================
+  // backfillDate = 'YYYY-MM-DD' 时，动作/组合的 +/− 记到那一天，计数显示那一周。
+  // 刻意不存 localStorage —— 刷新页面就回到今天，避免忘了关一直记到过去。
+  let backfillDate = null;
+
+  function logWeekStart() {
+    return backfillDate ? weekStartFor(new Date(backfillDate + 'T12:00:00')) : liveWeekStart();
+  }
+
+  function makeLogTs() {
+    if (!backfillDate) return Date.now();
+    const dayStart = new Date(backfillDate + 'T00:00:00').getTime();
+    const dayEnd = dayStart + 24 * 60 * 60 * 1000;
+    const used = actionLog.filter(e => e.ts >= dayStart && e.ts < dayEnd).length
+               + comboLog.filter(e => e.ts >= dayStart && e.ts < dayEnd).length;
+    return dayStart + 12 * 60 * 60 * 1000 + used * 60000;
+  }
+
+  function setBackfill(v) {
+    backfillDate = (v && /^\d{4}-\d{2}-\d{2}$/.test(v)) ? v : null;
+    const bar = document.getElementById('backfill-bar');
+    const flo = document.getElementById('bf-float');
+    const hint = document.getElementById('bf-hint');
+    document.body.classList.toggle('backfilling', !!backfillDate);
+    if (bar) bar.classList.toggle('active', !!backfillDate);
+    if (backfillDate) {
+      const d = new Date(backfillDate + 'T12:00:00');
+      const label = `${d.getMonth() + 1} 月 ${d.getDate()} 日（周${'日一二三四五六'[d.getDay()]}）`;
+      if (hint) hint.innerHTML = `正在补记 <b>${label}</b> —— 下面每按一次 <b>+</b> 都记到那天，右边的次数显示的是<b>那一周</b>的。补完点「回到今天」。`;
+      if (flo) { flo.hidden = false; const t = document.getElementById('bf-float-date'); if (t) t.textContent = label; }
+    } else {
+      if (hint) hint.innerHTML = '选一个日期，下面动作和组合的 <b>+</b> 就记到那天 —— 旅行、出差回来补记用这个。额外运动本来就能选日期，不受这里影响。';
+      if (flo) flo.hidden = true;
+    }
+    afterLogChange();
+  }
+
+  (function wireBackfill() {
+    const inp = document.getElementById('bf-date');
+    const clr = document.getElementById('bf-clear');
+    const exit = document.getElementById('bf-float-exit');
+    const off = () => { if (inp) inp.value = ''; setBackfill(null); };
+    if (inp) inp.addEventListener('change', () => setBackfill(inp.value));
+    if (clr) clr.addEventListener('click', off);
+    if (exit) exit.addEventListener('click', off);
+  })();
+
   function comboCountThisWeek(comboId) {
-    const start = liveWeekStart();
+    const start = logWeekStart();
     return comboLog.filter(e => e.comboId === comboId && e.ts >= start).length;
   }
 
   function comboPlus(comboId) {
-    comboLog.push({ comboId, ts: Date.now() });
+    comboLog.push({ comboId, ts: makeLogTs() });
     writeJSON(COMBO_LOG_KEY, comboLog);
     afterLogChange();
   }
 
   function comboMinus(comboId) {
-    const start = liveWeekStart();
+    const start = logWeekStart();
     for (let i = comboLog.length - 1; i >= 0; i--) {
       if (comboLog[i].comboId === comboId && comboLog[i].ts >= start) {
         comboLog.splice(i, 1);
@@ -1789,18 +1903,18 @@
   }
 
   function actionCountThisWeek(num) {
-    const start = liveWeekStart();
+    const start = logWeekStart();
     return actionLog.filter(e => e.num === num && e.ts >= start).length;
   }
 
   function actionPlus(num) {
-    actionLog.push({ num, ts: Date.now() });
+    actionLog.push({ num, ts: makeLogTs() });
     writeJSON(LOG_KEY, actionLog);
     afterLogChange();
   }
 
   function actionMinus(num) {
-    const start = liveWeekStart();
+    const start = logWeekStart();
     for (let i = actionLog.length - 1; i >= 0; i--) {
       if (actionLog[i].num === num && actionLog[i].ts >= start) {
         actionLog.splice(i, 1);
@@ -1825,8 +1939,8 @@
   function afterLogChange() {
     updateComboCounters();
     updateActionCounters();
-    // 如果当前查看的就是本周，刷新上面的数据 / 明细 / 建议
-    if (currentWeekStart === liveWeekStart()) {
+    // 如果当前查看的就是刚记进去的那一周（补记时＝被补的那周），刷新数据 / 明细 / 建议
+    if (currentWeekStart === logWeekStart()) {
       renderStats();
       renderComboDetail();
       renderSuggestions();

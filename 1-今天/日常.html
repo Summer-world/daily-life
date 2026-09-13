@@ -327,6 +327,95 @@
   .toc-anchor { scroll-margin-top: 80px; }
 
   /* ============ i. 今日动态 ============ */
+  /* ============ 回程四天 · 倒时差（临时卡 · 2026-09-13 后可删） ============ */
+  .jl-card {
+    background: var(--surface);
+    border: 1px solid var(--accent-mid);
+    border-radius: 3px;
+    padding: 1.4rem 1.6rem 1.5rem;
+    margin-bottom: 1.3rem;
+    box-shadow: 2px 2px 0 var(--border), 4px 4px 0 var(--border-dark);
+  }
+  .jl-head { display: flex; align-items: baseline; gap: 0.7rem; flex-wrap: wrap; }
+  .jl-head h3 { margin: 0; font-size: 1.02rem; letter-spacing: 0.02em; }
+  .jl-head .jl-range {
+    font-family: 'Roboto Mono', ui-monospace, monospace;
+    font-size: 0.76rem; color: var(--text-hint); letter-spacing: 0.04em;
+  }
+  .jl-lead {
+    margin: 0.5rem 0 1rem; font-size: 0.9rem; line-height: 1.65; color: var(--text-secondary);
+    padding-left: 0.8rem; border-left: 2px solid var(--accent-mid);
+  }
+  .jl-top { display: grid; grid-template-columns: 1.5fr 1fr; gap: 1.2rem; margin-bottom: 1.1rem; }
+  .jl-sub {
+    font-size: 0.72rem; letter-spacing: 0.1em; color: var(--text-hint);
+    margin-bottom: 0.45rem;
+  }
+  .jl-always { list-style: none; padding: 0; margin: 0; counter-reset: jl-n; }
+  .jl-always li {
+    position: relative; padding-left: 1.5rem; margin-bottom: 0.34rem;
+    font-size: 0.87rem; line-height: 1.55;
+  }
+  .jl-always li::before {
+    content: counter(jl-n); counter-increment: jl-n;
+    position: absolute; left: 0; top: 0.2rem;
+    width: 1.05rem; height: 1.05rem; border-radius: 50%;
+    background: var(--accent-light); color: var(--accent);
+    font-size: 0.66rem; line-height: 1.05rem; text-align: center; font-weight: 600;
+  }
+  .jl-ramp { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+  .jl-ramp th, .jl-ramp td { padding: 0.28rem 0.4rem; text-align: left; border-bottom: 1px solid var(--border); }
+  .jl-ramp th { font-weight: 600; color: var(--text-hint); font-size: 0.74rem; }
+  .jl-ramp td:first-child { color: var(--text-secondary); white-space: nowrap; }
+  .jl-ramp .jl-mono { font-family: 'Roboto Mono', ui-monospace, monospace; font-size: 0.82rem; }
+  .jl-days { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; }
+  .jl-day {
+    border: 1px solid var(--border); border-radius: 3px;
+    padding: 0.75rem 0.85rem 0.85rem; background: var(--bg);
+    transition: opacity 0.2s;
+  }
+  .jl-day h4 {
+    margin: 0 0 0.5rem; font-size: 0.86rem; display: flex;
+    align-items: baseline; gap: 0.4rem; flex-wrap: wrap;
+  }
+  .jl-day h4 .jl-d {
+    font-family: 'Roboto Mono', ui-monospace, monospace;
+    font-size: 0.72rem; color: var(--text-hint); font-weight: 400;
+  }
+  .jl-day ul { list-style: none; padding: 0; margin: 0; }
+  .jl-day li {
+    position: relative; padding-left: 0.75rem; margin-bottom: 0.34rem;
+    font-size: 0.84rem; line-height: 1.5; color: var(--text-secondary);
+  }
+  .jl-day li::before { content: '\00B7'; position: absolute; left: 0.1rem; color: var(--text-hint); }
+  .jl-day.is-today { border-color: var(--accent); background: var(--accent-light); }
+  .jl-day.is-today h4 { color: var(--accent); font-weight: 700; }
+  .jl-day.is-today li { color: var(--text-primary); }
+  .jl-day.is-past { opacity: 0.38; }
+  .jl-day .jl-flag {
+    display: block; margin-top: 0.5rem; padding-top: 0.45rem;
+    border-top: 1px dashed var(--border-dark);
+    font-size: 0.78rem; line-height: 1.5; color: var(--rust);
+  }
+  .jl-foot {
+    margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid var(--border);
+    font-size: 0.83rem; line-height: 1.6; color: var(--text-secondary);
+  }
+  .jl-foot strong { color: var(--text-primary); }
+  .jl-done {
+    margin-top: 0.9rem; padding: 0.6rem 0.8rem; border-radius: 3px;
+    background: var(--gold-light); color: var(--gold);
+    font-size: 0.84rem; line-height: 1.55;
+  }
+  @media (max-width: 900px) {
+    .jl-top { grid-template-columns: 1fr; gap: 0.9rem; }
+    .jl-days { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) {
+    .jl-days { grid-template-columns: 1fr; }
+    .jl-day.is-past { display: none; }
+  }
+
   .today-block {
     display: grid;
     grid-template-columns: 1.35fr 1fr;
@@ -1407,6 +1496,7 @@
           <li><a href="#node-evening">🌇 傍晚修复</a></li>
           <li><a href="#node-reading">📖 阅读 10 分钟</a></li>
           <li><a href="#node-postemma">🌙 Emma 睡后</a></li>
+          <li><a href="#protocol-being">🌊 存在练习</a></li>
         </ul>
       </li>
       <li class="toc-group" data-toc-group="protocols"><a href="#sec-protocols">情境库</a><button class="toc-toggle" type="button" aria-expanded="false" aria-label="展开或收起情境库的卡片">▸</button>
@@ -1415,8 +1505,7 @@
           <li><a href="#protocol-compass">🧭 精力罗盘</a></li>
           <li class="toc-cat">🫧 情绪心理</li>
           <li><a href="#protocol-presence">🪷 专注当下</a></li>
-          <li><a href="#protocol-being">🌊 存在练习</a></li>
-          <li><a href="#protocol-loved">🤍 被白白爱着</a></li>
+          <li><a href="#protocol-receive">🤲 我想成为的人</a></li>
           <li class="toc-cat">🌹 今日状态</li>
           <li><a href="#protocol-lowenergy">🔋 低电模式</a></li>
           <li><a href="#protocol-shutdown">🌙 满载日关机</a></li>
@@ -1429,6 +1518,7 @@
           <li><a href="#protocol-declutter">🧺 断舍离</a></li>
           <li><a href="#protocol-party">🎉 聚会扰动</a></li>
           <li class="toc-cat">🌿 身体养护</li>
+          <li><a href="#protocol-iron">💊 补铁试验</a></li>
           <li><a href="#protocol-corebreath">🌬️ 收腹呼吸</a></li>
           <li><a href="#protocol-breath">🫁 呼吸革命</a></li>
           <li><a href="#protocol-sleep">😴 睡眠革命</a></li>
@@ -1445,6 +1535,88 @@
         <span class="num">i.</span>
         <h2>今日动态</h2>
         <span class="desc">每天看这里</span>
+      </div>
+
+      <div class="jl-card" id="jl-card">
+        <div class="jl-head">
+          <h3>✈️ 回程四天 · 倒时差</h3>
+          <span class="jl-range">2026.09.10 四 → 09.13 日 · 周一返校返工</span>
+        </div>
+        <p class="jl-lead"><strong>只守早上，别管晚上。</strong>起床时间调对了，入睡时间自己会跟上来，反过来不行。<strong>周日晚上那一觉是这四天的验收点</strong>——前三天怎么松都行，那一晚别松。</p>
+
+        <div class="jl-top">
+          <div>
+            <div class="jl-sub">每天都做</div>
+            <ul class="jl-always">
+              <li>闹钟按阶梯往前提 · 起床<strong>先拉窗帘见光</strong>，别赖床刷手机</li>
+              <li>起来 <strong>30 分钟内吃早饭</strong>（进食也是对时信号）</li>
+              <li><strong>出门走一趟</strong>，白天见光，越早越好</li>
+              <li><strong>Maltofer ＋ psyllium 随餐补回来</strong>（旅行断了）</li>
+              <li>中午后不碰咖啡 · <strong>10 点躺下</strong>，不困也躺，不开屏幕</li>
+            </ul>
+          </div>
+          <div>
+            <div class="jl-sub">起床阶梯</div>
+            <table class="jl-ramp">
+              <tbody>
+                <tr><th></th><th>Emma</th><th>你</th></tr>
+                <tr><td>周四</td><td class="jl-mono">现在叫</td><td class="jl-mono">—</td></tr>
+                <tr><td>周五</td><td class="jl-mono">9:45</td><td class="jl-mono">早一点</td></tr>
+                <tr><td>周六</td><td class="jl-mono">9:00</td><td class="jl-mono">再早一点</td></tr>
+                <tr><td>周日</td><td class="jl-mono">上学的点</td><td class="jl-mono">上班的点</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="jl-days">
+          <div class="jl-day" data-date="2026-09-10">
+            <h4>周四 <span class="jl-d">09.10</span></h4>
+            <ul>
+              <li>叫醒 Emma → 早饭 → 一起出门采购</li>
+              <li>回来<strong>先开洗衣机</strong>，箱子先不管</li>
+              <li><strong>15 分钟骨架日记</strong>：10 天 × 1–3 行 ＋ 一个关键词</li>
+              <li>晚饭买现成的，不做饭</li>
+            </ul>
+            <span class="jl-flag">⚠️ 周四是惯常熬夜日，今晚又不困——这一关最要紧</span>
+          </div>
+
+          <div class="jl-day" data-date="2026-09-11">
+            <h4>周五 <span class="jl-d">09.11</span></h4>
+            <ul>
+              <li>行李归位，箱子收走</li>
+              <li><strong>照片视频导出备份</strong>（只导，不选不修）</li>
+              <li>Emma 下午小睡 ≤20 分钟，最后一天</li>
+            </ul>
+          </div>
+
+          <div class="jl-day" data-date="2026-09-12">
+            <h4>周六 <span class="jl-d">09.12</span></h4>
+            <ul>
+              <li>选图、<strong>发朋友圈</strong></li>
+              <li><strong>写详细日记</strong>——照片会把细节勾回来</li>
+              <li>「对的感觉」的时刻单独拎出来</li>
+              <li>两个人都不再白天补觉</li>
+              <li>想动就轻轻动一次，不排训练</li>
+            </ul>
+          </div>
+
+          <div class="jl-day" data-date="2026-09-13">
+            <h4>周日 <span class="jl-d">09.13</span> · 验收日</h4>
+            <ul>
+              <li><strong>不排事。</strong>今天只做一件：把生物钟落地</li>
+              <li>校服书包 ＋ 上班的东西，下午备好</li>
+              <li>早熄灯，屏幕早收</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="jl-foot">
+          <strong>这四天完全不碰：</strong>10/1 回国那摊子（还有三周）· 运动计划 · 饮食追赶 · 任何“把落下的补回来”。<br>
+          顺手把下面情境库的<strong>低电开关打开</strong>，别用满电的尺量这四天。
+        </div>
+
+        <div class="jl-done" hidden>四天过完了 —— 这张卡可以删了，告诉我一声就行。</div>
       </div>
 
       <div class="today-block">
@@ -1741,7 +1913,8 @@
           </summary>
           <div class="timeline-node-body">
             <ul class="core-list">
-              <li><strong>🛋️ 状态好 · 做爱好：</strong>🎵 听音乐 · 🧶 玩羊毛毡 · 📚 阅读 · 🎤 唱歌 · 🗂️ 整理 · 🍃 断舍离 · 🎨 画画</li>
+              <li><strong>🌊 一个人的时候：</strong>手机拿起来之前，先坐两分钟——<a href="#protocol-being">存在练习</a>（就在这张卡下面，练了在那儿记一笔）。</li>
+              <li><strong>🛋️ 状态好 · 做爱好：</strong>🎵 听音乐 · 📚 阅读 · 🎤 唱歌 · 🗂️ 整理 · 🍃 断舍离</li>
               <li><strong>🛋️ 状态不好 · 床上躺练：</strong>JJ 全身拉伸 · 全程躺练 · 颂钵冥想 · 精油按摩</li>
               <li><strong>✍️ 睡前纸笔：</strong>① 幸福笔记（只记开心瞬间）② 下载你的一天 ③ 几个决定（明日 ootd / 菜单 / 待办）</li>
               <li><strong>📵 屏幕：</strong>睡前关的是<strong>光和"刷"，不是手机</strong>——闭眼听冥想不犯规。下载好 · 开勿扰 · 调最暗 · 按下扣屏搁远（能用音箱 / 旧手机更好）。越近入睡越少屏：<strong>要看的 → 只听的 → 呼吸法</strong>。</li>
@@ -1774,6 +1947,52 @@
               </a>
             </div>
             <p class="node-warn">⚠️ 周四满载日 → 别套这套，走专门的<a href="#protocol-shutdown">关机轨道</a>；度假/旅行后容易忘记重启这套程序，是状态变差的主要原因之一。</p>
+          </div>
+        </details>
+
+        <!-- 6b. 存在练习（2026-08-21 从情境库挪到这里 · 只留操作 + 打卡） -->
+        <details class="protocol-card" id="protocol-being" style="margin-top:0.9rem;">
+          <summary>
+            <span class="icon">🌊</span>
+            <div>
+              <div class="title">存在练习</div>
+              <div class="hint">手机拿起来之前，先坐两分钟 · 练了就在这儿记一笔</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <table>
+              <tbody>
+                <tr><td><strong>① 挑一小口<br>小到不值得做</strong></td><td><strong>两分钟</strong>：端杯东西、看着窗外，什么都不做、不产出。累的晚上一分钟也算。</td></tr>
+                <tr><td><strong>② 警报会来<br>认出它，别逃别辩</strong></td><td>身体会喊"没意义、浪费时间、我该去…"——认一句"警报来了"，不冲去做事、也不跟它较劲，就待在那股不舒服里看着它。</td></tr>
+                <tr><td><strong>③ 等它自己落<br>就成了一次</strong></td><td>那股劲会升起、顶头、<strong>自己</strong>松下去。松一点点就够，到这儿就算一次。</td></tr>
+                <tr><td><strong>④ 到此打住</strong></td><td>别加长、别追问"刚才那下算好吗"。时间到了就去刷手机，<strong>刷得心安理得</strong>。</td></tr>
+              </tbody>
+            </table>
+            <p class="node-warn">⚠️ 不适特别重、往"没意义 / 想消失"那儿沉的时候，<strong>那天就停，别一个人在深夜练</strong>——那种深度留给白天，或者让 Eric 在边上。</p>
+            <div class="reading-checkin" id="being-checkin">
+              <div class="rc-top">
+                <div class="rc-streak">已练 <span class="rc-streak-num" id="bc-total">0</span> 次</div>
+                <div class="rc-stat">本周 <strong id="bc-week-count">0</strong> 次</div>
+              </div>
+              <div class="rc-target" id="bc-target" hidden>
+                正在补 <strong id="bc-target-label"></strong> 的记录
+                <button type="button" class="rc-target-back" id="bc-target-back">回到今天</button>
+              </div>
+              <input type="text" id="bc-mins" class="rc-input" placeholder="待了多久（比如 2 分钟）" autocomplete="off">
+              <textarea id="bc-note" class="rc-input rc-note" placeholder="什么感觉（可留空）"></textarea>
+              <button id="bc-btn" class="rc-btn">✓ 记下今晚这次</button>
+              <button id="bc-cancel" class="rc-cancel">取消今天的记录</button>
+              <div class="rc-week" id="bc-week"></div>
+              <div class="rc-backfill">
+                <button type="button" class="rc-backfill-toggle" id="bc-backfill-toggle">＋ 补更早的日子</button>
+                <span hidden id="bc-backfill-row">
+                  <input type="date" id="bc-date" class="rc-date">
+                </span>
+              </div>
+              <div class="rc-log-title">最近记录</div>
+              <div class="rc-log" id="bc-log"></div>
+            </div>
           </div>
         </details>
 
@@ -1813,7 +2032,7 @@
             <div class="pw-quad q-emo">
               <div class="pw-qhead"><span class="pw-ico">💗</span><span class="pw-name">情感</span><span class="pw-sub">把烦变顺</span></div>
               <div class="pw-row"><span class="pw-k">空了</span><span class="pw-v">烦躁、一点就炸 · 对 Emma、对人没耐心 · 不想搭理人、只想躲起来</span></div>
-              <div class="pw-row"><span class="pw-k">充电</span><span class="pw-v"><strong>换个频道</strong>：做一件让你享受的事就回血（<a href="../2-我的智慧/精神花园.html" target="_blank">精神花园</a>）· 要炸先走开 · 觉得"这都是交易"就翻<a class="pw-link" href="#protocol-loved">被白白爱着</a></span></div>
+              <div class="pw-row"><span class="pw-k">充电</span><span class="pw-v"><strong>换个频道</strong>：做一件让你享受的事就回血（<a href="../2-我的智慧/精神花园.html" target="_blank">精神花园</a>）· 要炸先走开 · 觉得"这都是交易"、欠了谁，就翻<a class="pw-link" href="#protocol-receive">我想成为的人</a></span></div>
               <div class="pw-row"><span class="pw-k">你写的</span><span class="pw-v">让你享受的事，别第一个砍；上火先深呼吸，再开口</span></div>
             </div>
 
@@ -1862,60 +2081,26 @@
                 <tr><td><strong>做完了<br>画句号</strong></td><td>一件好了，给个<strong>"嗯，好了"＋一口气</strong>，别急着冲下一件。</td></tr>
               </tbody>
             </table>
-            <div class="inner-highlight">
-              💡 <strong>关于"总是忘"</strong>：专注当下不留痕迹——没打卡、没连胜，记忆抓不住它，你才会一次次重新发现。这<strong>不是你不行，是这类练习的天性</strong>。这张卡的用处就是<strong>被你重新看到</strong>：哪天又赶又散、把事当任务在划，就是它该被翻开的信号。忘了不要紧，有个地方能想起来，就够了。
-            </div>
           </div>
         </details>
 
-        <details class="protocol-card" id="protocol-being">
+        <details class="protocol-card" id="protocol-receive">
           <summary>
-            <span class="icon">🌊</span>
+            <span class="icon">🤲</span>
             <div>
-              <div class="title">存在练习</div>
-              <div class="hint">停下来就发慌、又想抓个新引擎时翻开 · 给"不产出"脱敏</div>
+              <div class="title">我想成为的人</div>
+              <div class="hint">看别人"占便宜"不爽、觉得欠了奇林时翻开</div>
             </div>
             <span class="arrow">›</span>
           </summary>
           <div class="protocol-card-body">
-            <p>这不是"学会享受空白"，是给一个<strong>警报</strong>脱敏。你身体里有个反射：<strong>一停止产出，就像掉进虚空</strong>，于是喊"快去做点什么"——所以你"待不住"，不是不会享受，是<strong>警报不许你待</strong>。要练的，是让它学会：<strong>不产出，也没事</strong>。</p>
-            <p>而这件事<strong>做完没有产出、没有收获，指不出"我得到了什么"——这不是缺陷，这就是它的定义</strong>。"意义 = 做本身"会让你膈应（"那不就等于没意义吗？"）——<strong>那一下膈应，正是被阉割的地方在响</strong>。让"做本身"就够了、不再追问它换来什么，就是你要练的那块肌肉。</p>
             <table>
               <tbody>
-                <tr><td><strong>挑一小口<br>小到不值得做</strong></td><td><strong>两分钟</strong>：端杯东西、看着窗外，什么都不做、不产出。"不值得做"正是重点。</td></tr>
-                <tr><td><strong>警报会来<br>认出它、别逃别辩</strong></td><td>身体会喊"没意义、浪费时间、我该去…"——认一句"警报来了"，不冲去做事、也不跟它较劲，就待在那股不舒服里看着它。</td></tr>
-                <tr><td><strong>等它自己落<br>就成了一次</strong></td><td>那股劲会升起、顶头、<strong>自己</strong>松下去。松一点点，身体就收到证据：<strong>我停了，虚空没吞掉我。</strong></td></tr>
-                <tr><td><strong>到此打住<br>别兑现</strong></td><td>别加长、别追问"刚才那下算好吗"。<strong>想打分的冲动，是警报换了身衣服</strong>，放掉。</td></tr>
+                <tr><td><strong>对自己<br>能白白被爱</strong></td><td>有人对你好，你能接住，能高兴，不马上记成债。<strong>这是最该练的一条。</strong></td></tr>
+                <tr><td><strong>对奇林<br>给不记账，拿不记债</strong></td><td>平衡不再是你每天盯着看的东西，你只看自己在这段关系里过得好不好、给得开不开心。</td></tr>
+                <tr><td><strong>对别人<br>看得见，不评判，能祝福</strong></td><td>看到朋友"占便宜"，你知道那是她的路。它照出来的是你自己，所以你不用去判她。</td></tr>
               </tbody>
             </table>
-            <div class="inner-highlight">
-              💡 <strong>三个说好的</strong>：① <strong>不记、不数、不攒连胜</strong>——那又是引擎，这练的本来就是"不留痕"。② <strong>深的那几口——不适特别重、往"没意义 / 想消失"那儿沉的时候——别一个人练</strong>，让 Eric 在边上（一个人对着虚空没底，有人在场就有了底；你 2011 就是靠一个稳的人 + 一套方法爬出来的，不是硬扛）。③ 怕忘不要紧，<strong>这张卡替你记着</strong>；也别忘了你<strong>已有反例</strong>：去年做减法、少做了，反而是最幸福的一年。
-            </div>
-          </div>
-        </details>
-
-        <details class="protocol-card" id="protocol-loved">
-          <summary>
-            <span class="icon">🤍</span>
-            <div>
-              <div class="title">我是被白白爱着的</div>
-              <div class="hint">被爱不靠你提供什么 · 觉得"这都是交易"、想逃时翻开</div>
-            </div>
-            <span class="arrow">›</span>
-          </summary>
-          <div class="protocol-card-body">
-            <p>关系里确实有来有往，但<strong>爱和交易的分别，不在"有没有需要"，在被要的，是你提供的东西，还是你这个人</strong>。结论先行：<strong>你一直被白白地爱着。</strong>下面这些，你一直当成"我不配"的罪证——可每一条，方向正好相反，都是铁证。</p>
-            <table>
-              <tbody>
-                <tr><td><strong>去年最低谷</strong></td><td>你能给的最少、甚至说出"我可能要死了"——按账本，那一刻的你是该被注销的负债。<strong>他没翻账，他扛了你。</strong></td></tr>
-                <tr><td><strong>异地、异国</strong></td><td>陪伴和性，断了很久。一桩交易，供给断这么久早散了。<strong>它没散。</strong></td></tr>
-                <tr><td><strong>乖张、一点就炸</strong></td><td>你是"高成本"。交易讲省力，谁好相处换谁。<strong>他没换。</strong></td></tr>
-                <tr><td><strong>对他动过手</strong></td><td>你成了那个会伤到他、让他"净亏"的人。没有任何一本账，算得出"挨了打"还＝"留下"。<strong>他还是留了。</strong></td></tr>
-              </tbody>
-            </table>
-            <div class="inner-highlight">
-              💡 一桩交易，有<strong>四次</strong>该散、且散得理直气壮。它一次没散。<strong>账本算到这儿就破产了——破产之后还立着的那个东西，就是你以为不存在的"纯粹的爱"。</strong>你想象不出它，不是它不存在，是妈妈从没给过你模板——<strong>没见过的颜色，想象不出来</strong>。所以记住：你列的"不可爱的罪证"，其实是"被白白爱着"的收据；越糟，越证明他要的从不是你能提供什么，是你这个人。<strong>被珍惜，不是被需要。</strong>哪天又觉得"这都是交易"、想一个人逃开——就翻开这张，重新认一次。
-            </div>
           </div>
         </details>
 
@@ -2247,6 +2432,40 @@
         </details>
 
         <div class="protocol-cat">🌿 身体养护</div>
+        <details class="protocol-card" id="protocol-iron">
+          <summary>
+            <span class="icon">💊</span>
+            <div>
+              <div class="title">补铁试验</div>
+              <div class="hint">每天 1 片随早餐 · 9/19 和 10/17 翻开对一次</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <p>在试一件事：<strong>疲乏犯困、怕冷、早白发、经血偏少、低强度运动完被抽干</strong>——这一整套指向铁储备低，而你以前补铁有过明显反应。<strong>2026-08-22 起</strong>直接补、看反应（不抽血，是你选的路）。</p>
+            <table>
+              <tbody>
+                <tr><td><strong>吃什么</strong></td><td><strong>Maltofer 100mg</strong>（铁多糖复合物）· Chemist Warehouse，买 100 片装，一盒覆盖整个疗程</td></tr>
+                <tr><td><strong>怎么吃</strong></td><td><strong>每天 1 片，随早上那碗酸奶</strong>。它不受咖啡、抹茶、牛奶、纤维影响——<strong>咖啡加抹茶照喝，什么都不用避开</strong>。</td></tr>
+                <tr><td><strong>怎么判断</strong></td><td>不打卡、不记录。<strong>用"游完泳之后的感觉"当尺子</strong>，跟 8 月那种"不是消耗、是被抽干"比。</td></tr>
+              </tbody>
+            </table>
+            <table>
+              <tbody>
+                <tr><td><strong>9 月 19 日<br><span style="font-size:.78rem;color:var(--text-hint);">第 4 周</span></strong></td><td>回想一次：下午还犯困吗 · 还怕冷吗 · 运动完那种抽干感还在吗</td></tr>
+                <tr><td><strong>10 月 17 日<br><span style="font-size:.78rem;color:var(--text-hint);">第 8 周</span></strong></td><td>同上再对一次。<strong>有变化就继续吃，别停。</strong></td></tr>
+                <tr><td><strong>11 月 22 日<br><span style="font-size:.78rem;color:var(--text-hint);">满 3 个月</span></strong></td><td>疗程终点，到这里才谈停不停——纠正症状要几周，<strong>填满储备要 3–6 个月</strong>。</td></tr>
+              </tbody>
+            </table>
+            <div class="inner-warn">
+              <strong>上次唯一的错，是在感觉好转的那一刻停了</strong>——储备还是空的，症状回来，然后得出"补铁没用"。这次规则只有一条：<strong>好转不是终点，11 月 22 日才是。</strong><br>· <strong>腹胀明显变重</strong> → 改隔天一片，别硬扛 · <strong>黑便是正常的</strong>，不用管 · <strong>出门带上</strong>：8/31 意大利、10/1 回中国三周
+            </div>
+            <div class="inner-highlight">
+              💡 <strong>10 周完全没动静＝该去抽血了，不等于＝不是铁。</strong>多糖铁的吸收证据不如甘氨酸亚铁扎实，阴性结果要打个折。真去查就点名这几项：<strong>Ferritin ＋ CRP</strong>（识别假性升高）＋ FBC ＋ TSH/游离T4 ＋ B12/叶酸。看报告<strong>别信"在参考区间内"</strong>——有症状通常要 <strong>ferritin ≥30 才算不缺、≥50 症状才稳</strong>，而区间下限常低到 10–15。<br>🍽️ 配套只有一条：<strong>晚饭有牛羊肉那顿，配番茄 / 灯笼椒 / 饭后猕猴桃，别同顿配牛奶芝士</strong>（<a href="饮食.html" target="_blank">饮食</a>）。早餐的酸奶咖啡抹茶不用动。<br>🔥 <strong>这段时间运动维持现在的量、别加</strong>——铁储备低时加训练量是往下挖（<a href="运动周总结.html" target="_blank">运动周总结</a>）。
+            </div>
+          </div>
+        </details>
+
         <details class="protocol-card" id="protocol-corebreath">
           <summary>
             <span class="icon">🌬️</span>
@@ -2344,7 +2563,7 @@
     { id: 'workday',  start: 12, end: 17, emoji: '😌', name: '白天的休息节律',      tip: '17 点前后是第二个修复期，闭目 10 分钟 / 谐振呼吸；每 90 分钟微休息 5 分。', anchor: '#node-workday' },
     { id: 'evening',  start: 17, end: 20, emoji: '🌇', name: '傍晚修复期',          tip: '最累但最该温和动一动。通勤途中拉伸 + 呼吸法 + 体态调整。', anchor: '#node-evening' },
     { id: 'reading',  start: 20, end: 21, emoji: '📖', name: '阅读 10 分钟',         tip: '锚点：8:30 Eric 给 Emma 讲故事 = 你的闹钟。翻开读一页就赢。', anchor: '#node-reading' },
-    { id: 'postemma', start: 21, end: 29, emoji: '🌙', name: 'Emma 睡后 → 入睡',     tip: '独处时间到。状态好做爱好（音乐/羊毛毡/画画），状态不好走床上拉伸 + 颂钵冥想。', anchor: '#node-postemma' },
+    { id: 'postemma', start: 21, end: 29, emoji: '🌙', name: 'Emma 睡后 → 入睡',     tip: '一个人的话：手机之前先坐两分钟（存在练习），练了记一笔。状态好做爱好（听音乐/阅读/唱歌/整理），状态不好走床上拉伸 + 颂钵冥想。', anchor: '#node-postemma' },
   ];
 
   // 状态卡开启时，NOW 卡换成对应的一句话（分领域细节见各卡面板）
@@ -2898,6 +3117,167 @@
     render();
   })();
 
+
+  // ==================== 存在练习打卡（2026-08-21） ====================
+  (function setupBeingCheckin(){
+    const root = document.getElementById('being-checkin');
+    if (!root) return;
+    const KEY = 'summer_being_v1';
+    const $ = sel => root.querySelector(sel);
+    function esc(s){
+      return String(s).replace(/[&<>"]/g, c =>
+        ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+    }
+    function ymd(d){
+      return d.getFullYear() + '-' +
+        String(d.getMonth()+1).padStart(2,'0') + '-' +
+        String(d.getDate()).padStart(2,'0');
+    }
+    function load(){ try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e){ return {}; } }
+    function persist(){ try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e){} }
+
+    let data = load();
+    const todayKey = ymd(new Date());
+    let targetKey = todayKey;
+    function mdLabel(k){ return k.slice(5).replace('-','/'); }
+
+    // 累计次数，只涨不掉 —— 刻意不做连续天数：窗口是"奇林还在忙"的晚上，
+    // 他有空一起看电视是好事，连胜会把好事算成断签。
+    function total(){ return Object.keys(data).length; }
+    function weekCount(){
+      const now = new Date();
+      const dow = (now.getDay()+6)%7;
+      let c = 0;
+      for (let i=0;i<=dow;i++){
+        const t = new Date(); t.setDate(now.getDate()-i);
+        if (data[ymd(t)]) c++;
+      }
+      return c;
+    }
+    function renderWeek(){
+      const names = ['一','二','三','四','五','六','日'];
+      const now = new Date();
+      const dow = (now.getDay()+6)%7;
+      const monday = new Date(); monday.setDate(now.getDate()-dow);
+      let html = '';
+      for (let i=0;i<7;i++){
+        const d = new Date(monday); d.setDate(monday.getDate()+i);
+        const k = ymd(d);
+        const filled = !!data[k];
+        const isToday = k === todayKey;
+        const isFuture = k > todayKey;
+        const clickable = !isFuture;
+        const addable = clickable && !filled;
+        const selected = k === targetKey;
+        html += '<div class="rc-day' + (filled?' filled':'') +
+          (isToday?' today':'') + (isFuture?' future':'') +
+          (clickable?' clickable':'') + (addable?' addable':'') +
+          (selected?' selected':'') + '" data-key="' + k + '">' +
+          '<div class="rc-day-dot">' + (filled?'✓':'') + '</div>' +
+          '<div class="rc-day-label">' + names[i] + '</div></div>';
+      }
+      $('#bc-week').innerHTML = html;
+    }
+    const LOG_SHOW = 3;
+    let logExpanded = false;
+    function renderLog(){
+      const keys = Object.keys(data).sort().reverse();
+      if (!keys.length){
+        $('#bc-log').innerHTML = '<div class="rc-log-empty">还没有记录——今晚坐两分钟就是第一笔。</div>';
+        return;
+      }
+      const shown = logExpanded ? keys : keys.slice(0, LOG_SHOW);
+      const itemsHtml = shown.map(k => {
+        const e = data[k] || {};
+        const mins = e.mins
+          ? '<span class="rc-log-book">' + esc(e.mins) + '</span>'
+          : '<span class="rc-log-book" style="color:var(--text-hint)">（没记时长）</span>';
+        return '<div class="rc-log-item"><span class="rc-log-date">' + mdLabel(k) + '</span>' +
+          mins + (e.note ? '<br>' + esc(e.note) : '') + '</div>';
+      }).join('');
+      const toggle = keys.length > LOG_SHOW
+        ? '<button type="button" class="rc-log-toggle" id="bc-log-toggle">' +
+            (logExpanded ? '收起 ▴' : '展开全部 ' + keys.length + ' 条 ▾') + '</button>'
+        : '';
+      $('#bc-log').innerHTML = itemsHtml + toggle;
+      const t = $('#bc-log-toggle');
+      if (t) t.addEventListener('click', () => { logExpanded = !logExpanded; renderLog(); });
+    }
+    function setTarget(k){
+      if (k > todayKey) return;
+      targetKey = k;
+      render();
+      $('#bc-mins').focus();
+    }
+    function render(){
+      const isToday = targetKey === todayKey;
+      const done = !!data[targetKey];
+      $('#bc-total').textContent = total();
+      $('#bc-week-count').textContent = weekCount();
+
+      const target = $('#bc-target');
+      target.hidden = isToday;
+      if (!isToday) $('#bc-target-label').textContent = mdLabel(targetKey);
+
+      const minsEl = $('#bc-mins'), noteEl = $('#bc-note');
+      const focused = document.activeElement === minsEl || document.activeElement === noteEl;
+      if (!focused){
+        minsEl.value = (data[targetKey] && data[targetKey].mins) || '';
+        noteEl.value = (data[targetKey] && data[targetKey].note) || '';
+      }
+      noteEl.placeholder = isToday ? '什么感觉（可留空）' : '那天什么感觉（可留空）';
+
+      const btn = $('#bc-btn');
+      btn.classList.toggle('done', done);
+      btn.textContent = isToday
+        ? (done ? '今天已记 ✓' : '✓ 记下今晚这次')
+        : (done ? '已补 ' + mdLabel(targetKey) + ' ✓（可改）' : '✓ 补上 ' + mdLabel(targetKey) + ' 那次');
+
+      const cancel = $('#bc-cancel');
+      cancel.style.display = done ? 'block' : 'none';
+      cancel.textContent = isToday ? '取消今天的记录' : '删除 ' + mdLabel(targetKey) + ' 的记录';
+
+      renderWeek();
+      renderLog();
+    }
+    $('#bc-btn').addEventListener('click', () => {
+      data[targetKey] = { mins: $('#bc-mins').value.trim(), note: $('#bc-note').value.trim() };
+      persist(); render();
+    });
+    ['#bc-mins','#bc-note'].forEach(sel => {
+      $(sel).addEventListener('input', () => {
+        if (!data[targetKey]) return;
+        data[targetKey] = { mins: $('#bc-mins').value.trim(), note: $('#bc-note').value.trim() };
+        persist(); renderLog();
+      });
+    });
+    $('#bc-cancel').addEventListener('click', () => {
+      delete data[targetKey];
+      persist();
+      if (targetKey !== todayKey) targetKey = todayKey;
+      render();
+    });
+    $('#bc-week').addEventListener('click', (e) => {
+      const day = e.target.closest('.rc-day');
+      if (!day || !day.classList.contains('clickable')) return;
+      setTarget(day.getAttribute('data-key'));
+    });
+    $('#bc-target-back').addEventListener('click', () => { setTarget(todayKey); });
+    $('#bc-backfill-toggle').addEventListener('click', () => {
+      const row = $('#bc-backfill-row');
+      row.hidden = !row.hidden;
+      if (!row.hidden){
+        const dateEl = $('#bc-date');
+        dateEl.max = todayKey;
+        if (!dateEl.value) dateEl.value = targetKey;
+        dateEl.focus();
+      }
+    });
+    $('#bc-date').addEventListener('change', (e) => { if (e.target.value) setTarget(e.target.value); });
+
+    render();
+  })();
+
   // ==================== 抬头右侧 · 今日与神对话 ====================
   (function setupGodtalkAside(){
     const aside = document.getElementById('gt-aside');
@@ -2993,6 +3373,25 @@
         render(current);
         saveOverride(ymd(new Date()), current);   // 手动换的，今天就停在这条
       });
+    }
+  })();
+
+  /* ============ 回程四天卡 · 今天高亮 / 过期提示 ============ */
+  (function () {
+    var card = document.getElementById('jl-card');
+    if (!card) return;
+    var n = new Date();
+    var key = n.getFullYear() + '-' +
+      String(n.getMonth() + 1).padStart(2, '0') + '-' +
+      String(n.getDate()).padStart(2, '0');
+    Array.prototype.forEach.call(card.querySelectorAll('.jl-day'), function (d) {
+      var dk = d.getAttribute('data-date');
+      if (dk < key) d.classList.add('is-past');
+      else if (dk === key) d.classList.add('is-today');
+    });
+    if (key > '2026-09-13') {
+      var done = card.querySelector('.jl-done');
+      if (done) done.hidden = false;
     }
   })();
 </script>

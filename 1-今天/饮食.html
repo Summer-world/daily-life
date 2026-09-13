@@ -197,7 +197,8 @@
   table.food td.num { color: var(--text-hint); width: 42px; text-align: center; font-size: 0.78rem; }
   table.food td.nm { color: var(--text-primary); font-weight: 500; width: 30%; }
   table.food td.nm .sub { display: block; font-weight: 400; color: var(--text-hint); font-size: 0.78rem; line-height: 1.55; margin-top: 1px; }
-  table.food td.p { width: 60px; text-align: center; color: var(--accent); font-weight: 600; }
+  table.food td.nm .sub b { color: var(--accent); font-weight: 600; }
+  table.food td.p { width: 60px; text-align: center; color: var(--accent); font-weight: 600; white-space: nowrap; }
   .star { color: var(--gold); font-size: 0.85rem; margin-right: 4px; }
   .subhead { font-family: 'Noto Serif SC', serif; font-size: 1.0rem; font-weight: 500; color: var(--text-primary); margin: 1.5rem 0 0.5rem; padding-bottom: 0.3rem; border-bottom: 1px dashed var(--border-dark); }
   .subhead span { font-family: 'Noto Sans SC', sans-serif; font-size: 0.76rem; font-weight: 400; color: var(--text-hint); margin-left: 0.5rem; }
@@ -350,11 +351,11 @@
     </div>
 
     <!-- ═════ 早餐 ═════ -->
-    <h2 class="sec toc-anchor" id="breakfast">☀️ 早餐 <span class="sec-note">目标 20 克 · 全部零小麦零蒜洋葱</span></h2>
+    <h2 class="sec toc-anchor" id="breakfast">☀️ 早餐 <span class="sec-note">目标 20 克 · 零蒜洋葱</span></h2>
     <table class="food">
       <thead><tr><th>#</th><th>吃什么</th><th style="text-align:center;">蛋白</th><th class="t-th" style="text-align:center;">时间</th></tr></thead>
       <tbody>
-        <tr data-tags="low period post rush"><td class="num">1</td><td class="nm"><span class="star">★</span>希腊酸奶碗<span class="sub">原味酸奶 170g + 猕猴桃/葡萄 + 一小把核桃</span></td><td class="p">21g</td><td class="t">0 分</td></tr>
+        <tr data-tags="low period post rush"><td class="num">1</td><td class="nm"><span class="star">★</span>希腊酸奶碗<span class="sub">原味酸奶 170g + 香蕉 / 猕猴桃葡萄 + 花生 / 核桃 + 牛油果 + 烤面包切小块 · 有什么加什么</span></td><td class="p">21–28g</td><td class="t">0 分</td></tr>
         <tr data-tags="post period"><td class="num">2</td><td class="nm">虾仁蛋炒饭<span class="sub">冻虾一把 + 1 蛋 + 隔夜饭，蒜油起锅</span></td><td class="p">25g</td><td class="t">6 分</td></tr>
         <tr data-tags="bloat period"><td class="num">3</td><td class="nm">蒸蛋羹拌 tuna<span class="sub">配小米粥（前晚电饭煲预约）· 最养胃的一份</span></td><td class="p">20g</td><td class="t">10 分</td></tr>
         <tr data-tags="low period"><td class="num">4</td><td class="nm">牛肉米粉汤<span class="sub">昨晚剩的炖牛肉切片 + 热汤米粉 + 葱绿 · 满载日就吃这个</span></td><td class="p">22g</td><td class="t">8 分</td></tr>
@@ -365,7 +366,7 @@
         <tr data-tags="rush post low"><td class="num">9</td><td class="nm">剩菜肉 + 米饭<span class="sub">昨晚的肉直接热一热，零思考</span></td><td class="p">25g</td><td class="t">3 分</td></tr>
       </tbody>
     </table>
-    <p class="foot-note">这一格从"一个肉包子"换过来是全天最大的一笔：<strong>7 克 → 20 克</strong>，同时躲掉每天一次的小麦。</p>
+    <p class="foot-note">这一格从"一个肉包子"换过来是全天最大的一笔：<strong>7 克 → 20 克</strong>。</p>
 
     <!-- ═════ 午餐 ═════ -->
     <h2 class="sec toc-anchor" id="lunch">🥗 午餐 · 轻 <span class="sec-note">目标 17 克 · 胃留空这条不变，只换内容</span></h2>
@@ -529,6 +530,7 @@
           <strong>主食</strong>：米饭、小米粥、米粉河粉、寿司米、土豆<br>
           <strong>蛋白</strong>：虾、鱼、牛羊猪、鸡腿、螺肉、鸡蛋、tuna、老豆腐、蛋豆腐、豆干、豆芽<br>
           <strong>蔬菜（煮软）</strong>：番茄、小白菜、菠菜、菜心、芥兰、白萝卜、金针菇、白蘑菇、南瓜、黄瓜、茄子<br>
+          <strong>水果坚果</strong>：猕猴桃、葡萄、香蕉（带点青的）、草莓、橙、花生、核桃、夏威夷果<br>
           <strong>调味</strong>：蒜油、姜、葱绿、tamari、醋、甜菊糖 ｜ <strong>乳制品全绿</strong> ｜ <strong>车前子每天</strong>
         </div>
         <ul class="plain" style="margin-top:0.5rem;">
@@ -575,6 +577,7 @@
           <li><strong>蒜油</strong> garlic infused olive oil — 橄榄油区（Cobram Estate）。<strong>最关键的一瓶。</strong></li>
           <li><strong>原味希腊酸奶</strong> — 大桶分装。别买加菊粉/代糖的"高蛋白"款。</li>
           <li><strong>tuna 罐头（橄榄油浸）</strong>、<strong>米粉河粉</strong>、<strong>猕猴桃葡萄</strong>（替掉苹果梨）</li>
+          <li><strong>酸奶碗那几样</strong>：原味花生、香蕉（别买熟透起斑的）、牛油果、吐司（有 sourdough 就拿 sourdough）</li>
           <li><strong>车前子 psyllium husk</strong> — 别断货。</li>
           <li>Costco：三文鱼/barramundi 分装冷冻、牛排、冻虾、<strong>原味非调味坚果</strong>（调味的常含洋葱蒜粉）</li>
         </ul>

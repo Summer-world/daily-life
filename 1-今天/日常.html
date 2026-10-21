@@ -1407,7 +1407,6 @@
           <li><a href="#node-evening">🌇 傍晚修复</a></li>
           <li><a href="#node-reading">📖 阅读 10 分钟</a></li>
           <li><a href="#node-postemma">🌙 Emma 睡后</a></li>
-          <li><a href="#protocol-being">🌊 存在练习</a></li>
         </ul>
       </li>
       <li class="toc-group" data-toc-group="protocols"><a href="#sec-protocols">情境库</a><button class="toc-toggle" type="button" aria-expanded="false" aria-label="展开或收起情境库的卡片">▸</button>
@@ -1417,6 +1416,8 @@
           <li class="toc-cat">🫧 情绪心理</li>
           <li><a href="#protocol-presence">🪷 专注当下</a></li>
           <li><a href="#protocol-relations">🤝 关系怎么处</a></li>
+          <li><a href="#protocol-noexpect">🌤️ 零期待</a></li>
+          <li><a href="#protocol-being">🌊 存在练习</a></li>
           <li class="toc-cat">🌹 今日状态</li>
           <li><a href="#protocol-lowenergy">🔋 低电模式</a></li>
           <li><a href="#protocol-shutdown">🌙 满载日关机</a></li>
@@ -1742,7 +1743,7 @@
           </summary>
           <div class="timeline-node-body">
             <ul class="core-list">
-              <li><strong>🌊 一个人的时候：</strong>手机拿起来之前，先坐两分钟——<a href="#protocol-being">存在练习</a>（就在这张卡下面，练了在那儿记一笔）。</li>
+              <li><strong>🌊 等着的时候：</strong>不掏手机，待着——<a href="#protocol-being">存在练习</a>。</li>
               <li><strong>🛋️ 状态好 · 做爱好：</strong>🎵 听音乐 · 📚 阅读 · 🎤 唱歌 · 🗂️ 整理 · 🍃 断舍离</li>
               <li><strong>🛋️ 状态不好 · 床上躺练：</strong>JJ 全身拉伸 · 全程躺练 · 颂钵冥想 · 精油按摩</li>
               <li><strong>✍️ 睡前纸笔：</strong>① 幸福笔记（只记开心瞬间）② 下载你的一天 ③ 几个决定（明日 ootd / 菜单 / 待办）</li>
@@ -1776,52 +1777,6 @@
               </a>
             </div>
             <p class="node-warn">⚠️ 周四满载日 → 别套这套，走专门的<a href="#protocol-shutdown">关机轨道</a>；度假/旅行后容易忘记重启这套程序，是状态变差的主要原因之一。</p>
-          </div>
-        </details>
-
-        <!-- 6b. 存在练习（2026-08-21 从情境库挪到这里 · 只留操作 + 打卡） -->
-        <details class="protocol-card" id="protocol-being" style="margin-top:0.9rem;">
-          <summary>
-            <span class="icon">🌊</span>
-            <div>
-              <div class="title">存在练习</div>
-              <div class="hint">手机拿起来之前，先坐两分钟 · 练了就在这儿记一笔</div>
-            </div>
-            <span class="arrow">›</span>
-          </summary>
-          <div class="protocol-card-body">
-            <table>
-              <tbody>
-                <tr><td><strong>① 挑一小口<br>小到不值得做</strong></td><td><strong>两分钟</strong>：端杯东西、看着窗外，什么都不做、不产出。累的晚上一分钟也算。</td></tr>
-                <tr><td><strong>② 警报会来<br>认出它，别逃别辩</strong></td><td>身体会喊"没意义、浪费时间、我该去…"——认一句"警报来了"，不冲去做事、也不跟它较劲，就待在那股不舒服里看着它。</td></tr>
-                <tr><td><strong>③ 等它自己落<br>就成了一次</strong></td><td>那股劲会升起、顶头、<strong>自己</strong>松下去。松一点点就够，到这儿就算一次。</td></tr>
-                <tr><td><strong>④ 到此打住</strong></td><td>别加长、别追问"刚才那下算好吗"。时间到了就去刷手机，<strong>刷得心安理得</strong>。</td></tr>
-              </tbody>
-            </table>
-            <p class="node-warn">⚠️ 不适特别重、往"没意义 / 想消失"那儿沉的时候，<strong>那天就停，别一个人在深夜练</strong>——那种深度留给白天，或者让 Eric 在边上。</p>
-            <div class="reading-checkin" id="being-checkin">
-              <div class="rc-top">
-                <div class="rc-streak">已练 <span class="rc-streak-num" id="bc-total">0</span> 次</div>
-                <div class="rc-stat">本周 <strong id="bc-week-count">0</strong> 次</div>
-              </div>
-              <div class="rc-target" id="bc-target" hidden>
-                正在补 <strong id="bc-target-label"></strong> 的记录
-                <button type="button" class="rc-target-back" id="bc-target-back">回到今天</button>
-              </div>
-              <input type="text" id="bc-mins" class="rc-input" placeholder="待了多久（比如 2 分钟）" autocomplete="off">
-              <textarea id="bc-note" class="rc-input rc-note" placeholder="什么感觉（可留空）"></textarea>
-              <button id="bc-btn" class="rc-btn">✓ 记下今晚这次</button>
-              <button id="bc-cancel" class="rc-cancel">取消今天的记录</button>
-              <div class="rc-week" id="bc-week"></div>
-              <div class="rc-backfill">
-                <button type="button" class="rc-backfill-toggle" id="bc-backfill-toggle">＋ 补更早的日子</button>
-                <span hidden id="bc-backfill-row">
-                  <input type="date" id="bc-date" class="rc-date">
-                </span>
-              </div>
-              <div class="rc-log-title">最近记录</div>
-              <div class="rc-log" id="bc-log"></div>
-            </div>
           </div>
         </details>
 
@@ -1964,6 +1919,66 @@
               🪢 <strong>就一句话</strong>：在关系里<strong>只关心自己是谁</strong>。这不是自私——书里的原话是「<strong>最懂得爱的人是那种以自我为中心的人</strong>」。
             </div>
             <p class="pw-demine">不打卡、不记录、不复盘。想不起来就翻一次，翻完合上。原文在 <a href="../2-我的智慧/与神对话1.html" target="_blank">《与神对话》</a>「Ch.8 关系」。</p>
+          </div>
+        </details>
+
+        <details class="protocol-card pw-card" id="protocol-noexpect" style="grid-column: 1 / -1;">
+          <summary>
+            <span class="icon">🌤️</span>
+            <div>
+              <div class="title">零期待</div>
+              <div class="hint">要见很多人、心情跟着别人走时翻开 · 回国三周验证过</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <p class="pw-lead">期待是默认的，灭不掉，<strong>只能每天搁一次</strong>。搁下期待，不是搁下想要。<br>原话：<strong>"修行并非叫你不要去行动，而是让你再也不需要特定的结果。"</strong></p>
+
+            <div class="pw-quad q-body">
+              <div class="pw-qhead"><span class="pw-ico">🌅</span><span class="pw-name">起床时</span><span class="pw-sub">每天一次，挂在起床上</span></div>
+              <div class="pw-row"><span class="pw-k">搁置</span><span class="pw-v">今天<strong>不期待天气晴、不期待每个人友好、不期待谁热情</strong>。像上班面对客人：对方给什么都可以，我只负责处理。</span></div>
+              <div class="pw-row"><span class="pw-k">想要照留</span><span class="pw-v">想见的人照约、想做的事照做，<strong>只是不押结果</strong>。</span></div>
+            </div>
+
+            <div class="pw-quad q-emo">
+              <div class="pw-qhead"><span class="pw-ico">☀️</span><span class="pw-name">好事来了</span><span class="pw-sub">友好 · 热情 · 请吃饭</span></div>
+              <div class="pw-row"><span class="pw-k">收下</span><span class="pw-v">没预设，来了就是赚到，<strong>开心</strong>。</span></div>
+              <div class="pw-row"><span class="pw-k">说出口</span><span class="pw-v">当场告诉对方<strong>"我很开心"</strong>。不记债、不欠回去。</span></div>
+            </div>
+
+            <div class="pw-quad q-mind">
+              <div class="pw-qhead"><span class="pw-ico">🌧️</span><span class="pw-name">坏事来了</span><span class="pw-sub">冷淡 · 堵车 · 下雨 · 不顺</span></div>
+              <div class="pw-row"><span class="pw-k">不惊</span><span class="pw-v">没有期待就没有落差，<strong>它只是一件要处理的事</strong>。</span></div>
+              <div class="pw-row"><span class="pw-k">三选一</span><span class="pw-v"><strong>远离 · 说出不满 · 冷处理</strong>。选一个做，不吞下去。</span></div>
+            </div>
+
+            <div class="pw-spine">
+              🪢 <strong>就一句话</strong>：心情的基线<strong>我先定</strong>，对方给什么，我再决定怎么接。
+            </div>
+            <p class="pw-demine">不打卡、不记录。原文在 <a href="../2-我的智慧/与神对话1.html" target="_blank">《与神对话》</a>「Ch.5 通往神的路」。</p>
+          </div>
+        </details>
+
+        <!-- 存在练习（2026-10-19 删打卡 · 锚点改成"等着的时候" · 挪回情境库） -->
+        <details class="protocol-card" id="protocol-being" style="grid-column: 1 / -1;">
+          <summary>
+            <span class="icon">🌊</span>
+            <div>
+              <div class="title">存在练习</div>
+              <div class="hint">等着的时候别掏手机，待着 · 不记次数</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <table>
+              <tbody>
+                <tr><td><strong>① 等着的时候<br>就是练习</strong></td><td>等水开、等 Emma 刷牙、等红灯、排队。这段时间本来就产不出东西，<strong>不掏手机，待着</strong>。一分钟也算，不用另外腾时间。</td></tr>
+                <tr><td><strong>② 警报会来<br>认出它，别逃别辩</strong></td><td>身体会喊"没意义、浪费时间、我该去…"——认一句"警报来了"，不冲去做事、也不跟它较劲，就待在那股不舒服里看着它。</td></tr>
+                <tr><td><strong>③ 等它自己落<br>就成了一次</strong></td><td>那股劲会升起、顶头、<strong>自己</strong>松下去。松一点点就够，到这儿就算一次。</td></tr>
+                <tr><td><strong>④ 到此打住</strong></td><td>等的事到了就去做，别追问"刚才那下算好吗"。<strong>不记次数、不记感觉</strong>，做了就做了。</td></tr>
+              </tbody>
+            </table>
+            <p class="node-warn">⚠️ 不适特别重、往"没意义 / 想消失"那儿沉的时候，<strong>那天就停，别一个人在深夜练</strong>——那种深度留给白天，或者让 Eric 在边上。</p>
           </div>
         </details>
 
@@ -2981,165 +2996,6 @@
   })();
 
 
-  // ==================== 存在练习打卡（2026-08-21） ====================
-  (function setupBeingCheckin(){
-    const root = document.getElementById('being-checkin');
-    if (!root) return;
-    const KEY = 'summer_being_v1';
-    const $ = sel => root.querySelector(sel);
-    function esc(s){
-      return String(s).replace(/[&<>"]/g, c =>
-        ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
-    }
-    function ymd(d){
-      return d.getFullYear() + '-' +
-        String(d.getMonth()+1).padStart(2,'0') + '-' +
-        String(d.getDate()).padStart(2,'0');
-    }
-    function load(){ try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e){ return {}; } }
-    function persist(){ try { localStorage.setItem(KEY, JSON.stringify(data)); } catch(e){} }
-
-    let data = load();
-    const todayKey = ymd(new Date());
-    let targetKey = todayKey;
-    function mdLabel(k){ return k.slice(5).replace('-','/'); }
-
-    // 累计次数，只涨不掉 —— 刻意不做连续天数：窗口是"奇林还在忙"的晚上，
-    // 他有空一起看电视是好事，连胜会把好事算成断签。
-    function total(){ return Object.keys(data).length; }
-    function weekCount(){
-      const now = new Date();
-      const dow = (now.getDay()+6)%7;
-      let c = 0;
-      for (let i=0;i<=dow;i++){
-        const t = new Date(); t.setDate(now.getDate()-i);
-        if (data[ymd(t)]) c++;
-      }
-      return c;
-    }
-    function renderWeek(){
-      const names = ['一','二','三','四','五','六','日'];
-      const now = new Date();
-      const dow = (now.getDay()+6)%7;
-      const monday = new Date(); monday.setDate(now.getDate()-dow);
-      let html = '';
-      for (let i=0;i<7;i++){
-        const d = new Date(monday); d.setDate(monday.getDate()+i);
-        const k = ymd(d);
-        const filled = !!data[k];
-        const isToday = k === todayKey;
-        const isFuture = k > todayKey;
-        const clickable = !isFuture;
-        const addable = clickable && !filled;
-        const selected = k === targetKey;
-        html += '<div class="rc-day' + (filled?' filled':'') +
-          (isToday?' today':'') + (isFuture?' future':'') +
-          (clickable?' clickable':'') + (addable?' addable':'') +
-          (selected?' selected':'') + '" data-key="' + k + '">' +
-          '<div class="rc-day-dot">' + (filled?'✓':'') + '</div>' +
-          '<div class="rc-day-label">' + names[i] + '</div></div>';
-      }
-      $('#bc-week').innerHTML = html;
-    }
-    const LOG_SHOW = 3;
-    let logExpanded = false;
-    function renderLog(){
-      const keys = Object.keys(data).sort().reverse();
-      if (!keys.length){
-        $('#bc-log').innerHTML = '<div class="rc-log-empty">还没有记录——今晚坐两分钟就是第一笔。</div>';
-        return;
-      }
-      const shown = logExpanded ? keys : keys.slice(0, LOG_SHOW);
-      const itemsHtml = shown.map(k => {
-        const e = data[k] || {};
-        const mins = e.mins
-          ? '<span class="rc-log-book">' + esc(e.mins) + '</span>'
-          : '<span class="rc-log-book" style="color:var(--text-hint)">（没记时长）</span>';
-        return '<div class="rc-log-item"><span class="rc-log-date">' + mdLabel(k) + '</span>' +
-          mins + (e.note ? '<br>' + esc(e.note) : '') + '</div>';
-      }).join('');
-      const toggle = keys.length > LOG_SHOW
-        ? '<button type="button" class="rc-log-toggle" id="bc-log-toggle">' +
-            (logExpanded ? '收起 ▴' : '展开全部 ' + keys.length + ' 条 ▾') + '</button>'
-        : '';
-      $('#bc-log').innerHTML = itemsHtml + toggle;
-      const t = $('#bc-log-toggle');
-      if (t) t.addEventListener('click', () => { logExpanded = !logExpanded; renderLog(); });
-    }
-    function setTarget(k){
-      if (k > todayKey) return;
-      targetKey = k;
-      render();
-      $('#bc-mins').focus();
-    }
-    function render(){
-      const isToday = targetKey === todayKey;
-      const done = !!data[targetKey];
-      $('#bc-total').textContent = total();
-      $('#bc-week-count').textContent = weekCount();
-
-      const target = $('#bc-target');
-      target.hidden = isToday;
-      if (!isToday) $('#bc-target-label').textContent = mdLabel(targetKey);
-
-      const minsEl = $('#bc-mins'), noteEl = $('#bc-note');
-      const focused = document.activeElement === minsEl || document.activeElement === noteEl;
-      if (!focused){
-        minsEl.value = (data[targetKey] && data[targetKey].mins) || '';
-        noteEl.value = (data[targetKey] && data[targetKey].note) || '';
-      }
-      noteEl.placeholder = isToday ? '什么感觉（可留空）' : '那天什么感觉（可留空）';
-
-      const btn = $('#bc-btn');
-      btn.classList.toggle('done', done);
-      btn.textContent = isToday
-        ? (done ? '今天已记 ✓' : '✓ 记下今晚这次')
-        : (done ? '已补 ' + mdLabel(targetKey) + ' ✓（可改）' : '✓ 补上 ' + mdLabel(targetKey) + ' 那次');
-
-      const cancel = $('#bc-cancel');
-      cancel.style.display = done ? 'block' : 'none';
-      cancel.textContent = isToday ? '取消今天的记录' : '删除 ' + mdLabel(targetKey) + ' 的记录';
-
-      renderWeek();
-      renderLog();
-    }
-    $('#bc-btn').addEventListener('click', () => {
-      data[targetKey] = { mins: $('#bc-mins').value.trim(), note: $('#bc-note').value.trim() };
-      persist(); render();
-    });
-    ['#bc-mins','#bc-note'].forEach(sel => {
-      $(sel).addEventListener('input', () => {
-        if (!data[targetKey]) return;
-        data[targetKey] = { mins: $('#bc-mins').value.trim(), note: $('#bc-note').value.trim() };
-        persist(); renderLog();
-      });
-    });
-    $('#bc-cancel').addEventListener('click', () => {
-      delete data[targetKey];
-      persist();
-      if (targetKey !== todayKey) targetKey = todayKey;
-      render();
-    });
-    $('#bc-week').addEventListener('click', (e) => {
-      const day = e.target.closest('.rc-day');
-      if (!day || !day.classList.contains('clickable')) return;
-      setTarget(day.getAttribute('data-key'));
-    });
-    $('#bc-target-back').addEventListener('click', () => { setTarget(todayKey); });
-    $('#bc-backfill-toggle').addEventListener('click', () => {
-      const row = $('#bc-backfill-row');
-      row.hidden = !row.hidden;
-      if (!row.hidden){
-        const dateEl = $('#bc-date');
-        dateEl.max = todayKey;
-        if (!dateEl.value) dateEl.value = targetKey;
-        dateEl.focus();
-      }
-    });
-    $('#bc-date').addEventListener('change', (e) => { if (e.target.value) setTarget(e.target.value); });
-
-    render();
-  })();
 
   // ==================== 抬头右侧 · 今日与神对话 ====================
   (function setupGodtalkAside(){

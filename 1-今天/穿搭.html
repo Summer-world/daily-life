@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>穿搭 · Summer 的世界</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Noto+Sans+SC:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  html { scroll-padding-top: 80px; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F7F5F0;
+    --surface: #FDFBF5;
+    --border: #ECE7DC;
+    --border-dark: #D8D2C5;
+    --text-primary: #1A1814;
+    --text-secondary: #4A453E;
+    --text-hint: #8A8278;
+    --accent: #2D5A3D;
+    --accent-light: #EAF2EC;
+    --gold: #7A5C2E;
+    --gold-light: #F5EDE0;
+    --ochre: #B8804A;
+    --ochre-light: #FAF1E2;
+    --rust: #9C3B2C;
+    --rust-light: #F8E8E3;
+    --rose: #7A3A4A;
+    --rose-light: #FBEEF1;
+    --mist: #4E6273;
+    --mist-light: #E8EDF2;
+    --ink: #26241F;
+  }
+
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.7;
+    font-size: 14px;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at 10% 4%, rgba(78, 98, 115, 0.05) 0%, transparent 42%),
+      radial-gradient(circle at 90% 88%, rgba(45, 90, 61, 0.035) 0%, transparent 44%);
+    background-attachment: fixed;
+  }
+
+  /* ============ Page Header ============ */
+  .page-header {
+    padding: 2.4rem 2rem 1.4rem;
+    max-width: 1080px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .page-header::after {
+    content: '';
+    position: absolute;
+    left: 2rem; right: 2rem; bottom: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border-dark) 20%, var(--border-dark) 80%, transparent);
+  }
+  .eyebrow {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.82rem;
+    color: var(--mist);
+    letter-spacing: 0.18em;
+    margin-bottom: 0.35rem;
+  }
+  .page-header h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 2.05rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.55rem;
+  }
+  .page-header .lede {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    max-width: 44rem;
+    line-height: 1.85;
+  }
+  .page-header .lede strong { color: var(--mist); font-weight: 600; }
+  .src-note {
+    font-size: 0.76rem;
+    color: var(--text-hint);
+    margin-top: 0.7rem;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.01em;
+  }
+
+  /* ============ Layout ============ */
+  .layout {
+    display: grid;
+    grid-template-columns: 214px 1fr;
+    gap: 2.4rem;
+    max-width: 1080px;
+    margin: 1.6rem auto 4rem;
+    padding: 0 2rem;
+    align-items: start;
+  }
+  .side-toc { position: sticky; top: 88px; align-self: start; }
+  .side-toc-title {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.82rem;
+    color: var(--text-hint);
+    letter-spacing: 0.12em;
+    margin-bottom: 0.7rem;
+    padding-left: 0.9rem;
+  }
+  .side-toc ol { list-style: none; }
+  .side-toc a {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 6px 0 6px 0.9rem;
+    border-left: 2px solid var(--border);
+    transition: color 0.15s, border-color 0.15s;
+    line-height: 1.4;
+  }
+  .side-toc a .toc-hint {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--text-hint);
+    margin-top: 1px;
+    font-weight: 300;
+  }
+  .side-toc a:hover { color: var(--text-primary); border-left-color: var(--border-dark); }
+  .side-toc a.active { color: var(--mist); border-left-color: var(--mist); }
+
+  .main { min-width: 0; }
+  .toc-anchor { scroll-margin-top: 80px; }
+
+  /* ============ 通用卡 ============ */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border-dark);
+    border-left: 3px solid var(--border-dark);
+    border-radius: 8px;
+    padding: 1.3rem 1.5rem 1.4rem;
+    margin-bottom: 1.15rem;
+    scroll-margin-top: 80px;
+  }
+  .c-head { display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.5rem; }
+  .c-emoji { font-size: 1.5rem; line-height: 1.25; flex: 0 0 auto; }
+  .c-headings { flex: 1 1 auto; min-width: 0; }
+  .c-name {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.22rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1.35;
+  }
+  .c-sub { font-size: 0.78rem; color: var(--text-hint); margin-top: 2px; }
+  .card p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.85; margin-bottom: 0.7rem; }
+  .card p:last-child { margin-bottom: 0; }
+  .card b { color: var(--text-primary); font-weight: 600; }
+
+  .c-mist   { border-color: #C3CFD9; border-left-color: var(--mist); }
+  .c-gold   { border-color: #E0D2B8; border-left-color: var(--gold); }
+  .c-accent { border-color: #BFD5C6; border-left-color: var(--accent); }
+  .c-rust   { border-color: #E5C8C0; border-left-color: var(--rust); }
+  .c-rose   { border-color: #E7CDD5; border-left-color: var(--rose); }
+  .c-ink    { border-color: #C9C5BC; border-left-color: var(--ink); }
+
+  /* ============ 回想卡 ============ */
+  .recall {
+    background: linear-gradient(180deg, #FFFDF7 0%, var(--surface) 100%);
+    border: 1px solid var(--border-dark);
+    border-radius: 10px;
+    padding: 1.4rem 1.6rem 1.5rem;
+    margin-bottom: 1.6rem;
+    scroll-margin-top: 80px;
+  }
+  .recall .rc-label {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    color: var(--text-hint);
+    margin-bottom: 0.6rem;
+  }
+  .recall .rc-line {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.16rem;
+    line-height: 1.75;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+  }
+  .recall .rc-line em { font-style: normal; color: var(--rust); }
+  .rc-rows { display: flex; flex-direction: column; gap: 0.55rem; }
+  .rc-row {
+    font-size: 0.85rem;
+    line-height: 1.75;
+    color: var(--text-secondary);
+    padding-left: 0.9rem;
+    border-left: 2px solid var(--border-dark);
+  }
+  .rc-row b { font-family: 'Noto Serif SC', serif; color: var(--text-primary); }
+
+  /* ============ 两轴表 ============ */
+  table.tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.83rem;
+    margin: 0.9rem 0 0.9rem;
+  }
+  table.tbl th, table.tbl td {
+    border: 1px solid var(--border-dark);
+    padding: 0.55rem 0.7rem;
+    text-align: left;
+    vertical-align: top;
+    line-height: 1.65;
+  }
+  table.tbl th {
+    background: var(--bg);
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.8rem;
+  }
+  table.tbl td { color: var(--text-secondary); }
+  table.tbl td b, table.tbl th b { color: var(--text-primary); }
+  .tbl-wrap { overflow-x: auto; }
+
+  /* ============ 色卡 ============ */
+  .swatches { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.7rem 0 0.9rem; }
+  .sw {
+    display: flex; align-items: center; gap: 7px;
+    border: 1px solid var(--border-dark);
+    border-radius: 99px;
+    padding: 4px 12px 4px 6px;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    background: var(--surface);
+  }
+  .sw i { width: 15px; height: 15px; border-radius: 50%; display: block; border: 1px solid rgba(0,0,0,0.14); }
+  .sw.no { text-decoration: line-through; color: var(--text-hint); opacity: 0.85; }
+
+  /* ============ 结论条 ============ */
+  .verdict {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.98rem;
+    line-height: 1.75;
+    color: var(--text-primary);
+    background: var(--bg);
+    border: 1px dashed var(--border-dark);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    margin: 0.9rem 0 0.2rem;
+  }
+  .verdict.ok { border-color: #A9C6B4; background: var(--accent-light); }
+  .verdict.no { border-color: #DFBBB2; background: var(--rust-light); }
+
+  /* ============ 照片证据 ============ */
+  .shots { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 0.9rem 0 0.4rem; }
+  .shot { width: 132px; }
+  .shot img {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid var(--border-dark);
+    display: block;
+    background: #fff;
+  }
+  .shot .cap {
+    font-size: 0.7rem;
+    color: var(--text-hint);
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+  .shot .cap b { color: var(--text-secondary); font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; }
+  .pair { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: flex-start; margin: 0.9rem 0 0.5rem; }
+  .pair .shot { width: 160px; }
+  .pair-arrow {
+    align-self: center;
+    font-size: 1.3rem;
+    color: var(--text-hint);
+    padding: 0 0.1rem;
+  }
+  .contact-sheet { margin: 0.9rem 0 0.3rem; }
+  .contact-sheet img {
+    width: 100%;
+    border: 1px solid var(--border-dark);
+    border-radius: 6px;
+    display: block;
+  }
+  .contact-sheet .cap { font-size: 0.75rem; color: var(--text-hint); margin-top: 5px; }
+
+  /* ============ 列表 ============ */
+  .card ul { margin: 0.4rem 0 0.8rem 0; padding-left: 1.1rem; }
+  .card li { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 0.25rem; }
+  .card li b { color: var(--text-primary); }
+  .yes-no { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin: 0.8rem 0; }
+  .yn-box { border: 1px solid var(--border-dark); border-radius: 6px; padding: 0.7rem 0.9rem; }
+  .yn-box.y { border-color: #A9C6B4; background: var(--accent-light); }
+  .yn-box.n { border-color: #DFBBB2; background: var(--rust-light); }
+  .yn-t { font-size: 0.76rem; font-weight: 600; letter-spacing: 0.04em; margin-bottom: 0.3rem; }
+  .yn-box.y .yn-t { color: var(--accent); }
+  .yn-box.n .yn-t { color: var(--rust); }
+  .yn-box p { font-size: 0.82rem; margin: 0; }
+
+  /* ============ 购物判定卡 ============ */
+  .qlist { counter-reset: q; margin: 0.7rem 0 0.5rem; }
+  .qitem {
+    counter-increment: q;
+    position: relative;
+    padding: 0.6rem 0 0.6rem 2.2rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.88rem;
+    color: var(--text-primary);
+    line-height: 1.7;
+  }
+  .qitem:last-child { border-bottom: none; }
+  .qitem::before {
+    content: counter(q);
+    position: absolute;
+    left: 0; top: 0.62rem;
+    width: 1.5rem; height: 1.5rem;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #F7F5F0;
+    font-size: 0.74rem;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .qitem .ans { display: block; font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px; }
+  .qitem .ans .kill { color: var(--rust); font-weight: 600; }
+  .qitem .ans .buy { color: var(--accent); font-weight: 600; }
+
+  /* ============ 规则库 ============ */
+  .rules-box { }
+  .rule-group { margin-bottom: 1rem; }
+  .rule-group:last-of-type { margin-bottom: 0.4rem; }
+  .rg-title {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--text-hint);
+    font-weight: 500;
+    padding-bottom: 3px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.45rem;
+  }
+  .rule {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    padding: 0.4rem 0.1rem;
+    font-size: 0.85rem;
+    line-height: 1.72;
+    color: var(--text-secondary);
+  }
+  .rule + .rule { border-top: 1px dotted var(--border); }
+  .rule .txt { flex: 1 1 auto; min-width: 0; }
+  .rule .txt b { color: var(--text-primary); }
+  .rule .del {
+    flex: 0 0 auto;
+    border: none; background: none; cursor: pointer;
+    color: var(--text-hint);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    padding: 0 2px;
+    opacity: 0;
+    transition: opacity 0.15s, color 0.15s;
+    font-family: inherit;
+  }
+  .rule:hover .del { opacity: 1; }
+  .rule .del:hover { color: var(--rust); }
+  .rule-add {
+    display: flex; gap: 0.5rem; flex-wrap: wrap;
+    margin-top: 0.9rem;
+    padding-top: 0.9rem;
+    border-top: 1px dashed var(--border-dark);
+  }
+  .rule-add select, .rule-add input {
+    font-family: inherit;
+    font-size: 0.84rem;
+    border: 1px solid var(--border-dark);
+    border-radius: 5px;
+    padding: 0.4rem 0.55rem;
+    background: #fff;
+    color: var(--text-primary);
+  }
+  .rule-add input { flex: 1 1 260px; min-width: 0; }
+  .rule-add button {
+    font-family: inherit;
+    font-size: 0.84rem;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: #F7F5F0;
+    border-radius: 5px;
+    padding: 0.4rem 1rem;
+    cursor: pointer;
+  }
+  .rule-add button:hover { background: #3A362E; }
+  .rules-foot {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 0.6rem; flex-wrap: wrap;
+    margin-top: 0.8rem;
+    font-size: 0.75rem;
+    color: var(--text-hint);
+  }
+  .rules-foot button {
+    font-family: inherit; font-size: 0.75rem;
+    background: none; border: none; cursor: pointer;
+    color: var(--text-hint); text-decoration: underline;
+    padding: 0;
+  }
+  .rules-foot button:hover { color: var(--rust); }
+
+  /* ============ 断舍离 / 待办 ============ */
+  .tag-list { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0 0.8rem; }
+  .tag-list span {
+    font-size: 0.78rem;
+    border: 1px solid #DFBBB2;
+    background: var(--rust-light);
+    color: var(--rust);
+    border-radius: 99px;
+    padding: 3px 11px;
+  }
+  .do-list { display: flex; flex-direction: column; gap: 0.6rem; margin: 0.8rem 0 0.2rem; }
+  .do-item {
+    border: 1px solid var(--border-dark);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 0.65rem 0.9rem;
+    background: var(--surface);
+  }
+  .do-item .dt { font-family: 'Noto Serif SC', serif; font-size: 0.95rem; color: var(--text-primary); }
+  .do-item .dd { font-size: 0.81rem; color: var(--text-secondary); margin-top: 2px; line-height: 1.7; }
+  .cost { font-size: 0.72rem; color: var(--accent); border: 1px solid #A9C6B4; background: var(--accent-light); border-radius: 99px; padding: 1px 8px; margin-left: 6px; white-space: nowrap; }
+
+  .foot-note {
+    font-size: 0.8rem;
+    color: var(--text-hint);
+    font-style: italic;
+    line-height: 1.7;
+    margin-top: 1.2rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .tbl.spec td { font-size: 0.82rem; }
+  .tbl.spec td:first-child { white-space: nowrap; }
+  .palette { margin: 0.9rem 0 0.3rem; display: flex; flex-direction: column; gap: 0.7rem; }
+  .pal-t { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; color: var(--text-primary); }
+  .pal-t .dim { font-weight: 400; color: var(--text-hint); font-size: 0.74rem; }
+  .palette .swatches { margin: 0.4rem 0 0; }
+  @media (max-width: 860px) { .sheets { grid-template-columns: 1fr; } }
+  /* ============ 四格表 / 三行 / 折叠区 ============ */
+  .tbl.slots td .dim { color: var(--text-hint); font-size: 0.74rem; }
+  .tbl.slots td:nth-child(3) { background: var(--accent-light); }
+  .tbl.slots td:nth-child(4) { background: var(--rust-light); color: var(--text-hint); }
+  .three { display: flex; flex-direction: column; gap: 0.5rem; margin: 0.9rem 0 0.2rem; }
+  .t-row { font-size: 0.88rem; line-height: 1.75; color: var(--text-secondary); padding-left: 0.9rem; border-left: 2px solid #A9C6B4; }
+  .t-row b { color: var(--text-primary); }
+  @media (max-width: 860px) { .tbl.slots { font-size: 0.78rem; } }
+  /* ============ 窄屏回退 ============ */
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; gap: 1.2rem; }
+    .side-toc { position: static; }
+    .side-toc ol { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .side-toc a {
+      border-left: none;
+      border: 1px solid var(--border-dark);
+      border-radius: 99px;
+      padding: 4px 12px;
+    }
+    .side-toc a .toc-hint { display: none; }
+    .side-toc a.active { border-color: var(--mist); background: var(--mist-light); }
+    .side-toc-title { padding-left: 0; }
+    .page-header, .layout { padding-left: 1.2rem; padding-right: 1.2rem; }
+    .yes-no { grid-template-columns: 1fr; }
+    .rule .del { opacity: 1; }
+    .shot { width: calc(50% - 0.4rem); }
+    .pair .shot { width: calc(50% - 0.4rem); }
+    .pair-arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="eyebrow">MY OWN RULES, NOT A BLOGGER'S</div>
+  <h1>👗 穿搭</h1>
+  <p class="lede"><strong>浅的穿上面，深的穿下面。不反光。黑色只当线。首饰用银和珍珠。</strong>就这几句。下面的表是把它拆开说，买东西查第二张表，为什么这样看规则库。</p>
+</header>
+
+<div class="layout">
+  <aside class="side-toc">
+    <div class="side-toc-title">Contents</div>
+    <ol>
+      <li><a href="#slots">四个格子<span class="toc-hint">穿的时候看</span></a></li>
+      <li><a href="#buy">买之前看两样<span class="toc-hint">材质 · 版型，按单品查</span></a></li>
+      <li><a href="#rules">规则库<span class="toc-hint">为什么这样 · 发现新的就加</span></a></li>
+    </ol>
+  </aside>
+
+  <main class="main">
+
+    <!-- ════════ 四个格子 ════════ -->
+    <article class="card c-accent toc-anchor" id="slots">
+      <div class="c-head">
+        <span class="c-emoji">🗂️</span>
+        <div class="c-headings">
+          <div class="c-name">衣橱四个格子</div>
+          <div class="c-sub">买的时候照这个挑，穿的时候随便拿</div>
+        </div>
+      </div>
+      <div class="tbl-wrap">
+      <table class="tbl slots">
+        <tr><th>格子</th><th>放什么</th><th>要</th><th>不要</th></tr>
+        <tr><td><b>上身</b><br><span class="dim">贴着脸</span></td><td>T 恤 · 衬衫 · 针织 · 背心</td><td><b>很浅的颜色</b>（下面第一排）<br>不反光，有点纹理</td><td>鲜亮的颜色：正红 宝蓝 翠绿 亮粉 橘棕 芥末<br>会反光的：缎面 丝光 亮片</td></tr>
+        <tr><td><b>下身</b><br><span class="dim">自由区</span></td><td>裤 · 裙 · 鞋 · 包</td><td><b>很深的颜色</b>（下面第二排）<br><b>喜欢什么颜色都放这里</b></td><td>会反光的料子</td></tr>
+        <tr><td><b>罩衫 · 外套</b></td><td>开衫 · 西装 · 防晒衫 · 大衣</td><td>浅色、带深色边的最好<br>要有肩膀形状；黑色只当一条线</td><td>一大块黑穿在上半身<br>软趴趴没肩膀的</td></tr>
+        <tr><td><b>配饰</b></td><td>丝巾 · 项链 · 胸针 · 耳饰</td><td>银 白金 珍珠 贝母<br>小的、直线的</td><td>金色 · 大圆环 · 戴一堆</td></tr>
+      </table>
+      </div>
+      <div class="palette">
+        <div class="pal-row">
+          <div class="pal-t">第一排 · 很浅的颜色：穿上身、罩衫、配饰<span class="dim">　报告勾的第一圈。冷色排前面；浅杏、浅鹅黄也能穿，排最后</span></div>
+          <div class="swatches"><span class="sw"><i style="background:#F3D9DE"></i>粉白</span><span class="sw"><i style="background:#EFD3DC"></i>浅玫瑰</span><span class="sw"><i style="background:#DDD0E6"></i>丁香</span><span class="sw"><i style="background:#D3D0EA"></i>薰衣草</span><span class="sw"><i style="background:#CCD5EC"></i>长春花</span><span class="sw"><i style="background:#C9DCEE"></i>粉蓝</span><span class="sw"><i style="background:#C8E3E6"></i>浅水蓝</span><span class="sw"><i style="background:#CDE6DA"></i>薄荷</span><span class="sw"><i style="background:#D5E5CF"></i>浅灰绿</span><span class="sw"><i style="background:#F1ECC8"></i>浅鹅黄</span><span class="sw"><i style="background:#F5DFD0"></i>浅杏</span><span class="sw"><i style="background:#F4D6D0"></i>浅珊瑚</span><span class="sw"><i style="background:#F4F1EB"></i>软白</span><span class="sw"><i style="background:#EEE8DD"></i>米白</span><span class="sw"><i style="background:#E2DACC"></i>燕麦</span><span class="sw"><i style="background:#D8D8DA"></i>浅灰</span><span class="sw"><i style="background:#D3CBC2"></i>浅灰褐</span></div>
+        </div>
+        <div class="pal-row">
+          <div class="pal-t">第二排 · 很深的颜色：穿下身、外套、滚边<span class="dim">　报告勾的第二圈。不只是黑</span></div>
+          <div class="swatches"><span class="sw"><i style="background:#3A4356"></i>灰藏青</span><span class="sw"><i style="background:#4C5A6E"></i>石板蓝</span><span class="sw"><i style="background:#4F4558"></i>深灰紫</span><span class="sw"><i style="background:#58435A"></i>深茄</span><span class="sw"><i style="background:#5E3B4C"></i>深莓</span><span class="sw"><i style="background:#6B4A55"></i>深玫瑰灰</span><span class="sw"><i style="background:#5A4B49"></i>冷可可</span><span class="sw"><i style="background:#4E4542"></i>深灰棕</span><span class="sw"><i style="background:#555C4C"></i>深苔灰</span><span class="sw"><i style="background:#4B5A52"></i>深灰绿</span><span class="sw"><i style="background:#46474C"></i>炭灰</span><span class="sw"><i style="background:#5B5D63"></i>深灰</span><span class="sw"><i style="background:#1C1C1E"></i>黑</span></div>
+        </div>
+        <div class="pal-row">
+          <div class="pal-t">中间那档鲜亮的颜色都不贴脸<span class="dim">　报告中间六圈一格没勾。不是哪个颜色不行，是太鲜亮就不行。想穿放下身。</span></div>
+        </div>
+      </div>
+      <div class="three">
+        <div class="t-row"><b>今天穿什么＝冷不冷。</b>上面拿一件，下面拿一件，冷了加罩衫，想好看一点加配饰。怎么配都对。</div>
+        <div class="t-row"><b>喜欢的暖色想穿上面：</b>外面套一件米色开衫，或者围一条浅色围巾。</div>
+        <div class="t-row"><b>衣柜按这四格挂。</b>买了挂进去，扔了空出来。电脑里不记。</div>
+      </div>
+      <p class="foot-note">广州夏天穿什么料：棉麻、亚麻、泡泡纱、华夫格、薄针织。真丝、缎面、冰丝到处都是，都会反光，不买。</p>
+    </article>
+
+    <article class="card c-ink toc-anchor" id="buy">
+      <div class="c-head">
+        <span class="c-emoji">🧵</span>
+        <div class="c-headings">
+          <div class="c-name">买之前只看两样：料子、版型</div>
+          <div class="c-sub">颜色看上面的色板就行。料子看吊牌，版型穿上看</div>
+        </div>
+      </div>
+      <div class="verdict">料子：<b>不反光</b>。上衣：<b>有肩膀形状，不收腰</b>。</div>
+      <div class="tbl-wrap">
+      <table class="tbl spec">
+        <tr><th style="width:17%">单品</th><th>料子 · 看吊牌</th><th>版型 · 穿上看</th></tr>
+        <tr><td><b>T 恤</b></td><td>全棉，精梳棉或长绒棉。厚一点：180–220 克。夏天可以棉麻</td><td>肩线正好在肩膀上，或稍微往下一点。直筒，不收腰。领口别太低</td></tr><tr><td><b>衬衫</b></td><td>全棉、亚麻、棉麻，夏天泡泡纱<br>不要真丝、缎面、亮雪纺</td><td>有肩膀形状，直筒。可以敞开当外套穿</td></tr><tr><td><b>针织衫</b></td><td>冬天：羊毛一半以上，美利奴或羊绒。夏天：棉线、亚麻<br>要麻花、罗纹这种有纹理的。腈纶多了会发亮、起球</td><td>稍微宽松，直筒，不收腰</td></tr><tr><td><b>开衫</b></td><td>跟针织衫一样。长的最好</td><td>长到大腿，直筒，V 领。敞开穿</td></tr><tr><td><b>西装 · 外套</b></td><td>哑光的羊毛、棉<br>不要发亮的涤纶</td><td><b>一定要有肩膀形状</b>。直筒。要么长过屁股，要么短到腰，别卡在中间。带深色边的优先</td></tr><tr><td><b>大衣</b></td><td>羊毛七成以上，哑光</td><td>有肩膀形状，直筒，长款。敞着穿</td></tr><tr><td><b>羽绒服</b></td><td>白鹅绒比白鸭绒好。<b>绒子含量 90% 以上</b>，蓬松度 700 以上<br>广州短款 100–150 克够，慈利过年要 200 克以上<br>面料要不反光的</td><td>有肩膀形状，直筒，别太鼓。长过屁股或短到腰</td></tr><tr><td><b>裤子</b></td><td>斜纹棉、羊毛呢、哑光西裤料。牛仔要硬挺不弹的<br>不要弹力亮面</td><td>直筒或阔腿。<b>高腰</b></td></tr><tr><td><b>裙子</b></td><td>棉、亚麻、哑光羊毛<br>不要缎面</td><td>半裙高腰，直筒或 A 字。连衣裙外面套长开衫</td></tr><tr><td><b>防晒衣</b></td><td>UPF50+，不反光，浅色</td><td>有肩膀形状，直筒。就是夏天的罩衫</td></tr><tr><td><b>鞋</b></td><td>哑光皮、磨砂皮<br>不要漆皮</td><td>乐福鞋、切尔西靴。鞋头别太尖</td></tr><tr><td><b>配饰</b></td><td>银、白金、珍珠、贝母</td><td>小的、直线的。不要大圆环，不要戴一堆</td></tr>
+      </table>
+      </div>
+      <p class="foot-note">淘宝：只看买家秀，不看模特图。成分、克重、绒子含量查不到的不买。</p>
+    </article>
+
+    <!-- ════════ 规则库 ════════ -->
+    <article class="card c-mist toc-anchor" id="rules">
+      <div class="c-head">
+        <span class="c-emoji">📓</span>
+        <div class="c-headings">
+          <div class="c-name">我的规则库</div>
+          <div class="c-sub">这页所有的「为什么」都在这里。发现一条新的就加进来</div>
+        </div>
+      </div>
+      <div class="rules-box" id="rules-box"></div>
+      <div class="rule-add">
+        <select id="rule-cat">
+          <option value="色彩">色彩</option>
+          <option value="造型">造型</option>
+          <option value="材质">材质</option>
+          <option value="配饰">配饰</option>
+          <option value="场景">场景 / 例外</option>
+          <option value="其他">其他</option>
+        </select>
+        <input type="text" id="rule-txt" placeholder="写一条：我 + 什么 = 对 / 不对" maxlength="120">
+        <button id="rule-add-btn" type="button">加进去</button>
+      </div>
+      <div class="rules-foot">
+        <span id="rules-count"></span>
+        <button id="rules-reset" type="button">恢复初始 12 条</button>
+      </div>
+      <p class="foot-note">写规则不用形容词。不写「高级」「有气质」，写具体的：什么颜色、穿在哪、料子软还是硬。<br>来源：86 张全身照 + 2024-07-11 色彩诊断报告，在 Claude 项目 _系统\素材\穿搭 里。<br>12 月前：米色开衫和铁锈红裙挂在一起；买一条米白或浅灰的围巾。</p>
+    </article>
+
+
+    <!-- ════════ 回想层 ════════ -->
+  </main>
+</div>
+
+<script>
+// ==================== 侧边目录 scroll-spy（iframe 安全：只滚本页） ====================
+(function(){
+  const toc = document.querySelector('.side-toc');
+  if (!toc) return;
+  const links = Array.from(toc.querySelectorAll('a[href^="#"]'));
+  const entries = [];
+  links.forEach(a => { const id = a.getAttribute('href').slice(1); if (document.getElementById(id)) entries.push({id,a}); });
+  if (!entries.length) return;
+  const ACT = 90;
+  const setActive = a => { links.forEach(l => l.classList.remove('active')); if (a) a.classList.add('active'); };
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    let cur = entries[0].a;
+    for (const {id,a} of entries){ const el = document.getElementById(id); if (el && el.offsetParent !== null && el.getBoundingClientRect().top - ACT <= 0) cur = a; }
+    setActive(cur);
+  };
+  window.addEventListener('scroll', () => { if (!ticking){ ticking = true; requestAnimationFrame(update); } }, {passive:true});
+  const TOP_GAP = 80;
+  links.forEach(a => {
+    a.addEventListener('click', e => {
+      const el = document.getElementById(a.getAttribute('href').slice(1));
+      if (!el) return;
+      e.preventDefault();
+      const y = el.getBoundingClientRect().top + window.scrollY - TOP_GAP;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    });
+  });
+  update();
+})();
+
+// ==================== 规则库（localStorage，可增删） ====================
+(function(){
+  const KEY = 'summer_style_rules_v1';
+  const ORDER = ['色彩','造型','材质','配饰','场景','其他'];
+  const SEED = [
+    { cat:'色彩', txt:'很浅的颜色穿上面，很深的颜色穿下面。' },
+    { cat:'色彩', txt:'鲜亮的颜色不要贴着脸。腰以下随便穿。' },
+    { cat:'色彩', txt:'上面深、下面亮，是我最常犯的错。' },
+    { cat:'色彩', txt:'颜色测试只说一件事：这个颜色会不会让我的脸发暗。' },
+    { cat:'造型', txt:'黑色当线条用好看。一大块黑穿在上半身不好看。' },
+    { cat:'造型', txt:'好看靠一件有肩膀形状的外套，不靠收腰。' },
+    { cat:'造型', txt:'上下都宽松可以，但要同一个颜色。' },
+    { cat:'造型', txt:'短上衣配高腰裤也好看，还没怎么试。' },
+    { cat:'材质', txt:'不反光。硬一点没关系。' },
+    { cat:'配饰', txt:'银、白金、珍珠、贝母。小的、直线的。不戴金色。' },
+    { cat:'配饰', txt:'一身米白要有一条线，配饰就是那条线。' },
+    { cat:'场景', txt:'逆光、脸没照亮的时候，颜色规则不算数。过年全家福穿红，不算错。' }
+  ];
+
+  const box = document.getElementById('rules-box');
+  const countEl = document.getElementById('rules-count');
+  const catSel = document.getElementById('rule-cat');
+  const txtIn = document.getElementById('rule-txt');
+
+  const load = () => {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) return SEED.slice();
+      const arr = JSON.parse(raw);
+      return Array.isArray(arr) ? arr : SEED.slice();
+    } catch(e){ return SEED.slice(); }
+  };
+  const save = arr => { try { localStorage.setItem(KEY, JSON.stringify(arr)); } catch(e){} };
+
+  let rules = load();
+
+  function render(){
+    box.innerHTML = '';
+    const cats = ORDER.filter(c => rules.some(r => r.cat === c));
+    const extra = [...new Set(rules.map(r => r.cat))].filter(c => !ORDER.includes(c));
+    [...cats, ...extra].forEach(cat => {
+      const g = document.createElement('div');
+      g.className = 'rule-group';
+      const t = document.createElement('div');
+      t.className = 'rg-title';
+      t.textContent = cat;
+      g.appendChild(t);
+      rules.forEach((r, i) => {
+        if (r.cat !== cat) return;
+        const row = document.createElement('div');
+        row.className = 'rule';
+        const span = document.createElement('div');
+        span.className = 'txt';
+        span.textContent = r.txt;
+        const del = document.createElement('button');
+        del.className = 'del';
+        del.type = 'button';
+        del.textContent = '×';
+        del.title = '删掉这条';
+        del.addEventListener('click', () => { rules.splice(i,1); save(rules); render(); });
+        row.appendChild(span);
+        row.appendChild(del);
+        g.appendChild(row);
+      });
+      box.appendChild(g);
+    });
+    countEl.textContent = '共 ' + rules.length + ' 条';
+  }
+
+  function add(){
+    const v = txtIn.value.trim();
+    if (!v) { txtIn.focus(); return; }
+    rules.push({ cat: catSel.value, txt: v });
+    save(rules);
+    txtIn.value = '';
+    render();
+  }
+
+  document.getElementById('rule-add-btn').addEventListener('click', add);
+  txtIn.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); add(); } });
+  document.getElementById('rules-reset').addEventListener('click', () => {
+    if (!confirm('恢复成最初那 10 条？自己后来加的会被清掉。')) return;
+    rules = SEED.slice();
+    save(rules);
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

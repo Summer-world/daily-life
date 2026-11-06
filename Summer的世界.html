@@ -52,27 +52,32 @@
   header.top {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 1.25rem 2rem 0;
+    padding: 0 2rem;
   }
-  .top-inner { max-width: 980px; margin: 0 auto; }
+  /* 2026-11-06 抬头压扁：标题和 tab 挤在同一行，不再各占一层 */
+  .top-inner {
+    max-width: 980px; margin: 0 auto;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    flex-wrap: wrap; gap: 0 1rem;
+  }
   .top-row {
     display: flex;
     align-items: baseline;
-    justify-content: space-between;
-    flex-wrap: wrap;
     gap: 0.5rem;
-    margin-bottom: 1rem;
+    padding: 10px 0;
   }
   header.top h1 {
     font-family: 'Noto Serif SC', serif;
-    font-size: 1.4rem;
+    font-size: 1.05rem;
     font-weight: 600;
     letter-spacing: 0.02em;
+    white-space: nowrap;
   }
   header.top .sub {
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     color: var(--text-hint);
     font-weight: 300;
+    white-space: nowrap;
   }
 
   .main-tabs {
@@ -86,7 +91,7 @@
     color: var(--text-secondary);
     background: none;
     border: none;
-    padding: 12px 22px;
+    padding: 9px 16px;
     cursor: pointer;
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
@@ -133,121 +138,13 @@
     border-color: var(--accent);
   }
 
-  /* ========== 状态条（全局上下文）========== */
-  .status-strip {
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-  }
-  .status-inner {
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 0.4rem 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  .status-left {
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    flex-wrap: wrap;
-    font-size: 0.78rem;
-  }
-  .status-date {
-    color: var(--text-secondary);
-    font-weight: 500;
-    font-variant-numeric: tabular-nums;
-  }
-  .status-badge {
-    font-size: 0.7rem;
-    padding: 2px 9px;
-    border-radius: 99px;
-    background: var(--mist-light);
-    color: var(--mist);
-    white-space: nowrap;
-  }
-  .status-badge.is-overload { background: var(--mist-light); color: var(--mist); }
-  .status-badge.is-weekend  { background: var(--accent-light); color: var(--accent); }
-  .status-period {
-    font-family: inherit;
-    font-size: 0.74rem;
-    background: var(--surface);
-    border: 1px solid var(--border-dark);
-    color: var(--text-secondary);
-    padding: 3px 12px;
-    border-radius: 99px;
-    cursor: pointer;
-    display: inline-flex;
-    gap: 6px;
-    align-items: baseline;
-    transition: border-color .15s, background .15s, color .15s;
-    user-select: none;
-  }
-  .status-period:hover { border-color: var(--rose); color: var(--rose); }
-  .status-period .sp-label { color: var(--text-hint); font-size: 0.7rem; }
-  .status-period .sp-value { color: var(--text-primary); font-weight: 500; }
-  .status-period.is-active { background: var(--rose-light); border-color: var(--rose); }
-  .status-period.is-active .sp-label { color: var(--rose); }
-  .status-period.is-active .sp-value { color: var(--rose); }
-
-  .status-period-panel {
-    max-width: 980px;
-    margin: 0 auto;
-    padding: 0.55rem 2rem 0.65rem;
-    background: var(--surface);
-    border-top: 1px dashed var(--border);
-  }
-  .status-period-panel[hidden] { display: none; }
-  .spp-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-  }
-  .spp-row input[type=date] {
-    font-family: inherit;
-    font-size: 0.8rem;
-    padding: 3px 9px;
-    border: 1px solid var(--border-dark);
-    border-radius: 6px;
-    background: var(--surface);
-    color: var(--text-primary);
-  }
-  .spp-quick, .spp-clear {
-    font-family: inherit;
-    font-size: 0.74rem;
-    padding: 3px 11px;
-    border-radius: 99px;
-    border: 1px solid var(--border-dark);
-    background: var(--surface);
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all .15s;
-  }
-  .spp-quick:hover { background: var(--rose-light); color: var(--rose); border-color: var(--rose); }
-  .spp-clear:hover { color: var(--rose); border-color: var(--rose); }
-  .spp-hint {
-    font-size: 0.74rem;
-    color: var(--text-hint);
-    margin-top: 0.35rem;
-    font-style: italic;
-  }
-  @media (max-width: 640px) {
-    .status-inner { padding: 0.4rem 1rem; }
-    .status-period-panel { padding: 0.5rem 1rem 0.6rem; }
-  }
-
   /* ========== 面板 ========== */
   .panel { display: none; }
   .panel.active { display: block; }
 
   .iframe-wrap {
     width: 100%;
-    height: calc(100vh - 185px);
+    height: calc(100vh - var(--topbar-h, 120px));
     min-height: 600px;
     background: var(--surface);
     border: none;
@@ -358,7 +255,7 @@
     border-radius: 12px;
     padding: 1.1rem 1.3rem;
     margin-bottom: 0.85rem;
-    scroll-margin-top: 225px;
+    scroll-margin-top: calc(var(--topbar-h, 120px) + 36px);
   }
   .combo-title {
     font-family: 'Noto Serif SC', serif;
@@ -560,12 +457,12 @@
     100% { box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04); transform: scale(1); }
   }
 
-  footer { text-align: center; padding: 2rem; font-size: 0.7rem; color: var(--text-hint); }
+  footer { text-align: center; padding: 0.3rem 0 0.4rem; font-size: 0.62rem; line-height: 1; color: var(--text-hint); opacity: .7; }
 
   /* ========== 侧边目录 ========== */
   .side-toc {
     position: fixed;
-    top: 210px;
+    top: calc(var(--topbar-h, 120px) + 24px);
     left: 1.25rem;
     width: 168px;
     max-height: calc(100vh - 240px);
@@ -615,17 +512,17 @@
   .side-toc-sub a:hover { background: var(--bg); color: var(--text-secondary); }
   .side-toc-sub a.active { background: var(--accent-light); color: var(--accent); }
   .panel:not(.active) .side-toc { display: none; }
-  .toc-anchor { scroll-margin-top: 225px; }
+  .toc-anchor { scroll-margin-top: calc(var(--topbar-h, 120px) + 36px); }
 
   @media (max-width: 1200px) {
     .side-toc { display: none; }
   }
 
   @media (max-width: 640px) {
-    header.top { padding: 1rem 1rem 0; }
+    header.top { padding: 0 1rem; }
     .sub-nav { padding: 0.6rem 1rem; }
     .main-tab { padding: 10px 14px; font-size: 0.88rem; }
-    .iframe-wrap { height: calc(100vh - 170px); }
+    .iframe-wrap { height: calc(100vh - var(--topbar-h, 110px)); }
   }
 
   /* ========== 额外运动（游泳/hiking）========== */
@@ -879,6 +776,7 @@
 <body>
 
 <div class="topbar">
+  <!-- 2026-11-06 状态条（日期/满载/经期）按 Summer 要求整条删除，经期开关在日常页情境库里 -->
   <header class="top">
     <div class="top-inner">
       <div class="top-row">
@@ -891,27 +789,6 @@
     </div>
   </header>
 
-  <div class="status-strip">
-    <div class="status-inner">
-      <div class="status-left">
-        <span class="status-date" id="status-date">—</span>
-        <span class="status-badge" id="status-day-badge" hidden></span>
-      </div>
-      <button class="status-period" id="status-period" type="button" aria-expanded="false">
-        <span class="sp-label">经期</span>
-        <span class="sp-value" id="sp-value">未设置</span>
-      </button>
-    </div>
-    <div class="status-period-panel" id="status-period-panel" hidden>
-      <div class="spp-row">
-        <span>本周期开始日：</span>
-        <input type="date" id="spp-input">
-        <button class="spp-quick" id="spp-today" type="button">今天 D1</button>
-        <button class="spp-clear" id="spp-clear" type="button">清除</button>
-      </div>
-      <div class="spp-hint" id="spp-hint"></div>
-    </div>
-  </div>
 
   <div class="sub-nav show" id="sub-nav-today">
     <div class="sub-nav-inner">
@@ -968,6 +845,15 @@
 
 <script src="2-我的智慧/与神对话1content.js"></script>
 <script>
+  // 2026-11-06 顶栏实际高度 → --topbar-h（iframe 高度、侧边目录、跳转偏移都用它）
+  (function(){
+    const tb = document.querySelector('.topbar');
+    const ft = document.querySelector('footer');
+    const set = () => document.documentElement.style.setProperty('--topbar-h', (tb.offsetHeight + (ft ? ft.offsetHeight : 0)) + 'px');
+    set();
+    if (window.ResizeObserver) new ResizeObserver(set).observe(tb);
+    window.addEventListener('resize', set);
+  })();
   const TAB_MAP = {
     today: { sub: 'today', defaultPanel: 'daily' },
   };
@@ -1020,7 +906,7 @@
   function restoreNav() {
     let saved;
     try { saved = JSON.parse(localStorage.getItem(NAV_KEY) || '{}'); } catch(e) { return; }
-    if (!saved.tab || !TAB_MAP[saved.tab]) return;
+    if (!saved.tab || !TAB_MAP[saved.tab]) { showMainTab('today'); return; }
 
     // 如果有保存的子页，先把对应 sub-tab 标为 active，showMainTab 会自动捡起来
     if (saved.sub) {
@@ -1049,110 +935,6 @@
   });
 
   restoreNav();
-
-  // ==================== 状态条（日期 + 周四满载 / 周末 + 经期） ====================
-  (function statusStrip(){
-    const dateEl  = document.getElementById('status-date');
-    const badgeEl = document.getElementById('status-day-badge');
-    const btn     = document.getElementById('status-period');
-    const panel   = document.getElementById('status-period-panel');
-    const input   = document.getElementById('spp-input');
-    const todayBtn= document.getElementById('spp-today');
-    const clearBtn= document.getElementById('spp-clear');
-    const hint    = document.getElementById('spp-hint');
-    const valEl   = document.getElementById('sp-value');
-    if (!dateEl || !btn) return;
-    const KEY = 'summer_period_v1';
-    const WEEKDAY = ['日','一','二','三','四','五','六'];
-
-    function ymd(d){
-      return d.getFullYear() + '-' +
-        String(d.getMonth()+1).padStart(2,'0') + '-' +
-        String(d.getDate()).padStart(2,'0');
-    }
-    function renderDate(){
-      const now = new Date();
-      dateEl.textContent = ymd(now) + ' 周' + WEEKDAY[now.getDay()];
-      const dow = now.getDay();
-      badgeEl.classList.remove('is-overload', 'is-weekend');
-      if (dow === 4) {
-        badgeEl.hidden = false;
-        badgeEl.classList.add('is-overload');
-        badgeEl.textContent = '🌙 满载日';
-      } else if (dow === 0 || dow === 6) {
-        badgeEl.hidden = false;
-        badgeEl.classList.add('is-weekend');
-        badgeEl.textContent = '🎉 周末';
-      } else {
-        badgeEl.hidden = true;
-      }
-    }
-    function load(){
-      try { return JSON.parse(localStorage.getItem(KEY) || 'null'); }
-      catch(e){ return null; }
-    }
-    function save(start){
-      try { localStorage.setItem(KEY, JSON.stringify({ start })); } catch(e){}
-    }
-    function diffDays(startStr){
-      const a = new Date(startStr + 'T00:00:00').setHours(0,0,0,0);
-      const b = new Date().setHours(0,0,0,0);
-      return Math.round((b - a) / 86400000);
-    }
-    function renderPeriod(){
-      const data = load();
-      btn.classList.remove('is-active');
-      if (!data || !data.start) {
-        valEl.textContent = '未设置';
-        hint.textContent = '点开右上「经期」按钮设个开始日，之后状态条会自动跟。';
-        input.value = '';
-        return;
-      }
-      input.value = data.start;
-      const day = diffDays(data.start) + 1;
-      if (day < 1) {
-        valEl.textContent = '预设 D1: ' + data.start;
-        hint.textContent = '已预设开始日，' + (1 - day) + ' 天后开始。';
-      } else if (day <= 2) {
-        btn.classList.add('is-active');
-        valEl.textContent = 'D' + day + ' · 量大';
-        hint.textContent = '量大期：以休息和情绪安抚为主（详见「经期护理」卡）。';
-      } else if (day <= 7) {
-        btn.classList.add('is-active');
-        valEl.textContent = 'D' + day + ' · 后半段';
-        hint.textContent = '后半段：可做温和拉伸 / 低冲击运动。';
-      } else if (day <= 27) {
-        valEl.textContent = '周期 D' + day;
-        hint.textContent = '距下次预估约 ' + (28 - day) + ' 天。';
-      } else {
-        valEl.textContent = 'D' + day + ' · 已超 28 天';
-        hint.textContent = '超出常规周期，本次开始日记得更新。';
-      }
-    }
-
-    btn.addEventListener('click', () => {
-      const hidden = panel.hidden;
-      panel.hidden = !hidden;
-      btn.setAttribute('aria-expanded', hidden ? 'true' : 'false');
-    });
-    todayBtn.addEventListener('click', () => {
-      save(ymd(new Date()));
-      renderPeriod();
-    });
-    clearBtn.addEventListener('click', () => {
-      try { localStorage.removeItem(KEY); } catch(e){}
-      renderPeriod();
-      panel.hidden = true;
-      btn.setAttribute('aria-expanded', 'false');
-    });
-    input.addEventListener('change', () => {
-      if (input.value) { save(input.value); renderPeriod(); }
-    });
-
-    renderDate();
-    renderPeriod();
-    setInterval(renderDate, 60000);   // 跨午夜自动更新
-  })();
 
   // ==================== 今日一条 · 与神对话 ====================
   (function setupGodtalkDaily(){

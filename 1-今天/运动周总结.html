@@ -28,27 +28,29 @@
     --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  html { scroll-behavior: smooth; scroll-padding-top: 60px; }
   body { font-family: 'Noto Sans SC', sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; line-height: 1.7; }
 
+  /* 2026-11-06 抬头压扁：标题+副标题+按钮一行，sticky 占位从 ~90px 降到 ~44px */
   header {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 1.25rem 2rem;
+    padding: 0.45rem 2rem;
     position: sticky;
     top: 0;
     z-index: 50;
   }
-  .head-inner { max-width: 980px; margin: 0 auto; display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; }
-  header h1 { font-family: 'Noto Serif SC', serif; font-size: 1.4rem; font-weight: 600; letter-spacing: 0.02em; }
-  header .sub { font-size: 0.78rem; color: var(--text-hint); font-weight: 300; }
-  header a.back { font-size: 0.78rem; color: var(--text-secondary); text-decoration: none; padding: 5px 14px; border: 1px solid var(--border-dark); border-radius: 99px; }
+  .head-inner { max-width: 980px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.3rem 0.75rem; }
+  .head-inner > div:first-child { display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
+  header h1 { font-family: 'Noto Serif SC', serif; font-size: 1.02rem; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+  header .sub { font-size: 0.7rem; color: var(--text-hint); font-weight: 300; }
+  header a.back { font-size: 0.72rem; color: var(--text-secondary); text-decoration: none; padding: 3px 10px; border: 1px solid var(--border-dark); border-radius: 99px; }
   header a.back:hover { background: var(--bg); }
-  .head-actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+  .head-actions { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
   .head-btn {
-    font-size: 0.78rem; color: var(--accent);
+    font-size: 0.72rem; color: var(--accent);
     background: var(--accent-light);
-    padding: 5px 14px; border: 1px solid var(--accent-mid);
+    padding: 3px 10px; border: 1px solid var(--accent-mid);
     border-radius: 99px; cursor: pointer;
     font-family: inherit; line-height: 1.5;
   }
@@ -61,7 +63,7 @@
   /* ========== 侧边目录布局 ========== */
   .layout { display: grid; grid-template-columns: 210px 1fr; gap: 1.75rem; align-items: start; }
   .side-toc {
-    position: sticky; top: 5.5rem;
+    position: sticky; top: 3.6rem;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -85,10 +87,10 @@
   .side-toc .sub { padding-left: 16px; }
   .side-toc .sub a { font-size: 0.78rem; padding: 3px 10px; color: var(--text-hint); }
   .side-toc .sub a:hover { color: var(--text-secondary); }
-  .toc-anchor { scroll-margin-top: 5.5rem; }
+  .toc-anchor { scroll-margin-top: 3.6rem; }
 
   /* ========== 常用组合卡 ========== */
-  .combo-group-label { font-family: 'Noto Serif SC', serif; font-size: 0.92rem; font-weight: 600; margin: 1.4rem 0 0.6rem; padding: 0.4rem 0.85rem; border-radius: 6px; display: inline-block; scroll-margin-top: 5.5rem; }
+  .combo-group-label { font-family: 'Noto Serif SC', serif; font-size: 0.92rem; font-weight: 600; margin: 1.4rem 0 0.6rem; padding: 0.4rem 0.85rem; border-radius: 6px; display: inline-block; scroll-margin-top: 3.6rem; }
   .combo-group-label.stamina-label { background: var(--gold-light); color: var(--gold); }
   .combo-group-label.shape-label { background: var(--shape-light); color: var(--shape); }
   .combo-group-label.rest-label { background: var(--info-light); color: var(--info); }
@@ -168,7 +170,7 @@
   .cat-card-title {
     font-family: 'Noto Serif SC', serif; font-size: 1rem; font-weight: 600;
     margin-bottom: 0.7rem; display: flex; align-items: center; gap: 8px;
-    scroll-margin-top: 5.5rem;
+    scroll-margin-top: 3.6rem;
   }
   .cat-card-title .count-hint { font-size: 0.74rem; font-weight: 400; color: var(--text-hint); }
 
@@ -233,6 +235,7 @@
   .bf-title { font-weight: 600; font-size: 0.86rem; color: var(--text-secondary); }
   .backfill-bar.active .bf-title { color: var(--gold); }
   .bf-hint { font-size: 0.78rem; line-height: 1.55; color: var(--text-hint); }
+  .bf-hint:empty { display: none; }
   .backfill-bar.active .bf-hint { color: var(--text-secondary); }
   .bf-ctl { display: flex; gap: 8px; align-items: center; }
   .bf-ctl input[type="date"] {
@@ -263,6 +266,7 @@
     border: 1px solid rgba(255,255,255,0.6); background: rgba(255,255,255,0.15);
     color: #fff; border-radius: 999px; padding: 3px 11px;
   }
+  .bf-float[hidden] { display: none; }  /* 2026-11-06 修：display:flex 盖掉了 hidden，浮条一直显示 */
   @media (max-width: 600px) { .bf-float { bottom: 10px; font-size: 0.78rem; } }
 
   .week-range-wrap { display: flex; flex-direction: column; gap: 2px; }
@@ -284,26 +288,28 @@
   .week-nav button.this-week { background: var(--accent); color: #fff; border-color: var(--accent); }
 
   /* ==== 数据汇总 ==== */
+  /* 2026-11-06 完成数据压扁：组合明细删掉、三格变矮、额外运动并进总量条 */
+  .data-card { padding: 0.8rem 1rem; }
   .goal-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-bottom: 1rem;
+    gap: 8px;
+    margin-bottom: 0.5rem;
   }
   .goal-stat {
-    padding: 0.95rem 1.1rem;
-    border-radius: 10px;
-    display: flex; flex-direction: column; gap: 4px;
+    padding: 0.5rem 0.8rem;
+    border-radius: 8px;
+    display: flex; flex-direction: row; align-items: baseline; gap: 8px; flex-wrap: wrap;
   }
   .goal-stat.stamina { background: var(--gold-light); border-left: 3px solid var(--gold); }
   .goal-stat.shape { background: var(--shape-light); border-left: 3px solid var(--shape); }
   .goal-stat.rest { background: var(--info-light); border-left: 3px solid var(--info); }
-  .goal-label { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); }
-  .goal-num { font-family: 'Noto Serif SC', serif; font-size: 1.4rem; font-weight: 600; line-height: 1; }
+  .goal-label { font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); }
+  .goal-num { font-family: 'Noto Serif SC', serif; font-size: 1.15rem; font-weight: 600; line-height: 1; }
   .goal-num.met { color: var(--accent); }
   .goal-num.miss { color: var(--rose); }
   .goal-target { font-size: 0.78rem; color: var(--text-hint); font-weight: 400; margin-left: 4px; }
-  .goal-sub { font-size: 0.74rem; color: var(--text-hint); }
+  .goal-sub { font-size: 0.72rem; color: var(--text-hint); margin-left: auto; }
   .goal-pct { font-size: 0.74rem; font-weight: 500; }
   .goal-pct.met { color: var(--accent); }
   .goal-pct.miss { color: var(--rose); }
@@ -326,9 +332,9 @@
   .extra-stat .sub { font-size: 0.74rem; color: var(--text-hint); }
 
   .total-bar {
-    margin-top: 0.75rem; padding: 0.65rem 1rem;
+    margin-top: 0; padding: 0.4rem 0.8rem;
     background: var(--bg); border-radius: 8px;
-    font-size: 0.85rem; color: var(--text-secondary);
+    font-size: 0.8rem; color: var(--text-secondary);
     display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
   }
   .total-bar strong { color: var(--text-primary); font-family: 'Noto Serif SC', serif; }
@@ -348,34 +354,9 @@
   td .pill.r { background: var(--info-light); color: var(--info); }
   .empty-row { text-align: center; color: var(--text-hint); font-style: italic; padding: 1.25rem; font-size: 0.83rem; }
 
-  /* ==== 建议 ==== */
-  .suggest-block {
-    background: var(--accent-light);
-    border: 1px dashed var(--accent);
-    border-radius: 10px;
-    padding: 1rem 1.25rem;
-    margin-bottom: 0.7rem;
-  }
-  .suggest-block.celebrate { background: var(--gold-light); border-color: var(--gold); }
-  .suggest-title { font-family: 'Noto Serif SC', serif; font-weight: 600; font-size: 0.92rem; margin-bottom: 0.5rem; color: var(--accent); }
-  .suggest-block.celebrate .suggest-title { color: var(--gold); }
-  .suggest-list { list-style: none; padding: 0; }
-  .suggest-list li {
-    font-size: 0.85rem; color: var(--text-secondary);
-    padding: 0.35rem 0 0.35rem 1.1rem; position: relative; line-height: 1.7;
-  }
-  .suggest-list li::before {
-    content: '→'; position: absolute; left: 0; color: var(--accent-mid); font-weight: 600;
-  }
-  .suggest-block.celebrate .suggest-list li::before { color: var(--gold); }
-
-  /* ==== 文字复盘 ==== */
-  .review-block { margin-bottom: 1rem; }
-  .review-label {
-    display: block; font-size: 0.85rem; font-weight: 500;
-    margin-bottom: 0.45rem; color: var(--text-primary);
-  }
-  .review-label .hint { font-size: 0.75rem; color: var(--text-hint); font-weight: 400; margin-left: 6px; }
+  /* ==== 文字复盘（2026-11-06 压扁）==== */
+  .review-card { padding: 0.7rem 1rem; }
+  .review-row { display: flex; gap: 10px; align-items: flex-start; }
   textarea {
     width: 100%; min-height: 100px;
     font-family: inherit; font-size: 0.88rem; line-height: 1.7;
@@ -385,16 +366,19 @@
     resize: vertical;
   }
   textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
-
-  .save-row { display: flex; gap: 10px; align-items: center; margin-top: 0.5rem; flex-wrap: wrap; }
+  #ta-notes {
+    flex: 1; min-height: 0; font-size: 0.86rem; line-height: 1.6;
+    padding: 0.4rem 0.7rem; border-radius: 8px; resize: none; overflow: hidden;
+  }
   .save-btn {
-    font-family: inherit; font-size: 0.88rem; padding: 9px 24px;
-    background: var(--accent); color: #fff;
+    font-family: inherit; font-size: 0.8rem; padding: 6px 16px; margin-top: 2px;
+    background: var(--accent); color: #fff; white-space: nowrap;
     border: none; border-radius: 99px; cursor: pointer;
     transition: all 0.15s;
   }
   .save-btn:hover { background: var(--accent-mid); }
-  .save-status { font-size: 0.8rem; color: var(--accent); }
+  .save-status { display: block; font-size: 0.76rem; color: var(--accent); min-height: 0; margin-top: 2px; }
+
   .save-status.shown { animation: fadeOut 3s forwards; }
   @keyframes fadeOut { 0% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; } }
 
@@ -432,6 +416,13 @@
   .pastwords-more:hover { color: var(--accent); border-color: var(--accent); }
 
   /* ==== 历史归档 ==== */
+  .archive-details { margin-top: 1.5rem; }
+  .archive-details > summary { cursor: pointer; list-style: none; user-select: none; margin-bottom: 0; }
+  .archive-details > summary::-webkit-details-marker { display: none; }
+  .archive-details > summary::before { content: '▸'; font-size: 0.8rem; color: var(--text-hint); }
+  .archive-details[open] > summary::before { content: '▾'; }
+  .archive-details[open] > summary { margin-bottom: 0.85rem; }
+  .archive-details > summary .count-hint { font-size: 0.74rem; font-weight: 400; color: var(--text-hint); letter-spacing: 0; }
   .archive-item {
     border: 1px solid var(--border);
     border-radius: 10px;
@@ -477,7 +468,7 @@
   @media (max-width: 680px) {
     .goal-stats { grid-template-columns: 1fr; }
     .extra-stats { grid-template-columns: 1fr; }
-    header { padding: 1rem 1rem; }
+    header { padding: 0.4rem 1rem; }
     main { padding: 1.25rem 1rem 2rem; }
   }
 
@@ -652,20 +643,9 @@
     <ul>
       <li><a href="#sec-week">📅 本周复盘</a>
         <ul class="sub">
+          <li><a href="#sec-trend">运动趋势</a></li>
           <li><a href="#sec-data">完成数据</a></li>
-          <li><a href="#sec-suggest">下周建议</a></li>
           <li><a href="#sec-review">这周的话</a></li>
-        </ul>
-      </li>
-      <li><a href="#sec-trend">📈 运动趋势</a></li>
-      <li><a href="#sec-archive">📚 历史归档</a></li>
-      <li><a href="#sec-combos">📋 常用组合</a>
-        <ul class="sub">
-          <li><a href="#sec-extra">🏃 额外运动</a></li>
-          <li><a href="#combo-stamina-group">🔥 体能向</a></li>
-          <li><a href="#cardio-plan">🫀 心肺计划</a></li>
-          <li><a href="#combo-shape-group">💪 身材向</a></li>
-          <li><a href="#combo-rest-group">🌿 养护向</a></li>
         </ul>
       </li>
       <li><a href="#sec-actions">🎯 动作详情</a>
@@ -680,6 +660,16 @@
           <li id="custom-toc-item" style="display:none"><a href="#act-custom">🌱 我的新增</a></li>
         </ul>
       </li>
+      <li><a href="#sec-combos">📋 常用组合</a>
+        <ul class="sub">
+          <li><a href="#sec-extra">🏃 额外运动</a></li>
+          <li><a href="#combo-stamina-group">🔥 体能向</a></li>
+          <li><a href="#cardio-plan">🫀 心肺计划</a></li>
+          <li><a href="#combo-shape-group">💪 身材向</a></li>
+          <li><a href="#combo-rest-group">🌿 养护向</a></li>
+        </ul>
+      </li>
+      <li><a href="#sec-archive">📚 历史归档</a></li>
     </ul>
   </aside>
 
@@ -704,7 +694,7 @@
       <span class="bf-icon">✎</span>
       <div>
         <div class="bf-title">补记以前的日子</div>
-        <div class="bf-hint" id="bf-hint">选一个日期，下面动作和组合的 <b>+</b> 就记到那天 —— 旅行、出差回来补记用这个。额外运动本来就能选日期，不受这里影响。</div>
+        <div class="bf-hint" id="bf-hint"></div>
       </div>
     </div>
     <div class="bf-ctl">
@@ -716,72 +706,6 @@
   <div class="bf-float" id="bf-float" hidden>
     <span>✎ 正在补记 <b id="bf-float-date"></b></span>
     <button type="button" id="bf-float-exit">回到今天</button>
-  </div>
-
-  <!-- ==== 数据汇总 ==== -->
-  <div class="section-heading toc-anchor" id="sec-data">📊 完成数据</div>
-  <div class="card">
-    <div class="goal-stats">
-      <div class="goal-stat stamina">
-        <span class="goal-label">🔥 体能</span>
-        <span><span class="goal-num" id="num-stamina">0</span><span class="goal-target">/100 分钟</span></span>
-        <span class="goal-sub"><span id="cnt-stamina">0</span> 次 · <span class="goal-pct" id="pct-stamina">0%</span></span>
-      </div>
-      <div class="goal-stat shape">
-        <span class="goal-label">💪 身材</span>
-        <span><span class="goal-num" id="num-shape">0</span><span class="goal-target">/100 分钟</span></span>
-        <span class="goal-sub"><span id="cnt-shape">0</span> 次 · <span class="goal-pct" id="pct-shape">0%</span></span>
-      </div>
-      <div class="goal-stat rest">
-        <span class="goal-label">🌿 养护</span>
-        <span><span class="goal-num" id="num-rest">0</span><span class="goal-target">/150 分钟</span></span>
-        <span class="goal-sub"><span id="cnt-rest">0</span> 次 · <span class="goal-pct" id="pct-rest">0%</span></span>
-      </div>
-    </div>
-
-    <div style="font-size:.74rem;color:var(--text-hint);line-height:1.6;margin:.1rem 0 .5rem;">
-      额外运动已计入分类目标：🏊 游泳 / ⛰️ Hiking / 🏃 跑步 / 🏸 羽毛球 → 🔥 体能，🧘 JJ 瑜伽 → 🌿 养护。
-    </div>
-
-    <div id="extra-line" style="font-size:.8rem;color:var(--text-secondary);margin-bottom:.7rem;">—</div>
-
-    <div class="total-bar">
-      <span>本周总运动量</span>
-      <span><strong id="total-minutes">0</strong> 分钟 · 室内组合 <span id="total-indoor">0</span> + 户外/水中 <span id="total-extra">0</span></span>
-    </div>
-
-    <div style="font-family:'Noto Serif SC',serif;font-weight:600;font-size:0.86rem;color:var(--text-secondary);margin:1.15rem 0 0.5rem;">📋 组合明细</div>
-    <table>
-      <thead><tr><th>分类</th><th>组合</th><th class="right">次数</th><th class="right">分钟</th></tr></thead>
-      <tbody id="combo-detail-tbody"></tbody>
-    </table>
-  </div>
-
-  <!-- ==== 自动建议 ==== -->
-  <div class="section-heading toc-anchor" id="sec-suggest">💡 下周建议</div>
-  <div id="suggestions"></div>
-
-  <!-- ==== 文字复盘 ==== -->
-  <div class="section-heading toc-anchor" id="sec-review">✍️ 这周的话</div>
-  <div class="card">
-    <div class="review-block">
-      <label class="review-label" for="ta-notes">这周的话 <span class="hint">亮点、状态、身体反馈，下周想怎么调整……</span></label>
-      <textarea id="ta-notes" placeholder="比如：周六的 hiking 走了 12 公里居然没崩；周三晚太累跳了一次养护；下周想把身材组合从 1 次提到 3 次，hiking 改在周六上午……"></textarea>
-    </div>
-    <div class="save-row">
-      <button class="save-btn" onclick="saveReview()">💾 保存这周的复盘</button>
-      <span class="save-status" id="save-status"></span>
-    </div>
-
-    <!-- 回看过去几周写的话（默认折叠） -->
-    <div class="pastwords" id="pastwords-block" style="display:none">
-      <div class="pastwords-head" onclick="togglePastWords()">
-        <span class="pastwords-title">📖 过去几周的话</span>
-        <span class="pastwords-count" id="pastwords-count"></span>
-        <span class="pastwords-toggle" id="pastwords-toggle">▼</span>
-      </div>
-      <div class="pastwords-body" id="pastwords-body"></div>
-    </div>
   </div>
 
   <!-- ==== 运动趋势 ==== -->
@@ -802,9 +726,178 @@
     </div>
   </div>
 
-  <!-- ==== 历史归档 ==== -->
-  <div class="section-heading toc-anchor" id="sec-archive">📚 历史归档</div>
-  <div id="archive-list"></div>
+  <!-- ==== 数据汇总 ==== -->
+  <div class="section-heading toc-anchor" id="sec-data">📊 完成数据</div>
+  <div class="card data-card">
+    <div class="goal-stats">
+      <div class="goal-stat stamina">
+        <span class="goal-label">🔥 体能</span>
+        <span><span class="goal-num" id="num-stamina">0</span><span class="goal-target">/100 分钟</span></span>
+        <span class="goal-sub"><span id="cnt-stamina">0</span> 次 · <span class="goal-pct" id="pct-stamina">0%</span></span>
+      </div>
+      <div class="goal-stat shape">
+        <span class="goal-label">💪 身材</span>
+        <span><span class="goal-num" id="num-shape">0</span><span class="goal-target">/100 分钟</span></span>
+        <span class="goal-sub"><span id="cnt-shape">0</span> 次 · <span class="goal-pct" id="pct-shape">0%</span></span>
+      </div>
+      <div class="goal-stat rest">
+        <span class="goal-label">🌿 养护</span>
+        <span><span class="goal-num" id="num-rest">0</span><span class="goal-target">/150 分钟</span></span>
+        <span class="goal-sub"><span id="cnt-rest">0</span> 次 · <span class="goal-pct" id="pct-rest">0%</span></span>
+      </div>
+    </div>
+
+    <div class="total-bar">
+      <span>本周 <strong id="total-minutes">0</strong> 分钟 · 室内 <span id="total-indoor">0</span> + 户外/水中 <span id="total-extra">0</span></span>
+      <span id="extra-line">—</span>
+    </div>
+  </div>
+
+  <!-- ==== 文字复盘（2026-11-06 压成一行：标签 + 两行框 + 保存，写多了框自己长高）==== -->
+  <div class="section-heading toc-anchor" id="sec-review">✍️ 这周的话</div>
+  <div class="card review-card">
+    <div class="review-row">
+      <textarea id="ta-notes" rows="1" placeholder="亮点、状态、身体反馈，下周想怎么调……"></textarea>
+      <button class="save-btn" onclick="saveReview()">保存</button>
+    </div>
+    <span class="save-status" id="save-status"></span>
+
+    <!-- 回看过去几周写的话（默认折叠） -->
+    <div class="pastwords" id="pastwords-block" style="display:none">
+      <div class="pastwords-head" onclick="togglePastWords()">
+        <span class="pastwords-title">📖 过去几周的话</span>
+        <span class="pastwords-count" id="pastwords-count"></span>
+        <span class="pastwords-toggle" id="pastwords-toggle">▼</span>
+      </div>
+      <div class="pastwords-body" id="pastwords-body"></div>
+    </div>
+  </div>
+
+  <!-- ============================================================== -->
+  <!-- ==== 动作详情（参考库）================================================ -->
+  <!-- ============================================================== -->
+  <div class="section-heading toc-anchor" id="sec-actions">🎯 动作详情 · 43 项</div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-posture"><span>🦴</span>体态与矫正 <span class="count-hint" data-base-text="· 7 项 · #1–9">· 7 项 · #1–9</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="体态与矫正">
+        <tr><td class="num">1</td><td>掰正骨盆懒人版</td><td>雪儿很棒</td><td>5min</td><td>躺姿</td></tr>
+        <tr><td class="num">2</td><td>女明星仪态管理</td><td>美佳老师</td><td>3min</td><td>站姿</td></tr>
+        <tr><td class="num">3</td><td>谁懂丝滑美背的杀伤力</td><td>欧阳春晓</td><td>15min</td><td>站/坐/盘腿</td></tr>
+        <tr><td class="num">4</td><td>告别圆肩驼背·YTWL 矫正训练</td><td>欧阳春晓</td><td>8min</td><td>站/坐</td></tr>
+        <tr><td class="num">5</td><td>骨科专家腰椎操·久坐快练</td><td>小昕爱养生</td><td>3min</td><td>站姿</td></tr>
+        <tr><td class="num">6</td><td>根除小肚腩·告别假胯宽</td><td>欧阳春晓</td><td>10min</td><td>地板</td></tr>
+        <tr><td class="num">7</td><td>骨盆回正训练</td><td>欧阳春晓</td><td>8min</td><td>躺姿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-breath"><span>🧘</span>呼吸与冥想 <span class="count-hint" data-base-text="· 6 项 · #11–19">· 6 项 · #11–19</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="呼吸与冥想">
+        <tr><td class="num">11</td><td>Nadi Shodhana 纳迪净化法（缓焦提专注）</td><td>TheS艾斯</td><td>5min</td><td>坐姿</td></tr>
+        <tr><td class="num">12</td><td>全身扫描冥想</td><td>能量派</td><td>5min</td><td>躺/坐</td></tr>
+        <tr><td class="num">13</td><td>自我肯定冥想·训练内心强大</td><td>FLOW心流所</td><td>5min</td><td>坐姿</td></tr>
+        <tr><td class="num">14</td><td>冥想疗愈·我值得无条件的爱</td><td>马四月</td><td>10min</td><td>坐姿</td></tr>
+        <tr><td class="num">15</td><td>颂钵冥想·睡前助眠放松</td><td>马四月</td><td>10min</td><td>躺/坐</td></tr>
+        <tr><td class="num">16</td><td>谐振呼吸冥想·最深的宁静与放松</td><td>能量派</td><td>10min</td><td>躺/坐</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-stretch"><span>🤸</span>拉伸与放松 <span class="count-hint" data-base-text="· 9 项 · #21–29">· 9 项 · #21–29</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="拉伸与放松">
+        <tr><td class="num">21</td><td>15 分钟全身快速拉伸</td><td>瑜伽老师JJ</td><td>15min</td><td>地板</td></tr>
+        <tr><td class="num">22</td><td>全程站立全身拉伸·从头到脚舒缓激活</td><td>周六野Zoey</td><td>10min</td><td>站姿</td></tr>
+        <tr><td class="num">23</td><td>全程躺练·消除疲劳恢复活力</td><td>瑜伽玛拉</td><td>10min</td><td>躺姿</td></tr>
+        <tr><td class="num">24</td><td>仙人揉腹跟练·古法八式</td><td>不圆的汤圆崽</td><td>10min</td><td>躺/坐</td></tr>
+        <tr><td class="num">25</td><td>新手练臀必备·臀腿完整拉伸</td><td>Bella</td><td>7min</td><td>站+地板</td></tr>
+        <tr><td class="num">26</td><td>坐姿 10min 肩颈背动态拉伸</td><td>欧阳春晓</td><td>10min</td><td>坐姿</td></tr>
+        <tr><td class="num">27</td><td>清晨排毒瑜伽</td><td>瑜伽老师JJ</td><td>10min</td><td>站+躺</td></tr>
+        <tr><td class="num">28</td><td>360 度无死角腿部拉伸</td><td>噔噔噔邓</td><td>10min</td><td>地板</td></tr>
+        <tr><td class="num">29</td><td>极度舒适拉伸·不觉得累</td><td>泡椒味桃子</td><td>3min</td><td>站姿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-massage"><span>💆</span>按摩 <span class="count-hint" data-base-text="· 1 项 · #31–39">· 1 项 · #31–39</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="按摩">
+        <tr><td class="num">31</td><td>小腿精油按摩</td><td>欧阳春晓</td><td>5min</td><td>坐姿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-cardio"><span>🔥</span>有氧与力量 <span class="count-hint" data-base-text="· 16 项 · #41–59">· 16 项 · #41–59</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="有氧与力量">
+        <tr><td class="num">41</td><td>间歇跳绳</td><td>bit by bit</td><td>5min</td><td>站姿</td></tr>
+        <tr><td class="num">42</td><td>一副哑铃练全身</td><td>Nina</td><td>15min</td><td>站姿</td></tr>
+        <tr><td class="num">43</td><td>八段锦</td><td>—</td><td>12min</td><td>站姿</td></tr>
+        <tr><td class="num">45</td><td>古法内脏脂肪操</td><td>雪儿很棒</td><td>10min</td><td>站姿</td></tr>
+        <tr><td class="num">46</td><td>一首歌运动前热身</td><td>刘逗逗</td><td>4min</td><td>站姿</td></tr>
+        <tr><td class="num">47</td><td>清晨燃脂瑜伽</td><td>瑜伽老师JJ</td><td>10min</td><td>地板</td></tr>
+        <tr><td class="num">48</td><td>第九套广播体操</td><td>Mina</td><td>4min</td><td>站姿</td></tr>
+        <tr><td class="num">49</td><td>第八套广播体操</td><td>彤姐</td><td>4min</td><td>站姿</td></tr>
+        <tr><td class="num">50</td><td>有氧减脂操·低缓冲全身</td><td>欧阳春晓</td><td>15min</td><td>站姿</td></tr>
+        <tr><td class="num">51</td><td>簿肌修炼·居家无器械全身</td><td>房子</td><td>5min</td><td>地板</td></tr>
+        <tr><td class="num">52</td><td>居家哑铃背部跟练</td><td>ting</td><td>5min</td><td>站姿</td></tr>
+        <tr><td class="num">53</td><td>全身塑形哑铃跟练</td><td>冰冰教练</td><td>20min</td><td>站姿</td></tr>
+        <tr><td class="num">54</td><td>无蹲跳踏步有氧·瘦全身</td><td>欧阳春晓</td><td>10min</td><td>站姿</td></tr>
+        <tr><td class="num">55</td><td>欢乐踏步燃脂有氧</td><td>Zoey</td><td>20min</td><td>站姿</td></tr>
+        <tr><td class="num">56</td><td>搏击燃脂训练·无器械站立</td><td>Jo姐</td><td>30min</td><td>站姿</td></tr>
+        <tr><td class="num">57</td><td>无跑跳全程站立有氧</td><td>费教练</td><td>30min</td><td>站姿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-core"><span>💪</span>核心与腹部 <span class="count-hint" data-base-text="· 4 项 · #61–69">· 4 项 · #61–69</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="核心与腹部">
+        <tr><td class="num">61</td><td>萨尔曼瘦肚子·平坦小腹</td><td>叫我瓜瓜</td><td>5min</td><td>躺姿</td></tr>
+        <tr><td class="num">62</td><td>激活腹横肌·细腰又护腰</td><td>钳钳妈阿曼达</td><td>10min</td><td>坐+躺</td></tr>
+        <tr><td class="num">63</td><td>真空腹训练</td><td>欧阳春晓</td><td>5min</td><td>站/坐/躺</td></tr>
+        <tr><td class="num">64</td><td>胸腹式联动呼吸</td><td>—</td><td>10min</td><td>站姿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-leg"><span>🦵</span>腿部与臀部 <span class="count-hint" data-base-text="· 5 项 · #71–79">· 5 项 · #71–79</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="腿部与臀部">
+        <tr><td class="num">71</td><td>10min 特快瘦大腿</td><td>林芊妤</td><td>10min</td><td>地板</td></tr>
+        <tr><td class="num">72</td><td>5 分钟带你练臀（弹力带版）</td><td>Nina</td><td>5min</td><td>坐姿</td></tr>
+        <tr><td class="num">73</td><td>完善足弓训练·矫正腿型拉长跟腱</td><td>欧阳春晓</td><td>10min</td><td>站姿</td></tr>
+        <tr><td class="num">74</td><td>膝超伸运动·细直大长腿</td><td>韩小四</td><td>10min</td><td>地板</td></tr>
+        <tr><td class="num">75</td><td>纠正不良腿型·足弓弹性重建 4.0</td><td>欧阳春晓</td><td>20min</td><td>地板</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 我的新增 · 未归类兜底（其余有 category 的会按分类合并进上面 7 个卡）-->
+  <div class="card" id="custom-actions-card" style="display:none">
+    <div class="cat-card-title toc-anchor" id="act-custom"><span>🌱</span>我的新增 · 未归类 <span class="count-hint" id="custom-count-hint">· 0 项</span></div>
+    <div style="font-size:0.78rem;color:var(--text-hint);margin:-0.3rem 0 0.7rem;padding-left:2px;">没填具体类型的「我的新增」动作归到这里；有类型的会出现在上面对应的卡里（带 🌱 标记）</div>
+    <table class="action-table" id="custom-actions-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody id="custom-actions-tbody"></tbody>
+    </table>
+  </div>
 
   <!-- ============================================================== -->
   <!-- ==== 常用组合（参考库）================================================ -->
@@ -908,6 +1001,17 @@
         <tr><td style="white-space:nowrap;"><b>🏃 5 公里</b><br><span style="font-size:.74rem;color:var(--text-hint);">主心骨</span></td><td>超慢跑 180 步频，<b>全程能整句说话</b>，喘到说不出话就是快了。时间不管，轻松了自然会快。</td></tr>
         <tr><td style="white-space:nowrap;"><b>🏊 游泳 30min</b><br><span style="font-size:.74rem;color:var(--text-hint);">周二晚</span></td><td>换气改 <b>2 划 1 换（同侧）</b>或 3 划 1 换（两侧轮），水下鼻子把气呼干净。目标是<b>不停能游多远</b>：300m → 600m。</td></tr>
         <tr><td style="white-space:nowrap;"><b>🔥 站立有氧</b><br><span style="font-size:.74rem;color:var(--text-hint);">下面组合</span></td><td>第 1–4 周 <b>踏步燃脂 24min</b> → 第 5 周起 <b>站立有氧 34min</b> → 第 9 周 搏击 34min。</td></tr>
+      </tbody>
+    </table>
+    <!-- 2026-11-06 跑步日程序：她上周开始跑、恢复慢 → 时段/跑前/跑后/吃喝按时序一张表 -->
+    <table style="margin-top:.5rem;">
+      <tbody>
+        <tr><td style="white-space:nowrap;"><b>什么时候跑</b></td><td><b>早上 6–8 点</b>或傍晚 6 点后，<b>26°C 以上改游泳</b>不算断。跑一天歇一天，两次隔 48 小时，中间放游泳。8 点后出门戴帽子。</td></tr>
+        <tr><td style="white-space:nowrap;"><b>跑前</b></td><td>出门前 30–60 分钟<b>吃一小口</b>（半根香蕉 / 抹茶牛奶）＋小口喝 200–300ml 水。<b>先走 3–5 分钟再起跑</b>，不做静态拉伸，前 1 公里更慢。</td></tr>
+        <tr><td style="white-space:nowrap;"><b>跑后</b></td><td><b>先慢走 3–5 分钟</b>再做两套拉伸，每个动作停 20–30 秒、拉到有点紧就够，总共 10–15 分钟。喝 500ml 水＋一口咸的。</td></tr>
+        <tr><td style="white-space:nowrap;"><b>跑后吃</b></td><td>30–60 分钟内碳水＋约 20g 蛋白。离下一餐近就<b>那一餐当恢复餐</b>不另加；离得远吃一样：希腊酸奶＋香蕉 / 牛奶＋面包 / 两个水煮蛋＋吐司。</td></tr>
+        <tr><td style="white-space:nowrap;"><b>Maltofer</b></td><td>跑步日放在<b>离跑步最远的那一餐</b>吃（早上跑→晚饭吃，傍晚跑→早饭吃）。</td></tr>
+        <tr><td style="white-space:nowrap;"><b>腿还沉</b></td><td>前两周酸正常。跑完 48 小时腿还沉，下一次缩到 3 公里或换游泳，不硬凑。</td></tr>
       </tbody>
     </table>
     <table style="margin-top:.5rem;">
@@ -1114,131 +1218,11 @@
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-radio')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-radio')">+</button></div>
   </div>
 
-  <!-- ============================================================== -->
-  <!-- ==== 动作详情（参考库）================================================ -->
-  <!-- ============================================================== -->
-  <div class="section-heading toc-anchor" id="sec-actions">🎯 动作详情 · 43 项</div>
-
-  <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-posture"><span>🦴</span>体态与矫正 <span class="count-hint" data-base-text="· 7 项 · #1–9">· 7 项 · #1–9</span></div>
-    <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody data-cat="体态与矫正">
-        <tr><td class="num">1</td><td>掰正骨盆懒人版</td><td>雪儿很棒</td><td>5min</td><td>躺姿</td></tr>
-        <tr><td class="num">2</td><td>女明星仪态管理</td><td>美佳老师</td><td>3min</td><td>站姿</td></tr>
-        <tr><td class="num">3</td><td>谁懂丝滑美背的杀伤力</td><td>欧阳春晓</td><td>15min</td><td>站/坐/盘腿</td></tr>
-        <tr><td class="num">4</td><td>告别圆肩驼背·YTWL 矫正训练</td><td>欧阳春晓</td><td>8min</td><td>站/坐</td></tr>
-        <tr><td class="num">5</td><td>骨科专家腰椎操·久坐快练</td><td>小昕爱养生</td><td>3min</td><td>站姿</td></tr>
-        <tr><td class="num">6</td><td>根除小肚腩·告别假胯宽</td><td>欧阳春晓</td><td>10min</td><td>地板</td></tr>
-        <tr><td class="num">7</td><td>骨盆回正训练</td><td>欧阳春晓</td><td>8min</td><td>躺姿</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-breath"><span>🧘</span>呼吸与冥想 <span class="count-hint" data-base-text="· 6 项 · #11–19">· 6 项 · #11–19</span></div>
-    <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody data-cat="呼吸与冥想">
-        <tr><td class="num">11</td><td>Nadi Shodhana 纳迪净化法（缓焦提专注）</td><td>TheS艾斯</td><td>5min</td><td>坐姿</td></tr>
-        <tr><td class="num">12</td><td>全身扫描冥想</td><td>能量派</td><td>5min</td><td>躺/坐</td></tr>
-        <tr><td class="num">13</td><td>自我肯定冥想·训练内心强大</td><td>FLOW心流所</td><td>5min</td><td>坐姿</td></tr>
-        <tr><td class="num">14</td><td>冥想疗愈·我值得无条件的爱</td><td>马四月</td><td>10min</td><td>坐姿</td></tr>
-        <tr><td class="num">15</td><td>颂钵冥想·睡前助眠放松</td><td>马四月</td><td>10min</td><td>躺/坐</td></tr>
-        <tr><td class="num">16</td><td>谐振呼吸冥想·最深的宁静与放松</td><td>能量派</td><td>10min</td><td>躺/坐</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-stretch"><span>🤸</span>拉伸与放松 <span class="count-hint" data-base-text="· 9 项 · #21–29">· 9 项 · #21–29</span></div>
-    <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody data-cat="拉伸与放松">
-        <tr><td class="num">21</td><td>15 分钟全身快速拉伸</td><td>瑜伽老师JJ</td><td>15min</td><td>地板</td></tr>
-        <tr><td class="num">22</td><td>全程站立全身拉伸·从头到脚舒缓激活</td><td>周六野Zoey</td><td>10min</td><td>站姿</td></tr>
-        <tr><td class="num">23</td><td>全程躺练·消除疲劳恢复活力</td><td>瑜伽玛拉</td><td>10min</td><td>躺姿</td></tr>
-        <tr><td class="num">24</td><td>仙人揉腹跟练·古法八式</td><td>不圆的汤圆崽</td><td>10min</td><td>躺/坐</td></tr>
-        <tr><td class="num">25</td><td>新手练臀必备·臀腿完整拉伸</td><td>Bella</td><td>7min</td><td>站+地板</td></tr>
-        <tr><td class="num">26</td><td>坐姿 10min 肩颈背动态拉伸</td><td>欧阳春晓</td><td>10min</td><td>坐姿</td></tr>
-        <tr><td class="num">27</td><td>清晨排毒瑜伽</td><td>瑜伽老师JJ</td><td>10min</td><td>站+躺</td></tr>
-        <tr><td class="num">28</td><td>360 度无死角腿部拉伸</td><td>噔噔噔邓</td><td>10min</td><td>地板</td></tr>
-        <tr><td class="num">29</td><td>极度舒适拉伸·不觉得累</td><td>泡椒味桃子</td><td>3min</td><td>站姿</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-massage"><span>💆</span>按摩 <span class="count-hint" data-base-text="· 1 项 · #31–39">· 1 项 · #31–39</span></div>
-    <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody data-cat="按摩">
-        <tr><td class="num">31</td><td>小腿精油按摩</td><td>欧阳春晓</td><td>5min</td><td>坐姿</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-cardio"><span>🔥</span>有氧与力量 <span class="count-hint" data-base-text="· 16 项 · #41–59">· 16 项 · #41–59</span></div>
-    <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody data-cat="有氧与力量">
-        <tr><td class="num">41</td><td>间歇跳绳</td><td>bit by bit</td><td>5min</td><td>站姿</td></tr>
-        <tr><td class="num">42</td><td>一副哑铃练全身</td><td>Nina</td><td>15min</td><td>站姿</td></tr>
-        <tr><td class="num">43</td><td>八段锦</td><td>—</td><td>12min</td><td>站姿</td></tr>
-        <tr><td class="num">45</td><td>古法内脏脂肪操</td><td>雪儿很棒</td><td>10min</td><td>站姿</td></tr>
-        <tr><td class="num">46</td><td>一首歌运动前热身</td><td>刘逗逗</td><td>4min</td><td>站姿</td></tr>
-        <tr><td class="num">47</td><td>清晨燃脂瑜伽</td><td>瑜伽老师JJ</td><td>10min</td><td>地板</td></tr>
-        <tr><td class="num">48</td><td>第九套广播体操</td><td>Mina</td><td>4min</td><td>站姿</td></tr>
-        <tr><td class="num">49</td><td>第八套广播体操</td><td>彤姐</td><td>4min</td><td>站姿</td></tr>
-        <tr><td class="num">50</td><td>有氧减脂操·低缓冲全身</td><td>欧阳春晓</td><td>15min</td><td>站姿</td></tr>
-        <tr><td class="num">51</td><td>簿肌修炼·居家无器械全身</td><td>房子</td><td>5min</td><td>地板</td></tr>
-        <tr><td class="num">52</td><td>居家哑铃背部跟练</td><td>ting</td><td>5min</td><td>站姿</td></tr>
-        <tr><td class="num">53</td><td>全身塑形哑铃跟练</td><td>冰冰教练</td><td>20min</td><td>站姿</td></tr>
-        <tr><td class="num">54</td><td>无蹲跳踏步有氧·瘦全身</td><td>欧阳春晓</td><td>10min</td><td>站姿</td></tr>
-        <tr><td class="num">55</td><td>欢乐踏步燃脂有氧</td><td>Zoey</td><td>20min</td><td>站姿</td></tr>
-        <tr><td class="num">56</td><td>搏击燃脂训练·无器械站立</td><td>Jo姐</td><td>30min</td><td>站姿</td></tr>
-        <tr><td class="num">57</td><td>无跑跳全程站立有氧</td><td>费教练</td><td>30min</td><td>站姿</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-core"><span>💪</span>核心与腹部 <span class="count-hint" data-base-text="· 4 项 · #61–69">· 4 项 · #61–69</span></div>
-    <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody data-cat="核心与腹部">
-        <tr><td class="num">61</td><td>萨尔曼瘦肚子·平坦小腹</td><td>叫我瓜瓜</td><td>5min</td><td>躺姿</td></tr>
-        <tr><td class="num">62</td><td>激活腹横肌·细腰又护腰</td><td>钳钳妈阿曼达</td><td>10min</td><td>坐+躺</td></tr>
-        <tr><td class="num">63</td><td>真空腹训练</td><td>欧阳春晓</td><td>5min</td><td>站/坐/躺</td></tr>
-        <tr><td class="num">64</td><td>胸腹式联动呼吸</td><td>—</td><td>10min</td><td>站姿</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-leg"><span>🦵</span>腿部与臀部 <span class="count-hint" data-base-text="· 5 项 · #71–79">· 5 项 · #71–79</span></div>
-    <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody data-cat="腿部与臀部">
-        <tr><td class="num">71</td><td>10min 特快瘦大腿</td><td>林芊妤</td><td>10min</td><td>地板</td></tr>
-        <tr><td class="num">72</td><td>5 分钟带你练臀（弹力带版）</td><td>Nina</td><td>5min</td><td>坐姿</td></tr>
-        <tr><td class="num">73</td><td>完善足弓训练·矫正腿型拉长跟腱</td><td>欧阳春晓</td><td>10min</td><td>站姿</td></tr>
-        <tr><td class="num">74</td><td>膝超伸运动·细直大长腿</td><td>韩小四</td><td>10min</td><td>地板</td></tr>
-        <tr><td class="num">75</td><td>纠正不良腿型·足弓弹性重建 4.0</td><td>欧阳春晓</td><td>20min</td><td>地板</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- 我的新增 · 未归类兜底（其余有 category 的会按分类合并进上面 7 个卡）-->
-  <div class="card" id="custom-actions-card" style="display:none">
-    <div class="cat-card-title toc-anchor" id="act-custom"><span>🌱</span>我的新增 · 未归类 <span class="count-hint" id="custom-count-hint">· 0 项</span></div>
-    <div style="font-size:0.78rem;color:var(--text-hint);margin:-0.3rem 0 0.7rem;padding-left:2px;">没填具体类型的「我的新增」动作归到这里；有类型的会出现在上面对应的卡里（带 🌱 标记）</div>
-    <table class="action-table" id="custom-actions-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody id="custom-actions-tbody"></tbody>
-    </table>
-  </div>
+  <!-- ==== 历史归档（2026-11-06 挪到页尾、默认整个折叠：很少看）==== -->
+  <details class="archive-details toc-anchor" id="sec-archive">
+    <summary class="section-heading">📚 历史归档 <span class="count-hint" id="archive-count"></span></summary>
+    <div id="archive-list"></div>
+  </details>
 
   </div><!-- /.content-col -->
 </div><!-- /.layout -->
@@ -1506,8 +1490,8 @@
       .map(t => `${EXTRA_ICON[t]} ${ex[t].mins}`)
       .join(' · ');
     document.getElementById('extra-line').innerHTML = s.extraMins === 0
-      ? '额外运动：本周还没有记录'
-      : `额外运动 <strong>${s.extraMins}</strong> min　${exChips}`;
+      ? '额外运动：还没记录'
+      : `额外运动 ${exChips}`;
 
     document.getElementById('total-indoor').textContent = s.indoorMins;
     document.getElementById('total-extra').textContent = s.extraMins;
@@ -1527,91 +1511,6 @@
     });
   }
 
-  function renderComboDetail() {
-    const s = statsForWeek(currentWeekStart);
-    const tbody = document.getElementById('combo-detail-tbody');
-    const rows = Object.entries(s.comboDetail)
-      .map(([id, cnt]) => {
-        const meta = COMBO_META[id];
-        if (!meta) return null;
-        return { id, name: meta.name, mins: meta.mins, goal: meta.goal, cnt, total: meta.mins * cnt };
-      })
-      .filter(Boolean)
-      .sort((a,b) => {
-        const ord = { stamina: 0, shape: 1, rest: 2 };
-        if (ord[a.goal] !== ord[b.goal]) return ord[a.goal] - ord[b.goal];
-        return b.cnt - a.cnt;
-      });
-    if (rows.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="4" class="empty-row">这周还没有组合记录</td></tr>';
-      return;
-    }
-    tbody.innerHTML = rows.map(r => `
-      <tr>
-        <td><span class="pill ${GOAL_PILL_CLASS[r.goal]}">${GOAL_ICON[r.goal]} ${GOAL_LABEL[r.goal]}</span></td>
-        <td>${r.name} <span style="color:var(--text-hint);font-size:.78rem;">${r.mins}min</span></td>
-        <td class="right">${r.cnt}</td>
-        <td class="right">${r.total}</td>
-      </tr>
-    `).join('');
-  }
-
-  function renderSuggestions() {
-    const s = statsForWeek(currentWeekStart);
-    const container = document.getElementById('suggestions');
-    const gaps = [];
-    ['stamina','shape','rest'].forEach(g => {
-      const target = GOAL_TARGET[g];
-      const remain = target - s.mins[g];
-      if (remain > 0) gaps.push({ goal: g, remain });
-    });
-    const totalExtra = s.extras.swim.mins + s.extras.hike.mins + s.extras.run.mins + s.extras.yoga.mins + s.extras.badminton.mins + (s.extras.rowing ? s.extras.rowing.mins : 0);
-
-    let html = '';
-
-    if (gaps.length === 0) {
-      html += `<div class="suggest-block celebrate">
-        <div class="suggest-title">🎉 本周三个目标全部达成</div>
-        <ul class="suggest-list">
-          <li>下周可以保持当前节奏，把"够了"沉淀成肌肉记忆</li>
-          <li>有余力可以尝试还没做过的组合，换换花样</li>
-          ${totalExtra > 0 ? `<li>额外运动 ${totalExtra}min 是 bonus，记住身体喜欢的强度</li>` : ''}
-        </ul>
-      </div>`;
-    } else {
-      html += `<div class="suggest-block">
-        <div class="suggest-title">📌 下周缺口</div>
-        <ul class="suggest-list">`;
-      gaps.forEach(g => {
-        const suggestion = goalSuggestion(g.goal, g.remain);
-        html += `<li><strong>${GOAL_ICON[g.goal]} ${GOAL_LABEL[g.goal]}</strong> 差 ${g.remain} 分钟 → ${suggestion}</li>`;
-      });
-      html += `</ul></div>`;
-    }
-
-    container.innerHTML = html;
-  }
-
-  function goalSuggestion(goal, remain) {
-    if (goal === 'stamina') {
-      // 2026-05-30 起全部用膝盖友好的低冲击有氧（不再推荐跳绳/高冲击）
-      if (remain >= 60) return '一次游泳 + 一次搏击燃脂（30min），或两次 30min 站立有氧';
-      if (remain >= 30) return '搏击燃脂（30min）或无跑跳有氧（30min）/ 欢乐踏步（20min）补一次';
-      return '踏步有氧（14min）或内脏脂肪操（14min）补一次即可';
-    }
-    if (goal === 'shape') {
-      if (remain >= 90) return '需要 3 次身材组合，可以选腿臀套餐 + 核心快速 + 力量综合';
-      if (remain >= 45) return '安排 2 次身材组合（腹部扎实 / 美背修身 / 假胯宽专项 选两个）';
-      return '核心快速（20min）或晨起燃脂瑜伽（10min）补一次';
-    }
-    if (goal === 'rest') {
-      if (remain >= 75) return '每天加一个养护：晨起轻唤醒 / 睡前 30min / 颂钵助眠';
-      if (remain >= 30) return '睡前 30min 或肩颈背修复（28min）补 1–2 次';
-      return '体态快练（6min）或深度放松（25min）补一次';
-    }
-    return '';
-  }
-
   let archiveExpanded = false;
   const ARCHIVE_VISIBLE = 6;
   function toggleArchiveExpand() { archiveExpanded = !archiveExpanded; renderArchive(); }
@@ -1619,6 +1518,8 @@
   function renderArchive() {
     const list = document.getElementById('archive-list');
     const keys = Object.keys(reviews).sort().reverse();
+    const cnt = document.getElementById('archive-count');
+    if (cnt) cnt.textContent = keys.length ? `· ${keys.length} 周` : '';
     if (keys.length === 0) {
       list.innerHTML = '<div class="archive-empty">还没有保存过的周复盘。这周保存后会在这里出现。</div>';
       return;
@@ -1770,7 +1671,16 @@
     const key = weekKey(currentWeekStart);
     const r = reviews[key] || {};
     document.getElementById('ta-notes').value = reviewText(r);
+    autoGrowNotes();
   }
+
+  function autoGrowNotes() {
+    const ta = document.getElementById('ta-notes');
+    if (!ta) return;
+    ta.style.height = 'auto';
+    ta.style.height = Math.max(ta.scrollHeight, 0) + 'px';
+  }
+  document.getElementById('ta-notes').addEventListener('input', autoGrowNotes);
 
   function saveReview() {
     const key = weekKey(currentWeekStart);
@@ -1806,8 +1716,6 @@
   function renderAll() {
     renderWeekPicker();
     renderStats();
-    renderComboDetail();
-    renderSuggestions();
     loadCurrentReview();
     renderPastWords();
     updateComboCounters();
@@ -1850,7 +1758,7 @@
       if (hint) hint.innerHTML = `正在补记 <b>${label}</b> —— 下面每按一次 <b>+</b> 都记到那天，右边的次数显示的是<b>那一周</b>的。补完点「回到今天」。`;
       if (flo) { flo.hidden = false; const t = document.getElementById('bf-float-date'); if (t) t.textContent = label; }
     } else {
-      if (hint) hint.innerHTML = '选一个日期，下面动作和组合的 <b>+</b> 就记到那天 —— 旅行、出差回来补记用这个。额外运动本来就能选日期，不受这里影响。';
+      if (hint) hint.innerHTML = '';
       if (flo) flo.hidden = true;
     }
     afterLogChange();
@@ -1962,11 +1870,9 @@
   function afterLogChange() {
     updateComboCounters();
     updateActionCounters();
-    // 如果当前查看的就是刚记进去的那一周（补记时＝被补的那周），刷新数据 / 明细 / 建议
+    // 如果当前查看的就是刚记进去的那一周（补记时＝被补的那周），刷新数据
     if (currentWeekStart === logWeekStart()) {
       renderStats();
-      renderComboDetail();
-      renderSuggestions();
     }
     renderTrend();
   }
@@ -1996,7 +1902,7 @@
     document.getElementById(meta.minId).value = meta.defaultMin;
     if (meta.noteId) document.getElementById(meta.noteId).value = '';
     renderExtra();
-    if (currentWeekStart === liveWeekStart()) { renderStats(); renderSuggestions(); }
+    if (currentWeekStart === liveWeekStart()) { renderStats(); }
     renderTrend();
   }
 
@@ -2006,7 +1912,6 @@
     writeJSON(EXTRA_LOG_KEY, extraLog);
     renderExtra();
     renderStats();
-    renderSuggestions();
     renderTrend();
   }
 
@@ -2667,6 +2572,16 @@
     const ah = document.getElementById('sec-actions');
     if (ah) ah.textContent = `🎯 动作详情 · ${actionN} 项`;
   }
+
+  // 目录 / 锚点跳到历史归档时自动展开
+  (function(){
+    const d = document.getElementById('sec-archive');
+    if (!d) return;
+    const openIfTarget = () => { if (location.hash === '#sec-archive') d.open = true; };
+    openIfTarget();
+    window.addEventListener('hashchange', openIfTarget);
+    document.querySelectorAll('a[href="#sec-archive"]').forEach(a => a.addEventListener('click', () => { d.open = true; }));
+  })();
 
   // ==================== 侧栏 scroll-spy（高亮当前所在区块）====================
   function initScrollSpy() {

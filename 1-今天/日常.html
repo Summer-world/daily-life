@@ -944,16 +944,18 @@
   }
   .pw-lead strong { color: var(--text-primary); }
   .pw-quad {
-    border-left: 3px solid var(--q);
-    background: var(--qbg);
-    border-radius: 0 3px 3px 0;
-    padding: 0.7rem 0.9rem 0.75rem;
-    margin-bottom: 0.7rem;
+    --q: var(--accent);
+    padding: 0;
+    margin-bottom: 1rem;
   }
-  .pw-quad.q-body { --q: var(--ochre); --qbg: var(--ochre-light); }
-  .pw-quad.q-emo  { --q: var(--rose);  --qbg: var(--rose-light); }
-  .pw-quad.q-mind { --q: var(--mist);  --qbg: var(--mist-light); }
-  .pw-quad.q-will { --q: var(--gold);  --qbg: var(--gold-light); }
+  .pw-quad:last-child { margin-bottom: 0; }
+  .pw-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.6rem;
+  }
+  .pw-grid .pw-quad { margin-bottom: 0; }
+  @media (max-width: 720px) { .pw-grid { grid-template-columns: 1fr; } }
   .pw-qhead {
     display: flex;
     align-items: baseline;
@@ -966,7 +968,7 @@
     font-family: 'Noto Serif SC', serif;
     font-weight: 700;
     font-size: 0.92rem;
-    color: var(--q);
+    color: var(--text-primary);
     letter-spacing: 0.02em;
   }
   .pw-qhead .pw-sub { font-size: 0.72rem; color: var(--text-hint); font-style: italic; }
@@ -978,7 +980,7 @@
     padding: 2px 0;
   }
   .pw-row .pw-k {
-    flex: 0 0 3.1rem;
+    flex: 0 0 4rem;
     font-size: 0.7rem;
     color: var(--q);
     font-weight: 700;
@@ -997,16 +999,14 @@
   }
   .pw-row .pw-v a:hover, .pw-link:hover { border-bottom-style: solid; }
   .pw-spine {
-    background: var(--accent-light);
-    border-left: 2px solid var(--accent);
-    padding: 0.7rem 0.9rem;
-    margin: 0.85rem 0 0.5rem;
-    border-radius: 0 3px 3px 0;
+    border-top: 1px dashed var(--border-dark);
+    padding: 0.7rem 0 0;
+    margin: 0.85rem 0 0.3rem;
     font-size: 0.8rem;
     color: var(--text-secondary);
     line-height: 1.7;
   }
-  .pw-spine strong { color: var(--accent); }
+  .pw-spine strong { color: var(--text-primary); }
   .pw-demine {
     font-size: 0.76rem;
     color: var(--text-hint);
@@ -1194,6 +1194,24 @@
   }
   .rc-log-toggle:hover { text-decoration: underline; }
 
+  /* 2026-11-08 阅读卡压缩：更小的内边距、书名+按钮并排、记录折叠 */
+  .reading-checkin { padding: 0.7rem 0.9rem; margin-top: 0.5rem; }
+  .rc-top { margin-bottom: 0.5rem; }
+  .rc-streak-num { font-size: 1.3rem; }
+  .rc-input { padding: 6px 9px; margin-bottom: 0.4rem; font-size: 0.8rem; }
+  .rc-note { min-height: 2rem; }
+  .rc-row { display: flex; gap: 0.4rem; align-items: stretch; }
+  .rc-row .rc-input { flex: 1; margin-bottom: 0; }
+  .rc-row .rc-btn { width: auto; padding: 6px 12px; font-size: 0.8rem; white-space: nowrap; }
+  .rc-row { margin-bottom: 0.4rem; }
+  .rc-week { margin: 0.6rem 0 0; }
+  .rc-day-dot { width: 22px; height: 22px; font-size: 0.72rem; margin-bottom: 2px; }
+  .rc-logbox { margin-top: 0.5rem; }
+  .rc-logbox > summary { cursor: pointer; list-style: none; margin: 0; }
+  .rc-logbox > summary::-webkit-details-marker { display: none; }
+  .rc-logbox > summary::before { content: '▸ '; }
+  .rc-logbox[open] > summary::before { content: '▾ '; }
+
   /* 补卡：周条上可点的过去日子 + 补卡条 */
   .rc-day.clickable { cursor: pointer; }
   .rc-day.addable .rc-day-dot { border-style: dashed; }
@@ -1205,6 +1223,7 @@
     background: var(--gold-light); border: 1px solid var(--gold);
     border-radius: 8px; padding: 0.45rem 0.75rem; margin-bottom: 0.7rem;
   }
+  .rc-target[hidden] { display: none; }
   .rc-target strong { font-weight: 600; }
   .rc-target-back {
     margin-left: auto; font-family: 'Noto Sans SC', sans-serif;
@@ -1401,12 +1420,8 @@
       <li><a href="#sec-today" class="active">今日动态</a></li>
       <li class="toc-group" data-toc-group="rhythm"><a href="#sec-rhythm">今日节奏</a><button class="toc-toggle" type="button" aria-expanded="false" aria-label="展开或收起今日节奏的时段">▸</button>
         <ul class="toc-sub">
-          <li><a href="#node-morning">🌅 晨起</a></li>
-          <li><a href="#node-day">☀️ 白天与间歇</a></li>
-          <li><a href="#node-workday">😌 白天的休息节律</a></li>
-          <li><a href="#node-evening">🌇 傍晚修复</a></li>
+          <li><a href="#node-day">🌞 一天的弧线</a></li>
           <li><a href="#node-reading">📖 阅读 10 分钟</a></li>
-          <li><a href="#node-postemma">🌙 Emma 睡后</a></li>
         </ul>
       </li>
       <li class="toc-group" data-toc-group="protocols"><a href="#sec-protocols">情境库</a><button class="toc-toggle" type="button" aria-expanded="false" aria-label="展开或收起情境库的卡片">▸</button>
@@ -1414,13 +1429,13 @@
           <li class="toc-cat">🧭 精力总览</li>
           <li><a href="#protocol-compass">🧭 精力罗盘</a></li>
           <li class="toc-cat">🌿 身体养护</li>
-          <li><a href="#protocol-iron">💊 补铁试验</a></li>
-          <li><a href="#protocol-corebreath">🌬️ 收腹呼吸</a></li>
-          <li><a href="#protocol-breath">🫁 呼吸革命</a></li>
           <li><a href="#protocol-sleep">😴 睡眠革命</a></li>
+          <li><a href="#protocol-breath">🫁 呼吸革命</a></li>
+          <li><a href="#protocol-corebreath">🌬️ 收腹呼吸</a></li>
+          <li><a href="#protocol-iron">💊 补铁</a></li>
           <li class="toc-cat">🫧 情绪心理</li>
           <li><a href="#protocol-presence">🪷 专注当下</a></li>
-          <li><a href="#protocol-relations">🤝 关系怎么处</a></li>
+          <li><a href="#protocol-relations">🤝 爱会怎么做</a></li>
           <li><a href="#protocol-noexpect">🌤️ 零期待</a></li>
           <li><a href="#protocol-being">🌊 存在练习</a></li>
           <li class="toc-cat">🌹 今日状态</li>
@@ -1464,7 +1479,7 @@
           <div class="now-time" id="now-time">现在 --:--</div>
           <div class="now-phase" id="now-phase">🌅 加载中</div>
           <div class="now-tip" id="now-tip">…</div>
-          <a href="#node-postemma" class="now-anchor" id="now-anchor">查看详情 →</a>
+          <a href="#node-day" class="now-anchor" id="now-anchor">查看详情 →</a>
         </div>
 
       </div>
@@ -1476,107 +1491,40 @@
       <div class="section-header">
         <span class="num">ii.</span>
         <h2>今日节奏</h2>
-        <span class="desc">6 个时段 · 一天的弧线 · 点标题展开/收起</span>
+        <span class="desc">2 张 · 一天的弧线 + 阅读 · 点标题展开/收起</span>
       </div>
 
       <div class="timeline">
 
-        <!-- 1. 晨起 -->
-        <details class="timeline-node" id="node-morning" data-phase="morning">
+        <!-- 1. 一天的弧线（2026-11-08 晨起/白天/休息节律/傍晚/Emma 睡后 五段合成一张；阅读单独留着） -->
+        <details class="timeline-node" id="node-day" data-phase="morning day workday evening postemma">
           <summary class="node-head">
             <div class="node-headings">
-              <div class="node-time">06:30 — 09:00</div>
-              <h3>🌅 晨起 90 分钟 <span class="sub">为精力充沛的一天定调</span></h3>
+              <div class="node-time">06:00 — 入睡</div>
+              <h3>🌞 一天的弧线 <span class="sub">早上启动睡后程序 · 白天每 90 分钟休息一次 · 傍晚温和运动 · 晚上启动入睡程序</span></h3>
             </div>
             <span class="node-arrow">▸</span>
           </summary>
           <div class="timeline-node-body">
             <ul class="core-list">
-              <li><strong>核心 4 步：</strong>坐起 → 开窗帘（光启动昼夜节律）→ 下床换衣 → 烧水</li>
-              <li><strong>扩展流程：</strong>蒸早饭 → 洗漱化妆 → 早饭 + 喝水（⚠️ 浏览不回复）→ 通勤 30 分</li>
-              <li><strong>不上班日：</strong>散步送 Emma → 9 点到家 → 立刻进<strong>高强度黄金窗口</strong></li>
-            </ul>
-            <div class="node-highlight">
-              早起后家里安静的空白时光是最重要的独处时间——<strong>有就很好，没有也不垮</strong>。
-            </div>
-          </div>
-        </details>
-
-        <!-- 2. 白天 -->
-        <details class="timeline-node" id="node-day" data-phase="day">
-          <summary class="node-head">
-            <div class="node-headings">
-              <div class="node-time">09:00 — 12:00 · 黄金窗口</div>
-              <h3>☀️ 白天与间歇 <span class="sub">见缝插针 / 不上班日 6h 自主</span></h3>
-            </div>
-            <span class="node-arrow">▸</span>
-          </summary>
-          <div class="timeline-node-body">
-            <ul class="core-list">
-              <li><strong>🪑 上班日：</strong>任务间隙 5–15 分 · 体态快练 · 鼻呼吸贯穿全天</li>
-              <li><strong>🏠 不上班日：</strong>9 点到家立刻进运动（意志力满+已热身=黄金窗口）· 12:30 困了就睡 30 分</li>
+              <li><strong>🌅 06:00–07:30 晨起：</strong>开窗帘 → 洗漱化妆 / 听新闻 → 水 / 铁剂 / 洋车前子壳粉 → 早饭 → 通勤 / 晨间运动</li>
+              <li><strong>😌 休息节律：</strong>每 90 分钟微休息 5 分钟 · 午后 1–3 点休息 10–15 分钟（冥想）· 下午 5–7 点休息 10–15 分钟（谐振呼吸）</li>
+              <li><strong>🌇 17:00–19:00 傍晚：</strong>最累、但最该温和动一动。通勤途中肩颈拉伸 + 呼吸法 + 体态调整 + 冥想；到家等水开 / 等饭蒸熟做 5–10 分钟拉伸</li>
+              <li><strong>🌙 21:00–入睡 Emma 睡后：</strong>状态好：🎵 听音乐 · 📚 阅读 · 🎤 唱歌 · 🗂️ 整理 · 🍃 断舍离；状态不好床上躺练：JJ 全身拉伸 · 全程躺练 · 颂钵冥想 · 精油按摩</li>
+              <li><strong>✍️ 睡前程序：</strong>关闭屏幕 → 由暖到凉 → 由亮到暗 → 整理归纳 → 写幸福日记 → 简单拉伸 → 冥想</li>
             </ul>
           </div>
         </details>
 
-        <!-- 3. 白天的休息节律（2026-08-21 饮食四行已挪去 饮食.html） -->
-        <details class="timeline-node" id="node-workday" data-phase="workday">
-          <summary class="node-head">
-            <div class="node-headings">
-              <div class="node-time">休息的节律</div>
-              <h3>😌 白天的休息节律 <span class="sub">按 90 分钟周期主动还损耗</span></h3>
-            </div>
-            <span class="node-arrow">▸</span>
-          </summary>
-          <div class="timeline-node-body">
-            <ul class="core-list">
-              <li><strong>😌 午休：</strong>出门走 / 晒太阳 / 闭目 10–15 分（耳机+眼罩）</li>
-              <li><strong>😌 17–19 点：</strong>第二个修复期 · 闭目 10–15 分 / 谐振呼吸</li>
-              <li><strong>😌 全天：</strong>每 90 分钟微休息 5 分 · 鼻呼吸贯穿</li>
-            </ul>
-            <div class="node-highlight">
-              休息按 <strong>90 分钟周期</strong>主动还损耗——不必非睡够 8h。<br>
-              <span style="color:var(--text-hint);">这天吃什么 → <a href="饮食.html" target="_blank" style="color:var(--accent);">饮食</a>（早 / 午 / 加餐按当下状态挑一个）</span>
-            </div>
-          </div>
-        </details>
-
-        <!-- 4. 傍晚 -->
-        <details class="timeline-node" id="node-evening" data-phase="evening">
-          <summary class="node-head">
-            <div class="node-headings">
-              <div class="node-time">17:00 — 19:00</div>
-              <h3>🌇 傍晚修复期 <span class="sub">最累、但最该温和动一动</span></h3>
-            </div>
-            <span class="node-arrow">▸</span>
-          </summary>
-          <div class="timeline-node-body">
-            <ul class="core-list">
-              <li><strong>🚇 通勤途中：</strong>肩颈拉伸 + 呼吸法 + 体态调整 + 冥想——把等待时间借来用</li>
-              <li><strong>🏠 到家零碎时间：</strong>等水开 / 等饭蒸熟做 5–10 分钟拉伸</li>
-            </ul>
-          </div>
-        </details>
-
-        <!-- 5. 阅读 -->
+        <!-- 2. 阅读 -->
         <details class="timeline-node" id="node-reading" data-phase="reading">
           <summary class="node-head">
             <div class="node-headings">
-              <div class="node-time">20:30 — 20:40</div>
-              <h3>📖 阅读 10 分钟 <span class="sub">焊在 Emma 故事时间上 · 不靠自律靠习惯叠加</span></h3>
+              <h3>📖 阅读 10 分钟 <span class="sub">Emma 睡前阅读时间 · 在外吃饭等餐时间 · 公园陪孩子玩的时候</span></h3>
             </div>
             <span class="node-arrow">▸</span>
           </summary>
           <div class="timeline-node-body">
-            <ul class="core-list">
-              <li><strong>⏰ 锚点：</strong>每晚 8:30 Eric 给 Emma 讲故事——他俩一坐下，就是你的闹钟</li>
-              <li><strong>📖 做法：</strong>同一个房间，读你<strong>自己的书</strong>；一家三口共享一段安静，也是给 Emma 的示范</li>
-              <li><strong>🎯 目标：</strong>翻开读一页就赢；10 分钟是上限不是任务</li>
-              <li><strong>🛋️ 小动作：</strong>在读的书固定放常坐位置旁；挑好读、想翻下一页的书，别一上来啃硬的</li>
-            </ul>
-            <div class="node-highlight">
-              这 10 分钟是 Eric 完整接手 Emma 的时间，<strong>正大光明属于你</strong>——物理家务可以等，不必愧疚。
-            </div>
             <div class="reading-checkin" id="reading-checkin">
               <div class="rc-top">
                 <div class="rc-streak">已连续 <span class="rc-streak-num" id="rc-streak-num">0</span> 天</div>
@@ -1586,9 +1534,11 @@
                 正在补 <strong id="rc-target-label"></strong> 的卡
                 <button type="button" class="rc-target-back" id="rc-target-back">回到今天</button>
               </div>
-              <input type="text" id="rc-book" class="rc-input" placeholder="在读的书（书名）" autocomplete="off">
+              <div class="rc-row">
+                <input type="text" id="rc-book" class="rc-input" placeholder="在读的书（书名）" autocomplete="off">
+                <button id="rc-btn" class="rc-btn">✓ 完成今天的 10 分钟</button>
+              </div>
               <textarea id="rc-note" class="rc-input rc-note" placeholder="今天读到哪 / 一句话感受（可留空）"></textarea>
-              <button id="rc-btn" class="rc-btn">✓ 完成今天的 10 分钟</button>
               <button id="rc-cancel" class="rc-cancel">取消今天的打卡</button>
               <div class="rc-week" id="rc-week"></div>
               <div class="rc-backfill">
@@ -1597,34 +1547,11 @@
                   <input type="date" id="rc-date" class="rc-date">
                 </span>
               </div>
-              <div class="rc-log-title">最近记录</div>
-              <div class="rc-log" id="rc-log"></div>
+              <details class="rc-logbox">
+                <summary class="rc-log-title">最近记录</summary>
+                <div class="rc-log" id="rc-log"></div>
+              </details>
             </div>
-          </div>
-        </details>
-
-        <!-- 6. Emma 睡后 -->
-        <details class="timeline-node" id="node-postemma" data-phase="postemma">
-          <summary class="node-head">
-            <div class="node-headings">
-              <div class="node-time">21:00 — 入睡</div>
-              <h3>🌙 Emma 睡后 → 入睡 <span class="sub">从独处到睡眠的一整段夜晚</span></h3>
-            </div>
-            <span class="node-arrow">▸</span>
-          </summary>
-          <div class="timeline-node-body">
-            <ul class="core-list">
-              <li><strong>🌊 等着的时候：</strong>不掏手机，待着——<a href="#protocol-being">存在练习</a>。</li>
-              <li><strong>🛋️ 状态好 · 做爱好：</strong>🎵 听音乐 · 📚 阅读 · 🎤 唱歌 · 🗂️ 整理 · 🍃 断舍离</li>
-              <li><strong>🛋️ 状态不好 · 床上躺练：</strong>JJ 全身拉伸 · 全程躺练 · 颂钵冥想 · 精油按摩</li>
-              <li><strong>✍️ 睡前纸笔：</strong>① 幸福笔记（只记开心瞬间）② 下载你的一天 ③ 几个决定（明日 ootd / 菜单 / 待办）</li>
-              <li><strong>📵 屏幕：</strong>睡前关的是<strong>光和"刷"，不是手机</strong>——闭眼听冥想不犯规。下载好 · 开勿扰 · 调最暗 · 按下扣屏搁远（能用音箱 / 旧手机更好）。越近入睡越少屏：<strong>要看的 → 只听的 → 呼吸法</strong>。</li>
-              <li><strong>🛏️ 睡眠环境：</strong>从明亮到昏暗 · 暖色光 · 16–18°C · 整晚鼻呼吸</li>
-            </ul>
-            <div class="node-highlight">
-              独处<strong>质量</strong>比独处<strong>时长</strong>更重要——累的时候独处质量很差。<strong>幸福感以自我为核心，不依附他人。</strong>
-            </div>
-            <p class="node-warn">⚠️ 周四满载日走专门的<a href="#protocol-shutdown">关机轨道</a>；度假/旅行后容易忘记重启这套程序，是状态变差的主要原因之一。</p>
           </div>
         </details>
 
@@ -1652,105 +1579,69 @@
             <span class="arrow">›</span>
           </summary>
           <div class="protocol-card-body">
-            <p class="pw-lead">精力分<strong>四种，是四个独立的电池</strong>——一个空了，别的补不上。不对劲时先别笼统说"我状态差"，<strong>认出哪格空了，再对症充</strong>。每格三行：怎么看出空了 · 你已经在做的充电 · 你当年写给自己的一句。</p>
-
+            <div class="pw-grid">
             <div class="pw-quad q-body">
-              <div class="pw-qhead"><span class="pw-ico">⚡</span><span class="pw-name">体能</span><span class="pw-sub">身体的柴火</span></div>
-              <div class="pw-row"><span class="pw-k">空了</span><span class="pw-v">睡不解乏 · 一动就喘 · 胀气 · 经期特别乏</span></div>
-              <div class="pw-row"><span class="pw-k">充电</span><span class="pw-v">动起来（<a href="运动周总结.html" target="_blank">运动周总结</a>）· 饭<a class="pw-link" href="饮食.html" target="_blank">吃够</a> · <a class="pw-link" href="#protocol-corebreath">收腹呼吸</a>顺气 · <a class="pw-link" href="#protocol-sleep">睡够</a> · 经期前<a class="pw-link" href="#protocol-preperiod">减速</a></span></div>
-              <div class="pw-row"><span class="pw-k">你写的</span><span class="pw-v">每坐一个半小时就起来动一下；吃到刚好满足，别吃到撑</span></div>
+              <div class="pw-qhead"><span class="pw-ico">⚡</span><span class="pw-name">体能</span><span class="pw-sub">为身体添柴加火</span></div>
+              <div class="pw-row"><span class="pw-k">主要肌肉</span><span class="pw-v">心肺 · 腹部 · 肩背 · 臀腿</span></div>
+              <div class="pw-row"><span class="pw-k">休息</span><span class="pw-v"><a class="pw-link" href="#node-day">90 分钟休息</a> · <a class="pw-link" href="#protocol-sleep">睡眠革命</a></span></div>
+              <div class="pw-row"><span class="pw-k">饮食</span><span class="pw-v"><a class="pw-link" href="饮食.html" target="_blank">饮食页</a> · <a class="pw-link" href="#protocol-iron">补铁</a> · <a class="pw-link" href="../2-我的智慧/精力管理.html" target="_blank">保持饥饿指数 5</a></span></div>
+              <div class="pw-row"><span class="pw-k">顺气</span><span class="pw-v"><a class="pw-link" href="#protocol-breath">呼吸革命</a> · <a class="pw-link" href="#protocol-corebreath">收腹呼吸</a></span></div>
+              <div class="pw-row"><span class="pw-k">锻炼</span><span class="pw-v"><a class="pw-link" href="运动周总结.html" target="_blank">运动周总结</a></span></div>
+              <div class="pw-row"><span class="pw-k">周期</span><span class="pw-v"><a class="pw-link" href="#protocol-preperiod">经期前减速</a> / <a class="pw-link" href="#protocol-period">经期护理</a></span></div>
             </div>
 
             <div class="pw-quad q-emo">
-              <div class="pw-qhead"><span class="pw-ico">💗</span><span class="pw-name">情感</span><span class="pw-sub">把烦变顺</span></div>
-              <div class="pw-row"><span class="pw-k">空了</span><span class="pw-v">烦躁、一点就炸 · 对 Emma、对人没耐心 · 不想搭理人、只想躲起来</span></div>
-              <div class="pw-row"><span class="pw-k">充电</span><span class="pw-v"><strong>换个频道</strong>：做一件让你享受的事就回血（<a href="../2-我的智慧/精神花园.html" target="_blank">精神花园</a>）· 要炸先走开 · 觉得"这都是交易"、欠了谁，就翻<a class="pw-link" href="#protocol-relations">关系怎么处</a></span></div>
-              <div class="pw-row"><span class="pw-k">你写的</span><span class="pw-v">让你享受的事，别第一个砍；上火先深呼吸，再开口</span></div>
+              <div class="pw-qhead"><span class="pw-ico">💗</span><span class="pw-name">情感</span><span class="pw-sub">把威胁转化为挑战</span></div>
+              <div class="pw-row"><span class="pw-k">匮乏</span><span class="pw-v">焦虑、生硬 · 急躁，过于挑剔 · 无法倾听，缺乏共情</span></div>
+              <div class="pw-row"><span class="pw-k">变换频道</span><span class="pw-v"><a class="pw-link" href="../2-我的智慧/精神花园.html" target="_blank">精神花园</a> · <a class="pw-link" href="穿搭.html" target="_blank">穿搭</a> · 亲近大自然 · <a class="pw-link" href="#protocol-weekly">周固定</a></span></div>
+              <div class="pw-row"><span class="pw-k">人际关系</span><span class="pw-v"><a class="pw-link" href="#protocol-relations">爱会怎么做</a></span></div>
+              <div class="pw-row"><span class="pw-k">亲子关系</span><span class="pw-v"><a class="pw-link" href="../4-Emma/这样做大家都开心.html" target="_blank">肯定 / 允许 / 支持 / 沟通</a></span></div>
+              <div class="pw-row"><span class="pw-k">培养幸福感</span><span class="pw-v"><a class="pw-link" href="#node-day">幸福日记</a></span></div>
             </div>
 
             <div class="pw-quad q-mind">
-              <div class="pw-qhead"><span class="pw-ico">🧠</span><span class="pw-name">思维</span><span class="pw-sub">专注、别钻牛角尖</span></div>
-              <div class="pw-row"><span class="pw-k">空了</span><span class="pw-v">分心、进不去、又赶又散 · 拖着不动 · 悲观打转</span></div>
-              <div class="pw-row"><span class="pw-k">充电</span><span class="pw-v">又赶又散→<a class="pw-link" href="#protocol-presence">专注当下</a> · 越熬越精神→<a class="pw-link" href="#protocol-shutdown">满载日关机</a> · 转不动就<strong>先去动动身体</strong></span></div>
-              <div class="pw-row"><span class="pw-k">你写的</span><span class="pw-v">钻牛角尖就写下来，把"坏事"翻成"那能怎么办"；每隔一阵换件事做</span></div>
+              <div class="pw-qhead"><span class="pw-ico">🧠</span><span class="pw-name">思维</span><span class="pw-sub">保持专注和乐观</span></div>
+              <div class="pw-row"><span class="pw-k">匮乏</span><span class="pw-v">思维固化 · 悲观负面思维 · 缺乏条理，容易分心</span></div>
+              <div class="pw-row"><span class="pw-k">变换频道</span><span class="pw-v"><a class="pw-link" href="../2-我的智慧/精神花园.html" target="_blank">精神花园</a> · <a class="pw-link" href="穿搭.html" target="_blank">穿搭</a> · 亲近大自然 · <a class="pw-link" href="#protocol-weekly">周固定</a></span></div>
+              <div class="pw-row"><span class="pw-k">摆脱悲观</span><span class="pw-v">看<a class="pw-link" href="#node-day">幸福日记</a></span></div>
+              <div class="pw-row"><span class="pw-k">保持专注</span><span class="pw-v"><a class="pw-link" href="#protocol-presence">专注当下</a></span></div>
+              <div class="pw-row"><span class="pw-k">巩固思维</span><span class="pw-v"><a class="pw-link" href="#protocol-shutdown">满载日关机</a> · <a class="pw-link" href="#protocol-sleep">睡眠革命</a></span></div>
             </div>
 
             <div class="pw-quad q-will">
-              <div class="pw-qhead"><span class="pw-ico">🕯️</span><span class="pw-name">意志</span><span class="pw-sub">记得为什么</span></div>
-              <div class="pw-row"><span class="pw-k">空了</span><span class="pw-v">迷茫、不知道为了啥 · 觉得做什么都没意义 · 被"必须有收获"逼得喘</span></div>
-              <div class="pw-row"><span class="pw-k">充电</span><span class="pw-v">翻回你<a href="../2-我的智慧/精力管理.html" target="_blank">最看重的五样</a>（健康/感恩/平衡/关怀/知识），认一认眼前这事为的哪样 · 晨读<a href="../2-我的智慧/与神对话1.html" target="_blank">《与神对话》</a> · 陪 Emma、冥想这种付出<strong>本身就回血</strong></span></div>
-              <div class="pw-row"><span class="pw-k">你写的</span><span class="pw-v">每天记一句感恩；别追问"这有什么意义"，改问"现在该做什么"</span></div>
+              <div class="pw-qhead"><span class="pw-ico">🕯️</span><span class="pw-name">意志</span><span class="pw-sub">活出人生的意义</span></div>
+              <div class="pw-row"><span class="pw-k">匮乏</span><span class="pw-v">冷漠，疏离 · 优柔寡断，逃避冲突 · 言而无信</span></div>
+              <div class="pw-row"><span class="pw-k">价值取向</span><span class="pw-v"><a class="pw-link" href="../2-我的智慧/与神对话1.html" target="_blank">与神对话</a></span></div>
+              <div class="pw-row"><span class="pw-k">生命的意义</span><span class="pw-v"><a class="pw-link" href="#protocol-being">存在练习</a> · <a class="pw-link" href="../2-我的智慧/对的感觉.html" target="_blank">对的感觉</a> · <a class="pw-link" href="#protocol-noexpect">零期待</a></span></div>
+              <div class="pw-row"><span class="pw-k">消耗与更新</span><span class="pw-v">冥想 · 家人时间</span></div>
             </div>
-
-            <div class="pw-spine">
-              🪢 <strong>就一句话</strong>：精力靠<strong>固定习惯</strong>撑，不靠<strong>硬扛</strong>——硬扛越用越少。你的<strong>"激活坡道"</strong>就是这句话，你其实已经在用这本书了。
             </div>
-            <p class="pw-demine">书里那张"每天打分"的表我没做——对你会变成又一笔要还的债。这张只在你不对劲时翻：<strong>不打卡、不欠账</strong>。忘了也没关系，有地方能想起来就够。</p>
           </div>
         </details>
 
         <div class="protocol-cat">🌿 身体养护</div>
-        <details class="protocol-card" id="protocol-iron">
+        <details class="protocol-card" id="protocol-sleep">
           <summary>
-            <span class="icon">💊</span>
+            <span class="icon">😴</span>
             <div>
-              <div class="title">补铁试验</div>
-              <div class="hint">每天 1 片随早餐 · 9/19 和 10/17 翻开对一次</div>
+              <div class="title">睡眠革命</div>
+              <div class="hint">按周期算 · 固定起床 · 睡前 / 睡后程序 · Littlehales《Sleep》</div>
             </div>
             <span class="arrow">›</span>
           </summary>
           <div class="protocol-card-body">
-            <p>在试一件事：<strong>疲乏犯困、怕冷、早白发、经血偏少、低强度运动完被抽干</strong>——这一整套指向铁储备低，而你以前补铁有过明显反应。<strong>2026-08-22 起</strong>直接补、看反应（不抽血，是你选的路）。</p>
             <table>
               <tbody>
-                <tr><td><strong>吃什么</strong></td><td><strong>Maltofer 100mg</strong>（铁多糖复合物）· Chemist Warehouse，买 100 片装，一盒覆盖整个疗程</td></tr>
-                <tr><td><strong>怎么吃</strong></td><td><strong>每天 1 片，随早上那碗酸奶</strong>。它不受咖啡、抹茶、牛奶、纤维影响——<strong>咖啡加抹茶照喝，什么都不用避开</strong>。</td></tr>
-                <tr><td><strong>怎么判断</strong></td><td>不打卡、不记录。<strong>用"游完泳之后的感觉"当尺子</strong>，跟 8 月那种"不是消耗、是被抽干"比。</td></tr>
+                <tr><td><strong>⏱️ 90 分钟周期</strong></td><td>睡眠周期≈90 分钟，理想一晚 4–5 个周期，即 6 小时或 7 个半小时。</td></tr>
+                <tr><td><strong>⏰ 固定起床点</strong></td><td>工作日 6 点起，非工作日 7 点半起。往前推 4–6 个睡眠周期：入睡时间都落在 10 点半 / 12 点</td></tr>
+                <tr><td><strong>🌆 睡前程序</strong></td><td>关闭屏幕 → 由暖到凉 → 由亮到暗 → 整理归纳 → 写幸福日记 → 简单拉伸 → 冥想</td></tr>
+                <tr><td><strong>🌅 睡后程序</strong></td><td>接触阳光 → 丰盛早餐 → 户外散步 / 轻运动 → 新闻或博客</td></tr>
+                <tr><td><strong>😴 睡姿 · 卧室</strong></td><td>左侧卧；卧室保持凉、黑、静。</td></tr>
+                <tr><td><strong>🔋 日间小睡</strong></td><td>午后 1–3 点可控修复期 · 黄昏 5–7 点次优（30 分钟内） · 每 90 分钟休息一次</td></tr>
               </tbody>
             </table>
-            <table>
-              <tbody>
-                <tr><td><strong>9 月 19 日<br><span style="font-size:.78rem;color:var(--text-hint);">第 4 周</span></strong></td><td>回想一次：下午还犯困吗 · 还怕冷吗 · 运动完那种抽干感还在吗</td></tr>
-                <tr><td><strong>10 月 17 日<br><span style="font-size:.78rem;color:var(--text-hint);">第 8 周</span></strong></td><td>同上再对一次。<strong>有变化就继续吃，别停。</strong></td></tr>
-                <tr><td><strong>11 月 22 日<br><span style="font-size:.78rem;color:var(--text-hint);">满 3 个月</span></strong></td><td>疗程终点，到这里才谈停不停——纠正症状要几周，<strong>填满储备要 3–6 个月</strong>。</td></tr>
-              </tbody>
-            </table>
-            <div class="inner-warn">
-              <strong>上次唯一的错，是在感觉好转的那一刻停了</strong>——储备还是空的，症状回来，然后得出"补铁没用"。这次规则只有一条：<strong>好转不是终点，11 月 22 日才是。</strong><br>· <strong>腹胀明显变重</strong> → 改隔天一片，别硬扛 · <strong>黑便是正常的</strong>，不用管 · <strong>出门带上</strong>：9/29 回中国
-            </div>
-            <div class="inner-highlight">
-              💡 <strong>10 周完全没动静＝该去抽血了，不等于＝不是铁。</strong>多糖铁的吸收证据不如甘氨酸亚铁扎实，阴性结果要打个折。真去查就点名这几项：<strong>Ferritin ＋ CRP</strong>（识别假性升高）＋ FBC ＋ TSH/游离T4 ＋ B12/叶酸。看报告<strong>别信"在参考区间内"</strong>——有症状通常要 <strong>ferritin ≥30 才算不缺、≥50 症状才稳</strong>，而区间下限常低到 10–15。<br>🍽️ 配套只有一条：<strong>晚饭有牛羊肉那顿，配番茄 / 灯笼椒 / 饭后猕猴桃，别同顿配牛奶芝士</strong>（<a href="饮食.html" target="_blank">饮食</a>）。早餐的酸奶咖啡抹茶不用动。<br>🔥 <strong>这段时间运动维持现在的量、别加</strong>——铁储备低时加训练量是往下挖（<a href="运动周总结.html" target="_blank">运动周总结</a>）。
-            </div>
           </div>
         </details>
-
-        <details class="protocol-card" id="protocol-corebreath">
-          <summary>
-            <span class="icon">🌬️</span>
-            <div>
-              <div class="title">收腹呼吸</div>
-              <div class="hint">把小腹收平那块 · 想起来就收两下</div>
-            </div>
-            <span class="arrow">›</span>
-          </summary>
-          <div class="protocol-card-body">
-            <p>练的是<strong>腹横肌张力</strong>——把腹壁从里收平、收紧的那层。下面这几个是一家（同一块肌肉、侧重不同），靠<strong>天天有、随手做</strong>，不靠猛练：</p>
-            <table>
-              <tbody>
-                <tr><td><strong>真空腹<br>晨起空腹</strong></td><td>呼气把气<strong>排干</strong> → <strong>屏住</strong>、把肚子往<strong>肋骨下"吸上去"</strong>提空 → 保持几秒 → 松开换气。空腹做最标准，正好赶在你要"平"的那个时刻；它的"<strong>往上提空</strong>"感比收平更强。</td></tr>
-                <tr><td><strong>嘶气收腹<br>轻版·随时</strong></td><td>小腹<strong>轻轻收住三成力</strong>、正常呼吸、维持张力。开车 / 排队 / 工位 / 走路都能做，<strong>挂多久都行</strong>——养常态张力最靠这个。<br><span style="font-size:.78rem;color:var(--text-hint);">🔎 <strong>找三成力</strong>：先用力猛收一次（十成）→ 完全放松 → 只收回三分之一。判据＝<strong>还能正常呼吸、说话就对了</strong>；憋气 / 发抖 / 夹屁股＝过头，松一半。</span></td></tr>
-                <tr><td><strong>嘶气收腹<br>满版·成组</strong></td><td>吸气到胸腔 → 用力呼气发"<strong>嘶</strong>"声排干 → 小腹收住<strong>保持 3 秒</strong> → 正常喘几口再来。一天几趟、每趟几组就够，<strong>多了不加分</strong>。</td></tr>
-              </tbody>
-            </table>
-            <div class="inner-warn">
-              <strong>四个别做错：</strong>① 方向<strong>往里、往上</strong>，绝不往下顶——骨盆底有<strong>下坠感＝反了，停</strong> · ② 收要<strong>平</strong>，小腹<strong>锥起/暴起＝过线</strong>，退回来 · ③ <strong>排空 + 屏息别撑到头晕</strong>（真空腹、满版都有屏息），晕了就停 · ④ <strong>别全天死绷</strong>，走路轻轻收就好，最大发力留给成组和真空腹
-            </div>
-            <div class="inner-highlight">
-              💡 <strong>别给它记次数打卡</strong>——它最适合<strong>挂在现成动作上</strong>：等红灯、洗手、刷牙、一坐下，想起来就收两下。靠的是<strong>日子久、不是单次狠</strong>。它练的是"<strong>能练的那层</strong>"（张力 / 收平 / 用力不鼓），帮你<strong>早上空腹更收得住</strong>；脂肪和产后松弛那两层不归它管，期待值放对，别拿它跟练臀的速度比。<br>🌹 <strong>经期这几天跳过</strong>（同真空腹，见<a href="#protocol-period" style="color:var(--rose);">经期护理</a>卡）。
-            </div>
-          </div>
-        </details>
-
         <details class="protocol-card" id="protocol-breath">
           <summary>
             <span class="icon">🫁</span>
@@ -1776,25 +1667,41 @@
             </table>
           </div>
         </details>
-
-        <details class="protocol-card" id="protocol-sleep">
+        <details class="protocol-card" id="protocol-corebreath">
           <summary>
-            <span class="icon">😴</span>
+            <span class="icon">🌬️</span>
             <div>
-              <div class="title">睡眠革命</div>
-              <div class="hint">按周期算 · 固定起床 · 睡前 / 睡后程序 · Littlehales《Sleep》</div>
+              <div class="title">收腹呼吸</div>
+              <div class="hint">把小腹收平那块 · 想起来就收两下</div>
+            </div>
+            <span class="arrow">›</span>
+          </summary>
+          <div class="protocol-card-body">
+            <p>练的是<strong>腹横肌张力</strong>——把腹壁从里收平、收紧的那层。</p>
+            <table>
+              <tbody>
+                <tr><td><strong>晨起真空腹</strong></td><td>呼气把气<strong>排干</strong> → <strong>屏住</strong>、把肚子往<strong>肋骨下"吸上去"</strong>提空 → 保持几秒 → 松开换气。</td></tr>
+                <tr><td><strong>随时嘶气收腹</strong></td><td>小腹<strong>轻轻收住三成力</strong>、正常呼吸和说话、维持张力。</td></tr>
+              </tbody>
+            </table>
+            <p>🌹 <strong>经期这几天跳过</strong></p>
+          </div>
+        </details>
+        <details class="protocol-card" id="protocol-iron">
+          <summary>
+            <span class="icon">💊</span>
+            <div>
+              <div class="title">补铁</div>
+              <div class="hint">每天 1 片，跟半瓶水一起 · 走前再买一盒</div>
             </div>
             <span class="arrow">›</span>
           </summary>
           <div class="protocol-card-body">
             <table>
               <tbody>
-                <tr><td><strong>⏱️ 90 分钟周期</strong></td><td>睡眠周期≈90 分钟，理想一晚 4–5 个周期，即 6 小时或 7 个半小时。</td></tr>
-                <tr><td><strong>⏰ 固定起床点</strong></td><td>工作日 6 点起，非工作日 7 点半起。往前推 4–6 个睡眠周期：入睡时间都落在 10 点半 / 12 点</td></tr>
-                <tr><td><strong>🌆 睡前程序</strong></td><td>关闭屏幕 → 由暖到凉 → 由亮到暗 → 整理归纳 → 写幸福日记 → 简单拉伸 → 冥想</td></tr>
-                <tr><td><strong>🌅 睡后程序</strong></td><td>接触阳光 → 丰盛早餐 → 户外散步 / 轻运动 → 新闻或博客</td></tr>
-                <tr><td><strong>😴 睡姿 · 卧室</strong></td><td>左侧卧；卧室保持凉、黑、静。</td></tr>
-                <tr><td><strong>🔋 日间小睡</strong></td><td>午后 1–3 点可控修复期 · 黄昏 5–7 点次优（30 分钟内） · 每 90 分钟休息一次</td></tr>
+                <tr><td><strong>吃什么</strong></td><td><strong>Maltofer 100mg</strong>（铁多糖复合物）· Chemist Warehouse 100 片装</td></tr>
+                <tr><td><strong>怎么吃</strong></td><td><strong>每天 1 片，跟半瓶水一起。</strong></td></tr>
+                <tr><td><strong>12/29 回国前</strong></td><td>第一盒 11 月底吃完。<strong>走之前再买一盒 100 片带上</strong>，刚好覆盖到 3 月。国内同类药叫<strong>力蜚能</strong>（多糖铁复合物），买不到 Maltofer 可以换它。</td></tr>
               </tbody>
             </table>
           </div>
@@ -1811,30 +1718,20 @@
             <span class="arrow">›</span>
           </summary>
           <div class="protocol-card-body">
-            <p class="pw-lead">把"做任务、一件件划掉"换成"<strong>在场地做眼前这件</strong>"。不用全做，<strong>哪句戳中就用哪招</strong>——按"什么时候"找。</p>
-
             <div class="pw-quad q-body">
-              <div class="pw-qhead"><span class="pw-ico">🎬</span><span class="pw-name">开始前</span><span class="pw-sub">进不去 · 觉得勉强</span></div>
-              <div class="pw-row"><span class="pw-k">断点记录</span><span class="pw-v">眼前只摆<strong>"此刻这件 + 做完的下一件"</strong>，其余扣回后台，手上永远只有两件事。</span></div>
-              <div class="pw-row"><span class="pw-k">缩到一步</span><span class="pw-v">不想整件，<strong>只做接下来五分钟、只迈第一步</strong>，尺度一缩就进得去了。</span></div>
-              <div class="pw-row"><span class="pw-k">选择</span><span class="pw-v">把心里的"我应该做"换成<strong>"我选择现在做"</strong>，任务感立刻松一扣。</span></div>
+              <div class="pw-qhead"><span class="pw-name">开始前</span></div>
+              <div class="pw-row"><span class="pw-k">断点记录</span><span class="pw-v">在便签本上写下<strong>"此刻在做的事 + 做完的下一件事"</strong>，手上永远只有两件事。</span></div>
+              <div class="pw-row"><span class="pw-k">思想松绑</span><span class="pw-v">把"我应该做什么"换成<strong>"我选择把接下来 5 分钟用来做什么"</strong>。</span></div>
             </div>
 
             <div class="pw-quad q-emo">
-              <div class="pw-qhead"><span class="pw-ico">🎯</span><span class="pw-name">做的时候</span><span class="pw-sub">只做手上这件</span></div>
-              <div class="pw-row"><span class="pw-k">单线程</span><span class="pw-v">抓到自己同时干两件（边做边刷 / 边想下一件）就<strong>掐掉一件</strong>，只做手上这件。</span></div>
-              <div class="pw-row"><span class="pw-k">命名当下</span><span class="pw-v">心里轻轻说一句<strong>"我现在在洗碗"</strong>，一句话把你和动作缝在一起。</span></div>
-            </div>
-
-            <div class="pw-quad q-mind">
-              <div class="pw-qhead"><span class="pw-ico">🪁</span><span class="pw-name">跑偏了</span><span class="pw-sub">别自责，捞回来就好</span></div>
-              <div class="pw-row"><span class="pw-k">落回身体</span><span class="pw-v">走神了别自责，用<strong>脚踏实地 / 三口呼吸 / 摸一摸手里东西的质感</strong>把自己捞回来。</span></div>
-              <div class="pw-row"><span class="pw-k">记一笔</span><span class="pw-v">蹦出"还要做 X"别追，<strong>记一笔</strong>（便签 / 一句话）就放回后台，前台才敢空。</span></div>
+              <div class="pw-qhead"><span class="pw-name">做的时候</span></div>
+              <div class="pw-row"><span class="pw-k">命名当下</span><span class="pw-v">心里轻轻说一句<strong>"我现在在做什么"</strong>，一句话把思想和动作缝在一起。</span></div>
             </div>
 
             <div class="pw-quad q-will">
-              <div class="pw-qhead"><span class="pw-ico">✅</span><span class="pw-name">做完了</span><span class="pw-sub">别急着冲下一件</span></div>
-              <div class="pw-row"><span class="pw-k">画句号</span><span class="pw-v">一件好了，给个<strong>"嗯，好了"＋一口气</strong>，别急着冲下一件。</span></div>
+              <div class="pw-qhead"><span class="pw-name">做完了</span></div>
+              <div class="pw-row"><span class="pw-k">打钩 √</span><span class="pw-v">一件好了，给个<strong>"嗯，好了"</strong>＋在便签本上打钩。</span></div>
             </div>
           </div>
         </details>
@@ -1843,41 +1740,23 @@
           <summary>
             <span class="icon">🤝</span>
             <div>
-              <div class="title">关系怎么处</div>
-              <div class="hint">跟人相处不舒服、不知道该不该继续时翻开 ·《与神对话》</div>
+              <div class="title">爱会怎么做</div>
+              <div class="hint">人际关系有疑问的时候打开 ·《与神对话》</div>
             </div>
             <span class="arrow">›</span>
           </summary>
           <div class="protocol-card-body">
-            <p class="pw-lead">关系的目的<strong>不是从对方那里得到什么，也不是照顾好对方</strong>——是确定并经验「我是谁」。下面每一条都是从这一句推出来的。<br>原话：<strong>"关系的目标不是请别人来让你变得完满，而是请别人来分享你的完满。"</strong></p>
-
-            <div class="pw-quad q-emo">
-              <div class="pw-qhead"><span class="pw-ico">🧭</span><span class="pw-name">当场只问一句</span><span class="pw-sub">不确定怎么办的时候</span></div>
-              <div class="pw-row"><span class="pw-k">问</span><span class="pw-v"><strong>现在，爱会怎么做？</strong></span></div>
-              <div class="pw-row"><span class="pw-k">爱是</span><span class="pw-v">扩张 · 开放 · 赠送 · 停留 · 敞开 · 分享 · 治疗</span></div>
-              <div class="pw-row"><span class="pw-k">怕是</span><span class="pw-v">收缩 · 封闭 · 攫取 · 跑开 · 隐藏 · 独吞 · 伤害</span></div>
-              <div class="pw-row"><span class="pw-k">用法</span><span class="pw-v">不用判断对方，<strong>只看自己此刻站在哪一列</strong>。站在"怕"那列，先别做决定。</span></div>
-            </div>
-
-            <div class="pw-quad q-body">
-              <div class="pw-qhead"><span class="pw-ico">🪜</span><span class="pw-name">三步，顺序不能乱</span><span class="pw-sub">先自己，再别人，最后说和做</span></div>
-              <div class="pw-row"><span class="pw-k">先看自己</span><span class="pw-v">唯一要紧的问题是<strong>"在这段关系里，我过得好不好"</strong>——不是对方过得好不好、要什么、说什么。答案是不好，这一条就够了，不用先论证对方有错。</span></div>
-              <div class="pw-row"><span class="pw-k">选最高的</span><span class="pw-v">最高的选择是<strong>为你带来最多好处</strong>的那个，因为"为己即是为人"。<strong>委屈自己成全对方不是爱</strong>，那只是误解了什么对你最有利。</span></div>
-              <div class="pw-row"><span class="pw-k">说了要做</span><span class="pw-v">"善意而完整地说出你的真实感受"——然后<strong>"温柔、彻底而持续地将它付诸行动"</strong>。<strong>第二句才是关键</strong>：说了却照旧全额配合，憋屈就是这么来的（那是对自己失信，不是对方收的税）。</span></div>
-            </div>
-
-            <div class="pw-quad q-mind">
-              <div class="pw-qhead"><span class="pw-ico">🚪</span><span class="pw-name">Ch.8 还有四句</span><span class="pw-sub">原文，一字未改</span></div>
-              <div class="pw-row"><span class="pw-k">义务</span><span class="pw-v">「答案是：<strong>你没有义务</strong>。在关系中没有，在生活中也没有。……在关系中，你没有义务。<strong>你有的只是机会。永远不要出于义务感去做任何事情。</strong>无论做什么事，你都要感到你的关系给你提供的是非凡的机会，让你能够确定和获得你的真实身份。」</span></div>
-              <div class="pw-row"><span class="pw-k">界线</span><span class="pw-v">「如果你受到虐待的时候想寻找对你最有利的做法，那么你<strong>起码应该阻止虐待，这对你自己和施虐者都好</strong>。……<strong>用爱对待别人未必意味着纵容别人为所欲为。</strong>父母很早就从孩子身上学到这个道理。成年人之间和国家之间反而很难学到。」</span></div>
-              <div class="pw-row"><span class="pw-k">对手</span><span class="pw-v">「请非常努力地做到别在这些时刻把你的对象视为仇敌或者对手。实际上，你要做到<strong>别把任何人、任何事视为仇敌甚至是问题</strong>。<strong>要培养把所有问题当做机会的技巧。</strong>这些机会能够让你确定和获得你的真实身份。」</span></div>
-              <div class="pw-row"><span class="pw-k">感受</span><span class="pw-v">「这就要求你<strong>尊重你的感受，并诚实地向你自己和别人承认你的感受</strong>。假如你拥有否定性的感受，往往拥有那种感受便足以令你远离它。<strong>正是在你拥有愤怒、悲伤、厌恶、狂乱、报复的感受之后，你才能确定它们不是你想要的，然后选择舍弃这些感受。</strong>」</span></div>
-            </div>
-
-            <div class="pw-spine">
-              🪢 <strong>就一句话</strong>：在关系里<strong>只关心自己是谁</strong>。这不是自私——书里的原话是「<strong>最懂得爱的人是那种以自我为中心的人</strong>」。
-            </div>
-            <p class="pw-demine">不打卡、不记录、不复盘。想不起来就翻一次，翻完合上。原文在 <a href="../2-我的智慧/与神对话1.html" target="_blank">《与神对话》</a>「Ch.8 关系」。</p>
+            <ul class="core-list">
+              <li>爱是扩张 · 开放 · 赠送 · 停留 · 敞开 · 分享 · 治疗</li>
+              <li>唯一要紧的问题是<strong>"在这段关系里，我过得好不好"</strong>。</li>
+              <li>最高的选择是<strong>为你带来最多好处</strong>的那个，因为"为己即是为人"。</li>
+              <li>"善意而完整地说出你的真实感受"——然后<strong>"温柔、彻底而持续地将它付诸行动"</strong>。</li>
+              <li>义务「<strong>你没有义务。你有的只是机会。永远不要出于义务感去做任何事情。</strong>」</li>
+              <li>界线「<strong>用爱对待别人未必意味着纵容别人为所欲为。</strong>」</li>
+              <li>对手「<strong>别把任何人、任何事视为仇敌甚至是问题。要培养把所有问题当做机会的技巧。</strong>」</li>
+              <li>感受「<strong>尊重你的感受，并诚实地向你自己和别人承认你的感受。正是在你拥有愤怒、悲伤、厌恶、狂乱、报复的感受之后，你才能确定它们不是你想要的，然后选择舍弃这些感受。</strong>」</li>
+              <li>在关系里只关心自己是谁。<strong>最懂得爱的人是那种以自我为中心的人。</strong></li>
+            </ul>
           </div>
         </details>
 
@@ -1891,30 +1770,15 @@
             <span class="arrow">›</span>
           </summary>
           <div class="protocol-card-body">
-            <p class="pw-lead">期待是默认的，灭不掉，<strong>只能每天搁一次</strong>。搁下期待，不是搁下想要。<br>原话：<strong>"修行并非叫你不要去行动，而是让你再也不需要特定的结果。"</strong></p>
-
-            <div class="pw-quad q-body">
-              <div class="pw-qhead"><span class="pw-ico">🌅</span><span class="pw-name">起床时</span><span class="pw-sub">每天一次，挂在起床上</span></div>
-              <div class="pw-row"><span class="pw-k">搁置</span><span class="pw-v">今天<strong>不期待天气晴、不期待每个人友好、不期待谁热情</strong>。像上班面对客人：对方给什么都可以，我只负责处理。</span></div>
-              <div class="pw-row"><span class="pw-k">想要照留</span><span class="pw-v">想见的人照约、想做的事照做，<strong>只是不押结果</strong>。</span></div>
-            </div>
-
-            <div class="pw-quad q-emo">
-              <div class="pw-qhead"><span class="pw-ico">☀️</span><span class="pw-name">好事来了</span><span class="pw-sub">友好 · 热情 · 请吃饭</span></div>
-              <div class="pw-row"><span class="pw-k">收下</span><span class="pw-v">没预设，来了就是赚到，<strong>开心</strong>。</span></div>
-              <div class="pw-row"><span class="pw-k">说出口</span><span class="pw-v">当场告诉对方<strong>"我很开心"</strong>。不记债、不欠回去。</span></div>
-            </div>
-
-            <div class="pw-quad q-mind">
-              <div class="pw-qhead"><span class="pw-ico">🌧️</span><span class="pw-name">坏事来了</span><span class="pw-sub">冷淡 · 堵车 · 下雨 · 不顺</span></div>
-              <div class="pw-row"><span class="pw-k">不惊</span><span class="pw-v">没有期待就没有落差，<strong>它只是一件要处理的事</strong>。</span></div>
-              <div class="pw-row"><span class="pw-k">三选一</span><span class="pw-v"><strong>远离 · 说出不满 · 冷处理</strong>。选一个做，不吞下去。</span></div>
-            </div>
-
-            <div class="pw-spine">
-              🪢 <strong>就一句话</strong>：心情的基线<strong>我先定</strong>，对方给什么，我再决定怎么接。
-            </div>
-            <p class="pw-demine">不打卡、不记录。原文在 <a href="../2-我的智慧/与神对话1.html" target="_blank">《与神对话》</a>「Ch.5 通往神的路」。</p>
+            <p class="pw-lead"><strong>"修行并非叫你不要去行动，而是让你再也不需要特定的结果。"</strong></p>
+            <table>
+              <tbody>
+                <tr><td><strong>起床时</strong></td><td>今天<strong>不期待天气晴、不期待每个人友好、不期待谁热情</strong>。像上班面对客人：对方给什么都可以，我只负责处理。</td></tr>
+                <tr><td><strong>好事来了</strong><br><span class="ck-min">友好 · 热情</span></td><td>来了就是赚到，<strong>开心</strong>。当场告诉对方<strong>"我很开心"</strong>。</td></tr>
+                <tr><td><strong>坏事来了</strong><br><span class="ck-min">冷淡 · 堵车 · 下雨 · 不顺</span></td><td>没有期待就没有落差，<strong>它只是一件要处理的事</strong>。<strong>远离 · 说出不满 · 冷处理</strong>。</td></tr>
+                <tr><td><strong>就一句话</strong></td><td>心情的基线<strong>我先定</strong>，对方给什么，我再决定怎么接。</td></tr>
+              </tbody>
+            </table>
           </div>
         </details>
 
@@ -1937,7 +1801,6 @@
                 <tr><td><strong>④ 到此打住</strong></td><td>等的事到了就去做，别追问"刚才那下算好吗"。<strong>不记次数、不记感觉</strong>，做了就做了。</td></tr>
               </tbody>
             </table>
-            <p class="node-warn">⚠️ 不适特别重、往"没意义 / 想消失"那儿沉的时候，<strong>那天就停，别一个人在深夜练</strong>——那种深度留给白天，或者让 Eric 在边上。</p>
           </div>
         </details>
 
@@ -2090,29 +1953,13 @@
             <span class="arrow">›</span>
           </summary>
           <div class="protocol-card-body">
-            <p class="pw-lead">找一件<strong>反正会发生</strong>的事（不是"想做的时候"——心情不会自己来），它占住你一部分、正好空出另一部分，把<strong>只用那格</strong>的东西挂进去。载体已经因为别的理由合法了，挂上去的事<strong>不用自证"这有什么用"</strong>——这就是阅读那么轻、而单独排一段的"睡前冥想"总是死的原因。</p>
-
             <table>
               <tbody>
-                <tr><td><strong>🎧 耳朵空<br>手眼被占</strong></td><td>开车 · 走路送 Emma · 洗碗 · 做饭等锅 · 叠衣 · 吹头发 · 拖地<br><strong>挂：</strong>冥想音频 · 呼吸引导 · 播客 · 有声书 · 音乐<br>✅ 上班路（新闻）· 下班路（冥想）<br>🆕 <strong>不上班日送完 Emma 走回家那段 → 呼吸冥想</strong>（下班路的孪生兄弟；去程有 Emma 归颜色寻宝）</td></tr>
-                <tr><td><strong>🤲 手空<br>眼睛被占</strong></td><td>看剧 · 刷手机 · 陪奇林打游戏 · 听线上会<br><strong>挂：</strong>揉腹，或下面小动作库里挑一个 👇</td></tr>
-                <tr><td><strong>📖 眼手都空<br>但人被钉住</strong></td><td>Eric 给 Emma 讲故事 · 飞机火车 · 候诊 · 在外面等 Emma<br><strong>挂：</strong>阅读 · 写 · 发呆<br>✅ 20:30 阅读 10 分钟</td></tr>
-                <tr><td><strong>🧠 脑子空<br>身体在做机械活</strong></td><td>洗澡 · 走路 · 折衣服 · 剪指甲<br><strong>挂：</strong>唱歌 ·「下载你的一天」· 想事情 · 什么都不想<br>🆕 <strong>一个人洗澡 → 唱歌</strong>（水声盖着，没人听得见）<br>✅ 跟奇林一起洗 → 聊天，那格有主了</td></tr>
+                <tr><td><strong>🎧 耳朵空</strong></td><td><strong>挂：</strong>冥想练习 · 呼吸练习 · 播客 · 有声书 · 音乐 · 新闻</td></tr>
+                <tr><td><strong>🤲 手和脚空</strong></td><td><strong>挂：</strong>仙人揉腹 · 小腿精油按摩 · 头皮按摩 · 弹力带坐姿练臀 · 真空腹 · 胸腹式呼吸 · 床上腿部运动</td></tr>
+                <tr><td><strong>📖 眼手都空<br>但人被钉住</strong></td><td><strong>挂：</strong>阅读 · 写日记</td></tr>
               </tbody>
             </table>
-
-            <p><strong>📺 看剧 / 刷手机时</strong>——眼睛被占着，手和脚是白给的。</p>
-            <table>
-              <tbody>
-                <tr><td><strong>换个姿势看<br>零成本</strong></td><td>趴着看（反驼背、胸椎伸展）· 盘腿 / 蝴蝶坐（开髋）· 腿靠墙躺着看（消水肿）· 靠墙站着看（体态）· 跪坐（脚踝）</td></tr>
-                <tr><td><strong>手上加一件<br>库里现成</strong></td><td><a href="运动周总结.html" target="_blank">运动库</a>里能坐着躺着做的：仙人揉腹（10min）· 小腿精油按摩（5min）· 弹力带坐姿练臀（5min）· 真空腹（隐形，没人看得出来）</td></tr>
-                <tr><td><strong>手上加一件<br>不用跟练</strong></td><td>脚底滚球（不用眼睛，跟足弓训练一路）· 泡脚 · 头皮抓揉 · 脚踝绕圈、勾脚背伸 · 缩下巴 + 后缩肩胛</td></tr>
-              </tbody>
-            </table>
-
-            <div class="inner-highlight">
-              💡 <strong>两条规矩</strong>：① <strong>一个载体只挂一件事。</strong>20:30 归阅读、洗澡跟奇林时归聊天——再塞第二件，它就从"顺带"变成清单，那份毫无压力当场蒸发。② <strong>这张不打卡</strong>，是目录不是任务表。挑一个试试，试不成就换：<strong>是载体不合适，不是你不行。</strong>
-            </div>
           </div>
         </details>
 
@@ -2128,15 +1975,15 @@
           <div class="protocol-card-body">
             <table>
               <tbody>
-                <tr><td><strong>每晚</strong></td><td>20 个 Anki 中文字 · Eric 带 Emma 指读故事</td></tr>
-                <tr><td><strong>周一</strong></td><td>通常不上班 · 晚上在家跟 Eric 练 JJ 老师瑜伽 1h</td></tr>
-                <tr><td><strong>周二晚</strong></td><td>Emma 游泳课，自己/Eric 同步游</td></tr>
-                <tr><td><strong>周三晚</strong></td><td>🛒 采购</td></tr>
+                <tr><td><strong>每晚</strong></td><td>中文字 · 读故事</td></tr>
+                <tr><td><strong>周一</strong></td><td>JJ 老师瑜伽 1h</td></tr>
+                <tr><td><strong>周二晚</strong></td><td>Emma 游泳课</td></tr>
+                <tr><td><strong>周三晚</strong></td><td>🛒 采购日</td></tr>
                 <tr><td><strong>周四晚</strong></td><td>🌙 满载日 → 走<a href="#protocol-shutdown" style="color:var(--accent);">关机轨道</a></td></tr>
                 <tr><td><strong>周五晚</strong></td><td>🎬 电影之夜</td></tr>
-                <tr><td><strong>周六早</strong></td><td>Emma 攀岩，自己/Eric 在攀岩馆健身房 → 全家 brunch 🥞<br><span style="font-size:.72rem;color:var(--text-hint);">全周最开心的时刻，不排家务、不排任务</span></td></tr>
-                <tr><td><strong>周日上午</strong></td><td>🧹 清洁日 · 全家一起（见下方抽屉）</td></tr>
-                <tr><td><strong>周末下午</strong></td><td>🏸 羽毛球 / ⛰️ hiking（国家公园）</td></tr>
+                <tr><td><strong>周六早</strong></td><td>Emma 攀岩课 → 全家 brunch 🥞<br><span style="font-size:.72rem;color:var(--text-hint);">全周最开心的时刻，不排家务、不排任务</span></td></tr>
+                <tr><td><strong>周日上午</strong></td><td>🧹 清洁日</td></tr>
+                <tr><td><strong>周末下午</strong></td><td>🏸 羽毛球 / ⛰️ hiking</td></tr>
               </tbody>
             </table>
           </div>
@@ -2153,10 +2000,9 @@
           </summary>
           <div class="protocol-card-body">
             <div class="ck-head">
-              <p style="margin:0;flex:1;">按顺序：<strong>整理 → 除尘 → 湿擦 → 拖地</strong>，不来回换工具。租房保洁，够用就行。</p>
+              <p style="margin:0;flex:1;">按顺序：<strong>整理 → 除尘 → 湿擦 → 拖地</strong>。</p>
               <button class="ck-reset" id="ck-reset" type="button">重置</button>
             </div>
-            <p style="font-size:.72rem;color:var(--text-hint);margin:.35rem 0 .6rem;">💡 点一下动作就划掉，做完整周点「重置」清空。<span class="ck-legend-daily">蓝灰项</span> = 日常顺手就能维护，清洁日可能已不脏。</p>
             <table>
               <thead><tr><th>阶段</th><th>动作</th></tr></thead>
               <tbody>
@@ -2191,59 +2037,23 @@
             <span class="arrow">›</span>
           </summary>
           <div class="protocol-card-body">
-            <div class="inner-highlight">
-              💡 <strong>这是一场有终点的活动，不是新增的家务。</strong>近藤麻理惠的原话：整理是一次性的祭典，做完就不用再做。下面五类走完一轮就结束，之后只剩底部两条「维持」。<strong>在 2026 底回广州前走完</strong>——那时候你是在一堆已经筛过的东西里挑<a href="../7-回广州/搬迁物品.html" target="_blank" style="color:var(--accent);">带什么走</a>，而不是从头筛一遍。
-            </div>
-
-            <p style="font-weight:600;margin:.9rem 0 .3rem;">开工前三条（不遵守就会半途而废）</p>
             <table>
               <tbody>
-                <tr><td><strong>一类做完再停</strong></td><td>不"每天整十分钟"。同一类要一鼓作气做到底，才会有"家变了"的冲击——那个冲击才是不反弹的原因。做不完可以下次接着<strong>这一类</strong>，但绝不同时开第二类。</td></tr>
-                <tr><td><strong>全部堆到一处</strong></td><td>做衣服就把<strong>全屋</strong>衣服堆到地上：衣柜、洗衣篮、换季箱、车后备箱、玄关挂的。看见总量才判断得动——分散在各处时你永远觉得"也没多少"。</td></tr>
-                <tr><td><strong>先决定丢什么，再收纳</strong></td><td>不许边扔边归位。归位是最后一步，不然你会把该丢的东西整整齐齐地收起来。</td></tr>
+                <tr><td><strong>全部堆到一处</strong></td><td>先决定丢什么，再收纳</td></tr>
               </tbody>
             </table>
 
-            <p style="font-weight:600;margin:1rem 0 .3rem;">五类顺序 · 点一下划掉</p>
-            <p style="font-size:.72rem;color:var(--text-hint);margin:0 0 .5rem;">💡 顺序不能跳：衣服最好判断，用来练判断力；纪念品最难，留到最后。上来就翻照片＝当场卡死。</p>
             <table>
               <tbody>
-                <tr><td><span class="dc-item" data-id="d1"><strong>1️⃣ 衣服</strong></span><br><span class="ck-min">最容易</span></td><td>按上衣 → 裤裙 → 外套 → 袜内衣 → 鞋 → 包分小堆。留下的立着放不叠压，抽屉里一眼看全。</td></tr>
-                <tr><td><span class="dc-item" data-id="d2"><strong>2️⃣ 书</strong></span><br><span class="ck-min"></span></td><td>全部下架、不翻开（翻开就走不了）。判断的是<strong>「未来的我会读它吗」</strong>，不是"我买了它"。<em>还没读完</em>不是留下的理由。</td></tr>
-                <tr><td><span class="dc-item" data-id="d3"><strong>3️⃣ 文件</strong></span><br><span class="ck-min">默认全扔</span></td><td>原则：<strong>文件的理想状态是零</strong>。只留三类——现在正在用的、有保存期限的（签证/税务/保修）、终身的（护照/出生证/PR/学历）。其余拍照存档就丢。</td></tr>
-                <tr><td><span class="dc-item" data-id="d4"><strong>4️⃣ 小东西</strong></span><br><span class="ck-min">量最大</span></td><td>分批：化妆护肤 → 药品 → 厨房 → 文具 → 数据线充电器 → 工具 → 纸袋盒子赠品。这类靠<strong>下面的 20/20 规则</strong>过，别一件件纠结。</td></tr>
-                <tr><td><span class="dc-item" data-id="d5"><strong>5️⃣ 纪念品</strong></span><br><span class="ck-min">最难 · 必须最后</span></td><td>照片、信、Emma 的画和作业、旅行纪念。前四类练出来的判断力就是为了这一关。<strong>Emma 的作品拍照做电子册，实物只留最有代表性的几件。</strong></td></tr>
+                <tr><td><span class="dc-item" data-id="d1"><strong>1️⃣ 衣服</strong></span><br><span class="ck-min">最容易</span></td><td>心动法则。按上衣 → 裤裙 → 外套 → 袜内衣 → 鞋 → 包分小堆。留下的立着放不叠压，抽屉里一眼看全。</td></tr>
+                <tr><td><span class="dc-item" data-id="d2"><strong>2️⃣ 书</strong></span></td><td>全部下架、不翻开。判断的是<strong>「未来的我会读它吗」</strong>，还没读完不是留下的理由。</td></tr>
+                <tr><td><span class="dc-item" data-id="d3"><strong>3️⃣ 文件</strong></span><br><span class="ck-min">默认全扔</span></td><td>只留三类——现在正在用的、有保存期限的（签证/税务/保修）、终身的（护照/出生证/PR/学历）。其余拍照存档就丢。</td></tr>
+                <tr><td><span class="dc-item" data-id="d4"><strong>4️⃣ 小东西</strong></span><br><span class="ck-min">量最大</span></td><td>化妆护肤 → 药品 → 厨房 → 文具 → 数据线充电器 → 工具 → 纸袋盒子赠品。<strong>20/20 规则</strong>（是否能在 20 分钟内、20 块钱以内重新弄到）</td></tr>
+                <tr><td><span class="dc-item" data-id="d5"><strong>5️⃣ 纪念品</strong></span><br><span class="ck-min">最难 · 必须最后</span></td><td>照片、信、Emma 的画和作业、旅行纪念。<strong>Emma 的作品拍照做电子册，实物只留最有代表性的几件。</strong></td></tr>
               </tbody>
             </table>
 
-            <p style="font-weight:600;margin:1rem 0 .3rem;">卡住时怎么判断</p>
-            <table>
-              <tbody>
-                <tr><td><strong>私人物品</strong><br><span class="ck-min">衣服 / 装饰 / 纪念品</span></td><td>拿在手里，问：<strong>留着它我是高兴，还是松了口气？</strong>「留着才安心」＝那是负担不是喜欢。这就是「心动法」的实操版——判断标准是<strong>留下什么</strong>，不是扔掉什么。</td></tr>
-                <tr><td><strong>工具 / 耗材</strong><br><span class="ck-min">厨房 / 文具 / 数码</span></td><td>过去<strong>一年</strong>用过吗？坏了会立刻再买一个吗？两个都是否 → 出局。</td></tr>
-                <tr><td><strong>"以防万一"</strong><br><span class="ck-min">最大的滞留原因</span></td><td><strong>20/20 规则：</strong>如果它坏了/需要了，能在 <strong>20 分钟内、20 块钱以内</strong>重新弄到 → 放心丢。真正符合"万一"的东西极少，你会发现绝大多数都过不了这一关。</td></tr>
-                <tr><td><strong>不算理由的三个理由</strong></td><td>① 很贵（钱已经花了，留着不会退回来）② 别人送的（礼物的使命在收到那刻就完成了）③ 也许以后用得上（这是 20/20 规则要处理的）。</td></tr>
-              </tbody>
-            </table>
-
-            <div class="inner-highlight">
-              🚧 <strong>只碰自己的东西。</strong>Eric 和 Emma 的东西不替他们决定——这条是近藤原书里的硬规则，因为替家人扔是家庭冲突的头号来源，也会让你又多扛一层「替全家做决定」的活。Emma 的玩具只能<strong>陪她一起筛、决定权给她</strong>（她的房间她说了算，你只提供分类和问题）。你自己的东西也尽量别当着他们面丢。
-            </div>
-
-            <p style="font-weight:600;margin:1rem 0 .3rem;">丢出去的去向（珀斯）</p>
-            <p style="font-size:.8rem;margin:0 0 .3rem;">决定了留不留是一回事，东西真正离开家是另一回事——堆在门口一个月等于没做。当场分四袋：<strong>捐</strong>（Vinnies / Salvos / Good Sammy 门口捐物箱）· <strong>卖</strong>（Facebook Marketplace / Gumtree，只给值 $30 以上的，两周没卖掉就转捐）· <strong>扔</strong> · <strong>大件</strong>（等 council verge collection）。<strong>捐和扔的两袋当天就送出门。</strong></p>
-
-            <p style="font-weight:600;margin:1rem 0 .3rem;">走完之后 · 只维持这两条</p>
-            <table>
-              <tbody>
-                <tr><td><strong>平面清空</strong></td><td>台面、餐桌、床头、玄关不放东西。视觉上的乱八成来自平面——这条已经在<a href="#protocol-cleaning" style="color:var(--accent);">清洁日</a>的第一阶段里，不用另做。</td></tr>
-                <tr><td><strong>一进一出</strong></td><td>买一件，同类出一件。这一条就够挡住反弹，不需要再定期"复查"。</td></tr>
-              </tbody>
-            </table>
-
-            <div class="inner-highlight">
-              <strong>成功标准</strong>：五类划完就是完成，不用做第二轮。中途停在某一类不算输——<strong>只要没同时开第二类</strong>。这张卡不记录次数、不算连胜，划完了它就该安静躺着。
-            </div>
+            <p style="font-size:.8rem;margin:1rem 0 0;"><strong>丢出去的去向：</strong>捐 · 卖 · 扔 · 大件。</p>
           </div>
         </details>
 
@@ -2280,12 +2090,12 @@
 <script>
   // ==================== 时间与当前时段 ====================
   const PHASES = [
-    { id: 'morning',  start: 5,  end: 9,  emoji: '🌅', name: '晨起 90 分钟',        tip: '为精力充沛的一天定调。坐起 → 开窗帘 → 下床 → 烧水，简单 4 步先动起来。', anchor: '#node-morning' },
+    { id: 'morning',  start: 5,  end: 9,  emoji: '🌅', name: '晨起 90 分钟',        tip: '开窗帘 → 洗漱化妆 / 听新闻 → 水 / 铁剂 / 洋车前子壳粉 → 早饭 → 通勤或晨间运动。', anchor: '#node-day' },
     { id: 'day',      start: 9,  end: 12, emoji: '☀️', name: '白天 · 黄金窗口',      tip: '不上班日 9 点到家立刻进运动——意志力满 + 已热身；上班日见缝插针做体态快练。', anchor: '#node-day' },
-    { id: 'workday',  start: 12, end: 17, emoji: '😌', name: '白天的休息节律',      tip: '17 点前后是第二个修复期，闭目 10 分钟 / 谐振呼吸；每 90 分钟微休息 5 分。', anchor: '#node-workday' },
-    { id: 'evening',  start: 17, end: 20, emoji: '🌇', name: '傍晚修复期',          tip: '最累但最该温和动一动。通勤途中拉伸 + 呼吸法 + 体态调整。', anchor: '#node-evening' },
-    { id: 'reading',  start: 20, end: 21, emoji: '📖', name: '阅读 10 分钟',         tip: '锚点：8:30 Eric 给 Emma 讲故事 = 你的闹钟。翻开读一页就赢。', anchor: '#node-reading' },
-    { id: 'postemma', start: 21, end: 29, emoji: '🌙', name: 'Emma 睡后 → 入睡',     tip: '一个人的话：手机之前先坐两分钟（存在练习），练了记一笔。状态好做爱好（听音乐/阅读/唱歌/整理），状态不好走床上拉伸 + 颂钵冥想。', anchor: '#node-postemma' },
+    { id: 'workday',  start: 12, end: 17, emoji: '😌', name: '白天的休息节律',      tip: '每 90 分钟微休息 5 分钟；午后 1–3 点歇 10–15 分钟（冥想），5–7 点再歇一次（谐振呼吸）。', anchor: '#node-day' },
+    { id: 'evening',  start: 17, end: 20, emoji: '🌇', name: '傍晚修复期',          tip: '最累但最该温和动一动。通勤途中拉伸 + 呼吸法 + 体态调整。', anchor: '#node-day' },
+    { id: 'reading',  start: 20, end: 21, emoji: '📖', name: '阅读 10 分钟',         tip: '锚点：Emma 睡前阅读时间 · 在外等餐 · 公园陪玩。', anchor: '#node-reading' },
+    { id: 'postemma', start: 21, end: 29, emoji: '🌙', name: 'Emma 睡后 → 入睡',     tip: '状态好做爱好（听音乐/阅读/唱歌/整理），状态不好床上躺练 + 颂钵冥想；然后走睡前程序：关屏 → 暗 → 整理 → 幸福日记 → 拉伸 → 冥想。', anchor: '#node-day' },
   ];
 
   // 状态卡开启时，NOW 卡换成对应的一句话（分领域细节见各卡面板）
@@ -2324,7 +2134,7 @@
     document.getElementById('now-anchor').setAttribute('href', stateAnchor || phase.anchor);
 
     document.querySelectorAll('.timeline-node').forEach(n => {
-      n.classList.toggle('current', n.dataset.phase === phase.id);
+      n.classList.toggle('current', (n.dataset.phase || '').split(' ').includes(phase.id));
     });
 
     const enWeek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];

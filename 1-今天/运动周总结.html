@@ -142,6 +142,30 @@
     .cc-tracker { width: 100%; justify-content: flex-end; }
   }
 
+  /* ========== 一天的运动（按时刻挂动作） ========== */
+  .day-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 0.9rem 1.2rem; margin-bottom: 0.7rem;
+  }
+  .day-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 0.45rem; flex-wrap: wrap; }
+  .day-icon { font-size: 1.05rem; }
+  .day-title { font-family: 'Noto Serif SC', serif; font-size: 0.95rem; font-weight: 600; color: var(--text-primary); }
+  .day-when { font-size: 0.74rem; color: var(--text-hint); }
+  .day-act { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-top: 1px dashed var(--border); font-size: 0.84rem; }
+  .day-act:first-child { border-top: none; }
+  .da-num { color: var(--text-hint); font-size: 0.74rem; min-width: 30px; }
+  .da-name { flex: 1; min-width: 0; color: var(--text-secondary); line-height: 1.5; }
+  .da-note { font-size: 0.72rem; color: var(--text-hint); margin-left: 6px; }
+  .da-min { font-size: 0.76rem; color: var(--text-hint); white-space: nowrap; }
+  .day-act .at-tracker { display: inline-flex; align-items: center; gap: 4px; }
+  .day-act .at-count { font-family: 'Noto Serif SC', serif; font-weight: 600; min-width: 14px; text-align: center; color: var(--accent); font-size: 0.85rem; }
+  .day-act .counter-btn { padding: 2px 9px; font-size: 0.78rem; min-width: 28px; line-height: 1.3; }
+  @media (max-width: 540px) {
+    .day-act { flex-wrap: wrap; }
+    .da-min { margin-left: auto; }
+    .day-act .action-track { width: 100%; display: flex; justify-content: flex-end; }
+  }
+
   /* ========== 动作详情表 ========== */
   .action-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
   .action-table th, .action-table td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
@@ -624,7 +648,7 @@
   <div class="head-inner">
     <div>
       <h1>运动 · 周总结＋参考库</h1>
-      <span class="sub" id="head-sub">周日晚 9 点复盘 · 22 个组合 + 43 项动作详情 · 长期追踪</span>
+      <span class="sub" id="head-sub">周日晚 9 点复盘 · 一天的运动 + 45 项动作详情 · 长期追踪</span>
     </div>
     <div class="head-actions">
       <button class="head-btn" id="btn-export" type="button" title="导出全部运动数据为 JSON，用于备份 + 给 Claude 读取">⬇ 导出运动数据</button>
@@ -648,6 +672,21 @@
           <li><a href="#sec-review">这周的话</a></li>
         </ul>
       </li>
+      <li><a href="#sec-day">⏰ 一天的运动</a>
+        <ul class="sub">
+          <li><a href="#day-bed">🛏 早上床上</a></li>
+          <li><a href="#day-noon">☀️ 白天 · 看剧</a></li>
+          <li><a href="#day-rest">☕ 午休·下午休息</a></li>
+          <li><a href="#day-park">🌳 公园</a></li>
+          <li><a href="#day-emma">🌜 Emma 睡着后</a></li>
+          <li><a href="#day-night">🌙 睡前</a></li>
+        </ul>
+      </li>
+      <li><a href="#sec-extra-head">🏃 额外运动</a>
+        <ul class="sub">
+          <li><a href="#cardio-plan">🫀 心肺计划</a></li>
+        </ul>
+      </li>
       <li><a href="#sec-actions">🎯 动作详情</a>
         <ul class="sub">
           <li><a href="#act-posture">体态与矫正</a></li>
@@ -660,15 +699,7 @@
           <li id="custom-toc-item" style="display:none"><a href="#act-custom">🌱 我的新增</a></li>
         </ul>
       </li>
-      <li><a href="#sec-combos">📋 常用组合</a>
-        <ul class="sub">
-          <li><a href="#sec-extra">🏃 额外运动</a></li>
-          <li><a href="#combo-stamina-group">🔥 体能向</a></li>
-          <li><a href="#cardio-plan">🫀 心肺计划</a></li>
-          <li><a href="#combo-shape-group">💪 身材向</a></li>
-          <li><a href="#combo-rest-group">🌿 养护向</a></li>
-        </ul>
-      </li>
+      <li><a href="#sec-combos">📋 组合</a></li>
       <li><a href="#sec-archive">📚 历史归档</a></li>
     </ul>
   </aside>
@@ -774,139 +805,79 @@
   </div>
 
   <!-- ============================================================== -->
-  <!-- ==== 动作详情（参考库）================================================ -->
+  <!-- ==== 一天的运动（2026-11-09：运动不是抽时间做，是挂在一天里反正会发生的时刻上；每个时刻下面放几个可选动作，看心情挑）==== -->
   <!-- ============================================================== -->
-  <div class="section-heading toc-anchor" id="sec-actions">🎯 动作详情 · 43 项</div>
-
-  <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-posture"><span>🦴</span>体态与矫正 <span class="count-hint" data-base-text="· 7 项 · #1–9">· 7 项 · #1–9</span></div>
-    <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody data-cat="体态与矫正">
-        <tr><td class="num">1</td><td>掰正骨盆懒人版</td><td>雪儿很棒</td><td>5min</td><td>躺姿</td></tr>
-        <tr><td class="num">2</td><td>女明星仪态管理</td><td>美佳老师</td><td>3min</td><td>站姿</td></tr>
-        <tr><td class="num">3</td><td>谁懂丝滑美背的杀伤力</td><td>欧阳春晓</td><td>15min</td><td>站/坐/盘腿</td></tr>
-        <tr><td class="num">4</td><td>告别圆肩驼背·YTWL 矫正训练</td><td>欧阳春晓</td><td>8min</td><td>站/坐</td></tr>
-        <tr><td class="num">5</td><td>骨科专家腰椎操·久坐快练</td><td>小昕爱养生</td><td>3min</td><td>站姿</td></tr>
-        <tr><td class="num">6</td><td>根除小肚腩·告别假胯宽</td><td>欧阳春晓</td><td>10min</td><td>地板</td></tr>
-        <tr><td class="num">7</td><td>骨盆回正训练</td><td>欧阳春晓</td><td>8min</td><td>躺姿</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-breath"><span>🧘</span>呼吸与冥想 <span class="count-hint" data-base-text="· 6 项 · #11–19">· 6 项 · #11–19</span></div>
-    <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody data-cat="呼吸与冥想">
-        <tr><td class="num">11</td><td>Nadi Shodhana 纳迪净化法（缓焦提专注）</td><td>TheS艾斯</td><td>5min</td><td>坐姿</td></tr>
-        <tr><td class="num">12</td><td>全身扫描冥想</td><td>能量派</td><td>5min</td><td>躺/坐</td></tr>
-        <tr><td class="num">13</td><td>自我肯定冥想·训练内心强大</td><td>FLOW心流所</td><td>5min</td><td>坐姿</td></tr>
-        <tr><td class="num">14</td><td>冥想疗愈·我值得无条件的爱</td><td>马四月</td><td>10min</td><td>坐姿</td></tr>
-        <tr><td class="num">15</td><td>颂钵冥想·睡前助眠放松</td><td>马四月</td><td>10min</td><td>躺/坐</td></tr>
-        <tr><td class="num">16</td><td>谐振呼吸冥想·最深的宁静与放松</td><td>能量派</td><td>10min</td><td>躺/坐</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-stretch"><span>🤸</span>拉伸与放松 <span class="count-hint" data-base-text="· 9 项 · #21–29">· 9 项 · #21–29</span></div>
-    <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody data-cat="拉伸与放松">
-        <tr><td class="num">21</td><td>15 分钟全身快速拉伸</td><td>瑜伽老师JJ</td><td>15min</td><td>地板</td></tr>
-        <tr><td class="num">22</td><td>全程站立全身拉伸·从头到脚舒缓激活</td><td>周六野Zoey</td><td>10min</td><td>站姿</td></tr>
-        <tr><td class="num">23</td><td>全程躺练·消除疲劳恢复活力</td><td>瑜伽玛拉</td><td>10min</td><td>躺姿</td></tr>
-        <tr><td class="num">24</td><td>仙人揉腹跟练·古法八式</td><td>不圆的汤圆崽</td><td>10min</td><td>躺/坐</td></tr>
-        <tr><td class="num">25</td><td>新手练臀必备·臀腿完整拉伸</td><td>Bella</td><td>7min</td><td>站+地板</td></tr>
-        <tr><td class="num">26</td><td>坐姿 10min 肩颈背动态拉伸</td><td>欧阳春晓</td><td>10min</td><td>坐姿</td></tr>
-        <tr><td class="num">27</td><td>清晨排毒瑜伽</td><td>瑜伽老师JJ</td><td>10min</td><td>站+躺</td></tr>
-        <tr><td class="num">28</td><td>360 度无死角腿部拉伸</td><td>噔噔噔邓</td><td>10min</td><td>地板</td></tr>
-        <tr><td class="num">29</td><td>极度舒适拉伸·不觉得累</td><td>泡椒味桃子</td><td>3min</td><td>站姿</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-massage"><span>💆</span>按摩 <span class="count-hint" data-base-text="· 1 项 · #31–39">· 1 项 · #31–39</span></div>
-    <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody data-cat="按摩">
-        <tr><td class="num">31</td><td>小腿精油按摩</td><td>欧阳春晓</td><td>5min</td><td>坐姿</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-cardio"><span>🔥</span>有氧与力量 <span class="count-hint" data-base-text="· 16 项 · #41–59">· 16 项 · #41–59</span></div>
-    <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody data-cat="有氧与力量">
-        <tr><td class="num">41</td><td>间歇跳绳</td><td>bit by bit</td><td>5min</td><td>站姿</td></tr>
-        <tr><td class="num">42</td><td>一副哑铃练全身</td><td>Nina</td><td>15min</td><td>站姿</td></tr>
-        <tr><td class="num">43</td><td>八段锦</td><td>—</td><td>12min</td><td>站姿</td></tr>
-        <tr><td class="num">45</td><td>古法内脏脂肪操</td><td>雪儿很棒</td><td>10min</td><td>站姿</td></tr>
-        <tr><td class="num">46</td><td>一首歌运动前热身</td><td>刘逗逗</td><td>4min</td><td>站姿</td></tr>
-        <tr><td class="num">47</td><td>清晨燃脂瑜伽</td><td>瑜伽老师JJ</td><td>10min</td><td>地板</td></tr>
-        <tr><td class="num">48</td><td>第九套广播体操</td><td>Mina</td><td>4min</td><td>站姿</td></tr>
-        <tr><td class="num">49</td><td>第八套广播体操</td><td>彤姐</td><td>4min</td><td>站姿</td></tr>
-        <tr><td class="num">50</td><td>有氧减脂操·低缓冲全身</td><td>欧阳春晓</td><td>15min</td><td>站姿</td></tr>
-        <tr><td class="num">51</td><td>簿肌修炼·居家无器械全身</td><td>房子</td><td>5min</td><td>地板</td></tr>
-        <tr><td class="num">52</td><td>居家哑铃背部跟练</td><td>ting</td><td>5min</td><td>站姿</td></tr>
-        <tr><td class="num">53</td><td>全身塑形哑铃跟练</td><td>冰冰教练</td><td>20min</td><td>站姿</td></tr>
-        <tr><td class="num">54</td><td>无蹲跳踏步有氧·瘦全身</td><td>欧阳春晓</td><td>10min</td><td>站姿</td></tr>
-        <tr><td class="num">55</td><td>欢乐踏步燃脂有氧</td><td>Zoey</td><td>20min</td><td>站姿</td></tr>
-        <tr><td class="num">56</td><td>搏击燃脂训练·无器械站立</td><td>Jo姐</td><td>30min</td><td>站姿</td></tr>
-        <tr><td class="num">57</td><td>无跑跳全程站立有氧</td><td>费教练</td><td>30min</td><td>站姿</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-core"><span>💪</span>核心与腹部 <span class="count-hint" data-base-text="· 4 项 · #61–69">· 4 项 · #61–69</span></div>
-    <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody data-cat="核心与腹部">
-        <tr><td class="num">61</td><td>萨尔曼瘦肚子·平坦小腹</td><td>叫我瓜瓜</td><td>5min</td><td>躺姿</td></tr>
-        <tr><td class="num">62</td><td>激活腹横肌·细腰又护腰</td><td>钳钳妈阿曼达</td><td>10min</td><td>坐+躺</td></tr>
-        <tr><td class="num">63</td><td>真空腹训练</td><td>欧阳春晓</td><td>5min</td><td>站/坐/躺</td></tr>
-        <tr><td class="num">64</td><td>胸腹式联动呼吸</td><td>—</td><td>10min</td><td>站姿</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="card">
-    <div class="cat-card-title toc-anchor" id="act-leg"><span>🦵</span>腿部与臀部 <span class="count-hint" data-base-text="· 5 项 · #71–79">· 5 项 · #71–79</span></div>
-    <table class="action-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody data-cat="腿部与臀部">
-        <tr><td class="num">71</td><td>10min 特快瘦大腿</td><td>林芊妤</td><td>10min</td><td>地板</td></tr>
-        <tr><td class="num">72</td><td>5 分钟带你练臀（弹力带版）</td><td>Nina</td><td>5min</td><td>坐姿</td></tr>
-        <tr><td class="num">73</td><td>完善足弓训练·矫正腿型拉长跟腱</td><td>欧阳春晓</td><td>10min</td><td>站姿</td></tr>
-        <tr><td class="num">74</td><td>膝超伸运动·细直大长腿</td><td>韩小四</td><td>10min</td><td>地板</td></tr>
-        <tr><td class="num">75</td><td>纠正不良腿型·足弓弹性重建 4.0</td><td>欧阳春晓</td><td>20min</td><td>地板</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- 我的新增 · 未归类兜底（其余有 category 的会按分类合并进上面 7 个卡）-->
-  <div class="card" id="custom-actions-card" style="display:none">
-    <div class="cat-card-title toc-anchor" id="act-custom"><span>🌱</span>我的新增 · 未归类 <span class="count-hint" id="custom-count-hint">· 0 项</span></div>
-    <div style="font-size:0.78rem;color:var(--text-hint);margin:-0.3rem 0 0.7rem;padding-left:2px;">没填具体类型的「我的新增」动作归到这里；有类型的会出现在上面对应的卡里（带 🌱 标记）</div>
-    <table class="action-table" id="custom-actions-table">
-      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
-      <tbody id="custom-actions-tbody"></tbody>
-    </table>
-  </div>
-
-  <!-- ============================================================== -->
-  <!-- ==== 常用组合（参考库）================================================ -->
-  <!-- ============================================================== -->
-  <div class="section-heading toc-anchor" id="sec-combos">📋 常用组合 · 22 个</div>
-
+  <div class="section-heading toc-anchor" id="sec-day">⏰ 一天的运动</div>
   <p class="para" style="font-size:.78rem;color:var(--text-hint);font-style:italic;margin-bottom:.85rem;">
-    所有运动打卡都在这里：额外运动填时间添加，组合点 + 打卡、点 − 撤销最近一次。默认全部计入本周；<b>要补以前的日子，用上面周选择器下方的「补记以前的日子」</b>。
+    做完点 ＋，点 − 撤销最近一次，数字是本周次数。这里只放常做的几个，想换花样去下面「动作详情」里挑。<b>要补以前的日子，用周选择器下方的「补记以前的日子」</b>。
   </p>
+  <div class="day-card toc-anchor" id="day-bed">
+    <div class="day-head"><span class="day-icon">🛏</span><span class="day-title">早上还在床上</span><span class="day-when">每天</span></div>
+    <div class="day-acts">
+      <div class="day-act"><span class="da-num">#63</span><span class="da-name">真空腹训练<span class="da-note">每天一次</span></span><span class="da-min">10min</span><span class="action-track" data-num="63"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(63)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(63)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#77</span><span class="da-name">臀桥<span class="da-note">有时间就加</span></span><span class="da-min">5min</span><span class="action-track" data-num="77"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(77)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(77)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#64</span><span class="da-name">胸腹式联动呼吸<span class="da-note">有时间就加</span></span><span class="da-min">10min</span><span class="action-track" data-num="64"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(64)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(64)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#1</span><span class="da-name">掰正骨盆懒人版<span class="da-note">躺姿</span></span><span class="da-min">5min</span><span class="action-track" data-num="1"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(1)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(1)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#7</span><span class="da-name">骨盆回正训练<span class="da-note">躺姿</span></span><span class="da-min">8min</span><span class="action-track" data-num="7"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(7)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(7)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#61</span><span class="da-name">萨尔曼瘦肚子 · 平坦小腹<span class="da-note">躺姿</span></span><span class="da-min">5min</span><span class="action-track" data-num="61"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(61)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(61)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#27</span><span class="da-name">清晨排毒瑜伽<span class="da-note">站+躺</span></span><span class="da-min">10min</span><span class="action-track" data-num="27"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(27)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(27)">+</button></span></span></div>
+    </div>
+  </div>
+  <div class="day-card toc-anchor" id="day-noon">
+    <div class="day-head"><span class="day-icon">☀️</span><span class="day-title">白天 · 看剧的时候</span><span class="day-when">弹力带上午一次 · 下午一次</span></div>
+    <div class="day-acts">
+      <div class="day-act"><span class="da-num">#72</span><span class="da-name">5 分钟带你练臀（弹力带）<span class="da-note">一天两次</span></span><span class="da-min">5min</span><span class="action-track" data-num="72"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(72)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(72)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#26</span><span class="da-name">坐姿 10min 肩颈背动态拉伸<span class="da-note">坐姿</span></span><span class="da-min">10min</span><span class="action-track" data-num="26"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(26)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(26)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#4</span><span class="da-name">告别圆肩驼背 · YTWL</span><span class="da-min">8min</span><span class="action-track" data-num="4"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(4)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(4)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#42</span><span class="da-name">一副哑铃练全身<span class="da-note">哑铃上肢</span></span><span class="da-min">15min</span><span class="action-track" data-num="42"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(42)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(42)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#52</span><span class="da-name">居家哑铃背部跟练<span class="da-note">哑铃上肢</span></span><span class="da-min">5min</span><span class="action-track" data-num="52"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(52)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(52)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#53</span><span class="da-name">全身塑形哑铃跟练<span class="da-note">哑铃上肢</span></span><span class="da-min">20min</span><span class="action-track" data-num="53"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(53)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(53)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#3</span><span class="da-name">谁懂丝滑美背的杀伤力<span class="da-note">坐姿</span></span><span class="da-min">15min</span><span class="action-track" data-num="3"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(3)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(3)">+</button></span></span></div>
+    </div>
+  </div>
+  <div class="day-card toc-anchor" id="day-rest">
+    <div class="day-head"><span class="day-icon">☕</span><span class="day-title">午休 · 下午休息</span><span class="day-when">冥想</span></div>
+    <div class="day-acts">
+      <div class="day-act"><span class="da-num">#11</span><span class="da-name">Nadi Shodhana 纳迪净化法</span><span class="da-min">5min</span><span class="action-track" data-num="11"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(11)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(11)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#13</span><span class="da-name">自我肯定冥想 · 训练内心强大</span><span class="da-min">5min</span><span class="action-track" data-num="13"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(13)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(13)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#14</span><span class="da-name">冥想疗愈 · 我值得无条件的爱</span><span class="da-min">10min</span><span class="action-track" data-num="14"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(14)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(14)">+</button></span></span></div>
+    </div>
+  </div>
+  <div class="day-card toc-anchor" id="day-park">
+    <div class="day-head"><span class="day-icon">🌳</span><span class="day-title">公园陪 Emma</span><span class="day-when"></span></div>
+    <div class="day-acts">
+      <div class="day-act"><span class="da-num">#22</span><span class="da-name">全程站立全身拉伸<span class="da-note">站姿</span></span><span class="da-min">10min</span><span class="action-track" data-num="22"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(22)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(22)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#29</span><span class="da-name">极度舒适拉伸<span class="da-note">站姿</span></span><span class="da-min">3min</span><span class="action-track" data-num="29"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(29)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(29)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#28</span><span class="da-name">360 度无死角腿部拉伸<span class="da-note">腿部</span></span><span class="da-min">10min</span><span class="action-track" data-num="28"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(28)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(28)">+</button></span></span></div>
+    </div>
+  </div>
+  <div class="day-card toc-anchor" id="day-emma">
+    <div class="day-head"><span class="day-icon">🌜</span><span class="day-title">Emma 睡着后</span><span class="day-when">按摩 · 地板动作</span></div>
+    <div class="day-acts">
+      <div class="day-act"><span class="da-num">#31</span><span class="da-name">小腿精油按摩</span><span class="da-min">5min</span><span class="action-track" data-num="31"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(31)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(31)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#6</span><span class="da-name">根除小肚腩 · 告别假胯宽<span class="da-note">地板</span></span><span class="da-min">10min</span><span class="action-track" data-num="6"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(6)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(6)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#71</span><span class="da-name">10min 特快瘦大腿<span class="da-note">地板</span></span><span class="da-min">10min</span><span class="action-track" data-num="71"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(71)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(71)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#74</span><span class="da-name">膝超伸运动 · 细直大长腿<span class="da-note">地板</span></span><span class="da-min">10min</span><span class="action-track" data-num="74"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(74)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(74)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#75</span><span class="da-name">足弓弹性重建 4.0<span class="da-note">地板</span></span><span class="da-min">20min</span><span class="action-track" data-num="75"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(75)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(75)">+</button></span></span></div>
+    </div>
+  </div>
+  <div class="day-card toc-anchor" id="day-night">
+    <div class="day-head"><span class="day-icon">🌙</span><span class="day-title">睡觉之前</span><span class="day-when"></span></div>
+    <div class="day-acts">
+      <div class="day-act"><span class="da-num">#23</span><span class="da-name">全程躺练 · 消除疲劳<span class="da-note">躺姿拉伸</span></span><span class="da-min">10min</span><span class="action-track" data-num="23"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(23)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(23)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#21</span><span class="da-name">15 分钟全身快速拉伸<span class="da-note">躺姿拉伸</span></span><span class="da-min">15min</span><span class="action-track" data-num="21"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(21)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(21)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#15</span><span class="da-name">颂钵冥想 · 睡前助眠<span class="da-note">冥想</span></span><span class="da-min">10min</span><span class="action-track" data-num="15"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(15)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(15)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#16</span><span class="da-name">谐振呼吸冥想<span class="da-note">冥想</span></span><span class="da-min">10min</span><span class="action-track" data-num="16"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(16)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(16)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#12</span><span class="da-name">全身扫描冥想<span class="da-note">冥想</span></span><span class="da-min">5min</span><span class="action-track" data-num="12"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(12)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(12)">+</button></span></span></div>
+      <div class="day-act"><span class="da-num">#24</span><span class="da-name">仙人揉腹 · 古法八式<span class="da-note">躺姿</span></span><span class="da-min">10min</span><span class="action-track" data-num="24"><span class="at-tracker"><button class="counter-btn minus" onclick="actionMinus(24)">−</button><span class="at-count">0</span><button class="counter-btn plus" onclick="actionPlus(24)">+</button></span></span></div>
+    </div>
+  </div>
+  <p class="para" style="font-size:.78rem;color:var(--text-hint);margin:.2rem 0 1.2rem;">🏃 跑步、游泳、羽毛球这些要专门出门的，记在下面「额外运动」。</p>
+
+  <!-- ============================================================== -->
+  <!-- ==== 额外运动 + 心肺计划 ================================================ -->
+  <!-- ============================================================== -->
+  <div class="section-heading toc-anchor" id="sec-extra-head">🏃 额外运动</div>
 
   <div class="card toc-anchor" id="sec-extra">
     <div style="font-family:'Noto Serif SC',serif;font-weight:600;color:var(--accent);font-size:0.96rem;margin-bottom:0.85rem;">🏃 额外运动 · 加减时间</div>
@@ -990,40 +961,155 @@
     </div>
   </div>
 
-  <div class="combo-group-label stamina-label toc-anchor" id="combo-stamina-group">🔥 体能向（本周目标 100 分钟）</div>
 
   <!-- 2026-10-19 心肺计划卡：每周三次 · 9 周到搬广州 -->
   <div class="card toc-anchor" id="cardio-plan" style="border-color:var(--gold-light);">
-    <div class="card-title" style="color:var(--gold);">🫀 心肺 · 每周三次 <span style="font-size:.74rem;color:var(--text-hint);font-weight:400;">· 10/20 → 12/29 · 补铁已确认有效，加量只看游泳和 5 公里的尺子</span></div>
-    <p class="para" style="font-size:.8rem;color:var(--text-hint);margin:0 0 .6rem;">心肺只认重复：<b>同一件事、每周 3 次、能说话的强度</b>。HBF 那阵每周一个 5 公里越跑越轻松，就是这个。</p>
+    <div class="card-title" style="color:var(--gold);">🫀 心肺 · 每周三次</div>
     <table>
       <tbody>
-        <tr><td style="white-space:nowrap;"><b>🏃 5 公里</b><br><span style="font-size:.74rem;color:var(--text-hint);">主心骨</span></td><td>超慢跑 180 步频，<b>全程能整句说话</b>，喘到说不出话就是快了。时间不管，轻松了自然会快。</td></tr>
-        <tr><td style="white-space:nowrap;"><b>🏊 游泳 30min</b><br><span style="font-size:.74rem;color:var(--text-hint);">周二晚</span></td><td>换气改 <b>2 划 1 换（同侧）</b>或 3 划 1 换（两侧轮），水下鼻子把气呼干净。目标是<b>不停能游多远</b>：300m → 600m。</td></tr>
-        <tr><td style="white-space:nowrap;"><b>🔥 站立有氧</b><br><span style="font-size:.74rem;color:var(--text-hint);">下面组合</span></td><td>第 1–4 周 <b>踏步燃脂 24min</b> → 第 5 周起 <b>站立有氧 34min</b> → 第 9 周 搏击 34min。</td></tr>
-      </tbody>
-    </table>
-    <!-- 2026-11-06 跑步日程序：她上周开始跑、恢复慢 → 时段/跑前/跑后/吃喝按时序一张表 -->
-    <table style="margin-top:.5rem;">
-      <tbody>
-        <tr><td style="white-space:nowrap;"><b>什么时候跑</b></td><td><b>早上 6–8 点</b>或傍晚 6 点后，<b>26°C 以上改游泳</b>不算断。跑一天歇一天，两次隔 48 小时，中间放游泳。8 点后出门戴帽子。</td></tr>
-        <tr><td style="white-space:nowrap;"><b>跑前</b></td><td>出门前 30–60 分钟<b>吃一小口</b>（半根香蕉 / 抹茶牛奶）＋小口喝 200–300ml 水。<b>先走 3–5 分钟再起跑</b>，不做静态拉伸，前 1 公里更慢。</td></tr>
-        <tr><td style="white-space:nowrap;"><b>跑后</b></td><td><b>先慢走 3–5 分钟</b>再做两套拉伸，每个动作停 20–30 秒、拉到有点紧就够，总共 10–15 分钟。喝 500ml 水＋一口咸的。</td></tr>
-        <tr><td style="white-space:nowrap;"><b>跑后吃</b></td><td>30–60 分钟内碳水＋约 20g 蛋白。离下一餐近就<b>那一餐当恢复餐</b>不另加；离得远吃一样：希腊酸奶＋香蕉 / 牛奶＋面包 / 两个水煮蛋＋吐司。</td></tr>
-        <tr><td style="white-space:nowrap;"><b>Maltofer</b></td><td>跑步日放在<b>离跑步最远的那一餐</b>吃（早上跑→晚饭吃，傍晚跑→早饭吃）。</td></tr>
-        <tr><td style="white-space:nowrap;"><b>腿还沉</b></td><td>前两周酸正常。跑完 48 小时腿还沉，下一次缩到 3 公里或换游泳，不硬凑。</td></tr>
+        <tr><td style="white-space:nowrap;"><b>🏃 5 公里</b><br><span style="font-size:.74rem;color:var(--text-hint);">主心骨</span></td><td>超慢跑 180 步频，<b>全程能整句说话</b>。</td></tr>
+        <tr><td style="white-space:nowrap;"><b>🏊 游泳 30min</b><br><span style="font-size:.74rem;color:var(--text-hint);">周二晚</span></td><td>目标是<b>不停能游多远</b>：300m → 600m。</td></tr>
+        <tr><td style="white-space:nowrap;"><b>🔥 站立有氧</b></td><td>第 1–4 周 <b>踏步燃脂 24min</b> → 第 5 周起 <b>站立有氧 34min</b> → 第 9 周 搏击 34min。</td></tr>
       </tbody>
     </table>
     <table style="margin-top:.5rem;">
       <tbody>
-        <tr><td style="white-space:nowrap;"><b>第 1–4 周</b></td><td>只加时长不加强度。</td></tr>
-        <tr><td style="white-space:nowrap;"><b>第 5 周起</b></td><td>跑步或站立有氧<b>其中一次</b>加间歇：3 分钟稍喘 + 2 分钟放慢，4 轮。另两次照旧。</td></tr>
-        <tr><td style="white-space:nowrap;"><b>经期前一周</b></td><td>降到 2 次：留 5 公里和游泳，去掉站立有氧。</td></tr>
-        <tr><td style="white-space:nowrap;"><b>11/27–12/4</b></td><td>布里斯班，断一周不补，回来接着做。</td></tr>
-        <tr><td style="white-space:nowrap;"><b>看什么</b></td><td>只看两样：<b>游泳不停能游多远</b> · <b>5 公里能不能说话</b>。不记别的。</td></tr>
+        <tr><td style="white-space:nowrap;"><b>什么时候跑</b></td><td>一周一次，<b>周一下午 4:30–5:30</b>（→ 6 点晚饭 → 7 点洗完澡 → 1 小时瑜伽拉伸）。太热就改早上 6–8 点。</td></tr>
+        <tr><td style="white-space:nowrap;"><b>跑前</b></td><td>出门前 30–60 分钟<b>吃一小口</b>（半根香蕉 / 抹茶牛奶）＋小口喝 200–300ml 水。<b>先走 3–5 分钟再起跑</b>，前 1 公里更慢。</td></tr>
+        <tr><td style="white-space:nowrap;"><b>跑后</b></td><td><b>先慢走 3–5 分钟</b>再做两套拉伸。</td></tr>
+        <tr><td style="white-space:nowrap;"><b>跑后吃</b></td><td>跑完后 500ml 水＋一口咸的。30–60 分钟内碳水＋约 20g 蛋白：希腊酸奶＋香蕉 / 牛奶＋面包 / 两个水煮蛋＋吐司。</td></tr>
+        <tr><td style="white-space:nowrap;"><b>Maltofer</b></td><td>下午跑→早饭吃；改早上跑→晚饭吃。</td></tr>
       </tbody>
     </table>
   </div>
+
+  <!-- ============================================================== -->
+  <!-- ==== 动作详情（参考库）================================================ -->
+  <!-- ============================================================== -->
+  <div class="section-heading toc-anchor" id="sec-actions">🎯 动作详情 · 43 项</div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-posture"><span>🦴</span>体态与矫正 <span class="count-hint" data-base-text="· 6 项 · #1–9">· 6 项 · #1–9</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="体态与矫正">
+        <tr><td class="num">1</td><td>掰正骨盆懒人版</td><td>雪儿很棒</td><td>5min</td><td>躺姿</td></tr>
+        <tr><td class="num">3</td><td>谁懂丝滑美背的杀伤力</td><td>欧阳春晓</td><td>15min</td><td>站/坐/盘腿</td></tr>
+        <tr><td class="num">4</td><td>告别圆肩驼背·YTWL 矫正训练</td><td>欧阳春晓</td><td>8min</td><td>站/坐</td></tr>
+        <tr><td class="num">5</td><td>骨科专家腰椎操·久坐快练</td><td>小昕爱养生</td><td>3min</td><td>站姿</td></tr>
+        <tr><td class="num">6</td><td>根除小肚腩·告别假胯宽</td><td>欧阳春晓</td><td>10min</td><td>地板</td></tr>
+        <tr><td class="num">7</td><td>骨盆回正训练</td><td>欧阳春晓</td><td>8min</td><td>躺姿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-breath"><span>🧘</span>呼吸与冥想 <span class="count-hint" data-base-text="· 6 项 · #11–19">· 6 项 · #11–19</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="呼吸与冥想">
+        <tr><td class="num">11</td><td>Nadi Shodhana 纳迪净化法（缓焦提专注）</td><td>TheS艾斯</td><td>5min</td><td>坐姿</td></tr>
+        <tr><td class="num">12</td><td>全身扫描冥想</td><td>能量派</td><td>5min</td><td>躺/坐</td></tr>
+        <tr><td class="num">13</td><td>自我肯定冥想·训练内心强大</td><td>FLOW心流所</td><td>5min</td><td>坐姿</td></tr>
+        <tr><td class="num">14</td><td>冥想疗愈·我值得无条件的爱</td><td>马四月</td><td>10min</td><td>坐姿</td></tr>
+        <tr><td class="num">15</td><td>颂钵冥想·睡前助眠放松</td><td>马四月</td><td>10min</td><td>躺/坐</td></tr>
+        <tr><td class="num">16</td><td>谐振呼吸冥想·最深的宁静与放松</td><td>能量派</td><td>10min</td><td>躺/坐</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-stretch"><span>🤸</span>拉伸与放松 <span class="count-hint" data-base-text="· 8 项 · #21–29">· 8 项 · #21–29</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="拉伸与放松">
+        <tr><td class="num">21</td><td>15 分钟全身快速拉伸</td><td>瑜伽老师JJ</td><td>15min</td><td>地板</td></tr>
+        <tr><td class="num">22</td><td>全程站立全身拉伸·从头到脚舒缓激活</td><td>周六野Zoey</td><td>10min</td><td>站姿</td></tr>
+        <tr><td class="num">23</td><td>全程躺练·消除疲劳恢复活力</td><td>瑜伽玛拉</td><td>10min</td><td>躺姿</td></tr>
+        <tr><td class="num">24</td><td>仙人揉腹跟练·古法八式</td><td>不圆的汤圆崽</td><td>10min</td><td>躺/坐</td></tr>
+        <tr><td class="num">26</td><td>坐姿 10min 肩颈背动态拉伸</td><td>欧阳春晓</td><td>10min</td><td>坐姿</td></tr>
+        <tr><td class="num">27</td><td>清晨排毒瑜伽</td><td>瑜伽老师JJ</td><td>10min</td><td>站+躺</td></tr>
+        <tr><td class="num">28</td><td>360 度无死角腿部拉伸</td><td>噔噔噔邓</td><td>10min</td><td>地板</td></tr>
+        <tr><td class="num">29</td><td>极度舒适拉伸·不觉得累</td><td>泡椒味桃子</td><td>3min</td><td>站姿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-massage"><span>💆</span>按摩 <span class="count-hint" data-base-text="· 1 项 · #31–39">· 1 项 · #31–39</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="按摩">
+        <tr><td class="num">31</td><td>小腿精油按摩</td><td>欧阳春晓</td><td>5min</td><td>坐姿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-cardio"><span>🔥</span>有氧与力量 <span class="count-hint" data-base-text="· 15 项 · #41–59">· 15 项 · #41–59</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="有氧与力量">
+        <tr><td class="num">41</td><td>间歇跳绳</td><td>bit by bit</td><td>5min</td><td>站姿</td></tr>
+        <tr><td class="num">42</td><td>一副哑铃练全身</td><td>Nina</td><td>15min</td><td>站姿</td></tr>
+        <tr><td class="num">43</td><td>八段锦</td><td>—</td><td>12min</td><td>站姿</td></tr>
+        <tr><td class="num">45</td><td>古法内脏脂肪操</td><td>雪儿很棒</td><td>10min</td><td>站姿</td></tr>
+        <tr><td class="num">46</td><td>一首歌运动前热身</td><td>刘逗逗</td><td>4min</td><td>站姿</td></tr>
+        <tr><td class="num">48</td><td>第九套广播体操</td><td>Mina</td><td>4min</td><td>站姿</td></tr>
+        <tr><td class="num">49</td><td>第八套广播体操</td><td>彤姐</td><td>4min</td><td>站姿</td></tr>
+        <tr><td class="num">50</td><td>有氧减脂操·低缓冲全身</td><td>欧阳春晓</td><td>15min</td><td>站姿</td></tr>
+        <tr><td class="num">51</td><td>簿肌修炼·居家无器械全身</td><td>房子</td><td>5min</td><td>地板</td></tr>
+        <tr><td class="num">52</td><td>居家哑铃背部跟练</td><td>ting</td><td>5min</td><td>站姿</td></tr>
+        <tr><td class="num">53</td><td>全身塑形哑铃跟练</td><td>冰冰教练</td><td>20min</td><td>站姿</td></tr>
+        <tr><td class="num">54</td><td>无蹲跳踏步有氧·瘦全身</td><td>欧阳春晓</td><td>10min</td><td>站姿</td></tr>
+        <tr><td class="num">55</td><td>欢乐踏步燃脂有氧</td><td>Zoey</td><td>20min</td><td>站姿</td></tr>
+        <tr><td class="num">56</td><td>搏击燃脂训练·无器械站立</td><td>Jo姐</td><td>30min</td><td>站姿</td></tr>
+        <tr><td class="num">57</td><td>无跑跳全程站立有氧</td><td>费教练</td><td>30min</td><td>站姿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-core"><span>💪</span>核心与腹部 <span class="count-hint" data-base-text="· 3 项 · #61–69">· 3 项 · #61–69</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="核心与腹部">
+        <tr><td class="num">61</td><td>萨尔曼瘦肚子·平坦小腹</td><td>叫我瓜瓜</td><td>5min</td><td>躺姿</td></tr>
+        <tr><td class="num">63</td><td>真空腹训练</td><td>欧阳春晓</td><td>10min</td><td>站/坐/躺</td></tr>
+        <tr><td class="num">64</td><td>胸腹式联动呼吸</td><td>—</td><td>10min</td><td>站姿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="cat-card-title toc-anchor" id="act-leg"><span>🦵</span>腿部与臀部 <span class="count-hint" data-base-text="· 6 项 · #71–79">· 6 项 · #71–79</span></div>
+    <table class="action-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody data-cat="腿部与臀部">
+        <tr><td class="num">71</td><td>10min 特快瘦大腿</td><td>林芊妤</td><td>10min</td><td>地板</td></tr>
+        <tr><td class="num">72</td><td>5 分钟带你练臀（弹力带版）</td><td>Nina</td><td>5min</td><td>坐姿</td></tr>
+        <tr><td class="num">73</td><td>完善足弓训练·矫正腿型拉长跟腱</td><td>欧阳春晓</td><td>10min</td><td>站姿</td></tr>
+        <tr><td class="num">74</td><td>膝超伸运动·细直大长腿</td><td>韩小四</td><td>10min</td><td>地板</td></tr>
+        <tr><td class="num">75</td><td>纠正不良腿型·足弓弹性重建 4.0</td><td>欧阳春晓</td><td>20min</td><td>地板</td></tr>
+        <tr><td class="num">77</td><td>臀桥</td><td>—</td><td>5min</td><td>躺姿</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 我的新增 · 未归类兜底（其余有 category 的会按分类合并进上面 7 个卡）-->
+  <div class="card" id="custom-actions-card" style="display:none">
+    <div class="cat-card-title toc-anchor" id="act-custom"><span>🌱</span>我的新增 · 未归类 <span class="count-hint" id="custom-count-hint">· 0 项</span></div>
+    <div style="font-size:0.78rem;color:var(--text-hint);margin:-0.3rem 0 0.7rem;padding-left:2px;">没填具体类型的「我的新增」动作归到这里；有类型的会出现在上面对应的卡里（带 🌱 标记）</div>
+    <table class="action-table" id="custom-actions-table">
+      <thead><tr><th class="num">#</th><th>名称</th><th class="goal-col">方向</th><th>时长</th><th>姿势</th></tr></thead>
+      <tbody id="custom-actions-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- ==== 组合（2026-11-09 整个折叠：她平时按心情从动作详情里挑，不按组合练；卡和打卡器保留，想用时展开）==== -->
+  <details class="archive-details toc-anchor" id="sec-combos">
+    <summary class="section-heading">📋 组合 <span class="count-hint" id="combos-count"></span></summary>
+  <div class="combo-group-label stamina-label toc-anchor" id="combo-stamina-group">🔥 体能向</div>
 
   <!-- 2026-05-30 体能向重排：退掉「跳绳」(高冲击伤膝)，全部换成膝盖友好的低冲击/站立有氧。
        2026-06-17 扩成「从简单到难」阶梯：原 3 个短组合(14–19min)做入门档，新增 4 个中/难档(24–34min)，
@@ -1079,26 +1165,26 @@
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-boxing')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-boxing')">+</button></div>
   </div>
 
-  <div class="combo-group-label shape-label toc-anchor" id="combo-shape-group">💪 身材向（本周目标 100 分钟）</div>
+  <div class="combo-group-label shape-label toc-anchor" id="combo-shape-group">💪 身材向</div>
 
   <div class="combo-card combo-shape" data-combo-id="combo-shape-core">
     <div class="cc-main">
-      <div class="combo-title">核心快速 35min</div>
-      <div class="combo-flow">胸腹式联动呼吸（10min）→ 真空腹（5min）→ 腹横肌激活（10min）→ 仙人揉腹（10min）</div>
+      <div class="combo-title">核心快速 25min</div>
+      <div class="combo-flow">胸腹式联动呼吸（10min）→ 真空腹（5min）→ 仙人揉腹（10min）</div>
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-core')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-core')">+</button></div>
   </div>
   <div class="combo-card combo-shape" data-combo-id="combo-shape-belly">
     <div class="cc-main">
-      <div class="combo-title">腹部扎实 40min <span style="font-size:.72rem;color:var(--text-hint);font-weight:400;">· 呼气收腹不砰</span></div>
-      <div class="combo-flow">胸腹式联动呼吸（10min）→ 真空腹（5min）→ 腹横肌激活（10min）→ 萨尔曼瘦肚子（5min）→ 古法内脏脂肪操（10min）</div>
+      <div class="combo-title">腹部扎实 30min <span style="font-size:.72rem;color:var(--text-hint);font-weight:400;">· 呼气收腹不砰</span></div>
+      <div class="combo-flow">胸腹式联动呼吸（10min）→ 真空腹（5min）→ 萨尔曼瘦肚子（5min）→ 古法内脏脂肪操（10min）</div>
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-belly')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-belly')">+</button></div>
   </div>
   <div class="combo-card combo-shape" data-combo-id="combo-shape-leghip">
     <div class="cc-main">
-      <div class="combo-title">腿臀套餐 32min</div>
-      <div class="combo-flow">林芊妤瘦腿（10min）→ 坐姿练臀弹力带（5min）→ 韩小四膝超伸（10min）→ Bella 臀腿完整拉伸（7min）</div>
+      <div class="combo-title">腿臀套餐 25min</div>
+      <div class="combo-flow">林芊妤瘦腿（10min）→ 坐姿练臀弹力带（5min）→ 韩小四膝超伸（10min）</div>
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-leghip')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-leghip')">+</button></div>
   </div>
@@ -1123,13 +1209,6 @@
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-back')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-back')">+</button></div>
   </div>
-  <div class="combo-card combo-shape" data-combo-id="combo-shape-yoga">
-    <div class="cc-main">
-      <div class="combo-title">晨起燃脂瑜伽 10min</div>
-      <div class="combo-flow">清晨燃脂瑜伽（10min）</div>
-    </div>
-    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-yoga')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-yoga')">+</button></div>
-  </div>
   <div class="combo-card combo-shape" data-combo-id="combo-shape-hip">
     <div class="cc-main">
       <div class="combo-title">假胯宽专项 14min</div>
@@ -1137,22 +1216,8 @@
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-hip')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-hip')">+</button></div>
   </div>
-  <div class="combo-card combo-shape" data-combo-id="combo-shape-arch">
-    <div class="cc-main">
-      <div class="combo-title">足弓训练 10min</div>
-      <div class="combo-flow">完善足弓训练·矫正腿型（10min）</div>
-    </div>
-    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-arch')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-arch')">+</button></div>
-  </div>
-  <div class="combo-card combo-shape" data-combo-id="combo-shape-archdeep">
-    <div class="cc-main">
-      <div class="combo-title">足弓深度 20min</div>
-      <div class="combo-flow">足弓弹性重建 4.0（20min）</div>
-    </div>
-    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-shape-archdeep')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-shape-archdeep')">+</button></div>
-  </div>
 
-  <div class="combo-group-label rest-label toc-anchor" id="combo-rest-group">🌿 养护向（本周目标 150 分钟）</div>
+  <div class="combo-group-label rest-label toc-anchor" id="combo-rest-group">🌿 养护向</div>
 
   <div class="combo-card combo-rest" data-combo-id="combo-rest-morning">
     <div class="cc-main">
@@ -1198,17 +1263,10 @@
   </div>
   <div class="combo-card combo-rest" data-combo-id="combo-rest-posture">
     <div class="cc-main">
-      <div class="combo-title">体态快练 9min</div>
-      <div class="combo-flow">女明星仪态管理（3min）→ 骨科专家腰椎操（3min）→ 极度舒适拉伸（3min）</div>
+      <div class="combo-title">体态快练 6min</div>
+      <div class="combo-flow">骨科专家腰椎操（3min）→ 极度舒适拉伸（3min）</div>
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-posture')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-posture')">+</button></div>
-  </div>
-  <div class="combo-card combo-rest" data-combo-id="combo-rest-baduanjin">
-    <div class="cc-main">
-      <div class="combo-title">八段锦 12min</div>
-      <div class="combo-flow">八段锦（12min）</div>
-    </div>
-    <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-rest-baduanjin')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-rest-baduanjin')">+</button></div>
   </div>
   <div class="combo-card combo-rest" data-combo-id="combo-stamina-radio">
     <div class="cc-main">
@@ -1217,6 +1275,8 @@
     </div>
     <div class="cc-tracker"><button class="counter-btn minus" onclick="comboMinus('combo-stamina-radio')">−</button><span class="cc-count">0</span><button class="counter-btn plus" onclick="comboPlus('combo-stamina-radio')">+</button></div>
   </div>
+
+  </details>
 
   <!-- ==== 历史归档（2026-11-06 挪到页尾、默认整个折叠：很少看）==== -->
   <details class="archive-details toc-anchor" id="sec-archive">
@@ -1285,24 +1345,26 @@
     'combo-stamina-radio':   { name: '广播体操套餐', mins: 12, goal: 'rest' },
     'combo-shape-core':      { name: '核心快速', mins: 25, goal: 'shape' },
     'combo-shape-belly':     { name: '腹部扎实', mins: 30, goal: 'shape' },
-    'combo-shape-leghip':    { name: '腿臀套餐', mins: 32, goal: 'shape' },
+    'combo-shape-leghip':    { name: '腿臀套餐', mins: 25, goal: 'shape' },   // 2026-11-09 去掉 Bella 臀腿拉伸(#25)，32→25
     'combo-shape-power':     { name: '力量综合', mins: 35, goal: 'shape' },
     'combo-shape-back':      { name: '美背修身', mins: 20, goal: 'shape' },
-    'combo-shape-yoga':      { name: '晨起燃脂瑜伽', mins: 10, goal: 'shape' },
+    'combo-shape-yoga':      { name: '晨起燃脂瑜伽(已退役)', mins: 10, goal: 'shape' }, // 2026-11-09 退役（#47 删除），保留 meta 供历史解析
     'combo-shape-hip':       { name: '假胯宽专项', mins: 14, goal: 'shape' },
-    'combo-shape-arch':      { name: '足弓训练', mins: 10, goal: 'shape' },
-    'combo-shape-archdeep':  { name: '足弓深度', mins: 20, goal: 'shape' },
+    // 2026-11-09 单动作组合退役（足弓训练/足弓深度/八段锦：只有一个动作，不算组合），保留 meta 供历史解析
+    'combo-shape-arch':      { name: '足弓训练(已退役)', mins: 10, goal: 'shape' },
+    'combo-shape-archdeep':  { name: '足弓深度(已退役)', mins: 20, goal: 'shape' },
     'combo-rest-morning':    { name: '晨起轻唤醒', mins: 28, goal: 'rest' },
     'combo-rest-detox':      { name: '晨起排毒', mins: 20, goal: 'rest' },
     'combo-rest-shoulder':   { name: '肩颈背修复', mins: 28, goal: 'rest' },
     'combo-rest-deep':       { name: '深度放松', mins: 35, goal: 'rest' },
     'combo-rest-bedtime':    { name: '睡前', mins: 30, goal: 'rest' },
     'combo-rest-bowl':       { name: '颂钵助眠', mins: 20, goal: 'rest' },
-    'combo-rest-posture':    { name: '体态快练', mins: 9, goal: 'rest' },
-    'combo-rest-baduanjin':  { name: '八段锦', mins: 12, goal: 'rest' },
+    'combo-rest-posture':    { name: '体态快练', mins: 6, goal: 'rest' },     // 2026-11-09 去掉女明星仪态管理(#2)，9→6
+    'combo-rest-baduanjin':  { name: '八段锦(已退役)', mins: 12, goal: 'rest' },
   };
 
   // 独立动作的目标归类与时长（与 Summer的世界.html 同步）
+  // #2 女明星仪态管理 / #25 臀腿完整拉伸 / #47 清晨燃脂瑜伽 / #62 激活腹横肌 已于 2026-11-09 从列表删除，条目保留供历史打卡解析
   const ACTION_GOALS = {
     1:['rest'], 2:['shape','rest'], 3:['shape','rest'], 4:['shape','rest'], 5:['rest'], 6:['shape','rest'], 7:['rest'],
     11:['rest'], 12:['rest'], 13:['rest'], 14:['rest'], 15:['rest'], 16:['rest'],
@@ -1313,8 +1375,17 @@
     50:['stamina','shape'], 51:['stamina','shape'], 52:['shape'], 53:['shape'],
     54:['stamina','shape'], 55:['stamina','shape'], 56:['stamina','shape'], 57:['stamina'],
     61:['shape'], 62:['shape','rest'], 63:['shape'], 64:['shape'],
-    71:['shape'], 72:['shape'], 73:['shape','rest'], 74:['shape','rest'], 75:['shape','rest'],
+    71:['shape'], 72:['shape'], 73:['shape','rest'], 74:['shape','rest'], 75:['shape','rest'], 77:['shape'],
   };
+  // 动作时长改过的，按打卡时间取当时的时长，历史周不被改写。格式：num: [{ before: 时间戳, mins }]
+  const ACTION_DURATION_HISTORY = {
+    63: [{ before: new Date(2026, 10, 9).getTime(), mins: 5 }],
+  };
+  function actionMinsAt(num, ts) {
+    const h = ACTION_DURATION_HISTORY[num];
+    if (h) for (const r of h) { if (ts < r.before) return r.mins; }
+    return ACTION_DURATIONS[num] || 0;
+  }
   const ACTION_DURATIONS = {
     1:5, 2:3, 3:15, 4:8, 5:3, 6:10, 7:8,
     11:5, 12:5, 13:5, 14:10, 15:10, 16:10,
@@ -1322,8 +1393,8 @@
     31:5,
     41:5, 42:15, 43:12, 45:10, 46:4, 47:10, 48:4, 49:4, 50:15, 51:5, 52:5, 53:20,
     54:10, 55:20, 56:30, 57:30,
-    61:5, 62:10, 63:5, 64:10,
-    71:10, 72:5, 73:10, 74:10, 75:20,
+    61:5, 62:10, 63:10, 64:10,   // #63 真空腹 2026-11-09 起 5→10（之前的记录仍按 5 算，见 ACTION_DURATION_HISTORY）
+    71:10, 72:5, 73:10, 74:10, 75:20, 77:5,
   };
   const GOAL_TARGET = { stamina: 100, shape: 100, rest: 150 };
   const GOAL_LABEL = { stamina: '体能', shape: '身材', rest: '养护' };
@@ -1423,7 +1494,7 @@
     actionLog.filter(e => inWeek(e) && !comboTs.has(e.ts)).forEach(e => {
       const goals = ACTION_GOALS[e.num];
       if (goals && goals.length) {
-        mins[goals[0]] += (ACTION_DURATIONS[e.num] || 0);
+        mins[goals[0]] += actionMinsAt(e.num, e.ts);
         counts[goals[0]]++;
       }
     });
@@ -2178,20 +2249,24 @@
 
     chart.innerHTML = `<svg width="${svgW}" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}">${svg}</svg>`;
 
-    // 概览 + 近期对比
+    // 概览 + 近期对比（只算完整周：本周还没过完，算进去会把周均拉低）
     const avg = arr => arr.length ? Math.round(arr.reduce((a,b)=>a+b,0)/arr.length) : 0;
-    const totals = data.map(d => d.total);
+    const liveWeek = weekStartFor(new Date());
+    const done = data.filter(d => d.w !== liveWeek);
+    const totals = done.map(d => d.total);
     let cmp = '';
-    if (data.length >= 8) {
+    if (done.length >= 8) {
       const recent = avg(totals.slice(-4));
       const prev = avg(totals.slice(-8, -4));
       if (prev > 0) {
         const delta = Math.round((recent - prev) / prev * 100);
         const arrow = delta > 0 ? '↑' : (delta < 0 ? '↓' : '→');
-        cmp = ` · 最近 4 周周均 ${recent} min，比前 4 周 ${arrow} ${Math.abs(delta)}%`;
+        cmp = ` · 最近 4 个完整周周均 ${recent} min，比再前 4 周 ${arrow} ${Math.abs(delta)}%`;
       }
     }
-    summary.innerHTML = `共 ${data.length} 周 · 周均 <strong>${avg(totals)}</strong> 分钟${cmp}`;
+    summary.innerHTML = done.length
+      ? `共 ${done.length} 个完整周 · 周均 <strong>${avg(totals)}</strong> 分钟${cmp}（本周进行中，不计入周均）`
+      : '本周进行中，过完这周才有周均。';
 
     // 选中周详情
     const d = (trendSelectedWeek != null) ? data.find(x => x.w === trendSelectedWeek) : null;
@@ -2566,22 +2641,22 @@
     const comboN  = document.querySelectorAll('.combo-card').length;
     const actionN = document.querySelectorAll('.action-table tbody tr').length;
     const sub = document.getElementById('head-sub');
-    if (sub) sub.textContent = `周日晚 9 点复盘 · ${comboN} 个组合 + ${actionN} 项动作详情 · 长期追踪`;
-    const ch = document.getElementById('sec-combos');
-    if (ch) ch.textContent = `📋 常用组合 · ${comboN} 个`;
+    if (sub) sub.textContent = `周日晚 9 点复盘 · 一天的运动 + ${actionN} 项动作详情 · 长期追踪`;
+    const ch = document.getElementById('combos-count');
+    if (ch) ch.textContent = `· ${comboN} 个 · 平时按心情从动作详情挑，不按组合练`;
     const ah = document.getElementById('sec-actions');
     if (ah) ah.textContent = `🎯 动作详情 · ${actionN} 项`;
   }
 
   // 目录 / 锚点跳到历史归档时自动展开
-  (function(){
-    const d = document.getElementById('sec-archive');
+  ['sec-archive', 'sec-combos'].forEach(id => {
+    const d = document.getElementById(id);
     if (!d) return;
-    const openIfTarget = () => { if (location.hash === '#sec-archive') d.open = true; };
+    const openIfTarget = () => { if (location.hash === '#' + id) d.open = true; };
     openIfTarget();
     window.addEventListener('hashchange', openIfTarget);
-    document.querySelectorAll('a[href="#sec-archive"]').forEach(a => a.addEventListener('click', () => { d.open = true; }));
-  })();
+    document.querySelectorAll('a[href="#' + id + '"]').forEach(a => a.addEventListener('click', () => { d.open = true; }));
+  });
 
   // ==================== 侧栏 scroll-spy（高亮当前所在区块）====================
   function initScrollSpy() {
